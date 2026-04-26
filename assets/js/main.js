@@ -1,85 +1,40 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // ── Stat counter animation ─────────────────────────────────────────────
+    // Runs once when the stats section scrolls into view (or after 800ms if
+    // IntersectionObserver isn't available / fires late).
     const counters = document.querySelectorAll('.stat-number[data-target]');
 
-    if (counters.length && 'IntersectionObserver' in window) {
-        const ease = (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    if (!counters.length) return;
 
-        const animateCounter = (el) => {
+    const ease = (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+    const runCounters = () => {
+        counters.forEach(el => {
+            if (el.dataset.animated) return;
+            el.dataset.animated = '1';
             const target = parseFloat(el.dataset.target);
             const suffix = el.dataset.suffix || '';
-            const duration = 1800;
+            const duration = 1600;
             const start = performance.now();
-
             const tick = (now) => {
-                const elapsed = now - start;
-                const progress = Math.min(elapsed / duration, 1);
-                const value = Math.round(ease(progress) * target);
-                el.textContent = value + suffix;
-                if (progress < 1) requestAnimationFrame(tick);
+                const p = Math.min((now - start) / duration, 1);
+                el.textContent = Math.round(ease(p) * target) + suffix;
+                if (p < 1) requestAnimationFrame(tick);
             };
             requestAnimationFrame(tick);
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounter(entry.target);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.3 });
-
-        counters.forEach(el => observer.observe(el));
-    }
-
-    // ── Scroll-reveal for process steps ───────────────────────────────────
-    const steps = document.querySelectorAll('.process-step');
-
-    if (steps.length && 'IntersectionObserver' in window) {
-        steps.forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(24px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         });
+    };
 
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }, i * 80);
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.15 });
-
-        steps.forEach(el => revealObserver.observe(el));
-    }
-
-    // ── Fade-up for section headers ────────────────────────────────────────
-    const fadeEls = document.querySelectorAll('.section-header, .reveal-inner');
-
-    if (fadeEls.length && 'IntersectionObserver' in window) {
-        fadeEls.forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(32px)';
-            el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
-        });
-
-        const fadeObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    fadeObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.2 });
-
-        fadeEls.forEach(el => fadeObserver.observe(el));
+    // Try IntersectionObserver first, fall back to a 1s timeout
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection && 'IntersectionObserver' in window) {
+        const obs = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting) { runCounters(); obs.disconnect(); }
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        obs.observe(statsSection);
+    } else {
+        setTimeout(runCounters, 1000);
     }
 
 });

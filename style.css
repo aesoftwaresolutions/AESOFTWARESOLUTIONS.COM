@@ -635,6 +635,26 @@ input, textarea { font-family: inherit; }
 
 .front-page-wrapper { width: 100%; }
 
+/* ── CSS-only scroll animations ─────────────────────────────────────── */
+@keyframes fadeUp {
+	from { opacity: 0; transform: translateY(28px); }
+	to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Process steps: staggered fade-up when section comes into view */
+.process-step {
+	animation: fadeUp 0.55s ease both;
+}
+.process-step:nth-child(1) { animation-delay: 0.05s; }
+.process-step:nth-child(2) { animation-delay: 0.15s; }
+.process-step:nth-child(3) { animation-delay: 0.25s; }
+.process-step:nth-child(4) { animation-delay: 0.35s; }
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+	.process-step { animation: none; }
+}
+
 @media (max-width: 768px) {
 	.site-header__nav, .site-header__cta { display: none; }
 	.hero-grid { grid-template-columns: 1fr; }
