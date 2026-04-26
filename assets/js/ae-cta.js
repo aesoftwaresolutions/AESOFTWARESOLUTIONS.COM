@@ -88,7 +88,7 @@ ctaTemplate2.innerHTML = `
         <span class="cta-eyebrow">Let's work together</span>
         <h2 class="cta-title">Ready to build<br><em>something great?</em></h2>
         <p class="cta-subtitle">Tell us about your project and we'll get back to you within 24 hours with a plan to move forward.</p>
-        <a href="mailto:anthony@aesoftwaresolutions.com" class="cta-button">Start a conversation</a>
+        <a href="/contact/" class="cta-button">Start a conversation</a>
         <span class="cta-note">No commitment. Free consultation.</span>
     </section>
 `;
