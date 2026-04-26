@@ -24,7 +24,7 @@ Text Domain: aesoftwares
 	--font-editorial: Georgia, "Times New Roman", serif;
 	--transition:   0.3s cubic-bezier(0.4,0,0.2,1);
 	--max-width:    1280px;
-	--section-pad:  clamp(80px, 12vw, 160px);
+	--section-pad:  clamp(48px, 5vw, 88px);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -74,11 +74,11 @@ input, textarea { font-family: inherit; }
 	font-weight: 400;
 	line-height: 1.1;
 	color: var(--text);
-	margin-bottom: 3rem;
+	margin-bottom: 0;
 }
 
 .section-header {
-	margin-bottom: 4rem;
+	margin-bottom: 3rem;
 	max-width: var(--max-width);
 	margin-left: auto;
 	margin-right: auto;
@@ -436,7 +436,7 @@ input, textarea { font-family: inherit; }
 	border-top: 1px solid var(--border);
 }
 
-.process-header { max-width: var(--max-width); margin: 0 auto 4rem; }
+.process-header { max-width: var(--max-width); margin: 0 auto 3rem; }
 
 .process-track {
 	max-width: var(--max-width);

@@ -7,7 +7,7 @@ ctaTemplate2.innerHTML = `
             background: #0f0f0f;
             border-top: 1px solid rgba(255,255,255,0.06);
             border-bottom: 1px solid rgba(255,255,255,0.06);
-            padding: clamp(80px, 12vw, 140px) clamp(1.5rem, 5vw, 4rem);
+            padding: clamp(60px, 6vw, 100px) clamp(1.5rem, 5vw, 4rem);
             text-align: center;
             position: relative;
             overflow: hidden;
