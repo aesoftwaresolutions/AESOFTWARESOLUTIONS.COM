@@ -266,9 +266,7 @@ input, textarea { font-family: inherit; }
 	margin: 0 auto;
 	padding: 0 clamp(1.5rem, 5vw, 4rem);
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 4rem;
-	align-items: center;
+	grid-template-columns: 1fr;
 	width: 100%;
 	position: relative;
 	z-index: 3;
@@ -301,31 +299,13 @@ input, textarea { font-family: inherit; }
 	font-size: 1.1rem;
 	color: var(--text-muted);
 	line-height: 1.7;
-	max-width: 480px;
+	max-width: 560px;
 	margin-bottom: 2.5rem;
 }
 
 .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
 
-.hero-visual { display: flex; justify-content: center; align-items: center; }
-
-.iphone-container { position: relative; width: 240px; }
-
-.iphone-svg { width: 100%; height: auto; }
-
-.iphone-screen {
-	position: absolute;
-	top: 3.5%;
-	left: 3.5%;
-	right: 3.5%;
-	bottom: 3.5%;
-	border-radius: 12%;
-	overflow: hidden;
-	background-color: #000;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
+/* .hero-visual, .iphone-container, .iphone-svg, .iphone-screen removed — assistant hidden */
 
 .scroll-cue {
 	position: absolute;
@@ -658,7 +638,6 @@ input, textarea { font-family: inherit; }
 @media (max-width: 768px) {
 	.site-header__nav, .site-header__cta { display: none; }
 	.hero-grid { grid-template-columns: 1fr; }
-	.hero-visual { order: -1; margin-bottom: 2rem; }
 	.process-track { grid-template-columns: repeat(2, 1fr); }
 	.footer-top { grid-template-columns: 1fr; }
 	.footer-mid { grid-template-columns: 1fr; }
