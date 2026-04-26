@@ -1,106 +1,96 @@
 const productsTemplate2 = document.createElement('template');
 productsTemplate2.innerHTML = `
     <style>
-        :host {
-            display: block;
-            --primary-color: #007BFF;
-            --surface-color: #ffffff;
-            --text-color: #212529;
-            --subtle-text: #6c757d;
-            --shadow-color: rgba(0, 0, 0, 0.07);
-            --border-color: #dee2e6;
-        }
-        .products-section {
-            padding: 4rem 2rem;
-            background-color: var(--background-color, #f8f9fa);
-        }
-        .section-title {
-            font-size: 2.8rem;
-            font-weight: 700;
-            color: var(--text-color);
-            text-align: center;
-            margin: 0 0 3rem 0;
-        }
+        :host { display: block; }
+
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            gap: 1px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.06);
         }
+
         .product-card {
-            background-color: var(--surface-color);
-            border-radius: 12px;
-            box-shadow: 0 4px 25px var(--shadow-color);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: #141414;
+            padding: 2.5rem 2rem;
             display: flex;
             flex-direction: column;
+            gap: 1rem;
+            transition: background 0.3s ease;
+            cursor: default;
         }
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.09);
-        }
-        .product-icon {
-            font-size: 2.5rem;
+
+        .product-card:hover { background: #1a1a1a; }
+
+        .product-num {
+            font-family: Georgia, serif;
+            font-size: 2rem;
+            color: rgba(201,169,110,0.3);
             line-height: 1;
-            padding: 1.5rem;
-            background-color: var(--primary-color);
-            color: white;
-            text-align: center;
+            font-weight: 400;
         }
-        .product-content {
-            padding: 1.5rem;
-            flex-grow: 1;
-        }
-        h3 {
-            font-size: 1.4rem;
+
+        .product-title {
+            font-size: 1.1rem;
             font-weight: 600;
-            margin: 0 0 0.75rem 0;
-            color: var(--text-color);
-        }
-        p {
-            color: var(--subtle-text);
-            line-height: 1.7;
+            color: #EDEDE9;
+            letter-spacing: 0.01em;
             margin: 0;
         }
+
+        .product-desc {
+            font-size: 0.875rem;
+            color: #888884;
+            line-height: 1.7;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .product-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #C9A96E;
+            border-top: 1px solid rgba(201,169,110,0.25);
+            padding-top: 1rem;
+            margin-top: auto;
+        }
     </style>
-    <section class="products-section">
-        <h2 class="section-title">Our Core Services</h2>
-        <div class="products-grid"></div>
-    </section>
+    <div class="products-grid"></div>
 `;
 
 const productsData = [
     {
-        icon: 'ðŸ¤–',
         title: 'Custom AI Chatbots',
-        description: 'Engage your users with intelligent, 24/7 conversational AI. We design and build chatbots that provide support, generate leads, and automate customer interactions seamlessly.'
+        description: 'Intelligent 24/7 conversational AI that supports customers, generates leads, and automates interactions seamlessly.',
+        tag: 'Conversational AI'
     },
     {
-        icon: 'âš™ï¸',
         title: 'Workflow Automation',
-        description: 'Streamline your business processes by automating repetitive tasks. We create robust systems that connect your apps, process data, and improve operational efficiency.'
+        description: 'Streamline business processes by automating repetitive tasks and connecting your apps into a unified system.',
+        tag: 'Process Automation'
     },
     {
-        icon: 'ðŸ“Š',
-        title: 'Interactive Data Dashboards',
-        description: 'Turn complex data into actionable insights. We develop beautiful, intuitive dashboards that help you visualize your KPIs and make data-driven decisions with confidence.'
+        title: 'Data Dashboards',
+        description: 'Turn complex data into actionable insights with intuitive, real-time dashboards built around your KPIs.',
+        tag: 'Analytics'
     },
     {
-        icon: 'ðŸŒ',
-        title: 'Web & Application Development',
-        description: 'From marketing websites to complex SaaS platforms, our team builds high-performance, scalable web applications tailored to your specific business needs using modern technologies.'
+        title: 'Web & App Development',
+        description: 'High-performance, scalable web applications — from marketing sites to full SaaS platforms — built with modern tech.',
+        tag: 'Development'
     },
     {
-        icon: 'ðŸ§ ',
-        title: 'AI-Powered Content Generation',
-        description: 'Leverage the latest generative AI models to create high-quality content at scale. We integrate AI to help you produce blog posts, marketing copy, and more, saving you time and resources.'
+        title: 'AI Content Generation',
+        description: 'Leverage generative AI to produce blog posts, marketing copy, and product content at scale with your voice.',
+        tag: 'Generative AI'
     },
     {
-        icon: 'â˜ï¸',
-        title: 'Cloud Solutions & Integration',
-        description: 'We design and implement scalable cloud infrastructure and ensure your various software systems communicate effectively, creating a unified and powerful digital ecosystem.'
+        title: 'Cloud & Integration',
+        description: 'Scalable cloud infrastructure and seamless software integrations that unify your digital ecosystem.',
+        tag: 'Infrastructure'
     }
 ];
 
@@ -113,23 +103,17 @@ class AeProducts extends HTMLElement {
 
     connectedCallback() {
         const grid = this.shadowRoot.querySelector('.products-grid');
-        const title = this.shadowRoot.querySelector('.section-title');
-        const showAll = this.hasAttribute('show-all');
-        const productsToShow = showAll ? productsData : productsData.slice(0, 3);
+        const showAll = this.getAttribute('show-all') !== 'false';
+        const productsToShow = showAll ? productsData : productsData.slice(0, 4);
 
-        if (this.hasAttribute('title')) {
-            title.innerText = this.getAttribute('title');
-        }
-
-        productsToShow.forEach(product => {
+        productsToShow.forEach((product, i) => {
             const card = document.createElement('div');
             card.classList.add('product-card');
             card.innerHTML = `
-                <div class="product-icon">${product.icon}</div>
-                <div class="product-content">
-                    <h3>${product.title}</h3>
-                    <p>${product.description}</p>
-                </div>
+                <div class="product-num">0${i + 1}</div>
+                <h3 class="product-title">${product.title}</h3>
+                <p class="product-desc">${product.description}</p>
+                <span class="product-tag">${product.tag}</span>
             `;
             grid.appendChild(card);
         });
