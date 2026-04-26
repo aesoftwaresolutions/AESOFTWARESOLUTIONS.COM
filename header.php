@@ -25,13 +25,13 @@
 		</a>
 
 		<nav class="site-header__nav">
-			<a href="#services" class="site-header__nav-link">Services</a>
-			<a href="#process" class="site-header__nav-link">Process</a>
-			<a href="#testimonials" class="site-header__nav-link">Testimonials</a>
-			<a href="#contact" class="site-header__nav-link">Contact</a>
+			<a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="site-header__nav-link">Services</a>
+			<a href="<?php echo esc_url( home_url( '/process/' ) ); ?>" class="site-header__nav-link">Process</a>
+			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="site-header__nav-link">About</a>
+			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="site-header__nav-link">Contact</a>
 		</nav>
 
-		<a href="#contact" class="site-header__cta btn btn--outline">Get in touch</a>
+		<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="site-header__cta btn btn--outline">Get in touch</a>
 	</div>
 </header>
 
