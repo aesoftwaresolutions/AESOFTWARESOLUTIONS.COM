@@ -304,54 +304,44 @@ function aesoftwares_register_rewrite_route() {
 }
 add_action( 'rest_api_init', 'aesoftwares_register_rewrite_route' );
 
-function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
-    // Allow up to 5 minutes — longer texts (1000+ words) can take qwen3 well over 60s.
-    set_time_limit( 300 );
+// Split text into ~$max_words chunks on paragraph boundaries.
+function aesoftwares_chunk_text( $text, $max_words = 500 ) {
+    $paragraphs = preg_split( '/\n\n+/', trim( $text ) );
+    $chunks     = [];
+    $current    = [];
+    $count      = 0;
 
-    $text = $request->get_param( 'text' );
-    $mode = $request->get_param( 'mode' );
-
-    $word_count = str_word_count( $text );
-    if ( $word_count > 2000 ) {
-        return new WP_Error( 'too_long', 'Text exceeds the 2,000 word limit.', [ 'status' => 422 ] );
+    foreach ( $paragraphs as $para ) {
+        $para = trim( $para );
+        if ( $para === '' ) continue;
+        $wc = str_word_count( $para );
+        if ( $count + $wc > $max_words && ! empty( $current ) ) {
+            $chunks[] = implode( "\n\n", $current );
+            $current  = [];
+            $count    = 0;
+        }
+        $current[] = $para;
+        $count    += $wc;
     }
 
-    $mode_instructions = [
-        'standard' => 'Rewrite the text with a natural, grounded voice — the kind a thoughtful person uses when writing seriously but not stiffly. Keep one consistent register throughout; do not mix casual filler words ("really", "lots of", "you might think") with formal prose in the same paragraph. Vary sentence length genuinely: some sentences should be very short. Others can run longer and carry more than one idea, connected naturally. Not every sentence needs to alternate. Let paragraph endings land on the idea itself — do not add a sentence that restates what the paragraph just said. Do not open consecutive paragraphs with the same word or phrase. Introduce evidence mid-thought or at the end of a claim, not always at the start of a sentence. Use contractions where they feel natural, not on a schedule.',
-        'academic' => 'Rewrite the text in a scholarly voice that still sounds like a person wrote it. Use discipline-appropriate vocabulary and hedging ("suggests", "appears to", "the evidence indicates") but vary where hedges appear — not every sentence, and not always in the same position. Break the formulaic paragraph structure: not every paragraph needs a topic sentence, supporting evidence, citation, and closing restatement in that order. Some paragraphs can open with the evidence and build to the claim. Some can end on a question or an unresolved tension. Citations should be embedded mid-clause or at the end of a point, not always in their own standalone sentence. No two consecutive paragraphs should open with the same type of construction.',
-        'casual'   => 'Rewrite the text the way someone would write a personal blog post or a message to a smart friend. Short sentences are fine. So are fragments, if they land right. Use contractions naturally, not in every sentence just to hit a quota. Pick one consistent voice — either informal throughout or semi-formal throughout — and stick to it. Do not drop in phrases like "you might think" or "many people overlook this" as paragraph openers; start with the actual point. Vary how paragraphs end: some can end on a statement, some on a question, some just stop when the thought is done.',
-    ];
+    if ( ! empty( $current ) ) {
+        $chunks[] = implode( "\n\n", $current );
+    }
 
-    $system_prompt = 'You are rewriting text to sound naturally human. Preserve all original meaning, facts, citations, and argument structure. Your most important job is to avoid the specific patterns that AI detectors flag.
+    return $chunks;
+}
 
-FORBIDDEN — never use these:
-- Connector phrases: "This means", "This shows", "This is important because", "This demonstrates", "By doing X, Y can Z", "In addition", "Furthermore", "Moreover"
-- Padding openers: "Many people overlook", "It is worth noting that", "It is important to remember", "At first glance", "Interestingly"
-- Paragraph-closing restatements: do not end a paragraph with a sentence that summarises what the paragraph just said
-- Formulaic paragraph structure: claim → explanation → example → citation → restate — break this pattern in at least half the paragraphs
-- Consecutive paragraphs opening with the same word, phrase, or sentence type
-- Register mixing: do not use casual filler words ("really", "lots of", "pretty much", "just") in the same paragraph as formal vocabulary
-
-REQUIRED:
-- Genuine sentence length variation — not a pattern of alternating short and long, but truly irregular rhythm
-- Consistent register throughout the full piece (choose one and hold it)
-- Citations introduced mid-clause or at the end of a point, not always in their own lead sentence
-- Some paragraphs should end on the idea itself, without a wrap-up sentence
-- Where the original uses first person, keep first person
-
-Output ONLY the rewritten text. No preamble, no commentary, no markdown.';
-
-    $user_message = $mode_instructions[ $mode ] . "\n\nText to rewrite:\n\n" . $text;
-
-    // ── Primary: Ollama on VPS ────────────────────────────────────────────
+// Send one system + user message to the configured AI backend.
+// Returns the rewritten string or a WP_Error.
+function aesoftwares_call_ai_backend( $system_prompt, $user_message ) {
     $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
     $ollama_token = get_option( 'aesoftwares_ollama_token' );
     $ollama_model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
 
     if ( ! empty( $ollama_url ) ) {
         $payload = [
-            'model'  => $ollama_model,
-            'stream' => false,
+            'model'    => $ollama_model,
+            'stream'   => false,
             'messages' => [
                 [ 'role' => 'system', 'content' => $system_prompt ],
                 [ 'role' => 'user',   'content' => $user_message  ],
@@ -361,8 +351,8 @@ Output ONLY the rewritten text. No preamble, no commentary, no markdown.';
         $response = wp_remote_post( rtrim( $ollama_url, '/' ) . '/api/chat', [
             'method'      => 'POST',
             'headers'     => [
-                'Content-Type'    => 'application/json',
-                'x-ollama-token'  => $ollama_token,
+                'Content-Type'   => 'application/json',
+                'x-ollama-token' => $ollama_token,
             ],
             'body'        => json_encode( $payload ),
             'data_format' => 'body',
@@ -374,22 +364,17 @@ Output ONLY the rewritten text. No preamble, no commentary, no markdown.';
             $body = json_decode( wp_remote_retrieve_body( $response ), true );
 
             if ( $code === 200 ) {
-                // Ollama /api/chat response: { message: { content: "..." } }
                 $rewritten = $body['message']['content'] ?? '';
-
-                // Strip <think>…</think> blocks that qwen3 may emit
                 $rewritten = preg_replace( '/<think>[\s\S]*?<\/think>/i', '', $rewritten );
                 $rewritten = trim( $rewritten );
-
                 if ( $rewritten !== '' ) {
-                    return new WP_REST_Response( [ 'rewritten' => $rewritten ], 200 );
+                    return $rewritten;
                 }
             }
         }
         // Fall through to Anthropic if Ollama failed
     }
 
-    // ── Fallback: Anthropic Claude ────────────────────────────────────────
     $api_key = get_option( 'aesoftwares_anthropic_api_key' );
     if ( empty( $api_key ) ) {
         return new WP_Error( 'no_backend', 'No AI backend is configured. Set the Ollama Proxy URL or Anthropic API key in AE Settings.', [ 'status' => 500 ] );
@@ -424,13 +409,71 @@ Output ONLY the rewritten text. No preamble, no commentary, no markdown.';
     $body = json_decode( wp_remote_retrieve_body( $response ), true );
 
     if ( $code !== 200 ) {
-        $msg = isset( $body['error']['message'] ) ? $body['error']['message'] : 'Anthropic API error.';
+        $msg = $body['error']['message'] ?? 'Anthropic API error.';
         return new WP_Error( 'anthropic_error', $msg, [ 'status' => 502 ] );
     }
 
-    $rewritten = $body['content'][0]['text'] ?? '';
+    return $body['content'][0]['text'] ?? '';
+}
 
-    return new WP_REST_Response( [ 'rewritten' => $rewritten ], 200 );
+function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
+    // Budget 10 min total to cover multiple chunks on large submissions.
+    set_time_limit( 600 );
+
+    $text = $request->get_param( 'text' );
+    $mode = $request->get_param( 'mode' );
+
+    $word_count = str_word_count( $text );
+    if ( $word_count > 2000 ) {
+        return new WP_Error( 'too_long', 'Text exceeds the 2,000 word limit.', [ 'status' => 422 ] );
+    }
+
+    $mode_instructions = [
+        'standard' => 'Rewrite the text with a natural, grounded voice — the kind a thoughtful person uses when writing seriously but not stiffly. Keep one consistent register throughout; do not mix casual filler words ("really", "lots of", "you might think") with formal prose in the same paragraph. Vary sentence length genuinely: some sentences should be very short. Others can run longer and carry more than one idea, connected naturally. Not every sentence needs to alternate. Let paragraph endings land on the idea itself — do not add a sentence that restates what the paragraph just said. Do not open consecutive paragraphs with the same word or phrase. Introduce evidence mid-thought or at the end of a claim, not always at the start of a sentence. Use contractions where they feel natural, not on a schedule.',
+        'academic' => 'Rewrite the text in a scholarly voice that still sounds like a person wrote it. Use discipline-appropriate vocabulary and hedging ("suggests", "appears to", "the evidence indicates") but vary where hedges appear — not every sentence, and not always in the same position. Break the formulaic paragraph structure: not every paragraph needs a topic sentence, supporting evidence, citation, and closing restatement in that order. Some paragraphs can open with the evidence and build to the claim. Some can end on a question or an unresolved tension. Citations should be embedded mid-clause or at the end of a point, not always in their own standalone sentence. No two consecutive paragraphs should open with the same type of construction.',
+        'casual'   => 'Rewrite the text the way someone would write a personal blog post or a message to a smart friend. Short sentences are fine. So are fragments, if they land right. Use contractions naturally, not in every sentence just to hit a quota. Pick one consistent voice — either informal throughout or semi-formal throughout — and stick to it. Do not drop in phrases like "you might think" or "many people overlook this" as paragraph openers; start with the actual point. Vary how paragraphs end: some can end on a statement, some on a question, some just stop when the thought is done.',
+    ];
+
+    $system_prompt = 'You are rewriting text to sound naturally human. Preserve all original meaning, facts, citations, and argument structure. Your most important job is to avoid the specific patterns that AI detectors flag.
+
+FORBIDDEN — never use these:
+- Connector phrases: "This means", "This shows", "This is important because", "This demonstrates", "By doing X, Y can Z", "In addition", "Furthermore", "Moreover"
+- Padding openers: "Many people overlook", "It is worth noting that", "It is important to remember", "At first glance", "Interestingly"
+- Paragraph-closing restatements: do not end a paragraph with a sentence that summarises what the paragraph just said
+- Formulaic paragraph structure: claim → explanation → example → citation → restate — break this pattern in at least half the paragraphs
+- Consecutive paragraphs opening with the same word, phrase, or sentence type
+- Register mixing: do not use casual filler words ("really", "lots of", "pretty much", "just") in the same paragraph as formal vocabulary
+
+REQUIRED:
+- Genuine sentence length variation — not a pattern of alternating short and long, but truly irregular rhythm
+- Consistent register throughout the full piece (choose one and hold it)
+- Citations introduced mid-clause or at the end of a point, not always in their own lead sentence
+- Some paragraphs should end on the idea itself, without a wrap-up sentence
+- Where the original uses first person, keep first person
+
+Output ONLY the rewritten text. No preamble, no commentary, no markdown.';
+
+    // Split into ~500-word chunks on paragraph boundaries for large inputs.
+    $chunks = $word_count > 500 ? aesoftwares_chunk_text( $text ) : [ $text ];
+    $total  = count( $chunks );
+    $parts  = [];
+
+    foreach ( $chunks as $i => $chunk ) {
+        $chunk_note   = $total > 1
+            ? 'This is section ' . ( $i + 1 ) . " of {$total} from a longer piece. Match the same voice and register you have used in the other sections.\n\n"
+            : '';
+        $user_message = $mode_instructions[ $mode ] . "\n\n" . $chunk_note . "Text to rewrite:\n\n" . $chunk;
+
+        $result = aesoftwares_call_ai_backend( $system_prompt, $user_message );
+
+        if ( is_wp_error( $result ) ) {
+            return $result;
+        }
+
+        $parts[] = $result;
+    }
+
+    return new WP_REST_Response( [ 'rewritten' => implode( "\n\n", $parts ) ], 200 );
 }
 
 
