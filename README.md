@@ -31,7 +31,7 @@ A free AI content rewriter available at `/rewriter/`. Users paste text, choose a
 Browser
   └─> POST /wp-json/aesoftwares/v1/rewrite  (ae-rewriter.js)
         └─> functions.php: aesoftwares_handle_rewrite()
-              ├─ PRIMARY:  Ollama (qwen3:8b) via VPS Nginx proxy  [PENDING commit]
+              ├─ PRIMARY:  Ollama (qwen3:8b) via VPS Nginx proxy  [committed]
               └─ FALLBACK: Anthropic Claude API
 ```
 
@@ -252,7 +252,7 @@ if ( ! empty( $ollama_url ) ) {
 - Expanded README from 3 lines to full documentation (theme structure, rewriter architecture, VPS setup, AE Settings table, REST endpoint schema, docker-compose changes, setup guide, changelog)
 - Committed README: `docs: expand README with Ollama VPS proxy setup and rewriter architecture`
 
-**WordPress / functions.php (pending commit):**
+**WordPress / functions.php (committed):**
 - New AE Settings fields: `aesoftwares_ollama_proxy_url`, `aesoftwares_ollama_token`, `aesoftwares_ollama_model`
 - Updated `aesoftwares_handle_rewrite()` to call Ollama via proxy as primary, Anthropic as fallback
 - Existing `aesoftwares_anthropic_api_key` retained for fallback
@@ -260,3 +260,24 @@ if ( ! empty( $ollama_url ) ) {
 ### Initial
 - Theme scaffolding, enqueue system, n8n assistant proxy, cinematic front-page stack
 - Added AI Content Rewriter tool (`page-rewriter.php`, `ae-rewriter.js`) with Anthropic Claude backend
+
+### 2026-05-03 — Ollama Proxy Fix & Native Integration Session
+
+**VPS Infrastructure (completed):**
+- Discovered Ollama already running natively as systemd service on port 11434 (not in Docker)
+- Confirmed installed models: `qwen3-8b:latest` (primary), `qwen3-4b:latest`, `qwen3:8b-q4_K_M`, `qwen3:4b-q4_K_M`
+- Removed failed Docker `root-ollama-1` container (port conflict with native Ollama on 11434)
+- Updated Nginx Proxy Manager host `ollama.srv1013089.hstgr.cloud` — changed forward host from `ollama` (Docker) to `172.17.0.1` (host bridge IP)
+- Added `x-ollama-token` header authentication to Nginx proxy (returns 403 without valid token)
+- Token set: `aes-ollama-secret-2025` (stored in WP AE Settings)
+- Cleaned `/root/docker-compose.yml` — removed `ollama` service and `ollama_data` volume (backed up to `.bak`)
+- Verified proxy: `HTTP 403` without token, `HTTP 200` with valid token and model list returned
+
+**WordPress / AE Settings (completed):**
+- Updated `aesoftwares_ollama_proxy_url` to `https://ollama.srv1013089.hstgr.cloud`
+- Updated `aesoftwares_ollama_token` to match Nginx proxy secret
+- Updated `aesoftwares_ollama_model` to `qwen3-8b:latest`
+
+**GitHub / Documentation (completed):**
+- Updated README: marked functions.php as committed, added this session changelog
+- Fixed AE Settings table proxy URL example to reflect HTTPS subdomain
