@@ -156,6 +156,9 @@ function aesoftwares_settings_page_html() {
 
 function aesoftwares_settings_init() {
     register_setting( 'aesoftwares_settings', 'aesoftwares_n8n_webhook_url' );
+    register_setting( 'aesoftwares_settings', 'aesoftwares_ollama_proxy_url' );
+    register_setting( 'aesoftwares_settings', 'aesoftwares_ollama_token' );
+    register_setting( 'aesoftwares_settings', 'aesoftwares_ollama_model' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_anthropic_api_key' );
 
     add_settings_section(
@@ -175,14 +178,40 @@ function aesoftwares_settings_init() {
 
     add_settings_section(
         'aesoftwares_ai_section',
-        'AI API Settings',
-        null,
+        'AI Rewriter Settings',
+        function() {
+            echo '<p style="color:#999;font-size:13px;">Primary: Ollama on VPS. Fallback: Anthropic API (used if Ollama Proxy URL is empty).</p>';
+        },
         'aesoftwares_settings'
     );
 
     add_settings_field(
+        'aesoftwares_ollama_proxy_url_field',
+        'Ollama Proxy URL',
+        'aesoftwares_ollama_proxy_url_field_html',
+        'aesoftwares_settings',
+        'aesoftwares_ai_section'
+    );
+
+    add_settings_field(
+        'aesoftwares_ollama_token_field',
+        'Ollama Secret Token',
+        'aesoftwares_ollama_token_field_html',
+        'aesoftwares_settings',
+        'aesoftwares_ai_section'
+    );
+
+    add_settings_field(
+        'aesoftwares_ollama_model_field',
+        'Ollama Model',
+        'aesoftwares_ollama_model_field_html',
+        'aesoftwares_settings',
+        'aesoftwares_ai_section'
+    );
+
+    add_settings_field(
         'aesoftwares_anthropic_api_key_field',
-        'Anthropic API Key',
+        'Anthropic API Key (fallback)',
         'aesoftwares_anthropic_api_key_field_html',
         'aesoftwares_settings',
         'aesoftwares_ai_section'
@@ -201,6 +230,39 @@ function aesoftwares_n8n_webhook_url_field_html() {
     <?php
 }
 
+function aesoftwares_ollama_proxy_url_field_html() {
+    $url = get_option( 'aesoftwares_ollama_proxy_url', '' );
+    ?>
+    <input type="url" name="aesoftwares_ollama_proxy_url"
+           value="<?php echo esc_attr( $url ); ?>"
+           class="regular-text"
+           placeholder="http://145.79.x.x:11435">
+    <p class="description">VPS Nginx proxy URL (no trailing slash). Requests go to <code>{url}/api/chat</code>.</p>
+    <?php
+}
+
+function aesoftwares_ollama_token_field_html() {
+    $token = get_option( 'aesoftwares_ollama_token', '' );
+    ?>
+    <input type="password" name="aesoftwares_ollama_token"
+           value="<?php echo esc_attr( $token ); ?>"
+           class="regular-text"
+           placeholder="your-secret-token">
+    <p class="description">Sent as <code>x-ollama-token</code> header. Must match the Nginx proxy config.</p>
+    <?php
+}
+
+function aesoftwares_ollama_model_field_html() {
+    $model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
+    ?>
+    <input type="text" name="aesoftwares_ollama_model"
+           value="<?php echo esc_attr( $model ); ?>"
+           class="regular-text"
+           placeholder="qwen3:8b">
+    <p class="description">Ollama model name. Default: <code>qwen3:8b</code>.</p>
+    <?php
+}
+
 function aesoftwares_anthropic_api_key_field_html() {
     $key = get_option( 'aesoftwares_anthropic_api_key', '' );
     ?>
@@ -208,7 +270,7 @@ function aesoftwares_anthropic_api_key_field_html() {
            value="<?php echo esc_attr( $key ); ?>"
            class="regular-text"
            placeholder="sk-ant-…">
-    <p class="description">Used by the AI Rewriter tool. Get a key at console.anthropic.com.</p>
+    <p class="description">Fallback only — used when Ollama Proxy URL is empty. Get a key at console.anthropic.com.</p>
     <?php
 }
 
@@ -218,7 +280,7 @@ function aesoftwares_anthropic_api_key_field_html() {
 // ══════════════════════════════════════════════════════════════════════════════
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 4. REST API — AI Rewriter (calls Anthropic Claude)
+// 4. REST API — AI Rewriter (Ollama VPS primary, Anthropic fallback)
 // ══════════════════════════════════════════════════════════════════════════════
 
 function aesoftwares_register_rewrite_route() {
@@ -243,11 +305,6 @@ function aesoftwares_register_rewrite_route() {
 add_action( 'rest_api_init', 'aesoftwares_register_rewrite_route' );
 
 function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
-    $api_key = get_option( 'aesoftwares_anthropic_api_key' );
-    if ( empty( $api_key ) ) {
-        return new WP_Error( 'no_api_key', 'The Anthropic API key is not configured.', [ 'status' => 500 ] );
-    }
-
     $text = $request->get_param( 'text' );
     $mode = $request->get_param( 'mode' );
 
@@ -265,6 +322,58 @@ function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
     $system_prompt = 'You are a skilled human writer. Your task is to rewrite the provided text so it reads as if written naturally by a human. The rewritten text must: (1) preserve the original meaning and all key information, (2) pass AI content detectors like CopyLeaks, GPTZero, and Originality.ai, (3) avoid patterns that AI detectors flag — uniform sentence lengths, overly perfect grammar, absence of contractions, repetitive structure, and unnaturally polished vocabulary. Output ONLY the rewritten text with no preamble, no explanation, and no markdown formatting.';
 
     $user_message = $mode_instructions[ $mode ] . "\n\nText to rewrite:\n\n" . $text;
+
+    // ── Primary: Ollama on VPS ────────────────────────────────────────────
+    $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
+    $ollama_token = get_option( 'aesoftwares_ollama_token' );
+    $ollama_model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
+
+    if ( ! empty( $ollama_url ) ) {
+        $payload = [
+            'model'  => $ollama_model,
+            'stream' => false,
+            'messages' => [
+                [ 'role' => 'system', 'content' => $system_prompt ],
+                [ 'role' => 'user',   'content' => $user_message  ],
+            ],
+        ];
+
+        $response = wp_remote_post( rtrim( $ollama_url, '/' ) . '/api/chat', [
+            'method'      => 'POST',
+            'headers'     => [
+                'Content-Type'    => 'application/json',
+                'x-ollama-token'  => $ollama_token,
+            ],
+            'body'        => json_encode( $payload ),
+            'data_format' => 'body',
+            'timeout'     => 300,
+        ] );
+
+        if ( ! is_wp_error( $response ) ) {
+            $code = wp_remote_retrieve_response_code( $response );
+            $body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+            if ( $code === 200 ) {
+                // Ollama /api/chat response: { message: { content: "..." } }
+                $rewritten = $body['message']['content'] ?? '';
+
+                // Strip <think>…</think> blocks that qwen3 may emit
+                $rewritten = preg_replace( '/<think>[\s\S]*?<\/think>/i', '', $rewritten );
+                $rewritten = trim( $rewritten );
+
+                if ( $rewritten !== '' ) {
+                    return new WP_REST_Response( [ 'rewritten' => $rewritten ], 200 );
+                }
+            }
+        }
+        // Fall through to Anthropic if Ollama failed
+    }
+
+    // ── Fallback: Anthropic Claude ────────────────────────────────────────
+    $api_key = get_option( 'aesoftwares_anthropic_api_key' );
+    if ( empty( $api_key ) ) {
+        return new WP_Error( 'no_backend', 'No AI backend is configured. Set the Ollama Proxy URL or Anthropic API key in AE Settings.', [ 'status' => 500 ] );
+    }
 
     $payload = [
         'model'      => 'claude-haiku-4-5-20251001',
