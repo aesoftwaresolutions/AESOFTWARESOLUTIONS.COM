@@ -31,7 +31,7 @@ A free AI content rewriter available at `/rewriter/`. Users paste text, choose a
 Browser
   └─> POST /wp-json/aesoftwares/v1/rewrite  (ae-rewriter.js)
         └─> functions.php: aesoftwares_handle_rewrite()
-              ├─ PRIMARY:  Ollama (qwen3:8b) via VPS Nginx proxy
+              ├─ PRIMARY:  Ollama (qwen3:8b) via VPS Nginx proxy  [PENDING commit]
               └─ FALLBACK: Anthropic Claude API
 ```
 
@@ -55,11 +55,18 @@ Ollama is exposed externally through the existing **Nginx Proxy Manager** Docker
 - Proxy listens on `VPS_IP:11435`
 - All requests require header: `x-ollama-token: <secret>`
 - Requests without the token receive `HTTP 403`
+- Requests with valid token receive `HTTP 200` — proxied to Ollama
 - Proxy config file: `/root/data/npm/nginx/custom/http.conf`
 - `OLLAMA_HOST=0.0.0.0` set in `open-webui` service so Ollama binds to all interfaces inside the container
 - Port `11435:11435` added to `nginx-proxy-manager` service in `/root/docker-compose.yml`
 
-**Nginx proxy block (inside `http.conf`):**
+**Verified working** — tested from VPS terminal:
+```
+No token:   HTTP 403  (blocked)
+With token: HTTP 200  (proxied to Ollama successfully)
+```
+
+**Nginx proxy block (`/root/data/npm/nginx/custom/http.conf`):**
 ```nginx
 server {
     listen 11435;
@@ -79,6 +86,8 @@ server {
 }
 ```
 
+> **Note:** The secret token value is stored in WP Admin > AE Settings. Do not commit it to source control.
+
 ### WordPress Settings (AE Settings)
 
 Navigate to **WP Admin > AE Settings** to configure:
@@ -91,6 +100,8 @@ Navigate to **WP Admin > AE Settings** to configure:
 | Ollama Model | `aesoftwares_ollama_model` | Model name, default: `qwen3:8b` |
 | Anthropic API Key | `aesoftwares_anthropic_api_key` | Fallback key — used if Ollama proxy URL is not set |
 
+> **Note:** The new Ollama fields and updated `aesoftwares_handle_rewrite()` logic are **pending commit** to `functions.php`.
+
 ### Rewriter REST Endpoint
 
 **Route:** `POST /wp-json/aesoftwares/v1/rewrite`
@@ -99,9 +110,10 @@ Navigate to **WP Admin > AE Settings** to configure:
 ```json
 {
   "text": "Your text here...",
-  "mode": "standard" // standard | academic | casual
+  "mode": "standard"
 }
 ```
+`mode` options: `standard` | `academic` | `casual`
 
 **Response:**
 ```json
@@ -110,11 +122,11 @@ Navigate to **WP Admin > AE Settings** to configure:
 }
 ```
 
-**Logic:**
-1. If `aesoftwares_ollama_proxy_url` is set in WP options → calls Ollama via `POST {proxy_url}/api/chat` with model `qwen3:8b` (or configured model), passes secret token in `x-ollama-token` header
-2. If Ollama proxy URL is empty → falls back to Anthropic `claude-haiku-4-5-20251001`
+**Handler logic (`aesoftwares_handle_rewrite`):**
+1. If `aesoftwares_ollama_proxy_url` is set → POST to `{proxy_url}/api/chat` with `model: qwen3:8b`, passing `x-ollama-token` header. Timeout: 300s
+2. If Ollama proxy URL is empty → fall back to Anthropic `claude-haiku-4-5-20251001`. Timeout: 60s
 3. Word limit: 2,000 words max
-4. Timeout: 300s (to allow for larger documents on the local model)
+4. Modes: Standard (natural/conversational), Academic (formal with human rhythm), Casual (blog/friendly)
 
 ---
 
@@ -132,21 +144,76 @@ Loads GSAP + ScrollTrigger + Lenis for the animated homepage. Looks for local ve
 
 ## Docker Compose Changes (VPS)
 
-The following changes were made to `/root/docker-compose.yml` on the Hostinger VPS to enable the Ollama proxy:
+File: `/root/docker-compose.yml` on the Hostinger VPS.
 
-1. **`nginx-proxy-manager` service** — added port mapping `11435:11435`
-2. **`openwebui` service** — added environment variable `OLLAMA_HOST=0.0.0.0`
+### Changes made 2026-05-03:
 
+**1. `nginx-proxy-manager` service — added port `11435:11435`:**
 ```yaml
-# nginx-proxy-manager service — added port:
-- 11435:11435
-
-# openwebui service — added environment:
-environment:
-  - OLLAMA_HOST=0.0.0.0
+ports:
+  - 80:80
+  - 443:443
+  - 81:81
+  - 11435:11435  # <-- added for Ollama proxy
 ```
 
-Both containers were recreated with `docker compose up -d --no-deps <service>` after the changes.
+**2. `openwebui` service — added `OLLAMA_HOST=0.0.0.0`:**
+```yaml
+environment:
+  - OLLAMA_HOST=0.0.0.0  # <-- added so Ollama binds all interfaces in container
+```
+
+Both containers recreated with:
+```bash
+docker compose up -d --no-deps nginx-proxy-manager
+docker compose up -d --no-deps openwebui
+```
+
+### Why `OLLAMA_HOST=0.0.0.0` is required
+
+By default, Ollama inside the `open-webui:ollama` all-in-one image binds only to `127.0.0.1:11434` inside the container — unreachable from the NPM container on the shared Docker network. Setting `OLLAMA_HOST=0.0.0.0` makes it bind to all interfaces, allowing NPM to proxy to `http://open-webui:11434` by container name.
+
+---
+
+## Pending (not yet committed)
+
+### `functions.php` — Ollama handler + new AE Settings fields
+
+The following changes to `functions.php` are designed but **not yet committed**:
+
+**1. New AE Settings admin fields:**
+- `aesoftwares_ollama_proxy_url` — VPS proxy URL input
+- `aesoftwares_ollama_token` — secret token password input
+- `aesoftwares_ollama_model` — model name input (default: `qwen3:8b`)
+- Existing `aesoftwares_anthropic_api_key` kept as fallback
+
+**2. Updated `aesoftwares_handle_rewrite()` function:**
+```php
+// Pseudo-code for the updated handler:
+$ollama_url   = get_option('aesoftwares_ollama_proxy_url');
+$ollama_token = get_option('aesoftwares_ollama_token');
+$ollama_model = get_option('aesoftwares_ollama_model') ?: 'qwen3:8b';
+
+if ( ! empty( $ollama_url ) ) {
+    // PRIMARY: call Ollama via proxy
+    $response = wp_remote_post( $ollama_url . '/api/chat', [
+        'headers' => [
+            'Content-Type'    => 'application/json',
+            'x-ollama-token'  => $ollama_token,
+        ],
+        'body'    => json_encode([
+            'model'    => $ollama_model,
+            'messages' => [ ['role' => 'user', 'content' => $prompt] ],
+            'stream'   => false,
+        ]),
+        'timeout' => 300,
+    ]);
+    // parse $response['message']['content']
+} else {
+    // FALLBACK: Anthropic Claude
+    // ... existing Anthropic logic ...
+}
+```
 
 ---
 
@@ -156,7 +223,7 @@ Both containers were recreated with `docker compose up -d --no-deps <service>` a
 2. Activate in WP Admin > Appearance > Themes
 3. Go to **AE Settings** and configure:
    - Ollama Proxy URL (`http://YOUR_VPS_IP:11435`)
-   - Ollama Secret Token (from VPS nginx config)
+   - Ollama Secret Token (from `/root/data/npm/nginx/custom/http.conf` on VPS)
    - Ollama Model (`qwen3:8b` recommended)
    - Anthropic API Key (optional fallback)
    - n8n Webhook URL (for AI assistant)
@@ -167,14 +234,29 @@ Both containers were recreated with `docker compose up -d --no-deps <service>` a
 
 ## Changelog
 
-### 2026-05-03
-- Added AI Content Rewriter tool (`page-rewriter.php`, `ae-rewriter.js`)
-- Connected rewriter to Ollama `qwen3:8b` running on Hostinger VPS via Nginx Proxy Manager
-- Added secret-token auth layer on VPS port 11435 (HTTP 403 on missing/invalid token)
-- Added Anthropic Claude fallback in `aesoftwares_handle_rewrite()`
-- Updated AE Settings admin page with Ollama proxy URL, token, and model fields
-- Set `OLLAMA_HOST=0.0.0.0` in `open-webui` Docker container
-- Added port `11435` to `nginx-proxy-manager` Docker service
+### 2026-05-03 — Ollama VPS Integration Session
+
+**VPS Infrastructure (completed):**
+- Audited Hostinger VPS Docker stack — identified `open-webui:ollama` all-in-one container as Ollama host
+- Confirmed 4 Ollama models installed: `qwen3:8b` (primary), `qwen3:8b-q4_K_M`, `qwen3:4b`, `qwen3:4b-q4_K_M`
+- Confirmed existing `nginx-proxy-manager` Docker container on VPS (port 80/443/81)
+- Removed erroneously installed system `nginx` package (`apt-get purge nginx nginx-common`)
+- Added port `11435:11435` to `nginx-proxy-manager` service in `/root/docker-compose.yml`
+- Added `OLLAMA_HOST=0.0.0.0` to `openwebui` service in `/root/docker-compose.yml`
+- Created `/root/data/npm/nginx/custom/http.conf` — Nginx server block proxying port 11435 to `open-webui:11434` with `x-ollama-token` secret header auth
+- Generated 64-char hex secret token via `openssl rand -hex 32`
+- Recreated both Docker containers with `docker compose up -d --no-deps`
+- Verified proxy: `HTTP 403` without token, `HTTP 200` with valid token
+
+**GitHub / Documentation (completed):**
+- Expanded README from 3 lines to full documentation (theme structure, rewriter architecture, VPS setup, AE Settings table, REST endpoint schema, docker-compose changes, setup guide, changelog)
+- Committed README: `docs: expand README with Ollama VPS proxy setup and rewriter architecture`
+
+**WordPress / functions.php (pending commit):**
+- New AE Settings fields: `aesoftwares_ollama_proxy_url`, `aesoftwares_ollama_token`, `aesoftwares_ollama_model`
+- Updated `aesoftwares_handle_rewrite()` to call Ollama via proxy as primary, Anthropic as fallback
+- Existing `aesoftwares_anthropic_api_key` retained for fallback
 
 ### Initial
 - Theme scaffolding, enqueue system, n8n assistant proxy, cinematic front-page stack
+- Added AI Content Rewriter tool (`page-rewriter.php`, `ae-rewriter.js`) with Anthropic Claude backend
