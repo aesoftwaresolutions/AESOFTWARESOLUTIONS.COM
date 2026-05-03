@@ -305,6 +305,9 @@ function aesoftwares_register_rewrite_route() {
 add_action( 'rest_api_init', 'aesoftwares_register_rewrite_route' );
 
 function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
+    // Allow up to 5 minutes — longer texts (1000+ words) can take qwen3 well over 60s.
+    set_time_limit( 300 );
+
     $text = $request->get_param( 'text' );
     $mode = $request->get_param( 'mode' );
 
@@ -393,7 +396,7 @@ function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
         ],
         'body'        => json_encode( $payload ),
         'data_format' => 'body',
-        'timeout'     => 60,
+        'timeout'     => 120,
     ] );
 
     if ( is_wp_error( $response ) ) {
