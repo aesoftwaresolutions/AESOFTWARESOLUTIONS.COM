@@ -102,7 +102,7 @@
 			var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
 			var timeoutId = setTimeout(function () {
 				if (controller) controller.abort();
-			}, 30000);
+			}, 120000);
 
 			var fetchOptions = {
 				method: 'POST',
