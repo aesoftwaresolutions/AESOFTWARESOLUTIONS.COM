@@ -33,6 +33,20 @@ function aesoftwares_enqueue_scripts() {
         'proxy_url' => get_rest_url( null, 'aesoftwares/v1/chat' ),
     ] );
 
+    // ── Rewriter tool (rewriter page only) ───────────────────────────────
+    if ( is_page_template( 'page-rewriter.php' ) ) {
+        wp_enqueue_script(
+            'ae-rewriter',
+            $uri . '/assets/js/ae-rewriter.js',
+            [],
+            filemtime( $js . 'ae-rewriter.js' ),
+            [ 'in_footer' => true, 'strategy' => 'defer' ]
+        );
+        wp_localize_script( 'ae-rewriter', 'ae_rewriter_settings', [
+            'rewrite_url' => get_rest_url( null, 'aesoftwares/v1/rewrite' ),
+        ] );
+    }
+
     // ── Cinematic stack (front page only) ─────────────────────────────────
     if ( is_front_page() ) {
 
@@ -142,6 +156,7 @@ function aesoftwares_settings_page_html() {
 
 function aesoftwares_settings_init() {
     register_setting( 'aesoftwares_settings', 'aesoftwares_n8n_webhook_url' );
+    register_setting( 'aesoftwares_settings', 'aesoftwares_anthropic_api_key' );
 
     add_settings_section(
         'aesoftwares_n8n_section',
@@ -157,6 +172,21 @@ function aesoftwares_settings_init() {
         'aesoftwares_settings',
         'aesoftwares_n8n_section'
     );
+
+    add_settings_section(
+        'aesoftwares_ai_section',
+        'AI API Settings',
+        null,
+        'aesoftwares_settings'
+    );
+
+    add_settings_field(
+        'aesoftwares_anthropic_api_key_field',
+        'Anthropic API Key',
+        'aesoftwares_anthropic_api_key_field_html',
+        'aesoftwares_settings',
+        'aesoftwares_ai_section'
+    );
 }
 add_action( 'admin_init', 'aesoftwares_settings_init' );
 
@@ -171,10 +201,109 @@ function aesoftwares_n8n_webhook_url_field_html() {
     <?php
 }
 
+function aesoftwares_anthropic_api_key_field_html() {
+    $key = get_option( 'aesoftwares_anthropic_api_key', '' );
+    ?>
+    <input type="password" name="aesoftwares_anthropic_api_key"
+           value="<?php echo esc_attr( $key ); ?>"
+           class="regular-text"
+           placeholder="sk-ant-…">
+    <p class="description">Used by the AI Rewriter tool. Get a key at console.anthropic.com.</p>
+    <?php
+}
+
 
 // ══════════════════════════════════════════════════════════════════════════════
 // 3. REST API PROXY — forwards chatbot messages to n8n webhook
 // ══════════════════════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════════════════════
+// 4. REST API — AI Rewriter (calls Anthropic Claude)
+// ══════════════════════════════════════════════════════════════════════════════
+
+function aesoftwares_register_rewrite_route() {
+    register_rest_route( 'aesoftwares/v1', '/rewrite', [
+        'methods'             => 'POST',
+        'callback'            => 'aesoftwares_handle_rewrite',
+        'permission_callback' => '__return_true',
+        'args'                => [
+            'text' => [
+                'required'          => true,
+                'sanitize_callback' => 'sanitize_textarea_field',
+                'validate_callback' => function ( $v ) { return is_string( $v ) && strlen( trim( $v ) ) > 0; },
+            ],
+            'mode' => [
+                'default'           => 'standard',
+                'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => function ( $v ) { return in_array( $v, [ 'standard', 'academic', 'casual' ], true ); },
+            ],
+        ],
+    ] );
+}
+add_action( 'rest_api_init', 'aesoftwares_register_rewrite_route' );
+
+function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
+    $api_key = get_option( 'aesoftwares_anthropic_api_key' );
+    if ( empty( $api_key ) ) {
+        return new WP_Error( 'no_api_key', 'The Anthropic API key is not configured.', [ 'status' => 500 ] );
+    }
+
+    $text = $request->get_param( 'text' );
+    $mode = $request->get_param( 'mode' );
+
+    $word_count = str_word_count( $text );
+    if ( $word_count > 2000 ) {
+        return new WP_Error( 'too_long', 'Text exceeds the 2,000 word limit.', [ 'status' => 422 ] );
+    }
+
+    $mode_instructions = [
+        'standard' => 'Rewrite the text in a natural, conversational style. Mix formal and informal phrasing. Use contractions freely (it\'s, you\'ll, don\'t). Vary sentence length dramatically — alternate between short punchy sentences and longer flowing ones. Add hedging language where appropriate (e.g. "it seems", "arguably", "in many cases"). Use first or second person occasionally. Start some sentences with conjunctions like "And" or "But" when it sounds natural.',
+        'academic' => 'Rewrite the text in an academic style but with a human voice. Keep formal vocabulary and citation-friendly structure, but vary sentence rhythm, avoid robotic uniformity, use hedging language (e.g. "suggests", "appears to", "may indicate"), and ensure the prose does not sound machine-generated. Avoid repetitive sentence openers.',
+        'casual'   => 'Rewrite the text in a casual, conversational tone as if a person is talking directly to the reader. Use contractions everywhere, short sentences, colloquial phrasing, and an approachable voice. It should feel like a blog post or friendly email, not formal writing.',
+    ];
+
+    $system_prompt = 'You are a skilled human writer. Your task is to rewrite the provided text so it reads as if written naturally by a human. The rewritten text must: (1) preserve the original meaning and all key information, (2) pass AI content detectors like CopyLeaks, GPTZero, and Originality.ai, (3) avoid patterns that AI detectors flag — uniform sentence lengths, overly perfect grammar, absence of contractions, repetitive structure, and unnaturally polished vocabulary. Output ONLY the rewritten text with no preamble, no explanation, and no markdown formatting.';
+
+    $user_message = $mode_instructions[ $mode ] . "\n\nText to rewrite:\n\n" . $text;
+
+    $payload = [
+        'model'      => 'claude-haiku-4-5-20251001',
+        'max_tokens' => 4096,
+        'system'     => $system_prompt,
+        'messages'   => [
+            [ 'role' => 'user', 'content' => $user_message ],
+        ],
+    ];
+
+    $response = wp_remote_post( 'https://api.anthropic.com/v1/messages', [
+        'method'      => 'POST',
+        'headers'     => [
+            'Content-Type'      => 'application/json',
+            'x-api-key'         => $api_key,
+            'anthropic-version' => '2023-06-01',
+        ],
+        'body'        => json_encode( $payload ),
+        'data_format' => 'body',
+        'timeout'     => 60,
+    ] );
+
+    if ( is_wp_error( $response ) ) {
+        return new WP_Error( 'api_error', 'Failed to reach the Anthropic API.', [ 'status' => 502 ] );
+    }
+
+    $code = wp_remote_retrieve_response_code( $response );
+    $body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+    if ( $code !== 200 ) {
+        $msg = isset( $body['error']['message'] ) ? $body['error']['message'] : 'Anthropic API error.';
+        return new WP_Error( 'anthropic_error', $msg, [ 'status' => 502 ] );
+    }
+
+    $rewritten = $body['content'][0]['text'] ?? '';
+
+    return new WP_REST_Response( [ 'rewritten' => $rewritten ], 200 );
+}
+
 
 function aesoftwares_register_chat_route() {
     register_rest_route( 'aesoftwares/v1', '/chat', [
