@@ -317,12 +317,29 @@ function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
     }
 
     $mode_instructions = [
-        'standard' => 'Rewrite the text in a natural, conversational style. Mix formal and informal phrasing. Use contractions freely (it\'s, you\'ll, don\'t). Vary sentence length dramatically — alternate between short punchy sentences and longer flowing ones. Add hedging language where appropriate (e.g. "it seems", "arguably", "in many cases"). Use first or second person occasionally. Start some sentences with conjunctions like "And" or "But" when it sounds natural.',
-        'academic' => 'Rewrite the text in an academic style but with a human voice. Keep formal vocabulary and citation-friendly structure, but vary sentence rhythm, avoid robotic uniformity, use hedging language (e.g. "suggests", "appears to", "may indicate"), and ensure the prose does not sound machine-generated. Avoid repetitive sentence openers.',
-        'casual'   => 'Rewrite the text in a casual, conversational tone as if a person is talking directly to the reader. Use contractions everywhere, short sentences, colloquial phrasing, and an approachable voice. It should feel like a blog post or friendly email, not formal writing.',
+        'standard' => 'Rewrite the text with a natural, grounded voice — the kind a thoughtful person uses when writing seriously but not stiffly. Keep one consistent register throughout; do not mix casual filler words ("really", "lots of", "you might think") with formal prose in the same paragraph. Vary sentence length genuinely: some sentences should be very short. Others can run longer and carry more than one idea, connected naturally. Not every sentence needs to alternate. Let paragraph endings land on the idea itself — do not add a sentence that restates what the paragraph just said. Do not open consecutive paragraphs with the same word or phrase. Introduce evidence mid-thought or at the end of a claim, not always at the start of a sentence. Use contractions where they feel natural, not on a schedule.',
+        'academic' => 'Rewrite the text in a scholarly voice that still sounds like a person wrote it. Use discipline-appropriate vocabulary and hedging ("suggests", "appears to", "the evidence indicates") but vary where hedges appear — not every sentence, and not always in the same position. Break the formulaic paragraph structure: not every paragraph needs a topic sentence, supporting evidence, citation, and closing restatement in that order. Some paragraphs can open with the evidence and build to the claim. Some can end on a question or an unresolved tension. Citations should be embedded mid-clause or at the end of a point, not always in their own standalone sentence. No two consecutive paragraphs should open with the same type of construction.',
+        'casual'   => 'Rewrite the text the way someone would write a personal blog post or a message to a smart friend. Short sentences are fine. So are fragments, if they land right. Use contractions naturally, not in every sentence just to hit a quota. Pick one consistent voice — either informal throughout or semi-formal throughout — and stick to it. Do not drop in phrases like "you might think" or "many people overlook this" as paragraph openers; start with the actual point. Vary how paragraphs end: some can end on a statement, some on a question, some just stop when the thought is done.',
     ];
 
-    $system_prompt = 'You are a skilled human writer. Your task is to rewrite the provided text so it reads as if written naturally by a human. The rewritten text must: (1) preserve the original meaning and all key information, (2) pass AI content detectors like CopyLeaks, GPTZero, and Originality.ai, (3) avoid patterns that AI detectors flag — uniform sentence lengths, overly perfect grammar, absence of contractions, repetitive structure, and unnaturally polished vocabulary. Output ONLY the rewritten text with no preamble, no explanation, and no markdown formatting.';
+    $system_prompt = 'You are rewriting text to sound naturally human. Preserve all original meaning, facts, citations, and argument structure. Your most important job is to avoid the specific patterns that AI detectors flag.
+
+FORBIDDEN — never use these:
+- Connector phrases: "This means", "This shows", "This is important because", "This demonstrates", "By doing X, Y can Z", "In addition", "Furthermore", "Moreover"
+- Padding openers: "Many people overlook", "It is worth noting that", "It is important to remember", "At first glance", "Interestingly"
+- Paragraph-closing restatements: do not end a paragraph with a sentence that summarises what the paragraph just said
+- Formulaic paragraph structure: claim → explanation → example → citation → restate — break this pattern in at least half the paragraphs
+- Consecutive paragraphs opening with the same word, phrase, or sentence type
+- Register mixing: do not use casual filler words ("really", "lots of", "pretty much", "just") in the same paragraph as formal vocabulary
+
+REQUIRED:
+- Genuine sentence length variation — not a pattern of alternating short and long, but truly irregular rhythm
+- Consistent register throughout the full piece (choose one and hold it)
+- Citations introduced mid-clause or at the end of a point, not always in their own lead sentence
+- Some paragraphs should end on the idea itself, without a wrap-up sentence
+- Where the original uses first person, keep first person
+
+Output ONLY the rewritten text. No preamble, no commentary, no markdown.';
 
     $user_message = $mode_instructions[ $mode ] . "\n\nText to rewrite:\n\n" . $text;
 
