@@ -20,6 +20,10 @@
 
 		if (!inputEl || !outputEl || !submitBtn) return;
 
+		// Explicitly hide elements on init — overrides any CSS that may win over [hidden]
+		loader.style.display = 'none';
+		errorEl.style.display = 'none';
+
 		function countWords(str) {
 			var trimmed = str.trim();
 			if (!trimmed) return 0;
@@ -28,16 +32,16 @@
 
 		function showError(msg) {
 			errorEl.textContent = msg;
-			errorEl.hidden = false;
+			errorEl.style.display = 'block';
 		}
 
 		function hideError() {
-			errorEl.hidden = true;
+			errorEl.style.display = 'none';
 			errorEl.textContent = '';
 		}
 
 		function setLoading(on) {
-			loader.hidden = !on;
+			loader.style.display = on ? 'flex' : 'none';
 			submitBtn.disabled = on;
 			submitBtn.classList.toggle('is-loading', on);
 		}
