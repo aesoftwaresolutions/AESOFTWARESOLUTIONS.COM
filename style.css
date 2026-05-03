@@ -1118,6 +1118,10 @@ input, textarea { font-family: inherit; }
 }
 
 
+/* hidden attribute fix — prevents display:flex/grid from overriding it */
+[hidden] { display: none !important; }
+
+
 /* ═══════════════════════════════════════════════════════════════════════════
    NAV BADGE
 ═══════════════════════════════════════════════════════════════════════════ */
