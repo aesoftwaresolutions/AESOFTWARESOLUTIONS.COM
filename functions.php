@@ -376,6 +376,7 @@ function aesoftwares_call_ai_backend( $system_prompt, $user_message ) {
                 'temperature' => 0.95,  // higher = less predictable word choices = lower perplexity score on detectors
                 'top_p'       => 0.95,
                 'top_k'       => 40,
+                'think'       => false, // disable qwen3 thinking mode — deliberate reasoning produces uniformly high-probability output
             ],
             'messages' => [
                 [ 'role' => 'system', 'content' => $system_prompt ],
@@ -607,6 +608,16 @@ FORBIDDEN — these phrases and patterns appear with AI statistical frequency an
 - Any 5+ consecutive words carried over unchanged from the source text
 - Paragraph-ending summary sentences
 - Two consecutive paragraphs with the same opening word or construction
+
+STYLE EXAMPLES — study the contrast between these two versions. The second version passed human-content detection; the first did not.
+
+FLAGGED AS AI (avoid this style):
+"A further reason why zoos are good is because it has research. Many people overlook this part. Research is very important in zoos. This shows that zoos help animals. Furthermore, zoos are beneficial to society. It is important to note that zoos provide conservation. Moreover, zoos educate the public."
+
+PASSED AS HUMAN (write like this):
+"I did not think I would choose it when I first started looking into zoos as a topic. One of those subjects on which people have already made up their minds — usually before they have spent much time thinking about it. But the research side surprised me. Not the headline conservation numbers, which get trotted out whenever someone defends a zoo, but the quieter institutional work: the studbooks, the reintroduction logistics, the veterinary data shared across facilities. It is not glamorous. And it probably does not make up for everything. Still."
+
+Notice: the passing version uses first person, admits uncertainty, interrupts itself, ends on an incomplete thought, and never uses transition words like "Furthermore" or "Moreover". The flagged version is structurally predictable — topic sentence, elaboration, transition, repeat.
 
 Output ONLY the rewritten text. No preamble, no labels, no markdown.';
 
