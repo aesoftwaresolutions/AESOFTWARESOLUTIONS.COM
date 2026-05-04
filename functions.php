@@ -304,6 +304,36 @@ function aesoftwares_register_rewrite_route() {
 }
 add_action( 'rest_api_init', 'aesoftwares_register_rewrite_route' );
 
+// Returns the fraction of $n-word sequences in $rewritten that also appear in $original.
+// Used to catch rewrites that are too close to the source.
+function aesoftwares_ngram_overlap_ratio( $original, $rewritten, $n = 6 ) {
+    $normalize = function ( $text ) {
+        $text = mb_strtolower( $text );
+        $text = preg_replace( '/[^\p{L}\p{N}\s]/u', ' ', $text );
+        return array_values( array_filter( preg_split( '/\s+/', trim( $text ) ) ) );
+    };
+
+    $orig_words = $normalize( $original );
+    $new_words  = $normalize( $rewritten );
+    $total      = count( $new_words ) - $n + 1;
+
+    if ( $total <= 0 ) return 0.0;
+
+    $orig_ngrams = [];
+    for ( $i = 0; $i <= count( $orig_words ) - $n; $i++ ) {
+        $orig_ngrams[ implode( ' ', array_slice( $orig_words, $i, $n ) ) ] = true;
+    }
+
+    $matches = 0;
+    for ( $i = 0; $i < $total; $i++ ) {
+        if ( isset( $orig_ngrams[ implode( ' ', array_slice( $new_words, $i, $n ) ) ] ) ) {
+            $matches++;
+        }
+    }
+
+    return (float) $matches / $total;
+}
+
 // Split text into ~$max_words chunks on paragraph boundaries.
 function aesoftwares_chunk_text( $text, $max_words = 500 ) {
     $paragraphs = preg_split( '/\n\n+/', trim( $text ) );
@@ -454,20 +484,40 @@ REQUIRED:
 Output ONLY the rewritten text. No preamble, no commentary, no markdown.';
 
     // Split into ~500-word chunks on paragraph boundaries for large inputs.
-    $chunks = $word_count > 500 ? aesoftwares_chunk_text( $text ) : [ $text ];
-    $total  = count( $chunks );
-    $parts  = [];
+    $chunks        = $word_count > 500 ? aesoftwares_chunk_text( $text ) : [ $text ];
+    $total         = count( $chunks );
+    $parts         = [];
+    $overlap_limit = 0.15; // flag if >15% of 6-grams are unchanged from source
+    $max_retries   = 2;
 
     foreach ( $chunks as $i => $chunk ) {
         $chunk_note   = $total > 1
             ? 'This is section ' . ( $i + 1 ) . " of {$total} from a longer piece. Match the same voice and register you have used in the other sections.\n\n"
             : '';
-        $user_message = $mode_instructions[ $mode ] . "\n\n" . $chunk_note . "Text to rewrite:\n\n" . $chunk;
+        $base_message = $mode_instructions[ $mode ] . "\n\n" . $chunk_note . "Text to rewrite:\n\n" . $chunk;
 
-        $result = aesoftwares_call_ai_backend( $system_prompt, $user_message );
+        $result = null;
 
-        if ( is_wp_error( $result ) ) {
-            return $result;
+        for ( $attempt = 0; $attempt <= $max_retries; $attempt++ ) {
+            if ( $attempt === 0 ) {
+                $user_message = $base_message;
+            } else {
+                $pct          = round( aesoftwares_ngram_overlap_ratio( $chunk, $result ) * 100 );
+                $user_message = $base_message . "\n\nORIGINALITY FAILURE — your previous attempt kept approximately {$pct}% of the original phrasing intact (measured as shared 6-word sequences). You must rephrase far more aggressively. Reconstruct every sentence from scratch using different words, different sentence openings, and different clause order. Do not carry over any sequence of five or more consecutive words from the source text. Preserve only the meaning, the facts, and any citations.";
+            }
+
+            $candidate = aesoftwares_call_ai_backend( $system_prompt, $user_message );
+
+            if ( is_wp_error( $candidate ) ) {
+                return $candidate;
+            }
+
+            $result  = $candidate;
+            $overlap = aesoftwares_ngram_overlap_ratio( $chunk, $result );
+
+            if ( $overlap <= $overlap_limit || $attempt === $max_retries ) {
+                break;
+            }
         }
 
         $parts[] = $result;
