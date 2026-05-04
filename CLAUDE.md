@@ -13,22 +13,16 @@ Any task that would normally be delegated to a subagent for code — generating 
 
 ### How to call it
 
-Use the helper script at `scripts/claude-coder.sh`:
+Use the `call_claude_coder` MCP tool (registered in `.mcp.json`, server name `claude-coder`):
+
+```
+mcp__claude-coder__call_claude_coder(prompt: "your coding task here")
+```
+
+Fallback — if the MCP server is unreachable, use the shell script:
 
 ```bash
 bash scripts/claude-coder.sh "your prompt here"
-```
-
-Or call the API directly:
-
-```bash
-curl -s http://localhost:4000/api/chat \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "claude-coder",
-    "stream": false,
-    "messages": [{"role": "user", "content": "YOUR PROMPT"}]
-  }'
 ```
 
 ### Validating responses
