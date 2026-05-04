@@ -531,8 +531,9 @@ Return exactly this JSON structure and nothing else:
             : '';
         $base_message = $mode_instructions[ $mode ] . "\n\n" . $chunk_note . "Text to rewrite:\n\n" . $chunk;
 
-        $result          = null;
-        $last_validation = null;
+        $result           = null;
+        $last_validation  = null;
+        $retry_notes_prev = [];
 
         for ( $attempt = 0; $attempt <= $max_retries; $attempt++ ) {
             $retry_notes = [];
