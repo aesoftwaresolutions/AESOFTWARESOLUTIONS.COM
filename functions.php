@@ -446,6 +446,111 @@ function aesoftwares_call_ai_backend( $system_prompt, $user_message ) {
     return $body['content'][0]['text'] ?? '';
 }
 
+// Short-timeout variant for validation — avoids blocking the response on a slow eval call.
+function aesoftwares_call_ai_backend_short( $system_prompt, $user_message ) {
+    $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
+    $ollama_token = get_option( 'aesoftwares_ollama_token' );
+    $ollama_model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
+
+    if ( ! empty( $ollama_url ) ) {
+        $payload = [
+            'model'    => $ollama_model,
+            'stream'   => false,
+            'messages' => [
+                [ 'role' => 'system', 'content' => $system_prompt ],
+                [ 'role' => 'user',   'content' => $user_message  ],
+            ],
+        ];
+
+        $response = wp_remote_post( rtrim( $ollama_url, '/' ) . '/api/chat', [
+            'method'      => 'POST',
+            'headers'     => [
+                'Content-Type'   => 'application/json',
+                'x-ollama-token' => $ollama_token,
+            ],
+            'body'        => json_encode( $payload ),
+            'data_format' => 'body',
+            'timeout'     => 45,
+        ] );
+
+        if ( ! is_wp_error( $response ) ) {
+            $code = wp_remote_retrieve_response_code( $response );
+            $body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+            if ( $code === 200 ) {
+                $text = $body['message']['content'] ?? '';
+                $text = preg_replace( '/<think>[\s\S]*?<\/think>/i', '', $text );
+                $text = trim( $text );
+                if ( $text !== '' ) return $text;
+            }
+        }
+    }
+
+    $api_key = get_option( 'aesoftwares_anthropic_api_key' );
+    if ( empty( $api_key ) ) return new WP_Error( 'no_backend', 'No AI backend configured.', [ 'status' => 500 ] );
+
+    $payload = [
+        'model'      => 'claude-haiku-4-5-20251001',
+        'max_tokens' => 1024,
+        'system'     => $system_prompt,
+        'messages'   => [ [ 'role' => 'user', 'content' => $user_message ] ],
+    ];
+
+    $response = wp_remote_post( 'https://api.anthropic.com/v1/messages', [
+        'method'      => 'POST',
+        'headers'     => [
+            'Content-Type'      => 'application/json',
+            'x-api-key'         => $api_key,
+            'anthropic-version' => '2023-06-01',
+        ],
+        'body'        => json_encode( $payload ),
+        'data_format' => 'body',
+        'timeout'     => 45,
+    ] );
+
+    if ( is_wp_error( $response ) ) return null;
+
+    $code = wp_remote_retrieve_response_code( $response );
+    $body = json_decode( wp_remote_retrieve_body( $response ), true );
+    if ( $code !== 200 ) return null;
+
+    return $body['content'][0]['text'] ?? '';
+}
+
+// Evaluate text against 7 human-writing signals. Returns parsed array or null on failure.
+// Uses the short-timeout backend so it never blocks the rewrite response for long.
+function aesoftwares_validate_content( $text ) {
+    $system_prompt = 'You are an AI content detection analyst. Evaluate the text provided against seven signals and return a single JSON object — no other text, no markdown, no explanation.
+
+Score each signal from 0 to 10 where 0 = strongly AI-like and 10 = strongly human-like.
+
+Signals:
+1. perplexity_uniformity — Are word choices predictable and safe throughout, or does the writer occasionally reach for an unexpected or unconventional word? (0 = every word is the most probable choice; 10 = meaningfully unpredictable vocabulary)
+2. burstiness — Does sentence length and complexity vary significantly, or is rhythm uniform? (0 = all sentences roughly the same length/structure; 10 = genuine mix of very short and very long sentences)
+3. structural_patterns — Do paragraphs all follow the same formula (topic sentence → support → close) with repeated transition words? (0 = rigid formulaic structure; 10 = varied paragraph shapes and openers)
+4. hedging_and_nuance — Does the writer acknowledge uncertainty or qualify claims where a human would? (0 = all absolute declarative statements; 10 = natural hedging like "it seems", "arguably", "tends to")
+5. vocabulary_naturalness — Does word choice feel naturally human or optimised for clarity and correctness? Contractions, idioms, colloquialisms where appropriate. (0 = sterile/formal throughout; 10 = naturally chosen vocabulary)
+6. grammatical_perfection — Is every sentence flawlessly correct in a way that feels unnatural? (0 = robotically perfect; 10 = minor natural imperfections like comma splices, casual fragments)
+7. semantic_coherence — Does the text flow "too perfectly", every sentence connecting to the next without any tangent or aside? (0 = over-optimised flow; 10 = organic, occasionally digressive)
+
+overall_human_score: integer 0–100, calculated as round(sum_of_all_signal_scores / 7 * 10)
+verdict: "LIKELY_HUMAN" if overall >= 85, "BORDERLINE" if 65–84, "LIKELY_AI" if below 65
+flags: array of brief descriptions for any signal that scored below 6 (empty array if none)
+pass: true if overall_human_score >= 75, else false
+
+Return exactly this JSON structure and nothing else:
+{"overall_human_score":<int>,"verdict":"<string>","flags":[<strings>],"signal_scores":{"perplexity_uniformity":<int>,"burstiness":<int>,"structural_patterns":<int>,"hedging_and_nuance":<int>,"vocabulary_naturalness":<int>,"grammatical_perfection":<int>,"semantic_coherence":<int>},"pass":<bool>}';
+
+    $raw = aesoftwares_call_ai_backend_short( $system_prompt, "Evaluate this text:\n\n" . $text );
+    if ( ! $raw || is_wp_error( $raw ) ) return null;
+
+    preg_match( '/\{[\s\S]*\}/s', $raw, $m );
+    if ( empty( $m ) ) return null;
+
+    $data = json_decode( $m[0], true );
+    return is_array( $data ) ? $data : null;
+}
+
 function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
     // Budget 10 min total to cover multiple chunks on large submissions.
     set_time_limit( 600 );
@@ -483,121 +588,48 @@ REQUIRED:
 
 Output ONLY the rewritten text. No preamble, no commentary, no markdown.';
 
-// Evaluate text against 7 human-writing signals. Returns parsed array or null on failure.
-function aesoftwares_validate_content( $text ) {
-    $system_prompt = 'You are an AI content detection analyst. Evaluate the text provided against seven signals and return a single JSON object — no other text, no markdown, no explanation.
-
-Score each signal from 0 to 10 where 0 = strongly AI-like and 10 = strongly human-like.
-
-Signals:
-1. perplexity_uniformity — Are word choices predictable and safe throughout, or does the writer occasionally reach for an unexpected or unconventional word? (0 = every word is the most probable choice; 10 = meaningfully unpredictable vocabulary)
-2. burstiness — Does sentence length and complexity vary significantly, or is rhythm uniform? (0 = all sentences roughly the same length/structure; 10 = genuine mix of very short and very long sentences)
-3. structural_patterns — Do paragraphs all follow the same formula (topic sentence → support → close) with repeated transition words? (0 = rigid formulaic structure; 10 = varied paragraph shapes and openers)
-4. hedging_and_nuance — Does the writer acknowledge uncertainty or qualify claims where a human would? (0 = all absolute declarative statements; 10 = natural hedging like "it seems", "arguably", "tends to")
-5. vocabulary_naturalness — Does word choice feel naturally human or optimised for clarity and correctness? Contractions, idioms, colloquialisms where appropriate. (0 = sterile/formal throughout; 10 = naturally chosen vocabulary)
-6. grammatical_perfection — Is every sentence flawlessly correct in a way that feels unnatural? (0 = robotically perfect; 10 = minor natural imperfections like comma splices, casual fragments)
-7. semantic_coherence — Does the text flow "too perfectly", every sentence connecting to the next without any tangent or aside? (0 = over-optimised flow; 10 = organic, occasionally digressive)
-
-overall_human_score: integer 0–100, calculated as round(sum_of_all_signal_scores / 7 * 10)
-verdict: "LIKELY_HUMAN" if overall >= 85, "BORDERLINE" if 65–84, "LIKELY_AI" if below 65
-flags: array of brief descriptions for any signal that scored below 6 (empty array if none)
-pass: true if overall_human_score >= 75, else false
-
-Return exactly this JSON structure and nothing else:
-{"overall_human_score":<int>,"verdict":"<string>","flags":[<strings>],"signal_scores":{"perplexity_uniformity":<int>,"burstiness":<int>,"structural_patterns":<int>,"hedging_and_nuance":<int>,"vocabulary_naturalness":<int>,"grammatical_perfection":<int>,"semantic_coherence":<int>},"pass":<bool>}';
-
-    $raw = aesoftwares_call_ai_backend( $system_prompt, "Evaluate this text:\n\n" . $text );
-    if ( is_wp_error( $raw ) || empty( $raw ) ) return null;
-
-    // Extract the JSON object even if the model adds surrounding text
-    preg_match( '/\{[\s\S]*\}/s', $raw, $m );
-    if ( empty( $m ) ) return null;
-
-    $data = json_decode( $m[0], true );
-    return is_array( $data ) ? $data : null;
-}
-
     // Split into ~500-word chunks on paragraph boundaries for large inputs.
     $chunks        = $word_count > 500 ? aesoftwares_chunk_text( $text ) : [ $text ];
     $total         = count( $chunks );
     $parts         = [];
-    $validations   = [];
     $overlap_limit = 0.15;
-    $max_retries   = 2;
+    $max_retries   = 1;
 
     foreach ( $chunks as $i => $chunk ) {
         $chunk_note   = $total > 1
-            ? 'This is section ' . ( $i + 1 ) . " of {$total} from a longer piece. Match the same voice and register you have used in the other sections.\n\n"
+            ? 'This is section ' . ( $i + 1 ) . " of {$total} from a longer piece. Match the same voice and register throughout.\n\n"
             : '';
         $base_message = $mode_instructions[ $mode ] . "\n\n" . $chunk_note . "Text to rewrite:\n\n" . $chunk;
 
         $result           = null;
-        $last_validation  = null;
         $retry_notes_prev = [];
 
         for ( $attempt = 0; $attempt <= $max_retries; $attempt++ ) {
-            $retry_notes = [];
-
-            // Build the user message — on retry, append all feedback from the previous attempt
-            if ( $attempt === 0 ) {
-                $user_message = $base_message;
-            } else {
-                $user_message = $base_message . "\n\nRETRY FEEDBACK — fix these specific issues from your previous attempt:\n" . implode( "\n", $retry_notes_prev );
-            }
+            $user_message = $attempt === 0
+                ? $base_message
+                : $base_message . "\n\nRETRY FEEDBACK — fix these issues from your previous attempt:\n" . implode( "\n", $retry_notes_prev );
 
             $candidate = aesoftwares_call_ai_backend( $system_prompt, $user_message );
             if ( is_wp_error( $candidate ) ) return $candidate;
             $result = $candidate;
 
-            // 1. N-gram originality check
             $overlap = aesoftwares_ngram_overlap_ratio( $chunk, $result );
-            if ( $overlap > $overlap_limit ) {
-                $pct           = round( $overlap * 100 );
-                $retry_notes[] = "PHRASE OVERLAP {$pct}%: reconstruct all sentences from scratch — do not carry over any sequence of 5+ consecutive words from the source.";
+            if ( $overlap > $overlap_limit && $attempt < $max_retries ) {
+                $pct              = round( $overlap * 100 );
+                $retry_notes_prev = [ "PHRASE OVERLAP {$pct}%: reconstruct every sentence — do not carry over any 5+ word sequence from the source." ];
+                continue;
             }
 
-            // 2. Detection signal check
-            $validation      = aesoftwares_validate_content( $result );
-            $last_validation = $validation;
-            if ( $validation && isset( $validation['pass'] ) && $validation['pass'] === false ) {
-                foreach ( $validation['flags'] ?? [] as $flag ) {
-                    $retry_notes[] = "DETECTION SIGNAL: " . $flag;
-                }
-            }
-
-            if ( empty( $retry_notes ) || $attempt === $max_retries ) {
-                break;
-            }
-
-            $retry_notes_prev = $retry_notes;
+            break;
         }
 
-        $parts[]       = $result;
-        $validations[] = $last_validation;
+        $parts[] = $result;
     }
 
-    // Aggregate signal scores across all chunks into one overall validation object
-    $overall_validation = null;
-    $valid_chunks       = array_filter( $validations );
-    if ( ! empty( $valid_chunks ) ) {
-        $signal_keys = [ 'perplexity_uniformity', 'burstiness', 'structural_patterns', 'hedging_and_nuance', 'vocabulary_naturalness', 'grammatical_perfection', 'semantic_coherence' ];
-        $avg_signals = [];
-        foreach ( $signal_keys as $key ) {
-            $vals = array_filter( array_column( array_column( array_filter( $validations, fn($v) => isset( $v['signal_scores'][$key] ) ), 'signal_scores' ), $key ), fn($v) => $v !== null );
-            $avg_signals[ $key ] = ! empty( $vals ) ? (int) round( array_sum( $vals ) / count( $vals ) ) : 5;
-        }
-        $overall_score = (int) round( array_sum( $avg_signals ) / 7 * 10 );
-        $all_flags     = array_values( array_unique( array_merge( ...array_map( fn($v) => $v['flags'] ?? [], $valid_chunks ) ) ) );
-        $overall_validation = [
-            'overall_human_score' => $overall_score,
-            'verdict'             => $overall_score >= 85 ? 'LIKELY_HUMAN' : ( $overall_score >= 65 ? 'BORDERLINE' : 'LIKELY_AI' ),
-            'flags'               => $all_flags,
-            'signal_scores'       => $avg_signals,
-            'pass'                => $overall_score >= 75,
-        ];
-    }
+    $rewritten  = implode( "\n\n", $parts );
+    $validation = aesoftwares_validate_content( $rewritten );
 
-    return new WP_REST_Response( [ 'rewritten' => implode( "\n\n", $parts ), 'validation' => $overall_validation ], 200 );
+    return new WP_REST_Response( [ 'rewritten' => $rewritten, 'validation' => $validation ], 200 );
 }
 
 
