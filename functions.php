@@ -483,11 +483,46 @@ REQUIRED:
 
 Output ONLY the rewritten text. No preamble, no commentary, no markdown.';
 
+// Evaluate text against 7 human-writing signals. Returns parsed array or null on failure.
+function aesoftwares_validate_content( $text ) {
+    $system_prompt = 'You are an AI content detection analyst. Evaluate the text provided against seven signals and return a single JSON object — no other text, no markdown, no explanation.
+
+Score each signal from 0 to 10 where 0 = strongly AI-like and 10 = strongly human-like.
+
+Signals:
+1. perplexity_uniformity — Are word choices predictable and safe throughout, or does the writer occasionally reach for an unexpected or unconventional word? (0 = every word is the most probable choice; 10 = meaningfully unpredictable vocabulary)
+2. burstiness — Does sentence length and complexity vary significantly, or is rhythm uniform? (0 = all sentences roughly the same length/structure; 10 = genuine mix of very short and very long sentences)
+3. structural_patterns — Do paragraphs all follow the same formula (topic sentence → support → close) with repeated transition words? (0 = rigid formulaic structure; 10 = varied paragraph shapes and openers)
+4. hedging_and_nuance — Does the writer acknowledge uncertainty or qualify claims where a human would? (0 = all absolute declarative statements; 10 = natural hedging like "it seems", "arguably", "tends to")
+5. vocabulary_naturalness — Does word choice feel naturally human or optimised for clarity and correctness? Contractions, idioms, colloquialisms where appropriate. (0 = sterile/formal throughout; 10 = naturally chosen vocabulary)
+6. grammatical_perfection — Is every sentence flawlessly correct in a way that feels unnatural? (0 = robotically perfect; 10 = minor natural imperfections like comma splices, casual fragments)
+7. semantic_coherence — Does the text flow "too perfectly", every sentence connecting to the next without any tangent or aside? (0 = over-optimised flow; 10 = organic, occasionally digressive)
+
+overall_human_score: integer 0–100, calculated as round(sum_of_all_signal_scores / 7 * 10)
+verdict: "LIKELY_HUMAN" if overall >= 85, "BORDERLINE" if 65–84, "LIKELY_AI" if below 65
+flags: array of brief descriptions for any signal that scored below 6 (empty array if none)
+pass: true if overall_human_score >= 75, else false
+
+Return exactly this JSON structure and nothing else:
+{"overall_human_score":<int>,"verdict":"<string>","flags":[<strings>],"signal_scores":{"perplexity_uniformity":<int>,"burstiness":<int>,"structural_patterns":<int>,"hedging_and_nuance":<int>,"vocabulary_naturalness":<int>,"grammatical_perfection":<int>,"semantic_coherence":<int>},"pass":<bool>}';
+
+    $raw = aesoftwares_call_ai_backend( $system_prompt, "Evaluate this text:\n\n" . $text );
+    if ( is_wp_error( $raw ) || empty( $raw ) ) return null;
+
+    // Extract the JSON object even if the model adds surrounding text
+    preg_match( '/\{[\s\S]*\}/s', $raw, $m );
+    if ( empty( $m ) ) return null;
+
+    $data = json_decode( $m[0], true );
+    return is_array( $data ) ? $data : null;
+}
+
     // Split into ~500-word chunks on paragraph boundaries for large inputs.
     $chunks        = $word_count > 500 ? aesoftwares_chunk_text( $text ) : [ $text ];
     $total         = count( $chunks );
     $parts         = [];
-    $overlap_limit = 0.15; // flag if >15% of 6-grams are unchanged from source
+    $validations   = [];
+    $overlap_limit = 0.15;
     $max_retries   = 2;
 
     foreach ( $chunks as $i => $chunk ) {
@@ -496,34 +531,72 @@ Output ONLY the rewritten text. No preamble, no commentary, no markdown.';
             : '';
         $base_message = $mode_instructions[ $mode ] . "\n\n" . $chunk_note . "Text to rewrite:\n\n" . $chunk;
 
-        $result = null;
+        $result          = null;
+        $last_validation = null;
 
         for ( $attempt = 0; $attempt <= $max_retries; $attempt++ ) {
+            $retry_notes = [];
+
+            // Build the user message — on retry, append all feedback from the previous attempt
             if ( $attempt === 0 ) {
                 $user_message = $base_message;
             } else {
-                $pct          = round( aesoftwares_ngram_overlap_ratio( $chunk, $result ) * 100 );
-                $user_message = $base_message . "\n\nORIGINALITY FAILURE — your previous attempt kept approximately {$pct}% of the original phrasing intact (measured as shared 6-word sequences). You must rephrase far more aggressively. Reconstruct every sentence from scratch using different words, different sentence openings, and different clause order. Do not carry over any sequence of five or more consecutive words from the source text. Preserve only the meaning, the facts, and any citations.";
+                $user_message = $base_message . "\n\nRETRY FEEDBACK — fix these specific issues from your previous attempt:\n" . implode( "\n", $retry_notes_prev );
             }
 
             $candidate = aesoftwares_call_ai_backend( $system_prompt, $user_message );
+            if ( is_wp_error( $candidate ) ) return $candidate;
+            $result = $candidate;
 
-            if ( is_wp_error( $candidate ) ) {
-                return $candidate;
+            // 1. N-gram originality check
+            $overlap = aesoftwares_ngram_overlap_ratio( $chunk, $result );
+            if ( $overlap > $overlap_limit ) {
+                $pct           = round( $overlap * 100 );
+                $retry_notes[] = "PHRASE OVERLAP {$pct}%: reconstruct all sentences from scratch — do not carry over any sequence of 5+ consecutive words from the source.";
             }
 
-            $result  = $candidate;
-            $overlap = aesoftwares_ngram_overlap_ratio( $chunk, $result );
+            // 2. Detection signal check
+            $validation      = aesoftwares_validate_content( $result );
+            $last_validation = $validation;
+            if ( $validation && isset( $validation['pass'] ) && $validation['pass'] === false ) {
+                foreach ( $validation['flags'] ?? [] as $flag ) {
+                    $retry_notes[] = "DETECTION SIGNAL: " . $flag;
+                }
+            }
 
-            if ( $overlap <= $overlap_limit || $attempt === $max_retries ) {
+            if ( empty( $retry_notes ) || $attempt === $max_retries ) {
                 break;
             }
+
+            $retry_notes_prev = $retry_notes;
         }
 
-        $parts[] = $result;
+        $parts[]       = $result;
+        $validations[] = $last_validation;
     }
 
-    return new WP_REST_Response( [ 'rewritten' => implode( "\n\n", $parts ) ], 200 );
+    // Aggregate signal scores across all chunks into one overall validation object
+    $overall_validation = null;
+    $valid_chunks       = array_filter( $validations );
+    if ( ! empty( $valid_chunks ) ) {
+        $signal_keys = [ 'perplexity_uniformity', 'burstiness', 'structural_patterns', 'hedging_and_nuance', 'vocabulary_naturalness', 'grammatical_perfection', 'semantic_coherence' ];
+        $avg_signals = [];
+        foreach ( $signal_keys as $key ) {
+            $vals = array_filter( array_column( array_column( array_filter( $validations, fn($v) => isset( $v['signal_scores'][$key] ) ), 'signal_scores' ), $key ), fn($v) => $v !== null );
+            $avg_signals[ $key ] = ! empty( $vals ) ? (int) round( array_sum( $vals ) / count( $vals ) ) : 5;
+        }
+        $overall_score = (int) round( array_sum( $avg_signals ) / 7 * 10 );
+        $all_flags     = array_values( array_unique( array_merge( ...array_map( fn($v) => $v['flags'] ?? [], $valid_chunks ) ) ) );
+        $overall_validation = [
+            'overall_human_score' => $overall_score,
+            'verdict'             => $overall_score >= 85 ? 'LIKELY_HUMAN' : ( $overall_score >= 65 ? 'BORDERLINE' : 'LIKELY_AI' ),
+            'flags'               => $all_flags,
+            'signal_scores'       => $avg_signals,
+            'pass'                => $overall_score >= 75,
+        ];
+    }
+
+    return new WP_REST_Response( [ 'rewritten' => implode( "\n\n", $parts ), 'validation' => $overall_validation ], 200 );
 }
 
 
