@@ -1605,3 +1605,151 @@ input, textarea { font-family: inherit; }
 	.rewriter-panels { grid-template-columns: 1fr; }
 	.rewriter-modes { flex-direction: column; align-items: flex-start; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   FREE TOOLS HUB PAGE
+   ═══════════════════════════════════════════════════════════════ */
+
+.free-tools-section {
+	padding: var(--section-pad) clamp(1.5rem, 5vw, 4rem);
+	max-width: var(--max-width);
+	margin: 0 auto;
+}
+
+.free-tools-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.5px;
+	background: var(--border);
+	border: 1px solid var(--border);
+}
+
+.tool-card {
+	background: var(--bg);
+	padding: clamp(2rem, 3.5vw, 2.75rem);
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	text-decoration: none;
+	color: inherit;
+	transition: background var(--transition);
+	position: relative;
+}
+
+.tool-card:hover { background: var(--bg-surface); }
+
+.tool-card__header {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.tool-card__num {
+	font-family: var(--font-editorial);
+	font-size: 0.9rem;
+	color: var(--accent);
+	font-style: italic;
+}
+
+.tool-card__tag {
+	font-size: 0.7rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--text-muted);
+	background: rgba(255,255,255,0.05);
+	border: 1px solid var(--border);
+	padding: 0.2rem 0.55rem;
+	border-radius: 2px;
+}
+
+.tool-card__title {
+	font-family: var(--font-editorial);
+	font-size: clamp(1.4rem, 2.5vw, 1.875rem);
+	font-weight: 400;
+	color: var(--text);
+	line-height: 1.2;
+}
+
+.tool-card__desc {
+	font-size: 0.9rem;
+	color: var(--text-muted);
+	line-height: 1.75;
+	flex: 1;
+}
+
+.tool-card__cta {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--accent);
+	margin-top: auto;
+	padding-top: 1.25rem;
+	border-top: 1px solid var(--border);
+	transition: opacity var(--transition);
+}
+
+.tool-card:hover .tool-card__cta { opacity: 0.7; }
+
+/* Why free / upsell note bar */
+.free-tools-note {
+	border-top: 1px solid var(--border);
+	padding: clamp(3rem, 5vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+	background: var(--bg-surface);
+}
+
+.free-tools-note__inner {
+	max-width: var(--max-width);
+	margin: 0 auto;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 3rem 5rem;
+}
+
+.free-tools-note__block h3 {
+	font-family: var(--font-editorial);
+	font-size: 1.25rem;
+	font-weight: 400;
+	color: var(--text);
+	margin-bottom: 0.75rem;
+}
+
+.free-tools-note__block p {
+	font-size: 0.9375rem;
+	color: var(--text-muted);
+	line-height: 1.75;
+}
+
+.free-tools-note__block a {
+	color: var(--accent);
+	text-decoration: none;
+	border-bottom: 1px solid transparent;
+	transition: border-color var(--transition);
+}
+
+.free-tools-note__block a:hover { border-bottom-color: var(--accent); }
+
+/* Back link in tool page heroes */
+.hero-back-link {
+	color: var(--text-muted);
+	text-decoration: none;
+	font-size: 0.8rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	transition: color var(--transition);
+}
+
+.hero-back-link:hover { color: var(--accent); }
+
+/* Preserve whitespace in summariser output */
+.rewriter-output--pre { white-space: pre-line; }
+
+/* ── Free tools hub responsive ────────────────────────────────── */
+@media (max-width: 900px) {
+	.free-tools-grid { grid-template-columns: 1fr; }
+	.free-tools-note__inner { grid-template-columns: 1fr; gap: 2.5rem; }
+}

@@ -36,11 +36,22 @@ jobs:
         run: |
           ssh -p 65002 -o StrictHostKeyChecking=no u257353593@157.173.209.5 "
             WP='wp --allow-root --path=/home/u257353593/domains/aesoftwaresolutions.com/public_html'
-            for slug in services process about contact work; do
-              if ! \$WP post list --post_type=page --post_status=publish --name=\$slug --field=ID | grep -q '[0-9]'; then
-                title=\$(echo \$slug | awk '{print toupper(substr(\$0,1,1)) substr(\$0,2)}')
-                \$WP post create --post_type=page --post_title=\"\$title\" --post_status=publish --post_name=\$slug --page_template=\"page-\${slug}.php\"
-                echo \"Created page: \$slug\"
+            declare -A titles=(
+              [services]='Services'
+              [process]='Process'
+              [about]='About'
+              [contact]='Contact'
+              [work]='Work'
+              [free-tools]='Free Tools'
+              [rewriter]='AI Content Rewriter'
+              [email-drafter]='AI Email Drafter'
+              [summarizer]='AI Text Summarizer'
+            )
+            for slug in \"\${!titles[@]}\"; do
+              title=\"\${titles[\$slug]}\"
+              if ! \$WP post list --post_type=page --post_status=publish --name=\"\$slug\" --field=ID | grep -q '[0-9]'; then
+                \$WP post create --post_type=page --post_title=\"\$title\" --post_status=publish --post_name=\"\$slug\" --page_template=\"page-\${slug}.php\"
+                echo \"Created page: \$slug (\$title)\"
               else
                 echo \"Page exists: \$slug\"
               fi
