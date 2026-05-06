@@ -14,8 +14,8 @@ function aesoftwares_enqueue_scripts() {
     $uri  = get_template_directory_uri();
     $path = get_template_directory();
 
-    // Main stylesheet (always loaded)
-    wp_enqueue_style( 'aesoftwares-style', get_stylesheet_uri() );
+    // Main stylesheet — filemtime() version for automatic cache busting
+    wp_enqueue_style( 'aesoftwares-style', get_stylesheet_uri(), [], filemtime( $path . '/style.css' ) );
 
     // ── Web component JS (all pages) ──────────────────────────────────────
     // Use filemtime() for automatic cache busting on every file change.
