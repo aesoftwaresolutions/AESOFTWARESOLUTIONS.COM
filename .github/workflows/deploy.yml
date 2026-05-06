@@ -31,3 +31,23 @@ jobs:
             -e "ssh -p 65002 -o StrictHostKeyChecking=no" \
             ./ \
             u257353593@157.173.209.5:/home/u257353593/domains/aesoftwaresolutions.com/public_html/wp-content/themes/aesoftwares-theme/
+
+      - name: Ensure WordPress pages exist
+        run: |
+          ssh -p 65002 -o StrictHostKeyChecking=no u257353593@157.173.209.5 "
+            WP='wp --allow-root --path=/home/u257353593/domains/aesoftwaresolutions.com/public_html'
+            for slug in services process about contact work; do
+              if ! \$WP post list --post_type=page --post_status=publish --name=\$slug --field=ID | grep -q '[0-9]'; then
+                title=\$(echo \$slug | awk '{print toupper(substr(\$0,1,1)) substr(\$0,2)}')
+                \$WP post create --post_type=page --post_title=\"\$title\" --post_status=publish --post_name=\$slug --page_template=\"page-\${slug}.php\"
+                echo \"Created page: \$slug\"
+              else
+                echo \"Page exists: \$slug\"
+              fi
+            done
+          "
+
+      - name: Purge LiteSpeed cache
+        run: |
+          ssh -p 65002 -o StrictHostKeyChecking=no u257353593@157.173.209.5 \
+            "wp litespeed-purge all --allow-root --path=/home/u257353593/domains/aesoftwaresolutions.com/public_html" || true
