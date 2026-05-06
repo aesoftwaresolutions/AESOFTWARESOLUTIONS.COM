@@ -1291,3 +1291,317 @@ input, textarea { font-family: inherit; }
 @media (max-width: 600px) {
     .work-cta-bar__inner { flex-direction: column; align-items: flex-start; }
 }
+
+/* hidden attribute fix — prevents display:flex/grid from overriding it */
+[hidden] { display: none !important; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NAV BADGE
+═══════════════════════════════════════════════════════════════════════════ */
+
+.nav-badge {
+	display: inline-block;
+	font-size: 0.6rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--bg);
+	background: var(--accent);
+	padding: 0.15em 0.45em;
+	border-radius: 2px;
+	vertical-align: middle;
+	margin-left: 0.35rem;
+	line-height: 1.4;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AI REWRITER TOOL
+═══════════════════════════════════════════════════════════════════════════ */
+
+.rewriter-hero { padding-bottom: clamp(2rem, 4vw, 3.5rem); }
+
+/* ── Section wrapper ─────────────────────────────────────────────────── */
+.rewriter-section {
+	padding: 0 clamp(1.5rem, 5vw, 4rem) var(--section-pad);
+	max-width: var(--max-width);
+	margin: 0 auto;
+}
+
+.rewriter-wrap { display: flex; flex-direction: column; gap: 1.5rem; }
+
+/* ── Mode selector ──────────────────────────────────────────────────── */
+.rewriter-modes {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+.rewriter-modes__label {
+	font-size: 0.72rem;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	color: var(--text-muted);
+	font-weight: 500;
+	white-space: nowrap;
+}
+
+.rewriter-modes__btns {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.rewriter-mode-btn {
+	background: var(--bg-surface);
+	border: 1px solid var(--border);
+	color: var(--text-muted);
+	font-size: 0.82rem;
+	font-weight: 500;
+	padding: 0.45rem 1rem;
+	border-radius: var(--radius);
+	cursor: pointer;
+	transition: all var(--transition);
+	font-family: inherit;
+}
+
+.rewriter-mode-btn:hover {
+	border-color: var(--border-hover);
+	color: var(--text);
+}
+
+.rewriter-mode-btn.active {
+	background: var(--accent);
+	border-color: var(--accent);
+	color: var(--bg);
+}
+
+/* ── Two-panel grid ─────────────────────────────────────────────────── */
+.rewriter-panels {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1.5rem;
+	align-items: start;
+}
+
+/* ── Individual panel ──────────────────────────────────────────────── */
+.rewriter-panel {
+	background: var(--bg-card);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	display: flex;
+	flex-direction: column;
+	min-height: 380px;
+}
+
+.rewriter-panel__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.9rem 1.25rem;
+	border-bottom: 1px solid var(--border);
+}
+
+.rewriter-panel__label {
+	font-size: 0.72rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--text-muted);
+	font-weight: 500;
+}
+
+.rewriter-panel__count {
+	font-size: 0.75rem;
+	color: var(--text-muted);
+}
+
+.rewriter-textarea {
+	flex: 1;
+	background: transparent;
+	border: none;
+	color: var(--text);
+	font-family: var(--font-sans);
+	font-size: 0.9rem;
+	line-height: 1.7;
+	padding: 1.25rem;
+	resize: none;
+	outline: none;
+	min-height: 280px;
+}
+
+.rewriter-textarea::placeholder { color: rgba(136,136,132,0.45); }
+
+/* ── Output area ────────────────────────────────────────────────────── */
+.rewriter-output {
+	flex: 1;
+	padding: 1.25rem;
+	font-size: 0.9rem;
+	line-height: 1.7;
+	color: var(--text);
+	white-space: pre-wrap;
+	word-break: break-word;
+	min-height: 280px;
+}
+
+.rewriter-output__placeholder {
+	color: rgba(136,136,132,0.45);
+	font-style: italic;
+}
+
+/* ── Panel footer ────────────────────────────────────────────────────── */
+.rewriter-panel__footer {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.85rem 1.25rem;
+	border-top: 1px solid var(--border);
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────── */
+.rewriter-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-family: inherit;
+	font-size: 0.82rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	padding: 0.55rem 1.2rem;
+	border-radius: var(--radius);
+	cursor: pointer;
+	transition: all var(--transition);
+	border: 1px solid transparent;
+}
+
+.rewriter-btn--primary {
+	background: var(--accent);
+	color: var(--bg);
+	border-color: var(--accent);
+}
+
+.rewriter-btn--primary:hover:not(:disabled) {
+	background: var(--accent-dark);
+	border-color: var(--accent-dark);
+}
+
+.rewriter-btn--primary:disabled,
+.rewriter-btn--ghost:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+.rewriter-btn--ghost {
+	background: transparent;
+	color: var(--text-muted);
+	border-color: var(--border);
+}
+
+.rewriter-btn--ghost:hover:not(:disabled) {
+	border-color: var(--border-hover);
+	color: var(--text);
+}
+
+.rewriter-btn__arrow { font-size: 1em; }
+
+.rewriter-btn.is-loading .rewriter-btn__text::after {
+	content: '…';
+}
+
+/* ── Loader ─────────────────────────────────────────────────────────── */
+.rewriter-loader {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 1.25rem;
+	color: var(--text-muted);
+	font-size: 0.85rem;
+}
+
+.rewriter-loader__spinner {
+	width: 16px;
+	height: 16px;
+	border: 2px solid var(--border);
+	border-top-color: var(--accent);
+	border-radius: 50%;
+	animation: rewriter-spin 0.7s linear infinite;
+	flex-shrink: 0;
+}
+
+@keyframes rewriter-spin {
+	to { transform: rotate(360deg); }
+}
+
+/* ── Error ──────────────────────────────────────────────────────────── */
+.rewriter-error {
+	margin: 0 1.25rem 1rem;
+	padding: 0.75rem 1rem;
+	background: rgba(220,38,38,0.08);
+	border: 1px solid rgba(220,38,38,0.25);
+	border-radius: var(--radius);
+	color: #f87171;
+	font-size: 0.82rem;
+	line-height: 1.5;
+}
+
+/* ── How it works ───────────────────────────────────────────────────── */
+.rewriter-how {
+	padding: var(--section-pad) clamp(1.5rem, 5vw, 4rem);
+	border-top: 1px solid var(--border);
+}
+
+.rewriter-how__inner {
+	max-width: var(--max-width);
+	margin: 0 auto;
+}
+
+.rewriter-how__inner .section-title { margin-bottom: 3rem; }
+
+.rewriter-how__grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1px;
+	background: var(--border);
+}
+
+.rewriter-how__card {
+	background: var(--bg-card);
+	padding: 2.5rem;
+	transition: background var(--transition);
+}
+
+.rewriter-how__card:hover { background: #1a1a1a; }
+
+.rewriter-how__num {
+	display: block;
+	font-family: var(--font-editorial);
+	font-size: 2rem;
+	color: rgba(201,169,110,0.25);
+	line-height: 1;
+	margin-bottom: 1.25rem;
+}
+
+.rewriter-how__title {
+	font-size: 1rem;
+	font-weight: 600;
+	color: var(--text);
+	margin: 0 0 0.75rem 0;
+}
+
+.rewriter-how__desc {
+	font-size: 0.9rem;
+	color: var(--text-muted);
+	line-height: 1.75;
+	margin: 0;
+}
+
+/* ── Rewriter responsive ────────────────────────────────────────────── */
+@media (max-width: 900px) {
+	.rewriter-how__grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+	.rewriter-panels { grid-template-columns: 1fr; }
+	.rewriter-modes { flex-direction: column; align-items: flex-start; }
+}
