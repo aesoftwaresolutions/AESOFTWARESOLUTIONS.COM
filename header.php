@@ -27,6 +27,7 @@
 		<nav class="site-header__nav">
 			<a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="site-header__nav-link">Services</a>
 			<a href="<?php echo esc_url( home_url( '/process/' ) ); ?>" class="site-header__nav-link">Process</a>
+			<a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="site-header__nav-link">Work</a>
 			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="site-header__nav-link">About</a>
 			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="site-header__nav-link">Contact</a>
 		</nav>
