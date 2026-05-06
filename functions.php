@@ -33,7 +33,7 @@ function aesoftwares_enqueue_scripts() {
         'proxy_url' => get_rest_url( null, 'aesoftwares/v1/chat' ),
     ] );
 
-    // ── Rewriter tool (rewriter page only) ───────────────────────────────
+    // ── Free tool JS (one script per tool page) ──────────────────────────
     if ( is_page_template( 'page-rewriter.php' ) ) {
         wp_enqueue_script(
             'ae-rewriter',
@@ -44,6 +44,32 @@ function aesoftwares_enqueue_scripts() {
         );
         wp_localize_script( 'ae-rewriter', 'ae_rewriter_settings', [
             'rewrite_url' => get_rest_url( null, 'aesoftwares/v1/rewrite' ),
+        ] );
+    }
+
+    if ( is_page_template( 'page-email-drafter.php' ) ) {
+        wp_enqueue_script(
+            'ae-email-drafter',
+            $uri . '/assets/js/ae-email-drafter.js',
+            [],
+            filemtime( $js . 'ae-email-drafter.js' ),
+            [ 'in_footer' => true, 'strategy' => 'defer' ]
+        );
+        wp_localize_script( 'ae-email-drafter', 'ae_email_settings', [
+            'email_url' => get_rest_url( null, 'aesoftwares/v1/email' ),
+        ] );
+    }
+
+    if ( is_page_template( 'page-summarizer.php' ) ) {
+        wp_enqueue_script(
+            'ae-summarizer',
+            $uri . '/assets/js/ae-summarizer.js',
+            [],
+            filemtime( $js . 'ae-summarizer.js' ),
+            [ 'in_footer' => true, 'strategy' => 'defer' ]
+        );
+        wp_localize_script( 'ae-summarizer', 'ae_summarizer_settings', [
+            'summarize_url' => get_rest_url( null, 'aesoftwares/v1/summarize' ),
         ] );
     }
 
@@ -411,6 +437,168 @@ function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
     $rewritten = $body['content'][0]['text'] ?? '';
 
     return new WP_REST_Response( [ 'rewritten' => $rewritten ], 200 );
+}
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// 5. REST API — AI Email Drafter (same VPS backend)
+// ══════════════════════════════════════════════════════════════════════════════
+
+function aesoftwares_register_email_route() {
+    register_rest_route( 'aesoftwares/v1', '/email', [
+        'methods'             => 'POST',
+        'callback'            => 'aesoftwares_handle_email',
+        'permission_callback' => '__return_true',
+        'args'                => [
+            'prompt' => [
+                'required'          => true,
+                'sanitize_callback' => 'sanitize_textarea_field',
+                'validate_callback' => function ( $v ) { return is_string( $v ) && strlen( trim( $v ) ) > 0; },
+            ],
+            'tone' => [
+                'default'           => 'professional',
+                'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => function ( $v ) { return in_array( $v, [ 'professional', 'friendly', 'persuasive', 'followup' ], true ); },
+            ],
+        ],
+    ] );
+}
+add_action( 'rest_api_init', 'aesoftwares_register_email_route' );
+
+function aesoftwares_handle_email( WP_REST_Request $request ) {
+    $prompt = $request->get_param( 'prompt' );
+    $tone   = $request->get_param( 'tone' );
+
+    $tone_instructions = [
+        'professional' => 'Write a professional, polished email. Use clear, business-appropriate language. Be direct and respectful. Include a subject line on the first line prefixed with "Subject:", then a blank line, then the email body.',
+        'friendly'     => 'Write a warm, friendly email. Use a conversational tone, show genuine interest, and keep it approachable. Include a subject line on the first line prefixed with "Subject:", then a blank line, then the email body.',
+        'persuasive'   => 'Write a persuasive email that motivates action. Lead with value, address objections, and end with a clear call to action. Include a subject line on the first line prefixed with "Subject:", then a blank line, then the email body.',
+        'followup'     => 'Write a polite, non-pushy follow-up email. Reference the prior interaction naturally, restate the value briefly, and make it easy to respond. Include a subject line on the first line prefixed with "Subject:", then a blank line, then the email body.',
+    ];
+
+    $system_prompt = 'You are an expert professional email writer. Write complete, ready-to-send emails based on the user\'s brief. The email must have a compelling subject line, a natural greeting, a well-structured body, and a clear sign-off. Output ONLY the email — subject line first, then the body — with no preamble, explanation, or markdown formatting.';
+    $user_message  = $tone_instructions[ $tone ] . "\n\nWrite an email based on this brief:\n\n" . $prompt;
+
+    return aesoftwares_call_vps( $system_prompt, $user_message, 'email' );
+}
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// 6. REST API — AI Summarizer (same VPS backend)
+// ══════════════════════════════════════════════════════════════════════════════
+
+function aesoftwares_register_summarize_route() {
+    register_rest_route( 'aesoftwares/v1', '/summarize', [
+        'methods'             => 'POST',
+        'callback'            => 'aesoftwares_handle_summarize',
+        'permission_callback' => '__return_true',
+        'args'                => [
+            'text' => [
+                'required'          => true,
+                'sanitize_callback' => 'sanitize_textarea_field',
+                'validate_callback' => function ( $v ) { return is_string( $v ) && strlen( trim( $v ) ) > 0; },
+            ],
+            'length' => [
+                'default'           => 'brief',
+                'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => function ( $v ) { return in_array( $v, [ 'brief', 'standard', 'detailed' ], true ); },
+            ],
+        ],
+    ] );
+}
+add_action( 'rest_api_init', 'aesoftwares_register_summarize_route' );
+
+function aesoftwares_handle_summarize( WP_REST_Request $request ) {
+    $text   = $request->get_param( 'text' );
+    $length = $request->get_param( 'length' );
+
+    $length_instructions = [
+        'brief'    => 'Summarise the text in 3–5 concise bullet points. Each bullet should start with "• " and capture one key idea. No introduction, no conclusion — just the bullets.',
+        'standard' => 'Summarise the text in a single clear paragraph of 4–6 sentences. Capture the main argument, key points, and any important conclusion.',
+        'detailed' => 'Write a structured summary with the following sections: "Overview:" (2–3 sentences), "Key Points:" (4–6 bullets starting with "• "), and "Conclusion:" (1–2 sentences on the main takeaway). Keep each section clearly labelled.',
+    ];
+
+    $system_prompt = 'You are a precise summarisation assistant. Summarise the provided text according to the instructions. Preserve meaning and accuracy. Output ONLY the summary — no preamble, no meta-commentary, no markdown formatting other than the bullet characters specified.';
+    $user_message  = $length_instructions[ $length ] . "\n\nText to summarise:\n\n" . $text;
+
+    return aesoftwares_call_vps( $system_prompt, $user_message, 'summary' );
+}
+
+
+// ── Shared VPS/Anthropic caller used by all AI tools ─────────────────────────
+function aesoftwares_call_vps( $system_prompt, $user_message, $response_key ) {
+    $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
+    $ollama_token = get_option( 'aesoftwares_ollama_token' );
+    $ollama_model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
+
+    if ( ! empty( $ollama_url ) ) {
+        $payload = [
+            'model'    => $ollama_model,
+            'stream'   => false,
+            'messages' => [
+                [ 'role' => 'system', 'content' => $system_prompt ],
+                [ 'role' => 'user',   'content' => $user_message  ],
+            ],
+        ];
+
+        $response = wp_remote_post( rtrim( $ollama_url, '/' ) . '/api/chat', [
+            'method'      => 'POST',
+            'headers'     => [
+                'Content-Type'   => 'application/json',
+                'x-ollama-token' => $ollama_token,
+            ],
+            'body'        => json_encode( $payload ),
+            'data_format' => 'body',
+            'timeout'     => 300,
+        ] );
+
+        if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
+            $body   = json_decode( wp_remote_retrieve_body( $response ), true );
+            $result = $body['message']['content'] ?? '';
+            $result = preg_replace( '/<think>[\s\S]*?<\/think>/i', '', $result );
+            $result = trim( $result );
+            if ( $result !== '' ) {
+                return new WP_REST_Response( [ $response_key => $result ], 200 );
+            }
+        }
+    }
+
+    // Fallback: Anthropic
+    $api_key = get_option( 'aesoftwares_anthropic_api_key' );
+    if ( empty( $api_key ) ) {
+        return new WP_Error( 'no_backend', 'No AI backend configured. Set the Ollama Proxy URL or Anthropic API key in AE Settings.', [ 'status' => 500 ] );
+    }
+
+    $response = wp_remote_post( 'https://api.anthropic.com/v1/messages', [
+        'method'      => 'POST',
+        'headers'     => [
+            'Content-Type'      => 'application/json',
+            'x-api-key'         => $api_key,
+            'anthropic-version' => '2023-06-01',
+        ],
+        'body'        => json_encode( [
+            'model'      => 'claude-haiku-4-5-20251001',
+            'max_tokens' => 4096,
+            'system'     => $system_prompt,
+            'messages'   => [ [ 'role' => 'user', 'content' => $user_message ] ],
+        ] ),
+        'data_format' => 'body',
+        'timeout'     => 60,
+    ] );
+
+    if ( is_wp_error( $response ) ) {
+        return new WP_Error( 'api_error', 'Failed to reach the AI backend.', [ 'status' => 502 ] );
+    }
+
+    $code = wp_remote_retrieve_response_code( $response );
+    $body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+    if ( $code !== 200 ) {
+        $msg = $body['error']['message'] ?? 'AI backend error.';
+        return new WP_Error( 'backend_error', $msg, [ 'status' => 502 ] );
+    }
+
+    return new WP_REST_Response( [ $response_key => $body['content'][0]['text'] ?? '' ], 200 );
 }
 
 
