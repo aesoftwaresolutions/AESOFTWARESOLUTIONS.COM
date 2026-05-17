@@ -43,7 +43,8 @@ function aesoftwares_enqueue_scripts() {
             [ 'in_footer' => true, 'strategy' => 'defer' ]
         );
         wp_localize_script( 'ae-rewriter', 'ae_rewriter_settings', [
-            'rewrite_url' => get_rest_url( null, 'aesoftwares/v1/rewrite' ),
+            'rewrite_url'  => get_rest_url( null, 'aesoftwares/v1/rewrite' ),
+            'validate_url' => get_rest_url( null, 'aesoftwares/v1/validate' ),
         ] );
     }
 
@@ -377,6 +378,7 @@ function aesoftwares_call_ai_backend( $system_prompt, $user_message ) {
                 'top_p'       => 0.95,
                 'top_k'       => 40,
                 'think'       => false, // disable qwen3 thinking mode — deliberate reasoning produces uniformly high-probability output
+                'num_predict' => 1100,  // cap output tokens — prevents over-generation on verbose models (saves 50-100s)
             ],
             'messages' => [
                 [ 'role' => 'system', 'content' => $system_prompt ],
@@ -621,48 +623,31 @@ Notice: the passing version uses first person, admits uncertainty, interrupts it
 
 Output ONLY the rewritten text. No preamble, no labels, no markdown.';
 
-    // Split into ~500-word chunks on paragraph boundaries for large inputs.
-    $chunks        = $word_count > 500 ? aesoftwares_chunk_text( $text ) : [ $text ];
-    $total         = count( $chunks );
-    $parts         = [];
-    $overlap_limit = 0.15;
-    $max_retries   = 1;
+    // Split into ~800-word chunks on paragraph boundaries for large inputs.
+    // 800 words keeps each chunk within the model's comfortable output range
+    // while reducing the number of sequential AI calls vs the previous 500-word limit.
+    $chunks = $word_count > 800 ? aesoftwares_chunk_text( $text, 800 ) : [ $text ];
+    $total  = count( $chunks );
+    $parts  = [];
 
     foreach ( $chunks as $i => $chunk ) {
         $chunk_note   = $total > 1
             ? 'This is section ' . ( $i + 1 ) . " of {$total} from a longer piece. Match the same voice and register throughout.\n\n"
             : '';
-        $base_message = $mode_instructions[ $mode ] . "\n\n" . $chunk_note . "Text to rewrite:\n\n" . $chunk;
+        $user_message = $mode_instructions[ $mode ] . "\n\n" . $chunk_note . "Text to rewrite:\n\n" . $chunk;
 
-        $result           = null;
-        $retry_notes_prev = [];
-
-        for ( $attempt = 0; $attempt <= $max_retries; $attempt++ ) {
-            $user_message = $attempt === 0
-                ? $base_message
-                : $base_message . "\n\nRETRY FEEDBACK — fix these issues from your previous attempt:\n" . implode( "\n", $retry_notes_prev );
-
-            $candidate = aesoftwares_call_ai_backend( $system_prompt, $user_message );
-            if ( is_wp_error( $candidate ) ) return $candidate;
-            $result = $candidate;
-
-            $overlap = aesoftwares_ngram_overlap_ratio( $chunk, $result );
-            if ( $overlap > $overlap_limit && $attempt < $max_retries ) {
-                $pct              = round( $overlap * 100 );
-                $retry_notes_prev = [ "PHRASE OVERLAP {$pct}%: reconstruct every sentence — do not carry over any 5+ word sequence from the source." ];
-                continue;
-            }
-
-            break;
-        }
+        $result = aesoftwares_call_ai_backend( $system_prompt, $user_message );
+        if ( is_wp_error( $result ) ) return $result;
 
         $parts[] = $result;
     }
 
-    $rewritten  = implode( "\n\n", $parts );
-    $validation = aesoftwares_validate_content( $rewritten );
+    $rewritten = implode( "\n\n", $parts );
 
-    return new WP_REST_Response( [ 'rewritten' => $rewritten, 'validation' => $validation ], 200 );
+    // Validation is intentionally excluded from the rewrite response — it runs as
+    // a separate on-demand request via /aesoftwares/v1/validate to keep rewrite
+    // latency as low as possible.
+    return new WP_REST_Response( [ 'rewritten' => $rewritten, 'validation' => null ], 200 );
 }
 
 
@@ -674,6 +659,26 @@ function aesoftwares_register_chat_route() {
     ] );
 }
 add_action( 'rest_api_init', 'aesoftwares_register_chat_route' );
+
+// On-demand validation endpoint — separated from /rewrite so the main rewrite
+// path returns immediately without waiting for the scoring AI call.
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'aesoftwares/v1', '/validate', [
+        'methods'             => 'POST',
+        'callback'            => 'aesoftwares_handle_validate',
+        'permission_callback' => '__return_true',
+    ] );
+} );
+
+function aesoftwares_handle_validate( WP_REST_Request $request ) {
+    $text = sanitize_textarea_field( $request->get_param( 'text' ) );
+    if ( empty( $text ) ) {
+        return new WP_Error( 'missing_text', 'No text provided.', [ 'status' => 422 ] );
+    }
+    set_time_limit( 120 );
+    $validation = aesoftwares_validate_content( $text );
+    return new WP_REST_Response( [ 'validation' => $validation ], 200 );
+}
 
 function aesoftwares_handle_chat_message( WP_REST_Request $request ) {
     $n8n_url = get_option( 'aesoftwares_n8n_webhook_url' );
