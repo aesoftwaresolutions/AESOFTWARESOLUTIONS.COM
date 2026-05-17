@@ -58,6 +58,7 @@
 				<div id="rewriter-error" class="rewriter-error" hidden></div>
 				<div class="rewriter-panel__footer">
 					<button id="rewriter-copy" class="rewriter-btn rewriter-btn--ghost" disabled>Copy</button>
+					<button id="rewriter-check-score" class="rewriter-btn rewriter-btn--ghost" disabled>Check Score</button>
 				</div>
 			</div>
 
