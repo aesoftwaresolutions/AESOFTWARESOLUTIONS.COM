@@ -43,7 +43,22 @@ function aesoftwares_enqueue_scripts() {
             [ 'in_footer' => true, 'strategy' => 'defer' ]
         );
         wp_localize_script( 'ae-rewriter', 'ae_rewriter_settings', [
-            'rewrite_url' => get_rest_url( null, 'aesoftwares/v1/rewrite' ),
+            'rewrite_url'  => get_rest_url( null, 'aesoftwares/v1/rewrite' ),
+            'validate_url' => get_rest_url( null, 'aesoftwares/v1/validate' ),
+        ] );
+    }
+
+    // ── Transcription tool (transcriber page only) ────────────────────────
+    if ( is_page_template( 'page-transcriber.php' ) ) {
+        wp_enqueue_script(
+            'ae-transcriber',
+            $uri . '/assets/js/ae-transcriber.js',
+            [],
+            filemtime( $js . 'ae-transcriber.js' ),
+            [ 'in_footer' => true, 'strategy' => 'defer' ]
+        );
+        wp_localize_script( 'ae-transcriber', 'ae_transcriber_settings', [
+            'transcribe_url' => get_rest_url( null, 'aesoftwares/v1/transcribe' ),
         ] );
     }
 
@@ -186,6 +201,8 @@ function aesoftwares_settings_init() {
     register_setting( 'aesoftwares_settings', 'aesoftwares_ollama_token' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_ollama_model' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_anthropic_api_key' );
+    register_setting( 'aesoftwares_settings', 'aesoftwares_speaches_url' );
+    register_setting( 'aesoftwares_settings', 'aesoftwares_speaches_token' );
 
     add_settings_section(
         'aesoftwares_n8n_section',
@@ -241,6 +258,31 @@ function aesoftwares_settings_init() {
         'aesoftwares_anthropic_api_key_field_html',
         'aesoftwares_settings',
         'aesoftwares_ai_section'
+    );
+
+    add_settings_section(
+        'aesoftwares_speaches_section',
+        'Transcription Settings (Speaches / Whisper)',
+        function() {
+            echo '<p style="color:#999;font-size:13px;">Speaches is a self-hosted Whisper transcription server. Run <code>bash scripts/deploy-speaches.sh</code> on the KVM4 VPS to set it up, then paste the URL and token here.</p>';
+        },
+        'aesoftwares_settings'
+    );
+
+    add_settings_field(
+        'aesoftwares_speaches_url_field',
+        'Speaches URL',
+        'aesoftwares_speaches_url_field_html',
+        'aesoftwares_settings',
+        'aesoftwares_speaches_section'
+    );
+
+    add_settings_field(
+        'aesoftwares_speaches_token_field',
+        'Speaches Token',
+        'aesoftwares_speaches_token_field_html',
+        'aesoftwares_settings',
+        'aesoftwares_speaches_section'
     );
 }
 add_action( 'admin_init', 'aesoftwares_settings_init' );
@@ -300,6 +342,28 @@ function aesoftwares_anthropic_api_key_field_html() {
     <?php
 }
 
+function aesoftwares_speaches_url_field_html() {
+    $url = get_option( 'aesoftwares_speaches_url', '' );
+    ?>
+    <input type="url" name="aesoftwares_speaches_url"
+           value="<?php echo esc_attr( $url ); ?>"
+           class="regular-text"
+           placeholder="http://127.0.0.1:8000">
+    <p class="description">URL of the Speaches server (no trailing slash). Use <code>http://127.0.0.1:8000</code> if hosted on the same VPS.</p>
+    <?php
+}
+
+function aesoftwares_speaches_token_field_html() {
+    $token = get_option( 'aesoftwares_speaches_token', '' );
+    ?>
+    <input type="password" name="aesoftwares_speaches_token"
+           value="<?php echo esc_attr( $token ); ?>"
+           class="regular-text"
+           placeholder="your-speaches-api-token">
+    <p class="description">API token printed by the deploy script. Sent as <code>Authorization: Bearer</code> header.</p>
+    <?php
+}
+
 
 // ══════════════════════════════════════════════════════════════════════════════
 // 3. REST API PROXY — forwards chatbot messages to n8n webhook
@@ -330,34 +394,81 @@ function aesoftwares_register_rewrite_route() {
 }
 add_action( 'rest_api_init', 'aesoftwares_register_rewrite_route' );
 
-function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
-    $text = $request->get_param( 'text' );
-    $mode = $request->get_param( 'mode' );
+// Returns the fraction of $n-word sequences in $rewritten that also appear in $original.
+// Used to catch rewrites that are too close to the source.
+function aesoftwares_ngram_overlap_ratio( $original, $rewritten, $n = 6 ) {
+    $normalize = function ( $text ) {
+        $text = mb_strtolower( $text );
+        $text = preg_replace( '/[^\p{L}\p{N}\s]/u', ' ', $text );
+        return array_values( array_filter( preg_split( '/\s+/', trim( $text ) ) ) );
+    };
 
-    $word_count = str_word_count( $text );
-    if ( $word_count > 2000 ) {
-        return new WP_Error( 'too_long', 'Text exceeds the 2,000 word limit.', [ 'status' => 422 ] );
+    $orig_words = $normalize( $original );
+    $new_words  = $normalize( $rewritten );
+    $total      = count( $new_words ) - $n + 1;
+
+    if ( $total <= 0 ) return 0.0;
+
+    $orig_ngrams = [];
+    for ( $i = 0; $i <= count( $orig_words ) - $n; $i++ ) {
+        $orig_ngrams[ implode( ' ', array_slice( $orig_words, $i, $n ) ) ] = true;
     }
 
-    $mode_instructions = [
-        'standard' => 'Rewrite the text in a natural, conversational style. Mix formal and informal phrasing. Use contractions freely (it\'s, you\'ll, don\'t). Vary sentence length dramatically — alternate between short punchy sentences and longer flowing ones. Add hedging language where appropriate (e.g. "it seems", "arguably", "in many cases"). Use first or second person occasionally. Start some sentences with conjunctions like "And" or "But" when it sounds natural.',
-        'academic' => 'Rewrite the text in an academic style but with a human voice. Keep formal vocabulary and citation-friendly structure, but vary sentence rhythm, avoid robotic uniformity, use hedging language (e.g. "suggests", "appears to", "may indicate"), and ensure the prose does not sound machine-generated. Avoid repetitive sentence openers.',
-        'casual'   => 'Rewrite the text in a casual, conversational tone as if a person is talking directly to the reader. Use contractions everywhere, short sentences, colloquial phrasing, and an approachable voice. It should feel like a blog post or friendly email, not formal writing.',
-    ];
+    $matches = 0;
+    for ( $i = 0; $i < $total; $i++ ) {
+        if ( isset( $orig_ngrams[ implode( ' ', array_slice( $new_words, $i, $n ) ) ] ) ) {
+            $matches++;
+        }
+    }
 
-    $system_prompt = 'You are a skilled human writer. Your task is to rewrite the provided text so it reads as if written naturally by a human. The rewritten text must: (1) preserve the original meaning and all key information, (2) pass AI content detectors like CopyLeaks, GPTZero, and Originality.ai, (3) avoid patterns that AI detectors flag — uniform sentence lengths, overly perfect grammar, absence of contractions, repetitive structure, and unnaturally polished vocabulary. Output ONLY the rewritten text with no preamble, no explanation, and no markdown formatting.';
+    return (float) $matches / $total;
+}
 
-    $user_message = $mode_instructions[ $mode ] . "\n\nText to rewrite:\n\n" . $text;
+// Split text into ~$max_words chunks on paragraph boundaries.
+function aesoftwares_chunk_text( $text, $max_words = 500 ) {
+    $paragraphs = preg_split( '/\n\n+/', trim( $text ) );
+    $chunks     = [];
+    $current    = [];
+    $count      = 0;
 
-    // ── Primary: Ollama on VPS ────────────────────────────────────────────
+    foreach ( $paragraphs as $para ) {
+        $para = trim( $para );
+        if ( $para === '' ) continue;
+        $wc = str_word_count( $para );
+        if ( $count + $wc > $max_words && ! empty( $current ) ) {
+            $chunks[] = implode( "\n\n", $current );
+            $current  = [];
+            $count    = 0;
+        }
+        $current[] = $para;
+        $count    += $wc;
+    }
+
+    if ( ! empty( $current ) ) {
+        $chunks[] = implode( "\n\n", $current );
+    }
+
+    return $chunks;
+}
+
+// Send one system + user message to the configured AI backend.
+// Returns the rewritten string or a WP_Error.
+function aesoftwares_call_ai_backend( $system_prompt, $user_message ) {
     $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
     $ollama_token = get_option( 'aesoftwares_ollama_token' );
     $ollama_model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
 
     if ( ! empty( $ollama_url ) ) {
         $payload = [
-            'model'  => $ollama_model,
-            'stream' => false,
+            'model'    => $ollama_model,
+            'stream'   => false,
+            'options'  => [
+                'temperature' => 0.95,  // higher = less predictable word choices = lower perplexity score on detectors
+                'top_p'       => 0.95,
+                'top_k'       => 40,
+                'think'       => false, // disable qwen3 thinking mode — deliberate reasoning produces uniformly high-probability output
+                'num_predict' => 1100,  // cap output tokens — prevents over-generation on verbose models (saves 50-100s)
+            ],
             'messages' => [
                 [ 'role' => 'system', 'content' => $system_prompt ],
                 [ 'role' => 'user',   'content' => $user_message  ],
@@ -367,8 +478,8 @@ function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
         $response = wp_remote_post( rtrim( $ollama_url, '/' ) . '/api/chat', [
             'method'      => 'POST',
             'headers'     => [
-                'Content-Type'    => 'application/json',
-                'x-ollama-token'  => $ollama_token,
+                'Content-Type'   => 'application/json',
+                'x-ollama-token' => $ollama_token,
             ],
             'body'        => json_encode( $payload ),
             'data_format' => 'body',
@@ -380,22 +491,17 @@ function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
             $body = json_decode( wp_remote_retrieve_body( $response ), true );
 
             if ( $code === 200 ) {
-                // Ollama /api/chat response: { message: { content: "..." } }
                 $rewritten = $body['message']['content'] ?? '';
-
-                // Strip <think>…</think> blocks that qwen3 may emit
                 $rewritten = preg_replace( '/<think>[\s\S]*?<\/think>/i', '', $rewritten );
                 $rewritten = trim( $rewritten );
-
                 if ( $rewritten !== '' ) {
-                    return new WP_REST_Response( [ 'rewritten' => $rewritten ], 200 );
+                    return $rewritten;
                 }
             }
         }
         // Fall through to Anthropic if Ollama failed
     }
 
-    // ── Fallback: Anthropic Claude ────────────────────────────────────────
     $api_key = get_option( 'aesoftwares_anthropic_api_key' );
     if ( empty( $api_key ) ) {
         return new WP_Error( 'no_backend', 'No AI backend is configured. Set the Ollama Proxy URL or Anthropic API key in AE Settings.', [ 'status' => 500 ] );
@@ -419,7 +525,7 @@ function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
         ],
         'body'        => json_encode( $payload ),
         'data_format' => 'body',
-        'timeout'     => 60,
+        'timeout'     => 120,
     ] );
 
     if ( is_wp_error( $response ) ) {
@@ -430,13 +536,207 @@ function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
     $body = json_decode( wp_remote_retrieve_body( $response ), true );
 
     if ( $code !== 200 ) {
-        $msg = isset( $body['error']['message'] ) ? $body['error']['message'] : 'Anthropic API error.';
+        $msg = $body['error']['message'] ?? 'Anthropic API error.';
         return new WP_Error( 'anthropic_error', $msg, [ 'status' => 502 ] );
     }
 
-    $rewritten = $body['content'][0]['text'] ?? '';
+    return $body['content'][0]['text'] ?? '';
+}
 
-    return new WP_REST_Response( [ 'rewritten' => $rewritten ], 200 );
+// Short-timeout variant for validation — avoids blocking the response on a slow eval call.
+function aesoftwares_call_ai_backend_short( $system_prompt, $user_message ) {
+    $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
+    $ollama_token = get_option( 'aesoftwares_ollama_token' );
+    $ollama_model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
+
+    if ( ! empty( $ollama_url ) ) {
+        $payload = [
+            'model'    => $ollama_model,
+            'stream'   => false,
+            'options'  => [
+                'temperature' => 0.3,  // low temp for validation — we want consistent JSON, not creative output
+                'top_p'       => 0.9,
+            ],
+            'messages' => [
+                [ 'role' => 'system', 'content' => $system_prompt ],
+                [ 'role' => 'user',   'content' => $user_message  ],
+            ],
+        ];
+
+        $response = wp_remote_post( rtrim( $ollama_url, '/' ) . '/api/chat', [
+            'method'      => 'POST',
+            'headers'     => [
+                'Content-Type'   => 'application/json',
+                'x-ollama-token' => $ollama_token,
+            ],
+            'body'        => json_encode( $payload ),
+            'data_format' => 'body',
+            'timeout'     => 45,
+        ] );
+
+        if ( ! is_wp_error( $response ) ) {
+            $code = wp_remote_retrieve_response_code( $response );
+            $body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+            if ( $code === 200 ) {
+                $text = $body['message']['content'] ?? '';
+                $text = preg_replace( '/<think>[\s\S]*?<\/think>/i', '', $text );
+                $text = trim( $text );
+                if ( $text !== '' ) return $text;
+            }
+        }
+    }
+
+    $api_key = get_option( 'aesoftwares_anthropic_api_key' );
+    if ( empty( $api_key ) ) return new WP_Error( 'no_backend', 'No AI backend configured.', [ 'status' => 500 ] );
+
+    $payload = [
+        'model'      => 'claude-haiku-4-5-20251001',
+        'max_tokens' => 1024,
+        'system'     => $system_prompt,
+        'messages'   => [ [ 'role' => 'user', 'content' => $user_message ] ],
+    ];
+
+    $response = wp_remote_post( 'https://api.anthropic.com/v1/messages', [
+        'method'      => 'POST',
+        'headers'     => [
+            'Content-Type'      => 'application/json',
+            'x-api-key'         => $api_key,
+            'anthropic-version' => '2023-06-01',
+        ],
+        'body'        => json_encode( $payload ),
+        'data_format' => 'body',
+        'timeout'     => 45,
+    ] );
+
+    if ( is_wp_error( $response ) ) return null;
+
+    $code = wp_remote_retrieve_response_code( $response );
+    $body = json_decode( wp_remote_retrieve_body( $response ), true );
+    if ( $code !== 200 ) return null;
+
+    return $body['content'][0]['text'] ?? '';
+}
+
+// Evaluate text against 7 human-writing signals. Returns parsed array or null on failure.
+// Uses the short-timeout backend so it never blocks the rewrite response for long.
+function aesoftwares_validate_content( $text ) {
+    $system_prompt = 'You are an AI content detection analyst. Evaluate the text provided against seven signals and return a single JSON object — no other text, no markdown, no explanation.
+
+Score each signal from 0 to 10 where 0 = strongly AI-like and 10 = strongly human-like.
+
+Signals:
+1. perplexity_uniformity — Are word choices predictable and safe throughout, or does the writer occasionally reach for an unexpected or unconventional word? (0 = every word is the most probable choice; 10 = meaningfully unpredictable vocabulary)
+2. burstiness — Does sentence length and complexity vary significantly, or is rhythm uniform? (0 = all sentences roughly the same length/structure; 10 = genuine mix of very short and very long sentences)
+3. structural_patterns — Do paragraphs all follow the same formula (topic sentence → support → close) with repeated transition words? (0 = rigid formulaic structure; 10 = varied paragraph shapes and openers)
+4. hedging_and_nuance — Does the writer acknowledge uncertainty or qualify claims where a human would? (0 = all absolute declarative statements; 10 = natural hedging like "it seems", "arguably", "tends to")
+5. vocabulary_naturalness — Does word choice feel naturally human or optimised for clarity and correctness? Contractions, idioms, colloquialisms where appropriate. (0 = sterile/formal throughout; 10 = naturally chosen vocabulary)
+6. grammatical_perfection — Is every sentence flawlessly correct in a way that feels unnatural? (0 = robotically perfect; 10 = minor natural imperfections like comma splices, casual fragments)
+7. semantic_coherence — Does the text flow "too perfectly", every sentence connecting to the next without any tangent or aside? (0 = over-optimised flow; 10 = organic, occasionally digressive)
+
+overall_human_score: integer 0–100, calculated as round(sum_of_all_signal_scores / 7 * 10)
+verdict: "LIKELY_HUMAN" if overall >= 85, "BORDERLINE" if 65–84, "LIKELY_AI" if below 65
+flags: array of brief descriptions for any signal that scored below 6 (empty array if none)
+pass: true if overall_human_score >= 75, else false
+
+Return exactly this JSON structure and nothing else:
+{"overall_human_score":<int>,"verdict":"<string>","flags":[<strings>],"signal_scores":{"perplexity_uniformity":<int>,"burstiness":<int>,"structural_patterns":<int>,"hedging_and_nuance":<int>,"vocabulary_naturalness":<int>,"grammatical_perfection":<int>,"semantic_coherence":<int>},"pass":<bool>}';
+
+    $raw = aesoftwares_call_ai_backend_short( $system_prompt, "Evaluate this text:\n\n" . $text );
+    if ( ! $raw || is_wp_error( $raw ) ) return null;
+
+    preg_match( '/\{[\s\S]*\}/s', $raw, $m );
+    if ( empty( $m ) ) return null;
+
+    $data = json_decode( $m[0], true );
+    return is_array( $data ) ? $data : null;
+}
+
+function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
+    // Budget 10 min total to cover multiple chunks on large submissions.
+    set_time_limit( 600 );
+
+    $text = $request->get_param( 'text' );
+    $mode = $request->get_param( 'mode' );
+
+    $word_count = str_word_count( $text );
+    if ( $word_count > 2000 ) {
+        return new WP_Error( 'too_long', 'Text exceeds the 2,000 word limit.', [ 'status' => 422 ] );
+    }
+
+    $mode_instructions = [
+        'standard' => 'Rewrite in a grounded, thoughtful voice — serious but not stiff. Contractions throughout. Vary sentence length erratically: some very short (3–5 words), some long and winding. At least two paragraphs must be a single sentence. Do not summarise at the end of each paragraph. No two paragraphs may open with the same grammatical construction. Embed citations mid-clause.',
+
+        'academic' => 'Rewrite in a scholarly voice that still sounds like a person. Use hedging ("suggests", "appears to", "the data point toward") but place hedges in different positions — mid-clause, end of sentence, start of paragraph — never the same slot twice in a row. Some paragraphs open with evidence; some end on a question or unresolved tension. Citations embedded mid-thought, not announced. At least one paragraph should be a single sentence.',
+
+        'casual'   => 'Rewrite as a smart person talking directly to a reader — blog-post energy, not formal writing. Fragments are fine. Contractions everywhere. Some paragraphs one sentence. Start with the point, not a wind-up. End paragraphs when the thought is done, not with a summary.',
+    ];
+
+    $system_prompt = 'You are a human writer rewriting text so it cannot be detected as AI-generated by tools like CopyLeaks, GPTZero, or Originality.ai. These tools detect AI by measuring how predictable each word choice is (perplexity) and how uniformly predictable the whole document is (burstiness). Your job is to be genuinely unpredictable.
+
+Preserve all original meaning, facts, citations, and argument structure exactly.
+
+SENTENCE-LEVEL TECHNIQUES — apply all of these:
+- Choose the less obvious synonym sometimes: not "important" → try "consequential", "telling", or "worth pausing on". Not "shows" → try "hints at", "points toward", "complicates".
+- Start some sentences with conjunctions: And. But. Or. So. (These are low-probability openers for AI.)
+- Use deliberate fragments. Short ones. They work.
+- Use em-dashes to interrupt or redirect mid-sentence — like a mind catching itself — rather than always using commas.
+- Insert a parenthetical aside (a thought the writer has out loud) at least once per section.
+- Occasionally invert normal word order for emphasis: "What the data do not show is equally significant."
+- Let one sentence per section feel like an afterthought or a concession: "That said, ...", "Then again, ...", "Or perhaps not."
+
+PARAGRAPH-LEVEL TECHNIQUES — apply all of these:
+- Make at least two paragraphs exactly one sentence long.
+- Vary paragraph length unpredictably: 1 sentence, then 4, then 2, then 5.
+- Do NOT end paragraphs with a sentence that restates or summarises what the paragraph just said.
+- Some paragraphs should start with a concrete detail or example, not a topic claim.
+- No two consecutive paragraphs may open with the same word or the same grammatical construction (e.g. not two "The ..." openers in a row).
+
+FORBIDDEN — these phrases and patterns appear with AI statistical frequency and will be flagged:
+- "This shows that", "This means that", "This demonstrates", "This highlights", "This is important because"
+- "Furthermore", "Moreover", "In addition", "In conclusion", "It is worth noting", "Notably", "Importantly"
+- "It is important to remember", "At first glance", "When we consider", "Taking this into account"
+- Any 5+ consecutive words carried over unchanged from the source text
+- Paragraph-ending summary sentences
+- Two consecutive paragraphs with the same opening word or construction
+
+STYLE EXAMPLES — study the contrast between these two versions. The second version passed human-content detection; the first did not.
+
+FLAGGED AS AI (avoid this style):
+"A further reason why zoos are good is because it has research. Many people overlook this part. Research is very important in zoos. This shows that zoos help animals. Furthermore, zoos are beneficial to society. It is important to note that zoos provide conservation. Moreover, zoos educate the public."
+
+PASSED AS HUMAN (write like this):
+"I did not think I would choose it when I first started looking into zoos as a topic. One of those subjects on which people have already made up their minds — usually before they have spent much time thinking about it. But the research side surprised me. Not the headline conservation numbers, which get trotted out whenever someone defends a zoo, but the quieter institutional work: the studbooks, the reintroduction logistics, the veterinary data shared across facilities. It is not glamorous. And it probably does not make up for everything. Still."
+
+Notice: the passing version uses first person, admits uncertainty, interrupts itself, ends on an incomplete thought, and never uses transition words like "Furthermore" or "Moreover". The flagged version is structurally predictable — topic sentence, elaboration, transition, repeat.
+
+Output ONLY the rewritten text. No preamble, no labels, no markdown.';
+
+    // Split into ~800-word chunks on paragraph boundaries for large inputs.
+    // 800 words keeps each chunk within the model's comfortable output range
+    // while reducing the number of sequential AI calls vs the previous 500-word limit.
+    $chunks = $word_count > 800 ? aesoftwares_chunk_text( $text, 800 ) : [ $text ];
+    $total  = count( $chunks );
+    $parts  = [];
+
+    foreach ( $chunks as $i => $chunk ) {
+        $chunk_note   = $total > 1
+            ? 'This is section ' . ( $i + 1 ) . " of {$total} from a longer piece. Match the same voice and register throughout.\n\n"
+            : '';
+        $user_message = $mode_instructions[ $mode ] . "\n\n" . $chunk_note . "Text to rewrite:\n\n" . $chunk;
+
+        $result = aesoftwares_call_ai_backend( $system_prompt, $user_message );
+        if ( is_wp_error( $result ) ) return $result;
+
+        $parts[] = $result;
+    }
+
+    $rewritten = implode( "\n\n", $parts );
+
+    // Validation is intentionally excluded from the rewrite response — it runs as
+    // a separate on-demand request via /aesoftwares/v1/validate to keep rewrite
+    // latency as low as possible.
+    return new WP_REST_Response( [ 'rewritten' => $rewritten, 'validation' => null ], 200 );
 }
 
 
@@ -610,6 +910,93 @@ function aesoftwares_register_chat_route() {
     ] );
 }
 add_action( 'rest_api_init', 'aesoftwares_register_chat_route' );
+
+// On-demand validation endpoint — separated from /rewrite so the main rewrite
+// path returns immediately without waiting for the scoring AI call.
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'aesoftwares/v1', '/validate', [
+        'methods'             => 'POST',
+        'callback'            => 'aesoftwares_handle_validate',
+        'permission_callback' => '__return_true',
+    ] );
+} );
+
+function aesoftwares_handle_validate( WP_REST_Request $request ) {
+    $text = sanitize_textarea_field( $request->get_param( 'text' ) );
+    if ( empty( $text ) ) {
+        return new WP_Error( 'missing_text', 'No text provided.', [ 'status' => 422 ] );
+    }
+    set_time_limit( 120 );
+    $validation = aesoftwares_validate_content( $text );
+    return new WP_REST_Response( [ 'validation' => $validation ], 200 );
+}
+
+// Transcription endpoint — receives an audio file upload and proxies it to Speaches.
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'aesoftwares/v1', '/transcribe', [
+        'methods'             => 'POST',
+        'callback'            => 'aesoftwares_handle_transcribe',
+        'permission_callback' => '__return_true',
+    ] );
+} );
+
+function aesoftwares_handle_transcribe( WP_REST_Request $request ) {
+    set_time_limit( 120 );
+
+    $speaches_url   = get_option( 'aesoftwares_speaches_url' );
+    $speaches_token = get_option( 'aesoftwares_speaches_token' );
+
+    if ( empty( $speaches_url ) ) {
+        return new WP_Error( 'no_speaches', 'Transcription service is not configured. Set the Speaches URL in AE Settings.', [ 'status' => 500 ] );
+    }
+
+    // WordPress REST API passes multipart uploads via $_FILES, not WP_REST_Request.
+    $files = ! empty( $_FILES ) ? $_FILES : [];
+    if ( empty( $files['audio']['tmp_name'] ) || ! is_uploaded_file( $files['audio']['tmp_name'] ) ) {
+        return new WP_Error( 'no_audio', 'No audio file received.', [ 'status' => 422 ] );
+    }
+
+    $tmp_path   = $files['audio']['tmp_name'];
+    $mime       = $files['audio']['type'] ?? 'audio/webm';
+    $orig_name  = sanitize_file_name( $files['audio']['name'] ?? 'audio.webm' );
+    $model_name = get_option( 'aesoftwares_ollama_model', 'Systran/faster-whisper-small' );
+
+    $endpoint = rtrim( $speaches_url, '/' ) . '/v1/audio/transcriptions';
+
+    $headers = [ 'Authorization: Bearer ' . $speaches_token ];
+
+    $post_fields = [
+        'file'  => new CURLFile( $tmp_path, $mime, $orig_name ),
+        'model' => $model_name,
+    ];
+
+    $ch = curl_init( $endpoint );
+    curl_setopt_array( $ch, [
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => $post_fields,
+        CURLOPT_HTTPHEADER     => $headers,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 90,
+    ] );
+
+    $body      = curl_exec( $ch );
+    $http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
+    $curl_err  = curl_error( $ch );
+    curl_close( $ch );
+
+    if ( $body === false || ! empty( $curl_err ) ) {
+        return new WP_Error( 'speaches_unreachable', 'Could not reach the transcription server: ' . $curl_err, [ 'status' => 502 ] );
+    }
+
+    $data = json_decode( $body, true );
+
+    if ( $http_code !== 200 ) {
+        $msg = $data['error']['message'] ?? ( 'Speaches returned HTTP ' . $http_code );
+        return new WP_Error( 'speaches_error', $msg, [ 'status' => 502 ] );
+    }
+
+    return new WP_REST_Response( [ 'text' => $data['text'] ?? '' ], 200 );
+}
 
 function aesoftwares_handle_chat_message( WP_REST_Request $request ) {
     $n8n_url = get_option( 'aesoftwares_n8n_webhook_url' );

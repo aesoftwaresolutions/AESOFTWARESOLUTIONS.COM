@@ -58,9 +58,23 @@
 				<div id="rewriter-error" class="rewriter-error" hidden></div>
 				<div class="rewriter-panel__footer">
 					<button id="rewriter-copy" class="rewriter-btn rewriter-btn--ghost" disabled>Copy</button>
+					<button id="rewriter-check-score" class="rewriter-btn rewriter-btn--ghost" disabled>Check Score</button>
 				</div>
 			</div>
 
+		</div>
+
+		<div id="rewriter-score-panel" class="rewriter-score-panel" hidden>
+			<div class="rewriter-score-panel__header">
+				<div class="rewriter-score-panel__overall">
+					<span class="rewriter-score-panel__label">Human Score</span>
+					<span id="rewriter-score-value" class="rewriter-score-panel__value">—</span>
+					<span class="rewriter-score-panel__max">/100</span>
+				</div>
+				<span id="rewriter-score-verdict" class="rewriter-score-panel__verdict"></span>
+			</div>
+			<ul id="rewriter-score-signals" class="rewriter-score-signals"></ul>
+			<ul id="rewriter-score-flags" class="rewriter-score-flags" hidden></ul>
 		</div>
 
 	</div>
