@@ -48,6 +48,20 @@ function aesoftwares_enqueue_scripts() {
         ] );
     }
 
+    // ── Transcription tool (transcriber page only) ────────────────────────
+    if ( is_page_template( 'page-transcriber.php' ) ) {
+        wp_enqueue_script(
+            'ae-transcriber',
+            $uri . '/assets/js/ae-transcriber.js',
+            [],
+            filemtime( $js . 'ae-transcriber.js' ),
+            [ 'in_footer' => true, 'strategy' => 'defer' ]
+        );
+        wp_localize_script( 'ae-transcriber', 'ae_transcriber_settings', [
+            'transcribe_url' => get_rest_url( null, 'aesoftwares/v1/transcribe' ),
+        ] );
+    }
+
     // ── Cinematic stack (front page only) ─────────────────────────────────
     if ( is_front_page() ) {
 
@@ -161,6 +175,8 @@ function aesoftwares_settings_init() {
     register_setting( 'aesoftwares_settings', 'aesoftwares_ollama_token' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_ollama_model' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_anthropic_api_key' );
+    register_setting( 'aesoftwares_settings', 'aesoftwares_speaches_url' );
+    register_setting( 'aesoftwares_settings', 'aesoftwares_speaches_token' );
 
     add_settings_section(
         'aesoftwares_n8n_section',
@@ -217,6 +233,31 @@ function aesoftwares_settings_init() {
         'aesoftwares_settings',
         'aesoftwares_ai_section'
     );
+
+    add_settings_section(
+        'aesoftwares_speaches_section',
+        'Transcription Settings (Speaches / Whisper)',
+        function() {
+            echo '<p style="color:#999;font-size:13px;">Speaches is a self-hosted Whisper transcription server. Run <code>bash scripts/deploy-speaches.sh</code> on the KVM4 VPS to set it up, then paste the URL and token here.</p>';
+        },
+        'aesoftwares_settings'
+    );
+
+    add_settings_field(
+        'aesoftwares_speaches_url_field',
+        'Speaches URL',
+        'aesoftwares_speaches_url_field_html',
+        'aesoftwares_settings',
+        'aesoftwares_speaches_section'
+    );
+
+    add_settings_field(
+        'aesoftwares_speaches_token_field',
+        'Speaches Token',
+        'aesoftwares_speaches_token_field_html',
+        'aesoftwares_settings',
+        'aesoftwares_speaches_section'
+    );
 }
 add_action( 'admin_init', 'aesoftwares_settings_init' );
 
@@ -272,6 +313,28 @@ function aesoftwares_anthropic_api_key_field_html() {
            class="regular-text"
            placeholder="sk-ant-…">
     <p class="description">Fallback only — used when Ollama Proxy URL is empty. Get a key at console.anthropic.com.</p>
+    <?php
+}
+
+function aesoftwares_speaches_url_field_html() {
+    $url = get_option( 'aesoftwares_speaches_url', '' );
+    ?>
+    <input type="url" name="aesoftwares_speaches_url"
+           value="<?php echo esc_attr( $url ); ?>"
+           class="regular-text"
+           placeholder="http://127.0.0.1:8000">
+    <p class="description">URL of the Speaches server (no trailing slash). Use <code>http://127.0.0.1:8000</code> if hosted on the same VPS.</p>
+    <?php
+}
+
+function aesoftwares_speaches_token_field_html() {
+    $token = get_option( 'aesoftwares_speaches_token', '' );
+    ?>
+    <input type="password" name="aesoftwares_speaches_token"
+           value="<?php echo esc_attr( $token ); ?>"
+           class="regular-text"
+           placeholder="your-speaches-api-token">
+    <p class="description">API token printed by the deploy script. Sent as <code>Authorization: Bearer</code> header.</p>
     <?php
 }
 
@@ -678,6 +741,73 @@ function aesoftwares_handle_validate( WP_REST_Request $request ) {
     set_time_limit( 120 );
     $validation = aesoftwares_validate_content( $text );
     return new WP_REST_Response( [ 'validation' => $validation ], 200 );
+}
+
+// Transcription endpoint — receives an audio file upload and proxies it to Speaches.
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'aesoftwares/v1', '/transcribe', [
+        'methods'             => 'POST',
+        'callback'            => 'aesoftwares_handle_transcribe',
+        'permission_callback' => '__return_true',
+    ] );
+} );
+
+function aesoftwares_handle_transcribe( WP_REST_Request $request ) {
+    set_time_limit( 120 );
+
+    $speaches_url   = get_option( 'aesoftwares_speaches_url' );
+    $speaches_token = get_option( 'aesoftwares_speaches_token' );
+
+    if ( empty( $speaches_url ) ) {
+        return new WP_Error( 'no_speaches', 'Transcription service is not configured. Set the Speaches URL in AE Settings.', [ 'status' => 500 ] );
+    }
+
+    // WordPress REST API passes multipart uploads via $_FILES, not WP_REST_Request.
+    $files = ! empty( $_FILES ) ? $_FILES : [];
+    if ( empty( $files['audio']['tmp_name'] ) || ! is_uploaded_file( $files['audio']['tmp_name'] ) ) {
+        return new WP_Error( 'no_audio', 'No audio file received.', [ 'status' => 422 ] );
+    }
+
+    $tmp_path   = $files['audio']['tmp_name'];
+    $mime       = $files['audio']['type'] ?? 'audio/webm';
+    $orig_name  = sanitize_file_name( $files['audio']['name'] ?? 'audio.webm' );
+    $model_name = get_option( 'aesoftwares_ollama_model', 'Systran/faster-whisper-small' );
+
+    $endpoint = rtrim( $speaches_url, '/' ) . '/v1/audio/transcriptions';
+
+    $headers = [ 'Authorization: Bearer ' . $speaches_token ];
+
+    $post_fields = [
+        'file'  => new CURLFile( $tmp_path, $mime, $orig_name ),
+        'model' => $model_name,
+    ];
+
+    $ch = curl_init( $endpoint );
+    curl_setopt_array( $ch, [
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => $post_fields,
+        CURLOPT_HTTPHEADER     => $headers,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 90,
+    ] );
+
+    $body      = curl_exec( $ch );
+    $http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
+    $curl_err  = curl_error( $ch );
+    curl_close( $ch );
+
+    if ( $body === false || ! empty( $curl_err ) ) {
+        return new WP_Error( 'speaches_unreachable', 'Could not reach the transcription server: ' . $curl_err, [ 'status' => 502 ] );
+    }
+
+    $data = json_decode( $body, true );
+
+    if ( $http_code !== 200 ) {
+        $msg = $data['error']['message'] ?? ( 'Speaches returned HTTP ' . $http_code );
+        return new WP_Error( 'speaches_error', $msg, [ 'status' => 502 ] );
+    }
+
+    return new WP_REST_Response( [ 'text' => $data['text'] ?? '' ], 200 );
 }
 
 function aesoftwares_handle_chat_message( WP_REST_Request $request ) {
