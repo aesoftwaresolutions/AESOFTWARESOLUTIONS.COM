@@ -30,11 +30,24 @@ echo ""
 
 # ── 1. System dependencies ─────────────────────────────────────────────────
 echo "[1/7] Installing system dependencies…"
-apt-get update -qq
-apt-get install -y -qq python3 python3-pip python3-venv curl git \
-    libnss3 libatk-bridge2.0-0 libdrm2 libgbm1 libxcomposite1 \
-    libxdamage1 libxfixes3 libxrandr2 libgtk-3-0 libpango-1.0-0 \
-    libcairo2 libasound2 2>/dev/null || true
+if command -v apt-get &>/dev/null; then
+    apt-get update -qq
+    apt-get install -y -qq python3 python3-pip python3-venv curl git \
+        libnss3 libatk-bridge2.0-0 libdrm2 libgbm1 libxcomposite1 \
+        libxdamage1 libxfixes3 libxrandr2 libgtk-3-0 libpango-1.0-0 \
+        libcairo2 libasound2 2>/dev/null || true
+elif command -v dnf &>/dev/null; then
+    # AlmaLinux / RHEL / CentOS Stream
+    dnf install -y -q python3 python3-pip curl git \
+        nss atk at-spi2-atk libdrm mesa-libgbm libXcomposite \
+        libXdamage libXfixes libXrandr gtk3 pango cairo \
+        alsa-lib cups-libs libXScrnSaver libXtst 2>/dev/null || true
+elif command -v yum &>/dev/null; then
+    yum install -y -q python3 python3-pip curl git 2>/dev/null || true
+else
+    echo "  ⚠ No recognised package manager — skipping system deps."
+    echo "    Playwright may fail without Chromium system libraries."
+fi
 
 # ── 2. Clone / update the scraper repo ────────────────────────────────────
 echo "[2/7] Setting up scraper code…"
