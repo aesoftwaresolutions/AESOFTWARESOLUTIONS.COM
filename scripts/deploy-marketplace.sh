@@ -166,9 +166,22 @@ else
     echo "  SERVICE_TOKEN (save this): $SERVICE_TOKEN"
 fi
 
-# Install cron job to auto-restart on reboot
-CRON_CMD="@reboot bash $INSTALL_DIR/start.sh"
-( crontab -l 2>/dev/null | grep -v "ae-marketplace\|ae_wrapper"; echo "$CRON_CMD # ae-marketplace" ) | crontab -
-echo "  → Cron entry added for auto-restart on reboot"
+# ── Auto-configure WordPress options via WP-CLI ─────────────────────────────
+WP_PATH="/home/u257353593/domains/aesoftwaresolutions.com/public_html"
+WP_CMD="wp --allow-root --path=$WP_PATH"
+if command -v wp &>/dev/null && [ -d "$WP_PATH" ]; then
+    echo "  → Saving URL and token to WordPress via WP-CLI…"
+    $WP_CMD option update aesoftwares_marketplace_url "http://127.0.0.1:$PORT" 2>/dev/null && echo "     ✓ Marketplace URL set"  || echo "     ⚠ Failed to set URL"
+    $WP_CMD option update aesoftwares_marketplace_token "$SERVICE_TOKEN"          2>/dev/null && echo "     ✓ Marketplace token set" || echo "     ⚠ Failed to set token"
+    echo "  → WordPress auto-configured. Only Facebook credentials remain."
+else
+    echo "  ⚠ WP-CLI not found — set these in WP Admin → AE Settings manually:"
+    echo "     Marketplace Service URL:   http://127.0.0.1:$PORT"
+    echo "     Marketplace Service Token: (see above)"
+fi
 
-deactivate 2>/dev/null || true
+# ── Cron for auto-restart on reboot ─────────────────────────────────────────
+CRON_CMD="@reboot bash $INSTALL_DIR/start.sh"
+( crontab -l 2>/dev/null | grep -v "ae-marketplace\|ae_wrapper"; echo "$CRON_CMD # ae-marketplace" ) | crontab - 2>/dev/null \
+  && echo "  → Cron @reboot entry added" \
+  || echo "  ⚠ crontab unavailable — use Hostinger cron panel to run: bash ~/ae-marketplace/start.sh"
