@@ -1,0 +1,38 @@
+name: Setup Marketplace Scraper on VPS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Load SSH key into agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add server to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p 65002 -T 10 157.173.209.5 >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Copy deploy script to VPS
+        run: |
+          scp -P 65002 -o StrictHostKeyChecking=no \
+            scripts/deploy-marketplace.sh \
+            u257353593@157.173.209.5:/tmp/deploy-marketplace.sh
+
+      - name: Run deploy script on VPS
+        run: |
+          ssh -p 65002 -o StrictHostKeyChecking=no u257353593@157.173.209.5 \
+            "chmod +x /tmp/deploy-marketplace.sh && bash /tmp/deploy-marketplace.sh 2>&1"
+
+      - name: Save generated token as output
+        run: |
+          echo "Check the step above for the SERVICE_TOKEN line."
+          echo "Copy it into WP Admin → AE Settings → Marketplace Service Token."
