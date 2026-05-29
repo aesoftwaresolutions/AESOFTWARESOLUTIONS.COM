@@ -39,6 +39,16 @@
 			<span class="tool-card__cta">Try it free &rarr;</span>
 		</a>
 
+		<a href="<?php echo esc_url( home_url( '/transcriber/' ) ); ?>" class="tool-card">
+			<div class="tool-card__header">
+				<span class="tool-card__num">04</span>
+				<span class="tool-card__tag">Audio</span>
+			</div>
+			<h2 class="tool-card__title">AI Audio Transcriber</h2>
+			<p class="tool-card__desc">Record from your microphone or upload an audio file and get an accurate text transcript in seconds — powered by Whisper running on our own server. No file size limits, no account needed.</p>
+			<span class="tool-card__cta">Try it free &rarr;</span>
+		</a>
+
 	</div>
 </section>
 

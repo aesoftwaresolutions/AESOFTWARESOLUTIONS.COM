@@ -46,6 +46,7 @@ jobs:
               [rewriter]='AI Content Rewriter'
               [email-drafter]='AI Email Drafter'
               [summarizer]='AI Text Summarizer'
+              [transcriber]='AI Audio Transcriber'
             )
             for slug in \"\${!titles[@]}\"; do
               title=\"\${titles[\$slug]}\"

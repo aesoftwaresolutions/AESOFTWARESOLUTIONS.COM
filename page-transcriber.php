@@ -1,7 +1,7 @@
 <?php /* Template Name: Transcriber */ get_header(); ?>
 
 <div class="page-hero transcriber-hero">
-	<div class="page-hero__eyebrow">Free Tool</div>
+	<div class="page-hero__eyebrow"><a href="<?php echo esc_url( home_url( '/free-tools/' ) ); ?>" class="hero-back-link">&larr; Free Tools</a></div>
 	<h1 class="page-hero__headline">AI Audio<br><em>Transcriber</em></h1>
 	<p class="page-hero__subtitle">Record from your microphone or upload an audio file and get a text transcript in seconds — powered by Whisper running on-site.</p>
 </div>

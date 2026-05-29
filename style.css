@@ -1973,7 +1973,7 @@ input, textarea { font-family: inherit; }
 
 .free-tools-grid {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(2, 1fr);
 	gap: 1.5px;
 	background: var(--border);
 	border: 1px solid var(--border);
@@ -2103,7 +2103,7 @@ input, textarea { font-family: inherit; }
 .rewriter-output--pre { white-space: pre-line; }
 
 /* ── Free tools hub responsive ────────────────────────────────── */
-@media (max-width: 900px) {
+@media (max-width: 700px) {
 	.free-tools-grid { grid-template-columns: 1fr; }
 	.free-tools-note__inner { grid-template-columns: 1fr; gap: 2.5rem; }
 }
