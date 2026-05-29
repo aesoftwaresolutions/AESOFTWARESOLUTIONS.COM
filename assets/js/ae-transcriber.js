@@ -24,14 +24,13 @@
 		loader.style.display = 'none';
 		errorEl.style.display = 'none';
 
-		// ── State ─────────────────────────────────────────────────────────────
 		var mediaRecorder   = null;
 		var recordedChunks  = [];
 		var recordedBlob    = null;
 		var uploadedFile    = null;
 		var timerInterval   = null;
 		var elapsedSeconds  = 0;
-		var MAX_RECORD_SECS = 300; // 5 min hard cap
+		var MAX_RECORD_SECS = 300;
 
 		var micSupported = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 		if (!micSupported) {
@@ -39,7 +38,6 @@
 			recordStatus.textContent = 'Microphone not available in this browser.';
 		}
 
-		// ── Helpers ───────────────────────────────────────────────────────────
 		function countWords(str) {
 			var t = str.trim();
 			return t ? t.split(/\s+/).length : 0;
@@ -90,7 +88,6 @@
 			recordStatus.textContent = label;
 		}
 
-		// ── Recording ─────────────────────────────────────────────────────────
 		function startRecording() {
 			if (!micSupported) return;
 			navigator.mediaDevices.getUserMedia({ audio: true })
@@ -116,7 +113,7 @@
 						recordTimer.hidden = true;
 					};
 
-					mediaRecorder.start(200); // collect every 200ms
+					mediaRecorder.start(200);
 					recordBtn.classList.add('is-recording');
 					recordStatus.textContent = 'Recording…';
 					startTimer();
@@ -138,7 +135,6 @@
 			if (mediaRecorder && mediaRecorder.state === 'recording') {
 				stopRecording();
 			} else {
-				// Clear any previously selected file
 				uploadedFile = null;
 				fileInput.value = '';
 				if (fileNameEl) fileNameEl.hidden = true;
@@ -146,62 +142,49 @@
 			}
 		});
 
-		// ── File upload ───────────────────────────────────────────────────────
 		fileInput.addEventListener('change', function () {
 			var file = fileInput.files[0];
 			if (!file) return;
-
-			// Stop any active recording
 			stopRecording();
-
 			var MAX_BYTES = 25 * 1024 * 1024;
 			if (file.size > MAX_BYTES) {
 				showError('File is too large. Maximum size is 25 MB.');
 				fileInput.value = '';
 				return;
 			}
-
 			hideError();
 			uploadedFile = file;
 			recordedBlob = null;
 			submitBtn.disabled = false;
 			recordStatus.textContent = 'Press to record';
 			recordTimer.hidden = true;
-
 			if (fileNameEl) {
 				fileNameEl.textContent = file.name + ' (' + (file.size / 1024).toFixed(0) + ' KB)';
 				fileNameEl.hidden = false;
 			}
 		});
 
-		// ── Submit ────────────────────────────────────────────────────────────
 		submitBtn.addEventListener('click', function () {
 			var audioSource = uploadedFile || recordedBlob;
 			if (!audioSource) {
 				showError('Record from your microphone or upload a file first.');
 				return;
 			}
-
 			hideError();
 			setLoading(true);
 			outputEl.innerHTML = '';
 			outputCount.textContent = '0';
 			copyBtn.disabled = true;
 			if (clearOutputBtn) clearOutputBtn.disabled = true;
-
 			var fileName = uploadedFile
 				? uploadedFile.name
 				: ('recording-' + Date.now() + '.webm');
-
 			var form = new FormData();
 			form.append('audio', audioSource, fileName);
-
 			fetch(transcribeUrl, { method: 'POST', body: form })
 				.then(function (res) {
 					return res.json().then(function (data) {
-						if (!res.ok) {
-							throw new Error(data.message || ('Server error ' + res.status));
-						}
+						if (!res.ok) throw new Error(data.message || ('Server error ' + res.status));
 						return data;
 					});
 				})
@@ -225,7 +208,6 @@
 				});
 		});
 
-		// ── Copy ──────────────────────────────────────────────────────────────
 		copyBtn.addEventListener('click', function () {
 			var text = outputEl.dataset.text || '';
 			if (!text) return;
@@ -247,7 +229,6 @@
 			}
 		});
 
-		// ── Clear output ─────────────────────────────────────────────────────
 		if (clearOutputBtn) {
 			clearOutputBtn.addEventListener('click', function () {
 				outputEl.innerHTML = '<span class="transcriber-output__placeholder">Your transcript will appear here.</span>';
@@ -257,6 +238,123 @@
 				clearOutputBtn.disabled = true;
 				hideError();
 			});
+		}
+
+		// TTS
+		var ttsUrl        = window.ae_transcriber_settings.tts_url;
+		var ttsInput      = document.getElementById('tts-input');
+		var ttsInputCount = document.getElementById('tts-input-count');
+		var ttsVoice      = document.getElementById('tts-voice');
+		var ttsSubmit     = document.getElementById('tts-submit');
+		var ttsClear      = document.getElementById('tts-clear');
+		var ttsOutputArea = document.getElementById('tts-output-area');
+		var ttsLoader     = document.getElementById('tts-loader');
+		var ttsError      = document.getElementById('tts-error');
+		var ttsDownload   = document.getElementById('tts-download');
+		var currentBlobUrl = null;
+
+		if (ttsInput && ttsSubmit && ttsOutputArea) {
+			ttsLoader.style.display = 'none';
+			ttsError.style.display  = 'none';
+
+			function ttsCountWords(str) {
+				var t = str.trim();
+				return t ? t.split(/\s+/).length : 0;
+			}
+
+			function ttsShowError(msg) {
+				ttsError.textContent   = msg;
+				ttsError.style.display = 'block';
+			}
+
+			function ttsHideError() {
+				ttsError.style.display = 'none';
+				ttsError.textContent   = '';
+			}
+
+			function ttsSetLoading(on) {
+				ttsLoader.style.display = on ? 'flex' : 'none';
+				ttsSubmit.disabled      = on;
+				ttsSubmit.classList.toggle('is-loading', on);
+			}
+
+			ttsInput.addEventListener('input', function () {
+				var wc = ttsCountWords(ttsInput.value);
+				if (ttsInputCount) ttsInputCount.textContent = wc;
+				ttsSubmit.disabled = (wc === 0);
+			});
+
+			if (ttsClear) {
+				ttsClear.addEventListener('click', function () {
+					ttsInput.value = '';
+					if (ttsInputCount) ttsInputCount.textContent = '0';
+					ttsSubmit.disabled = true;
+					ttsHideError();
+				});
+			}
+
+			ttsSubmit.addEventListener('click', function () {
+				var text  = ttsInput.value.trim();
+				var voice = ttsVoice ? ttsVoice.value : 'af_bella';
+				if (!text) return;
+				ttsHideError();
+				ttsSetLoading(true);
+				if (ttsDownload) ttsDownload.disabled = true;
+				ttsOutputArea.innerHTML = '';
+				if (currentBlobUrl) {
+					URL.revokeObjectURL(currentBlobUrl);
+					currentBlobUrl = null;
+				}
+				fetch(ttsUrl, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ text: text, voice: voice })
+				})
+					.then(function (res) {
+						return res.json().then(function (data) {
+							if (!res.ok) throw new Error(data.message || ('Server error ' + res.status));
+							return data;
+						});
+					})
+					.then(function (data) {
+						if (!data.audio) throw new Error('No audio returned from server.');
+						var binary = atob(data.audio);
+						var bytes  = new Uint8Array(binary.length);
+						for (var i = 0; i < binary.length; i++) {
+							bytes[i] = binary.charCodeAt(i);
+						}
+						var blob = new Blob([bytes], { type: 'audio/mpeg' });
+						currentBlobUrl = URL.createObjectURL(blob);
+						var audio = document.createElement('audio');
+						audio.controls = true;
+						audio.style.width = '100%';
+						audio.src = currentBlobUrl;
+						ttsOutputArea.appendChild(audio);
+						if (ttsDownload) {
+							ttsDownload.dataset.blobUrl = currentBlobUrl;
+							ttsDownload.disabled = false;
+						}
+					})
+					.catch(function (err) {
+						ttsShowError(err.message || 'Something went wrong. Please try again.');
+					})
+					.finally(function () {
+						ttsSetLoading(false);
+					});
+			});
+
+			if (ttsDownload) {
+				ttsDownload.addEventListener('click', function () {
+					var url = ttsDownload.dataset.blobUrl;
+					if (!url) return;
+					var a = document.createElement('a');
+					a.href     = url;
+					a.download = 'speech.mp3';
+					document.body.appendChild(a);
+					a.click();
+					document.body.removeChild(a);
+				});
+			}
 		}
 	});
 })();
