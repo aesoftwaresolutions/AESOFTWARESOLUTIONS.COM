@@ -88,6 +88,20 @@ function aesoftwares_enqueue_scripts() {
         ] );
     }
 
+    // ── Marketplace scraper (private admin tool) ──────────────────────────
+    if ( is_page_template( 'page-marketplace.php' ) ) {
+        wp_enqueue_script(
+            'ae-marketplace',
+            $uri . '/assets/js/ae-marketplace.js',
+            [],
+            filemtime( $js . 'ae-marketplace.js' ),
+            [ 'in_footer' => true, 'strategy' => 'defer' ]
+        );
+        wp_localize_script( 'ae-marketplace', 'ae_marketplace_settings', [
+            'marketplace_url' => get_rest_url( null, 'aesoftwares/v1/marketplace' ),
+        ] );
+    }
+
     // ── Cinematic stack (front page only) ─────────────────────────────────
     if ( is_front_page() ) {
 
@@ -203,6 +217,10 @@ function aesoftwares_settings_init() {
     register_setting( 'aesoftwares_settings', 'aesoftwares_anthropic_api_key' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_speaches_url' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_speaches_token' );
+    register_setting( 'aesoftwares_settings', 'aesoftwares_marketplace_url' );
+    register_setting( 'aesoftwares_settings', 'aesoftwares_marketplace_token' );
+    register_setting( 'aesoftwares_settings', 'aesoftwares_fb_email' );
+    register_setting( 'aesoftwares_settings', 'aesoftwares_fb_password' );
 
     add_settings_section(
         'aesoftwares_n8n_section',
@@ -284,6 +302,47 @@ function aesoftwares_settings_init() {
         'aesoftwares_settings',
         'aesoftwares_speaches_section'
     );
+
+    add_settings_section(
+        'aesoftwares_marketplace_section',
+        'Marketplace Scraper Settings',
+        function() {
+            echo '<p style="color:#999;font-size:13px;">Private Facebook Marketplace scraper. Run <code>bash scripts/deploy-marketplace.sh</code> on the VPS to install, then paste the service URL and token here. Facebook credentials are stored encrypted in the database and passed to the scraper at runtime.</p>';
+        },
+        'aesoftwares_settings'
+    );
+
+    add_settings_field(
+        'aesoftwares_marketplace_url_field',
+        'Marketplace Service URL',
+        'aesoftwares_marketplace_url_field_html',
+        'aesoftwares_settings',
+        'aesoftwares_marketplace_section'
+    );
+
+    add_settings_field(
+        'aesoftwares_marketplace_token_field',
+        'Marketplace Service Token',
+        'aesoftwares_marketplace_token_field_html',
+        'aesoftwares_settings',
+        'aesoftwares_marketplace_section'
+    );
+
+    add_settings_field(
+        'aesoftwares_fb_email_field',
+        'Facebook Email',
+        'aesoftwares_fb_email_field_html',
+        'aesoftwares_settings',
+        'aesoftwares_marketplace_section'
+    );
+
+    add_settings_field(
+        'aesoftwares_fb_password_field',
+        'Facebook Password',
+        'aesoftwares_fb_password_field_html',
+        'aesoftwares_settings',
+        'aesoftwares_marketplace_section'
+    );
 }
 add_action( 'admin_init', 'aesoftwares_settings_init' );
 
@@ -361,6 +420,50 @@ function aesoftwares_speaches_token_field_html() {
            class="regular-text"
            placeholder="your-speaches-api-token">
     <p class="description">API token printed by the deploy script. Sent as <code>Authorization: Bearer</code> header.</p>
+    <?php
+}
+
+function aesoftwares_marketplace_url_field_html() {
+    $url = get_option( 'aesoftwares_marketplace_url', '' );
+    ?>
+    <input type="url" name="aesoftwares_marketplace_url"
+           value="<?php echo esc_attr( $url ); ?>"
+           class="regular-text"
+           placeholder="http://127.0.0.1:8001">
+    <p class="description">URL of the marketplace FastAPI service (no trailing slash). Use <code>http://127.0.0.1:8001</code> if on the same VPS.</p>
+    <?php
+}
+
+function aesoftwares_marketplace_token_field_html() {
+    $token = get_option( 'aesoftwares_marketplace_token', '' );
+    ?>
+    <input type="password" name="aesoftwares_marketplace_token"
+           value="<?php echo esc_attr( $token ); ?>"
+           class="regular-text"
+           placeholder="your-marketplace-token">
+    <p class="description">Token sent as <code>X-Marketplace-Token</code> header to the scraper service.</p>
+    <?php
+}
+
+function aesoftwares_fb_email_field_html() {
+    $email = get_option( 'aesoftwares_fb_email', '' );
+    ?>
+    <input type="email" name="aesoftwares_fb_email"
+           value="<?php echo esc_attr( $email ); ?>"
+           class="regular-text"
+           placeholder="your@email.com">
+    <p class="description">Facebook account email used by the headless browser to log in. Use a dedicated burner account.</p>
+    <?php
+}
+
+function aesoftwares_fb_password_field_html() {
+    $pw = get_option( 'aesoftwares_fb_password', '' );
+    ?>
+    <input type="password" name="aesoftwares_fb_password"
+           value="<?php echo esc_attr( $pw ); ?>"
+           class="regular-text"
+           placeholder="••••••••">
+    <p class="description">Facebook account password. Stored in the WP options table (encrypted at rest if you have a secrets plugin).</p>
     <?php
 }
 
@@ -899,6 +1002,98 @@ function aesoftwares_call_vps( $system_prompt, $user_message, $response_key ) {
     }
 
     return new WP_REST_Response( [ $response_key => $body['content'][0]['text'] ?? '' ], 200 );
+}
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// 7. REST API — Marketplace Scraper proxy (admin only)
+// ══════════════════════════════════════════════════════════════════════════════
+
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'aesoftwares/v1', '/marketplace', [
+        'methods'             => 'POST',
+        'callback'            => 'aesoftwares_handle_marketplace',
+        'permission_callback' => function () {
+            // Require a valid logged-in admin to call this endpoint
+            return current_user_can( 'manage_options' );
+        },
+        'args' => [
+            'city' => [
+                'required'          => true,
+                'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => function ( $v ) { return is_string( $v ) && strlen( trim( $v ) ) > 0; },
+            ],
+            'query' => [
+                'required'          => true,
+                'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => function ( $v ) { return is_string( $v ) && strlen( trim( $v ) ) > 0; },
+            ],
+            'max_price' => [
+                'required'          => false,
+                'validate_callback' => function ( $v ) { return is_numeric( $v ) && (int) $v >= 0; },
+            ],
+        ],
+    ] );
+} );
+
+function aesoftwares_handle_marketplace( WP_REST_Request $request ) {
+    set_time_limit( 90 );
+
+    $service_url   = get_option( 'aesoftwares_marketplace_url' );
+    $service_token = get_option( 'aesoftwares_marketplace_token' );
+    $fb_email      = get_option( 'aesoftwares_fb_email' );
+    $fb_password   = get_option( 'aesoftwares_fb_password' );
+
+    if ( empty( $service_url ) ) {
+        return new WP_Error( 'no_marketplace', 'Marketplace service is not configured. Set the URL in AE Settings.', [ 'status' => 500 ] );
+    }
+
+    $city      = $request->get_param( 'city' );
+    $query     = $request->get_param( 'query' );
+    $max_price = $request->get_param( 'max_price' );
+
+    // Build query string for the FastAPI service
+    $params = [
+        'city'  => $city,
+        'query' => $query,
+    ];
+    if ( ! empty( $max_price ) ) {
+        $params['max_price'] = (int) $max_price;
+    }
+
+    $scraper_endpoint = rtrim( $service_url, '/' ) . '/crawl_facebook_marketplace?' . http_build_query( $params );
+
+    $headers = [
+        'Accept'              => 'application/json',
+        'X-Marketplace-Token' => $service_token,
+    ];
+
+    // Pass FB credentials as headers so they never touch query strings or logs
+    if ( ! empty( $fb_email ) )    $headers['X-FB-Email']    = $fb_email;
+    if ( ! empty( $fb_password ) ) $headers['X-FB-Password'] = $fb_password;
+
+    $response = wp_remote_get( $scraper_endpoint, [
+        'headers' => $headers,
+        'timeout' => 80,
+    ] );
+
+    if ( is_wp_error( $response ) ) {
+        return new WP_Error( 'scraper_unreachable', 'Could not reach the marketplace scraper: ' . $response->get_error_message(), [ 'status' => 502 ] );
+    }
+
+    $code = wp_remote_retrieve_response_code( $response );
+    $body = wp_remote_retrieve_body( $response );
+    $data = json_decode( $body, true );
+
+    if ( $code !== 200 ) {
+        $msg = is_array( $data ) ? ( $data['detail'] ?? ( 'Scraper returned HTTP ' . $code ) ) : ( 'Scraper returned HTTP ' . $code );
+        return new WP_Error( 'scraper_error', $msg, [ 'status' => 502 ] );
+    }
+
+    // Normalise: the scraper returns a bare array of listing objects
+    $listings = is_array( $data ) ? $data : [];
+
+    return new WP_REST_Response( [ 'listings' => $listings ], 200 );
 }
 
 
