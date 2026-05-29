@@ -13,7 +13,6 @@ set -euo pipefail
 HOME_DIR="${HOME:-/home/u257353593}"
 INSTALL_DIR="$HOME_DIR/ae-marketplace"
 PORT=8001
-VENV="$INSTALL_DIR/venv"
 PID_FILE="$INSTALL_DIR/server.pid"
 LOG_FILE="$INSTALL_DIR/server.log"
 
@@ -56,19 +55,23 @@ else
     git clone --quiet https://github.com/passivebot/facebook-marketplace-scraper.git "$INSTALL_DIR"
 fi
 
-# ── 3. Python virtual environment ──────────────────────────────────────────
-echo "[3/6] Setting up Python venv…"
-if [ ! -d "$VENV" ]; then
-    "$PYTHON" -m venv "$VENV"
-fi
-source "$VENV/bin/activate"
+# ── 3. Install Python packages (user-local, no venv needed) ────────────────
+echo "[3/6] Installing Python packages…"
 
-echo "  → Installing packages…"
-pip install --quiet --upgrade pip
-pip install --quiet fastapi "uvicorn[standard]" playwright beautifulsoup4 requests lxml
+# Ensure ~/.local/bin is on PATH so installed scripts are found
+export PATH="$HOME/.local/bin:$PATH"
 
-echo "  → Installing Playwright Chromium…"
-python -m playwright install chromium 2>&1 | tail -3
+# Upgrade pip first (quietly, ignore errors if pip isn't upgradable)
+"$PYTHON" -m pip install --quiet --upgrade pip --user 2>/dev/null || true
+
+echo "  → Installing fastapi, uvicorn, playwright, beautifulsoup4…"
+"$PYTHON" -m pip install --quiet --user fastapi "uvicorn[standard]" playwright beautifulsoup4 requests lxml
+
+echo "  → Installing Playwright Chromium (may take a minute)…"
+"$PYTHON" -m playwright install chromium 2>&1 | tail -5 || {
+    echo "  ⚠ Playwright Chromium install failed — may need manual setup on the server."
+    echo "    Continuing anyway; scraping will fail until Chromium is available."
+}
 
 # ── 4. Generate a service token ─────────────────────────────────────────────
 echo "[4/6] Generating service token…"
@@ -130,7 +133,7 @@ fi
 # Write startup script (cron uses this to restart on reboot)
 cat > "$INSTALL_DIR/start.sh" << STARTEOF
 #!/usr/bin/env bash
-source "$VENV/bin/activate"
+export PATH="\$HOME/.local/bin:\$PATH"
 export MARKETPLACE_TOKEN="$SERVICE_TOKEN"
 cd "$INSTALL_DIR"
 nohup uvicorn ae_wrapper:wrapper --host 127.0.0.1 --port $PORT --workers 1 \\
