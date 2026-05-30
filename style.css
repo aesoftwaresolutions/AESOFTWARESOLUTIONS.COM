@@ -393,7 +393,7 @@ input, textarea { font-family: inherit; }
 
 .reveal-headline { margin: 0; }
 
-.reveal-headline span {
+.reveal-headline > span {
 	display: block;
 	font-family: var(--font-editorial);
 	font-size: clamp(2.5rem, 5.5vw, 5rem);
@@ -3047,7 +3047,7 @@ button {
    The result: text "illuminates" as you scroll past it — Opal's signature.
 */
 .rw {
-	display: inline;
+	display: inline !important;  /* prevent ancestor `span` rules from making these block */
 	opacity: 0.12;
 	transition: opacity 0.12s linear;
 	will-change: opacity;
@@ -3148,7 +3148,7 @@ button {
 	max-width: none;
 }
 
-.reveal-headline span {
+.reveal-headline > span {
 	font-size: clamp(3.5rem, 7.5vw, 9rem);
 	font-weight: 300;
 	letter-spacing: -0.03em;
@@ -3405,7 +3405,7 @@ button {
 		font-size: clamp(2.75rem, 9vw, 5rem);
 		letter-spacing: -0.02em;
 	}
-	.reveal-headline span {
+	.reveal-headline > span {
 		font-size: clamp(2.25rem, 8vw, 5rem);
 	}
 	.tiers-grid {
@@ -3724,7 +3724,7 @@ button {
 	--text: #ffffff;
 }
 .reveal-section .reveal-label { color: rgba(255,255,255,0.4); }
-.reveal-section .reveal-headline span { color: #ffffff; }
+.reveal-section .reveal-headline > span { color: #ffffff; }
 .reveal-section .reveal-headline em   { color: var(--accent); }
 
 /* Hero: pure black, no surface noise */
@@ -3860,7 +3860,7 @@ body.nav-open { overflow: hidden; }
 
 	/* Reveal section */
 	.reveal-section { padding: 4rem 1.5rem; }
-	.reveal-headline span { font-size: clamp(2rem, 9vw, 3.5rem); }
+	.reveal-headline > span { font-size: clamp(2rem, 9vw, 3.5rem); }
 
 	/* Stats */
 	.stats-section { padding: 3rem 1.5rem; }
@@ -4163,7 +4163,7 @@ body.nav-open { overflow: hidden; }
 
 /* ── Reveal section: full-width text, can be larger but not 9rem ─────────── */
 /* Was clamp(3.5rem, 7.5vw, 9rem) → 144px. Target: ~72–88px max */
-.reveal-headline span {
+.reveal-headline > span {
 	font-size: clamp(2.25rem, 4.5vw, 5.5rem);
 	line-height: 1.1;
 	letter-spacing: -0.025em;
@@ -4236,7 +4236,7 @@ body.nav-open { overflow: hidden; }
 /* ── Large-desktop fine-tuning (1600px+) ─────────────────────────────────── */
 @media (min-width: 1600px) {
 	.hero-headline    { font-size: 4.25rem; }  /* lock to max */
-	.reveal-headline span { font-size: 5.5rem; }
+	.reveal-headline > span { font-size: 5.5rem; }
 	.page-hero__headline  { font-size: 4.5rem; }
 	.section-title        { font-size: 3.75rem; }
 	.stat-number          { font-size: 4rem; }
