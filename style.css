@@ -462,8 +462,14 @@ input, textarea { font-family: inherit; }
 
 .testimonials-section-wrap {
 	padding: var(--section-pad) clamp(1.5rem, 5vw, 4rem);
+	width: 100%;
+}
+.testimonials-section-wrap .section-header,
+.testimonials-section-wrap ae-testimonials {
 	max-width: var(--max-width);
-	margin: 0 auto;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
 }
 
 .site-footer {
@@ -2405,8 +2411,14 @@ input, textarea { font-family: inherit; }
 
 .tiers-section {
 	padding: var(--section-pad) clamp(1.5rem, 5vw, 4rem);
+	/* Full-width section — inner content constrained via .section-header / .tiers-grid */
+	width: 100%;
+}
+.tiers-section .section-header,
+.tiers-section .tiers-grid {
 	max-width: var(--max-width);
-	margin: 0 auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .tiers-grid {
@@ -4131,4 +4143,101 @@ body.nav-open { overflow: hidden; }
 @media (max-width: 768px) {
 	.hero-section::after { display: none; }
 	.process-track::before { display: none; } /* connector hidden on mobile stacked layout */
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════════
+   DESKTOP SCALING FIX
+   Corrects oversized type and broken full-width sections on large displays.
+   Problem: clamp() vw values produced 152px headlines at 2013px viewport.
+   Solution: tighter clamp ranges capped at readable display sizes.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Hero headline: 3 long lines, must fit within 1280px content column ─── */
+/* Was clamp(3.75rem, 8vw, 9.5rem) → 152px at 2013px. Target: ~64–72px max */
+.hero-headline {
+	font-size: clamp(2rem, 3.6vw, 4.25rem);
+	line-height: 1.06;
+	letter-spacing: -0.025em;
+}
+
+/* ── Reveal section: full-width text, can be larger but not 9rem ─────────── */
+/* Was clamp(3.5rem, 7.5vw, 9rem) → 144px. Target: ~72–88px max */
+.reveal-headline span {
+	font-size: clamp(2.25rem, 4.5vw, 5.5rem);
+	line-height: 1.1;
+	letter-spacing: -0.025em;
+}
+
+/* ── Page hero (inner pages): same issue as main hero ────────────────────── */
+/* Was clamp(3rem, 6vw, 7rem) → would hit 7rem at 1867px */
+.page-hero__headline {
+	font-size: clamp(2rem, 3.8vw, 4.5rem);
+	line-height: 1.06;
+}
+
+/* ── Section titles (tiers heading, industries heading etc.) ─────────────── */
+/* Was clamp(2.5rem, 5vw, 4.5rem) — the max cap of 4.5rem is fine,
+   but 5vw could exceed it below the cap, so lock it to the capped value */
+.section-title {
+	font-size: clamp(2rem, 3.5vw, 3.75rem);
+}
+
+/* ── Assessment hero: same family as page-hero ───────────────────────────── */
+.assessment-hero__headline {
+	font-size: clamp(2rem, 3.8vw, 4.5rem);
+}
+
+/* ── Stat numbers: don't let them balloon at very large viewports ─────────── */
+.stat-number {
+	font-size: clamp(2.5rem, 4vw, 4rem);
+}
+
+/* ── Section padding cap: sections feel cavernous past ~1600px ───────────── */
+/* The var(--section-pad) uses clamp(48px, 5vw, 88px) which is fine,
+   but inner pages have larger top padding that needs capping */
+.page-hero {
+	padding-top: clamp(100px, 10vw, 160px);
+	padding-bottom: clamp(40px, 4vw, 80px);
+}
+
+/* ── Ensure process section header is also max-width constrained ────────── */
+.process-section .process-header {
+	max-width: var(--max-width);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* ── Industries strip inner content ──────────────────────────────────────── */
+.industries-strip__inner {
+	max-width: var(--max-width);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* ── Contain reveal-section text within a readable column width ──────────── */
+/* Full-bleed black background is kept; text is constrained to ~1100px max */
+.reveal-inner {
+	max-width: 1100px;
+}
+
+/* ── Nav: prevent content from stretching beyond max-width on huge screens  */
+.site-header__inner {
+	max-width: 1400px;
+}
+
+/* ── Footer inner content cap ────────────────────────────────────────────── */
+.footer-top,
+.footer-mid,
+.footer-bottom {
+	max-width: var(--max-width);
+}
+
+/* ── Large-desktop fine-tuning (1600px+) ─────────────────────────────────── */
+@media (min-width: 1600px) {
+	.hero-headline    { font-size: 4.25rem; }  /* lock to max */
+	.reveal-headline span { font-size: 5.5rem; }
+	.page-hero__headline  { font-size: 4.5rem; }
+	.section-title        { font-size: 3.75rem; }
+	.stat-number          { font-size: 4rem; }
 }
