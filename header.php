@@ -36,8 +36,28 @@
 		</nav>
 
 		<a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="site-header__cta btn btn--primary">Start Assessment</a>
+
+		<!-- Hamburger — mobile only -->
+		<button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+			<span class="nav-toggle__bar"></span>
+			<span class="nav-toggle__bar"></span>
+			<span class="nav-toggle__bar"></span>
+		</button>
 	</div>
 </header>
+
+<!-- Mobile nav overlay -->
+<nav class="mobile-nav-overlay" id="mobile-nav" aria-label="Mobile navigation">
+	<ul class="mobile-nav-overlay__links">
+		<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="mobile-nav-overlay__link">Services</a></li>
+		<li><a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>" class="mobile-nav-overlay__link">Industries</a></li>
+		<li><a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="mobile-nav-overlay__link">Case Studies</a></li>
+		<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="mobile-nav-overlay__link">About</a></li>
+		<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="mobile-nav-overlay__link">Contact</a></li>
+	</ul>
+	<a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="btn btn--primary mobile-nav-overlay__cta">Start Assessment</a>
+	<p class="mobile-nav-overlay__footer">AE Software Solutions</p>
+</nav>
 
 <?php if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) : ?>
 <div class="admin-bar-chip admin-bar-chip--in">

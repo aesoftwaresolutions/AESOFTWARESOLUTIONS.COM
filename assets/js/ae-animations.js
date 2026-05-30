@@ -170,12 +170,55 @@
     counters.forEach(function (c) { obs.observe(c); });
   }
 
+  /* ══════════════════════════════════════════════════════════════════════════
+     6. MOBILE NAV OVERLAY
+     Full-screen dark overlay with large-type links — matches Opal's mobile
+     menu aesthetic. Closes on link click or Escape key.
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  function initMobileNav() {
+    var toggle  = document.getElementById('nav-toggle');
+    var overlay = document.getElementById('mobile-nav');
+    if (!toggle || !overlay) return;
+
+    function openNav() {
+      overlay.classList.add('is-open');
+      toggle.classList.add('is-open');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Close menu');
+      document.body.classList.add('nav-open');
+    }
+
+    function closeNav() {
+      overlay.classList.remove('is-open');
+      toggle.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+      document.body.classList.remove('nav-open');
+    }
+
+    toggle.addEventListener('click', function () {
+      overlay.classList.contains('is-open') ? closeNav() : openNav();
+    });
+
+    // Close on any overlay link click
+    overlay.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', closeNav);
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeNav();
+    });
+  }
+
   /* ── Init ──────────────────────────────────────────────────────────────── */
   function init() {
     initRevealText();
     initFadeIn();
     initNav();
     initCounters();
+    initMobileNav();
   }
 
   if (document.readyState === 'loading') {

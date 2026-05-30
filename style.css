@@ -3408,3 +3408,538 @@ button {
 	.tier-card:last-child { border-bottom: none; }
 }
 
+
+/* ════════════════════════════════════════════════════════════════════════════
+   DUAL-TONE DESIGN SYSTEM
+   Black hero → white body sections — exactly like Opal Camera.
+   CSS variable scoping means every component inherits correct colours
+   without touching individual template files.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Light-section variable overrides ───────────────────────────────────── */
+/*
+   Any element that carries .is-light re-defines the design tokens.
+   Child components reading var(--text), var(--bg-card) etc. auto-adapt.
+*/
+.is-light {
+	--bg:           #ffffff;
+	--bg-surface:   #f5f5f3;
+	--bg-card:      #ffffff;
+	--text:         #0c0c0b;
+	--text-muted:   #6a6a66;
+	--border:       rgba(0,0,0,0.09);
+	--border-hover: rgba(0,0,0,0.2);
+	--shadow:       0 8px 32px rgba(0,0,0,0.08);
+	background-color: #ffffff;
+	color: #0c0c0b;
+}
+
+.is-light-alt {
+	--bg:           #f5f5f3;
+	--bg-surface:   #eeeeec;
+	--bg-card:      #f5f5f3;
+	--text:         #0c0c0b;
+	--text-muted:   #6a6a66;
+	--border:       rgba(0,0,0,0.09);
+	--border-hover: rgba(0,0,0,0.2);
+	background-color: #f5f5f3;
+	color: #0c0c0b;
+}
+
+
+/* ── Apply light/alt to specific front-page sections ────────────────────── */
+.stats-section     { background: #f5f5f3; color: #0c0c0b;
+                     --text: #0c0c0b; --text-muted: #6a6a66;
+                     --border: rgba(0,0,0,0.09); border-color: rgba(0,0,0,0.09); }
+
+.tiers-section     { background: #ffffff; color: #0c0c0b;
+                     --text: #0c0c0b; --text-muted: #6a6a66;
+                     --border: rgba(0,0,0,0.09); --bg-card: #ffffff; }
+
+.process-section   { background: #f5f5f3; color: #0c0c0b;
+                     --text: #0c0c0b; --text-muted: #6a6a66;
+                     --border: rgba(0,0,0,0.09); --bg-card: #ffffff; }
+
+.industries-strip  { background: #ffffff; color: #0c0c0b;
+                     --text: #0c0c0b; --text-muted: #6a6a66;
+                     --border: rgba(0,0,0,0.09); }
+
+/* Inner page white sections */
+.services-full-wrap,
+.inner-section-pad,
+.mission-block,
+.work-section,
+.faq-section,
+.process-timeline,
+.contact-layout     { --text: #0c0c0b; --text-muted: #6a6a66;
+                      --border: rgba(0,0,0,0.09); --bg-card: #ffffff;
+                      --bg-surface: #f5f5f3; }
+
+
+/* ── Stats section: light tokens ────────────────────────────────────────── */
+.stats-section { border-top: 1px solid rgba(0,0,0,0.07); border-bottom: 1px solid rgba(0,0,0,0.07); }
+
+.stats-section .stat-number  { color: var(--accent); }
+.stats-section .stat-label   { color: #6a6a66; }
+.stats-section .stat-divider { background: rgba(0,0,0,0.1); }
+
+
+/* ── Tier cards: light theme ─────────────────────────────────────────────── */
+.tiers-section .section-eyebrow { color: #6a6a66; }
+.tiers-section .section-title   { color: #0c0c0b; }
+
+.tiers-section .tiers-grid {
+	border-color: rgba(0,0,0,0.09);
+}
+
+.tiers-section .tier-card {
+	background: #ffffff;
+	border-right-color: rgba(0,0,0,0.09);
+}
+
+.tiers-section .tier-card--featured {
+	background: #f8f6f1;
+	border-color: rgba(201,169,110,0.25);
+}
+
+.tiers-section .tier-card:hover {
+	background: #fafafa;
+}
+
+.tiers-section .tier-card__num   { color: #aaaaaa; }
+.tiers-section .tier-card__label { color: var(--accent); }
+.tiers-section .tier-card__title { color: #0c0c0b; }
+.tiers-section .tier-card__desc  { color: #6a6a66; }
+
+.tiers-section .tier-card__list li {
+	color: #6a6a66;
+	border-top-color: rgba(0,0,0,0.07);
+}
+
+.tiers-section .tier-card__link  { color: var(--accent); }
+
+
+/* ── Process steps: light theme ─────────────────────────────────────────── */
+.process-section .process-eyebrow,
+.process-section .process-title { color: #0c0c0b; }
+.process-section .process-title { color: #0c0c0b; }
+
+.process-section .process-step {
+	background: #ffffff;
+	border-color: rgba(0,0,0,0.08);
+}
+
+.process-section .process-step:hover {
+	border-color: rgba(0,0,0,0.16);
+}
+
+.process-section .process-step__title { color: #0c0c0b; }
+.process-section .process-step__text  { color: #6a6a66; }
+
+
+/* ── Industries strip: light theme ──────────────────────────────────────── */
+.industries-strip .industries-strip__label { color: #6a6a66; }
+
+.industries-strip .industry-chip {
+	background: #f5f5f3;
+	border-color: rgba(0,0,0,0.1);
+	color: #0c0c0b;
+}
+
+.industries-strip .industry-chip:hover {
+	border-color: var(--accent);
+	background: #fff;
+	color: #0c0c0b;
+}
+
+
+/* ── Inner pages: services, about, work, contact ─────────────────────────── */
+.page-hero {
+	background: #000000;                       /* always dark */
+}
+
+/* Content areas below the page hero go white */
+.services-full-wrap { background: #ffffff; }
+.services-full-wrap .service-card-full {
+	background: #f8f8f6;
+	border-color: rgba(0,0,0,0.08);
+}
+.services-full-wrap .service-card-full:hover { background: #f0f0ee; }
+.services-full-wrap .service-card-full__num   { color: rgba(201,169,110,0.4); }
+.services-full-wrap .service-card-full__title { color: #0c0c0b; }
+.services-full-wrap .service-card-full__desc  { color: #6a6a66; }
+.services-full-wrap .service-card-full__uses li { color: #6a6a66; border-top-color: rgba(0,0,0,0.07); }
+.services-full-wrap .service-card-full__tag   { color: var(--accent); }
+
+/* Mission / about */
+.mission-block { background: #ffffff; border-top-color: rgba(0,0,0,0.07); }
+.mission-block .mission-pullquote { color: #0c0c0b; }
+.mission-block .mission-body p    { color: #6a6a66; }
+
+/* Values grid */
+.values-grid { background: rgba(0,0,0,0.06); }
+.value-card  { background: #ffffff; }
+.value-card:hover { background: #f8f8f6; }
+.value-card__title { color: #0c0c0b; }
+.value-card__text  { color: #6a6a66; }
+
+/* Work / case studies */
+.work-section { background: #ffffff; }
+.work-grid { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.06); }
+.work-card { background: #ffffff; }
+.work-card:hover { background: #f8f8f6; }
+.work-card__title { color: #0c0c0b; }
+.work-card__desc  { color: #6a6a66; }
+.work-card__outcomes li { color: #6a6a66; }
+.work-card__meta { border-top-color: rgba(0,0,0,0.07); }
+.work-card__tech { color: #9a9a96; }
+.work-cta-bar { background: #f5f5f3; border-top-color: rgba(0,0,0,0.08); }
+.work-cta-bar__text { color: #0c0c0b; }
+
+/* FAQ */
+.faq-section { background: #ffffff; }
+.faq-section__title { color: #0c0c0b; }
+.faq-item { border-bottom-color: rgba(0,0,0,0.08); }
+.faq-item__q { color: #0c0c0b; }
+.faq-item__a { color: #6a6a66; }
+
+/* Service tier sections (services page) */
+.service-tier-section {
+	background: #ffffff;
+	border-bottom-color: rgba(0,0,0,0.07);
+}
+.service-tier-section--alt { background: #f5f5f3; }
+.service-tier-label__num   { color: rgba(201,169,110,0.3); }
+.service-tier-label__tag   { color: var(--accent); }
+.service-tier-title        { color: #0c0c0b; }
+.service-tier-desc         { color: #6a6a66; }
+.service-tier-col__title   { color: #9a9a96; }
+.service-tier-list li      { color: #6a6a66; }
+
+/* Industries page */
+.industry-section { background: #ffffff; border-bottom-color: rgba(0,0,0,0.07); }
+.industry-section--alt { background: #f5f5f3; }
+.industry-section__tag   { color: var(--accent); border-color: rgba(201,169,110,0.3); }
+.industry-section__title { color: #0c0c0b; }
+.industry-section__pain h3,
+.industry-section__solutions h3 { color: #9a9a96; }
+.industry-section__pain li,
+.industry-section__solutions li { color: #6a6a66; }
+
+/* Industries small grid */
+.industries-grid-small .industry-card-small {
+	background: #ffffff;
+	border-color: rgba(0,0,0,0.09);
+}
+.industries-grid-small .industry-card-small:hover { border-color: rgba(0,0,0,0.2); }
+.industries-grid-small .industry-card-small h4    { color: #0c0c0b; }
+.industries-grid-small .industry-card-small p     { color: #6a6a66; }
+
+/* Contact page */
+.contact-layout { background: #ffffff; }
+.contact-sidebar__badge { background: #f5f5f3; border-color: rgba(0,0,0,0.08); border-left-color: var(--accent); }
+.contact-sidebar__badge strong { color: var(--accent); }
+.contact-sidebar__badge p      { color: #6a6a66; }
+.contact-sidebar__label        { color: #9a9a96; }
+.contact-sidebar__email        { color: #0c0c0b; }
+.contact-sidebar__next li      { color: #6a6a66; border-bottom-color: rgba(0,0,0,0.07); }
+.form-field label              { color: #9a9a96; }
+.form-field input,
+.form-field select,
+.form-field textarea           { background: #f5f5f3; border-color: rgba(0,0,0,0.1); color: #0c0c0b; }
+.form-field input::placeholder,
+.form-field textarea::placeholder { color: #aaaaaa; }
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus     { border-color: var(--accent); }
+
+
+/* ── Nav: transparent on black hero, white+dark-text when scrolled ────────
+   Opal's exact pattern: nav has no background on the dark hero,
+   then flips to a clean white surface as you scroll into light sections.  */
+.site-header {
+	background-color: transparent;
+}
+
+.site-header.scrolled {
+	background-color: rgba(255,255,255,0.96);
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+	border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+
+/* Nav links: white on dark hero, dark when scrolled */
+.site-header__logo        { color: #ffffff; }
+.site-header__nav-link    { color: rgba(255,255,255,0.65); }
+.site-header__nav-link:hover { color: #ffffff; }
+
+.site-header.scrolled .site-header__logo     { color: #0c0c0b; }
+.site-header.scrolled .site-header__nav-link { color: rgba(12,12,11,0.6); }
+.site-header.scrolled .site-header__nav-link:hover { color: #0c0c0b; }
+
+/* CTA pill: invert on scroll */
+.site-header__cta.btn--primary {
+	background: rgba(255,255,255,0.12);
+	color: #ffffff;
+	border: 1px solid rgba(255,255,255,0.25);
+}
+.site-header__cta.btn--primary:hover {
+	background: rgba(255,255,255,0.22);
+}
+.site-header.scrolled .site-header__cta.btn--primary {
+	background: var(--accent);
+	color: #0c0c0b;
+	border-color: var(--accent);
+}
+.site-header.scrolled .site-header__cta.btn--primary:hover {
+	background: var(--accent-dark);
+	border-color: var(--accent-dark);
+}
+
+
+/* ── Minimalist cleanup ──────────────────────────────────────────────────── */
+
+/* Remove dot grid from hero — too busy */
+.hero-bg-dots { display: none; }
+
+/* Remove ghost numbers from reveal section */
+.reveal-bg-number { display: none; }
+
+/* Reveal section: keep dark, big type, no max-width cap */
+.reveal-section {
+	background: #000000;
+	color: #ffffff;
+	--text: #ffffff;
+}
+.reveal-section .reveal-label { color: rgba(255,255,255,0.4); }
+.reveal-section .reveal-headline span { color: #ffffff; }
+.reveal-section .reveal-headline em   { color: var(--accent); }
+
+/* Hero: pure black, no surface noise */
+.hero-section { background: #000000; }
+
+/* Footer stays dark */
+.site-footer { background: #040404; }
+
+
+/* ── Mobile hamburger nav (Opal full-screen overlay style) ───────────────── */
+
+.nav-toggle {
+	display: none;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	width: 44px;
+	height: 44px;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	z-index: 101;
+	flex-shrink: 0;
+}
+
+.nav-toggle__bar {
+	display: block;
+	width: 22px;
+	height: 1.5px;
+	background: currentColor;
+	color: inherit;
+	border-radius: 2px;
+	transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+	transform-origin: center;
+}
+
+/* Animate to X when open */
+.nav-toggle.is-open .nav-toggle__bar:nth-child(1) {
+	transform: translateY(6.5px) rotate(45deg);
+}
+.nav-toggle.is-open .nav-toggle__bar:nth-child(2) {
+	opacity: 0;
+	transform: scaleX(0);
+}
+.nav-toggle.is-open .nav-toggle__bar:nth-child(3) {
+	transform: translateY(-6.5px) rotate(-45deg);
+}
+
+/* Mobile nav overlay — full-screen dark like Opal */
+.mobile-nav-overlay {
+	display: none;
+	position: fixed;
+	inset: 0;
+	background: #000000;
+	z-index: 100;
+	flex-direction: column;
+	justify-content: flex-end;
+	padding: 2rem 2rem clamp(3rem, 8vw, 5rem);
+	opacity: 0;
+	transition: opacity 0.35s ease;
+	pointer-events: none;
+}
+
+.mobile-nav-overlay.is-open {
+	display: flex;
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.mobile-nav-overlay__links {
+	display: flex;
+	flex-direction: column;
+	gap: 0.1rem;
+	list-style: none;
+	padding: 0;
+	margin: 0 0 3rem 0;
+}
+
+.mobile-nav-overlay__link {
+	display: block;
+	font-size: clamp(2.5rem, 10vw, 4rem);
+	font-weight: 300;
+	letter-spacing: -0.03em;
+	color: rgba(255,255,255,0.9);
+	text-decoration: none;
+	line-height: 1.15;
+	transition: color 0.2s ease;
+	font-family: 'Inter', sans-serif;
+}
+
+.mobile-nav-overlay__link:hover { color: var(--accent); }
+
+.mobile-nav-overlay__cta {
+	display: inline-block;
+	margin-top: 0.5rem;
+}
+
+.mobile-nav-overlay__footer {
+	font-size: 0.75rem;
+	color: rgba(255,255,255,0.3);
+	letter-spacing: 0.08em;
+}
+
+/* Prevent body scroll when mobile nav open */
+body.nav-open { overflow: hidden; }
+
+
+/* ── Mobile responsive overrides ────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+	/* Show hamburger, hide desktop nav */
+	.nav-toggle { display: flex; color: #ffffff; }
+	.site-header.scrolled .nav-toggle { color: #0c0c0b; }
+	.site-header__nav  { display: none !important; }
+	.site-header__cta  { display: none; }
+
+	/* Hero */
+	.hero-section {
+		align-items: flex-start;
+		padding-top: 7rem;
+		padding-bottom: 4rem;
+		min-height: 100svh;            /* use svh to account for mobile browser chrome */
+	}
+	.hero-headline {
+		font-size: clamp(2.75rem, 11vw, 5rem);
+		line-height: 1.05;
+	}
+	.hero-sub { font-size: 0.95rem; max-width: 100%; }
+	.hero-actions { flex-direction: column; gap: 0.75rem; }
+	.hero-actions .btn { width: 100%; text-align: center; justify-content: center; }
+
+	/* Reveal section */
+	.reveal-section { padding: 4rem 1.5rem; }
+	.reveal-headline span { font-size: clamp(2rem, 9vw, 3.5rem); }
+
+	/* Stats */
+	.stats-section { padding: 3rem 1.5rem; }
+	.stats-row { flex-direction: column; gap: 1.75rem; }
+	.stat-divider { width: 40px; height: 1px; }
+	.stat-number { font-size: clamp(2.25rem, 8vw, 3.5rem); }
+
+	/* Tiers */
+	.tiers-section { padding: 3.5rem 1.5rem; }
+	.tiers-grid {
+		display: flex;
+		flex-direction: column;
+		border: none;
+		gap: 1px;
+		background: rgba(0,0,0,0.06);
+	}
+	.tiers-section .tier-card {
+		border-right: none;
+		border-bottom: 1px solid rgba(0,0,0,0.06);
+	}
+	.tiers-section .tier-card:last-child { border-bottom: none; }
+
+	/* Process */
+	.process-track { grid-template-columns: 1fr; gap: 1px; }
+	.process-step { padding: 2rem 1.5rem; }
+
+	/* Industries strip */
+	.industries-strip__chips { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+	.industry-chip { padding: 0.7rem 1rem; font-size: 0.8rem; text-align: center; }
+
+	/* Section headers */
+	.section-header { margin-bottom: 2rem; }
+	.section-title { font-size: clamp(2rem, 8vw, 3.5rem); }
+
+	/* Page hero */
+	.page-hero {
+		padding: calc(80px + 2rem) 1.5rem 2.5rem;
+	}
+	.page-hero__headline { font-size: clamp(2.25rem, 9vw, 4rem); }
+
+	/* Inner sections */
+	.inner-section-pad  { padding: 3rem 1.5rem; }
+	.services-full-wrap { padding: 0 1.5rem 3rem; }
+	.service-tier-section { padding: 3rem 1.5rem; }
+	.industry-section     { padding: 3rem 1.5rem; }
+
+	/* Work grid */
+	.work-grid { grid-template-columns: 1fr; }
+	.work-card--featured { grid-column: auto; }
+	.work-cta-bar { padding: 3rem 1.5rem; }
+	.work-cta-bar__inner { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+
+	/* Mission block */
+	.mission-block { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 1.5rem; }
+	.mission-pullquote { font-size: 1.15rem; }
+
+	/* Values grid */
+	.values-grid { grid-template-columns: 1fr; }
+
+	/* Contact */
+	.contact-layout { grid-template-columns: 1fr; gap: 2.5rem; padding: 0 1.5rem 3rem; }
+	.form-row { grid-template-columns: 1fr; }
+
+	/* Industries body grid */
+	.industry-section__body { grid-template-columns: 1fr; gap: 1.5rem; }
+
+	/* Service tier layout */
+	.service-tier-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+	.service-tier-label { position: static; flex-direction: row; align-items: baseline; gap: 1rem; }
+
+	/* Industries small grid */
+	.industries-grid-small { grid-template-columns: 1fr 1fr; }
+
+	/* Assessment */
+	.assessment-hero { padding: calc(80px + 2rem) 1.5rem 2rem; }
+	.assessment-hero__headline { font-size: clamp(2rem, 9vw, 3.5rem); }
+	.assessment-phases { gap: 0.4rem; }
+	.assessment-phase { padding: 0.35rem 0.6rem; }
+	.assessment-phase__label { font-size: 0.65rem; }
+	.assessment-chat-wrap { padding: 1.5rem 1rem; height: 480px; }
+
+	/* Footer */
+	.footer-top { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 1.5rem 2rem; }
+	.footer-mid { grid-template-columns: 1fr 1fr; padding: 2rem 1.5rem; gap: 2rem; }
+	.footer-bottom { padding: 1.5rem; flex-direction: column; align-items: flex-start; gap: 1rem; }
+}
+
+@media (max-width: 480px) {
+	.industries-grid-small { grid-template-columns: 1fr; }
+	.footer-mid { grid-template-columns: 1fr; }
+	.hero-actions .btn { font-size: 0.875rem; padding: 0.875rem 1.5rem; }
+	.assessment-chat-wrap { height: 420px; }
+	.mobile-nav-overlay__link { font-size: clamp(2rem, 11vw, 3rem); }
+}
