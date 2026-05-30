@@ -18,7 +18,6 @@ function aesoftwares_enqueue_scripts() {
     wp_enqueue_style( 'aesoftwares-style', get_stylesheet_uri(), [], filemtime( $path . '/style.css' ) );
 
     // ── Web component JS (all pages) ──────────────────────────────────────
-    // Use filemtime() for automatic cache busting on every file change.
     $js = $path . '/assets/js/';
 
     wp_enqueue_script( 'ae-greetings',    $uri . '/assets/js/ae-greetings.js',    [], filemtime( $js . 'ae-greetings.js' ),    [ 'in_footer' => true, 'strategy' => 'defer' ] );
@@ -28,7 +27,6 @@ function aesoftwares_enqueue_scripts() {
     wp_enqueue_script( 'ae-assistant',    $uri . '/assets/js/ae-assistant.js',    [], filemtime( $js . 'ae-assistant.js' ),    [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'main',            $uri . '/assets/js/main.js',            [], filemtime( $js . 'main.js' ),            [ 'in_footer' => true, 'strategy' => 'defer' ] );
 
-    // Pass the WordPress REST proxy URL to the assistant component
     wp_localize_script( 'ae-assistant', 'ae_settings', [
         'proxy_url' => get_rest_url( null, 'aesoftwares/v1/chat' ),
     ] );
@@ -59,6 +57,7 @@ function aesoftwares_enqueue_scripts() {
         );
         wp_localize_script( 'ae-transcriber', 'ae_transcriber_settings', [
             'transcribe_url' => get_rest_url( null, 'aesoftwares/v1/transcribe' ),
+            'tts_url'        => get_rest_url( null, 'aesoftwares/v1/tts' ),
         ] );
     }
 
@@ -116,8 +115,6 @@ function aesoftwares_enqueue_scripts() {
     // ── Cinematic stack (front page only) ─────────────────────────────────
     if ( is_front_page() ) {
 
-        // GSAP core — hosted locally (no CDN dependency, reliable cache busting)
-        // IMPORTANT: vendor/ files must exist. Download from https://gsap.com/docs/v3/Installation/
         $vendor = $path . '/assets/js/vendor/';
         $vendor_uri = $uri . '/assets/js/vendor/';
 
@@ -136,15 +133,12 @@ function aesoftwares_enqueue_scripts() {
                 [ 'in_footer' => true, 'strategy' => 'defer' ]
             );
         } else {
-            // Fallback to CDN if local files aren't placed yet (remove once files are installed)
             wp_enqueue_script( 'gsap',               'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js',               [], '3.12.5', [ 'in_footer' => true, 'strategy' => 'defer' ] );
             wp_enqueue_script( 'gsap-scrolltrigger', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js',      [ 'gsap' ], '3.12.5', [ 'in_footer' => true, 'strategy' => 'defer' ] );
         }
 
-        // Lenis smooth scroll
         wp_enqueue_script( 'lenis', 'https://unpkg.com/lenis@1.3.23/dist/lenis.min.js', [], '1.3.23', [ 'in_footer' => true, 'strategy' => 'defer' ] );
 
-        // Our cinematic controller — depends on gsap + scrolltrigger + lenis
         wp_enqueue_script( 'ae-cinematic',
             $uri . '/assets/js/cinematic.js',
             [ 'gsap', 'gsap-scrolltrigger', 'lenis' ],
@@ -173,7 +167,7 @@ add_action( 'init', function () {
 } );
 
 
-// ── Preconnect hints (saves ~150ms on CDN scripts) ────────────────────────
+// ── Preconnect hints ────────────────────────────────────────────────────────
 function aesoftwares_preconnect() {
     if ( ! is_front_page() ) return;
     echo '<link rel="preconnect" href="https://unpkg.com">' . "\n";
@@ -192,7 +186,7 @@ add_action( 'after_setup_theme', 'aesoftwares_setup' );
 
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 2. ADMIN SETTINGS PAGE (n8n Webhook URL)
+// 2. ADMIN SETTINGS PAGE
 // ══════════════════════════════════════════════════════════════════════════════
 
 function aesoftwares_add_admin_menu() {
@@ -233,249 +227,95 @@ function aesoftwares_settings_init() {
     register_setting( 'aesoftwares_settings', 'aesoftwares_fb_email' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_fb_password' );
 
-    add_settings_section(
-        'aesoftwares_n8n_section',
-        'n8n Webhook Settings',
-        null,
-        'aesoftwares_settings'
-    );
-
-    add_settings_field(
-        'aesoftwares_n8n_webhook_url_field',
-        'n8n Webhook URL',
-        'aesoftwares_n8n_webhook_url_field_html',
-        'aesoftwares_settings',
-        'aesoftwares_n8n_section'
-    );
+    add_settings_section( 'aesoftwares_n8n_section', 'n8n Webhook Settings', null, 'aesoftwares_settings' );
+    add_settings_field( 'aesoftwares_n8n_webhook_url_field', 'n8n Webhook URL', 'aesoftwares_n8n_webhook_url_field_html', 'aesoftwares_settings', 'aesoftwares_n8n_section' );
 
     add_settings_section(
         'aesoftwares_ai_section',
         'AI Rewriter Settings',
-        function() {
-            echo '<p style="color:#999;font-size:13px;">Primary: Ollama on VPS. Fallback: Anthropic API (used if Ollama Proxy URL is empty).</p>';
-        },
+        function() { echo '<p style="color:#999;font-size:13px;">Primary: Ollama on VPS. Fallback: Anthropic API (used if Ollama Proxy URL is empty).</p>'; },
         'aesoftwares_settings'
     );
-
-    add_settings_field(
-        'aesoftwares_ollama_proxy_url_field',
-        'Ollama Proxy URL',
-        'aesoftwares_ollama_proxy_url_field_html',
-        'aesoftwares_settings',
-        'aesoftwares_ai_section'
-    );
-
-    add_settings_field(
-        'aesoftwares_ollama_token_field',
-        'Ollama Secret Token',
-        'aesoftwares_ollama_token_field_html',
-        'aesoftwares_settings',
-        'aesoftwares_ai_section'
-    );
-
-    add_settings_field(
-        'aesoftwares_ollama_model_field',
-        'Ollama Model',
-        'aesoftwares_ollama_model_field_html',
-        'aesoftwares_settings',
-        'aesoftwares_ai_section'
-    );
-
-    add_settings_field(
-        'aesoftwares_anthropic_api_key_field',
-        'Anthropic API Key (fallback)',
-        'aesoftwares_anthropic_api_key_field_html',
-        'aesoftwares_settings',
-        'aesoftwares_ai_section'
-    );
+    add_settings_field( 'aesoftwares_ollama_proxy_url_field', 'Ollama Proxy URL',          'aesoftwares_ollama_proxy_url_field_html',    'aesoftwares_settings', 'aesoftwares_ai_section' );
+    add_settings_field( 'aesoftwares_ollama_token_field',     'Ollama Secret Token',        'aesoftwares_ollama_token_field_html',         'aesoftwares_settings', 'aesoftwares_ai_section' );
+    add_settings_field( 'aesoftwares_ollama_model_field',     'Ollama Model',               'aesoftwares_ollama_model_field_html',         'aesoftwares_settings', 'aesoftwares_ai_section' );
+    add_settings_field( 'aesoftwares_anthropic_api_key_field','Anthropic API Key (fallback)','aesoftwares_anthropic_api_key_field_html',   'aesoftwares_settings', 'aesoftwares_ai_section' );
 
     add_settings_section(
         'aesoftwares_speaches_section',
         'Transcription Settings (Speaches / Whisper)',
-        function() {
-            echo '<p style="color:#999;font-size:13px;">Speaches is a self-hosted Whisper transcription server. Run <code>bash scripts/deploy-speaches.sh</code> on the KVM4 VPS to set it up, then paste the URL and token here.</p>';
-        },
+        function() { echo '<p style="color:#999;font-size:13px;">Speaches is a self-hosted Whisper transcription server. Run <code>bash scripts/deploy-speaches.sh</code> on the KVM4 VPS to set it up, then paste the URL and token here.</p>'; },
         'aesoftwares_settings'
     );
-
-    add_settings_field(
-        'aesoftwares_speaches_url_field',
-        'Speaches URL',
-        'aesoftwares_speaches_url_field_html',
-        'aesoftwares_settings',
-        'aesoftwares_speaches_section'
-    );
-
-    add_settings_field(
-        'aesoftwares_speaches_token_field',
-        'Speaches Token',
-        'aesoftwares_speaches_token_field_html',
-        'aesoftwares_settings',
-        'aesoftwares_speaches_section'
-    );
+    add_settings_field( 'aesoftwares_speaches_url_field',   'Speaches URL',   'aesoftwares_speaches_url_field_html',   'aesoftwares_settings', 'aesoftwares_speaches_section' );
+    add_settings_field( 'aesoftwares_speaches_token_field', 'Speaches Token', 'aesoftwares_speaches_token_field_html', 'aesoftwares_settings', 'aesoftwares_speaches_section' );
 
     add_settings_section(
         'aesoftwares_marketplace_section',
         'Marketplace Scraper Settings',
-        function() {
-            echo '<p style="color:#999;font-size:13px;">Private Facebook Marketplace scraper. Run <code>bash scripts/deploy-marketplace.sh</code> on the VPS to install, then paste the service URL and token here. Facebook credentials are stored encrypted in the database and passed to the scraper at runtime.</p>';
-        },
+        function() { echo '<p style="color:#999;font-size:13px;">Private Facebook Marketplace scraper. Run <code>bash scripts/deploy-marketplace.sh</code> on the VPS to install, then paste the service URL and token here.</p>'; },
         'aesoftwares_settings'
     );
-
-    add_settings_field(
-        'aesoftwares_marketplace_url_field',
-        'Marketplace Service URL',
-        'aesoftwares_marketplace_url_field_html',
-        'aesoftwares_settings',
-        'aesoftwares_marketplace_section'
-    );
-
-    add_settings_field(
-        'aesoftwares_marketplace_token_field',
-        'Marketplace Service Token',
-        'aesoftwares_marketplace_token_field_html',
-        'aesoftwares_settings',
-        'aesoftwares_marketplace_section'
-    );
-
-    add_settings_field(
-        'aesoftwares_fb_email_field',
-        'Facebook Email',
-        'aesoftwares_fb_email_field_html',
-        'aesoftwares_settings',
-        'aesoftwares_marketplace_section'
-    );
-
-    add_settings_field(
-        'aesoftwares_fb_password_field',
-        'Facebook Password',
-        'aesoftwares_fb_password_field_html',
-        'aesoftwares_settings',
-        'aesoftwares_marketplace_section'
-    );
+    add_settings_field( 'aesoftwares_marketplace_url_field',   'Marketplace Service URL',   'aesoftwares_marketplace_url_field_html',   'aesoftwares_settings', 'aesoftwares_marketplace_section' );
+    add_settings_field( 'aesoftwares_marketplace_token_field', 'Marketplace Service Token', 'aesoftwares_marketplace_token_field_html', 'aesoftwares_settings', 'aesoftwares_marketplace_section' );
+    add_settings_field( 'aesoftwares_fb_email_field',           'Facebook Email',            'aesoftwares_fb_email_field_html',           'aesoftwares_settings', 'aesoftwares_marketplace_section' );
+    add_settings_field( 'aesoftwares_fb_password_field',        'Facebook Password',         'aesoftwares_fb_password_field_html',        'aesoftwares_settings', 'aesoftwares_marketplace_section' );
 }
 add_action( 'admin_init', 'aesoftwares_settings_init' );
 
 function aesoftwares_n8n_webhook_url_field_html() {
     $url = get_option( 'aesoftwares_n8n_webhook_url', '' );
-    ?>
-    <input type="url" name="aesoftwares_n8n_webhook_url"
-           value="<?php echo esc_attr( $url ); ?>"
-           class="regular-text"
-           placeholder="https://your-n8n-instance.com/webhook/path">
-    <p class="description">Enter the full URL for your n8n webhook.</p>
-    <?php
+    ?><input type="url" name="aesoftwares_n8n_webhook_url" value="<?php echo esc_attr( $url ); ?>" class="regular-text" placeholder="https://your-n8n-instance.com/webhook/path"><p class="description">Enter the full URL for your n8n webhook.</p><?php
 }
 
 function aesoftwares_ollama_proxy_url_field_html() {
     $url = get_option( 'aesoftwares_ollama_proxy_url', '' );
-    ?>
-    <input type="url" name="aesoftwares_ollama_proxy_url"
-           value="<?php echo esc_attr( $url ); ?>"
-           class="regular-text"
-           placeholder="http://145.79.x.x:11435">
-    <p class="description">VPS Nginx proxy URL (no trailing slash). Requests go to <code>{url}/api/chat</code>.</p>
-    <?php
+    ?><input type="url" name="aesoftwares_ollama_proxy_url" value="<?php echo esc_attr( $url ); ?>" class="regular-text" placeholder="http://145.79.x.x:11435"><p class="description">VPS Nginx proxy URL (no trailing slash). Requests go to <code>{url}/api/chat</code>.</p><?php
 }
 
 function aesoftwares_ollama_token_field_html() {
     $token = get_option( 'aesoftwares_ollama_token', '' );
-    ?>
-    <input type="password" name="aesoftwares_ollama_token"
-           value="<?php echo esc_attr( $token ); ?>"
-           class="regular-text"
-           placeholder="your-secret-token">
-    <p class="description">Sent as <code>x-ollama-token</code> header. Must match the Nginx proxy config.</p>
-    <?php
+    ?><input type="password" name="aesoftwares_ollama_token" value="<?php echo esc_attr( $token ); ?>" class="regular-text" placeholder="your-secret-token"><p class="description">Sent as <code>x-ollama-token</code> header.</p><?php
 }
 
 function aesoftwares_ollama_model_field_html() {
     $model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
-    ?>
-    <input type="text" name="aesoftwares_ollama_model"
-           value="<?php echo esc_attr( $model ); ?>"
-           class="regular-text"
-           placeholder="qwen3:8b">
-    <p class="description">Ollama model name. Default: <code>qwen3:8b</code>.</p>
-    <?php
+    ?><input type="text" name="aesoftwares_ollama_model" value="<?php echo esc_attr( $model ); ?>" class="regular-text" placeholder="qwen3:8b"><p class="description">Ollama model name. Default: <code>qwen3:8b</code>.</p><?php
 }
 
 function aesoftwares_anthropic_api_key_field_html() {
     $key = get_option( 'aesoftwares_anthropic_api_key', '' );
-    ?>
-    <input type="password" name="aesoftwares_anthropic_api_key"
-           value="<?php echo esc_attr( $key ); ?>"
-           class="regular-text"
-           placeholder="sk-ant-…">
-    <p class="description">Fallback only — used when Ollama Proxy URL is empty. Get a key at console.anthropic.com.</p>
-    <?php
+    ?><input type="password" name="aesoftwares_anthropic_api_key" value="<?php echo esc_attr( $key ); ?>" class="regular-text" placeholder="sk-ant-…"><p class="description">Fallback only — used when Ollama Proxy URL is empty.</p><?php
 }
 
 function aesoftwares_speaches_url_field_html() {
     $url = get_option( 'aesoftwares_speaches_url', '' );
-    ?>
-    <input type="url" name="aesoftwares_speaches_url"
-           value="<?php echo esc_attr( $url ); ?>"
-           class="regular-text"
-           placeholder="http://127.0.0.1:8000">
-    <p class="description">URL of the Speaches server (no trailing slash). Use <code>http://127.0.0.1:8000</code> if hosted on the same VPS.</p>
-    <?php
+    ?><input type="url" name="aesoftwares_speaches_url" value="<?php echo esc_attr( $url ); ?>" class="regular-text" placeholder="http://127.0.0.1:8000"><p class="description">URL of the Speaches server (no trailing slash).</p><?php
 }
 
 function aesoftwares_speaches_token_field_html() {
     $token = get_option( 'aesoftwares_speaches_token', '' );
-    ?>
-    <input type="password" name="aesoftwares_speaches_token"
-           value="<?php echo esc_attr( $token ); ?>"
-           class="regular-text"
-           placeholder="your-speaches-api-token">
-    <p class="description">API token printed by the deploy script. Sent as <code>Authorization: Bearer</code> header.</p>
-    <?php
+    ?><input type="password" name="aesoftwares_speaches_token" value="<?php echo esc_attr( $token ); ?>" class="regular-text" placeholder="your-speaches-api-token"><p class="description">API token. Sent as <code>Authorization: Bearer</code> header.</p><?php
 }
 
 function aesoftwares_marketplace_url_field_html() {
     $url = get_option( 'aesoftwares_marketplace_url', '' );
-    ?>
-    <input type="url" name="aesoftwares_marketplace_url"
-           value="<?php echo esc_attr( $url ); ?>"
-           class="regular-text"
-           placeholder="http://127.0.0.1:8001">
-    <p class="description">URL of the marketplace FastAPI service (no trailing slash). Use <code>http://127.0.0.1:8001</code> if on the same VPS.</p>
-    <?php
+    ?><input type="url" name="aesoftwares_marketplace_url" value="<?php echo esc_attr( $url ); ?>" class="regular-text" placeholder="http://127.0.0.1:8001"><p class="description">URL of the marketplace FastAPI service (no trailing slash).</p><?php
 }
 
 function aesoftwares_marketplace_token_field_html() {
     $token = get_option( 'aesoftwares_marketplace_token', '' );
-    ?>
-    <input type="password" name="aesoftwares_marketplace_token"
-           value="<?php echo esc_attr( $token ); ?>"
-           class="regular-text"
-           placeholder="your-marketplace-token">
-    <p class="description">Token sent as <code>X-Marketplace-Token</code> header to the scraper service.</p>
-    <?php
+    ?><input type="password" name="aesoftwares_marketplace_token" value="<?php echo esc_attr( $token ); ?>" class="regular-text" placeholder="your-marketplace-token"><p class="description">Token sent as <code>X-Marketplace-Token</code> header.</p><?php
 }
 
 function aesoftwares_fb_email_field_html() {
     $email = get_option( 'aesoftwares_fb_email', '' );
-    ?>
-    <input type="email" name="aesoftwares_fb_email"
-           value="<?php echo esc_attr( $email ); ?>"
-           class="regular-text"
-           placeholder="your@email.com">
-    <p class="description">Facebook account email used by the headless browser to log in. Use a dedicated burner account.</p>
-    <?php
+    ?><input type="email" name="aesoftwares_fb_email" value="<?php echo esc_attr( $email ); ?>" class="regular-text" placeholder="your@email.com"><p class="description">Facebook account email used by the headless browser.</p><?php
 }
 
 function aesoftwares_fb_password_field_html() {
     $pw = get_option( 'aesoftwares_fb_password', '' );
-    ?>
-    <input type="password" name="aesoftwares_fb_password"
-           value="<?php echo esc_attr( $pw ); ?>"
-           class="regular-text"
-           placeholder="••••••••">
-    <p class="description">Facebook account password. Stored in the WP options table (encrypted at rest if you have a secrets plugin).</p>
-    <?php
+    ?><input type="password" name="aesoftwares_fb_password" value="<?php echo esc_attr( $pw ); ?>" class="regular-text" placeholder="••••••••"><p class="description">Facebook account password.</p><?php
 }
 
 
@@ -484,7 +324,7 @@ function aesoftwares_fb_password_field_html() {
 // ══════════════════════════════════════════════════════════════════════════════
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 4. REST API — AI Rewriter (Ollama VPS primary, Anthropic fallback)
+// 4. REST API — AI Rewriter
 // ══════════════════════════════════════════════════════════════════════════════
 
 function aesoftwares_register_rewrite_route() {
@@ -508,8 +348,6 @@ function aesoftwares_register_rewrite_route() {
 }
 add_action( 'rest_api_init', 'aesoftwares_register_rewrite_route' );
 
-// Returns the fraction of $n-word sequences in $rewritten that also appear in $original.
-// Used to catch rewrites that are too close to the source.
 function aesoftwares_ngram_overlap_ratio( $original, $rewritten, $n = 6 ) {
     $normalize = function ( $text ) {
         $text = mb_strtolower( $text );
@@ -538,7 +376,6 @@ function aesoftwares_ngram_overlap_ratio( $original, $rewritten, $n = 6 ) {
     return (float) $matches / $total;
 }
 
-// Split text into ~$max_words chunks on paragraph boundaries.
 function aesoftwares_chunk_text( $text, $max_words = 500 ) {
     $paragraphs = preg_split( '/\n\n+/', trim( $text ) );
     $chunks     = [];
@@ -565,8 +402,6 @@ function aesoftwares_chunk_text( $text, $max_words = 500 ) {
     return $chunks;
 }
 
-// Send one system + user message to the configured AI backend.
-// Returns the rewritten string or a WP_Error.
 function aesoftwares_call_ai_backend( $system_prompt, $user_message ) {
     $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
     $ollama_token = get_option( 'aesoftwares_ollama_token' );
@@ -577,11 +412,11 @@ function aesoftwares_call_ai_backend( $system_prompt, $user_message ) {
             'model'    => $ollama_model,
             'stream'   => false,
             'options'  => [
-                'temperature' => 0.95,  // higher = less predictable word choices = lower perplexity score on detectors
+                'temperature' => 0.95,
                 'top_p'       => 0.95,
                 'top_k'       => 40,
-                'think'       => false, // disable qwen3 thinking mode — deliberate reasoning produces uniformly high-probability output
-                'num_predict' => 1100,  // cap output tokens — prevents over-generation on verbose models (saves 50-100s)
+                'think'       => false,
+                'num_predict' => 1100,
             ],
             'messages' => [
                 [ 'role' => 'system', 'content' => $system_prompt ],
@@ -613,7 +448,6 @@ function aesoftwares_call_ai_backend( $system_prompt, $user_message ) {
                 }
             }
         }
-        // Fall through to Anthropic if Ollama failed
     }
 
     $api_key = get_option( 'aesoftwares_anthropic_api_key' );
@@ -657,7 +491,6 @@ function aesoftwares_call_ai_backend( $system_prompt, $user_message ) {
     return $body['content'][0]['text'] ?? '';
 }
 
-// Short-timeout variant for validation — avoids blocking the response on a slow eval call.
 function aesoftwares_call_ai_backend_short( $system_prompt, $user_message ) {
     $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
     $ollama_token = get_option( 'aesoftwares_ollama_token' );
@@ -668,7 +501,7 @@ function aesoftwares_call_ai_backend_short( $system_prompt, $user_message ) {
             'model'    => $ollama_model,
             'stream'   => false,
             'options'  => [
-                'temperature' => 0.3,  // low temp for validation — we want consistent JSON, not creative output
+                'temperature' => 0.3,
                 'top_p'       => 0.9,
             ],
             'messages' => [
@@ -732,25 +565,23 @@ function aesoftwares_call_ai_backend_short( $system_prompt, $user_message ) {
     return $body['content'][0]['text'] ?? '';
 }
 
-// Evaluate text against 7 human-writing signals. Returns parsed array or null on failure.
-// Uses the short-timeout backend so it never blocks the rewrite response for long.
 function aesoftwares_validate_content( $text ) {
     $system_prompt = 'You are an AI content detection analyst. Evaluate the text provided against seven signals and return a single JSON object — no other text, no markdown, no explanation.
 
 Score each signal from 0 to 10 where 0 = strongly AI-like and 10 = strongly human-like.
 
 Signals:
-1. perplexity_uniformity — Are word choices predictable and safe throughout, or does the writer occasionally reach for an unexpected or unconventional word? (0 = every word is the most probable choice; 10 = meaningfully unpredictable vocabulary)
-2. burstiness — Does sentence length and complexity vary significantly, or is rhythm uniform? (0 = all sentences roughly the same length/structure; 10 = genuine mix of very short and very long sentences)
-3. structural_patterns — Do paragraphs all follow the same formula (topic sentence → support → close) with repeated transition words? (0 = rigid formulaic structure; 10 = varied paragraph shapes and openers)
-4. hedging_and_nuance — Does the writer acknowledge uncertainty or qualify claims where a human would? (0 = all absolute declarative statements; 10 = natural hedging like "it seems", "arguably", "tends to")
-5. vocabulary_naturalness — Does word choice feel naturally human or optimised for clarity and correctness? Contractions, idioms, colloquialisms where appropriate. (0 = sterile/formal throughout; 10 = naturally chosen vocabulary)
-6. grammatical_perfection — Is every sentence flawlessly correct in a way that feels unnatural? (0 = robotically perfect; 10 = minor natural imperfections like comma splices, casual fragments)
-7. semantic_coherence — Does the text flow "too perfectly", every sentence connecting to the next without any tangent or aside? (0 = over-optimised flow; 10 = organic, occasionally digressive)
+1. perplexity_uniformity — Are word choices predictable and safe throughout, or does the writer occasionally reach for an unexpected or unconventional word?
+2. burstiness — Does sentence length and complexity vary significantly, or is rhythm uniform?
+3. structural_patterns — Do paragraphs all follow the same formula?
+4. hedging_and_nuance — Does the writer acknowledge uncertainty or qualify claims where a human would?
+5. vocabulary_naturalness — Does word choice feel naturally human or optimised for clarity?
+6. grammatical_perfection — Is every sentence flawlessly correct in a way that feels unnatural?
+7. semantic_coherence — Does the text flow "too perfectly"?
 
 overall_human_score: integer 0–100, calculated as round(sum_of_all_signal_scores / 7 * 10)
 verdict: "LIKELY_HUMAN" if overall >= 85, "BORDERLINE" if 65–84, "LIKELY_AI" if below 65
-flags: array of brief descriptions for any signal that scored below 6 (empty array if none)
+flags: array of brief descriptions for any signal that scored below 6
 pass: true if overall_human_score >= 75, else false
 
 Return exactly this JSON structure and nothing else:
@@ -767,7 +598,6 @@ Return exactly this JSON structure and nothing else:
 }
 
 function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
-    // Budget 10 min total to cover multiple chunks on large submissions.
     set_time_limit( 600 );
 
     $text = $request->get_param( 'text' );
@@ -780,10 +610,8 @@ function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
 
     $mode_instructions = [
         'standard' => 'Rewrite in a grounded, thoughtful voice — serious but not stiff. Contractions throughout. Vary sentence length erratically: some very short (3–5 words), some long and winding. At least two paragraphs must be a single sentence. Do not summarise at the end of each paragraph. No two paragraphs may open with the same grammatical construction. Embed citations mid-clause.',
-
-        'academic' => 'Rewrite in a scholarly voice that still sounds like a person. Use hedging ("suggests", "appears to", "the data point toward") but place hedges in different positions — mid-clause, end of sentence, start of paragraph — never the same slot twice in a row. Some paragraphs open with evidence; some end on a question or unresolved tension. Citations embedded mid-thought, not announced. At least one paragraph should be a single sentence.',
-
-        'casual'   => 'Rewrite as a smart person talking directly to a reader — blog-post energy, not formal writing. Fragments are fine. Contractions everywhere. Some paragraphs one sentence. Start with the point, not a wind-up. End paragraphs when the thought is done, not with a summary.',
+        'academic' => 'Rewrite in a scholarly voice that still sounds like a person. Use hedging ("suggests", "appears to", "the data point toward") but place hedges in different positions. Some paragraphs open with evidence; some end on a question or unresolved tension. At least one paragraph should be a single sentence.',
+        'casual'   => 'Rewrite as a smart person talking directly to a reader — blog-post energy, not formal writing. Fragments are fine. Contractions everywhere. Some paragraphs one sentence. Start with the point, not a wind-up.',
     ];
 
     $system_prompt = 'You are a human writer rewriting text so it cannot be detected as AI-generated by tools like CopyLeaks, GPTZero, or Originality.ai. These tools detect AI by measuring how predictable each word choice is (perplexity) and how uniformly predictable the whole document is (burstiness). Your job is to be genuinely unpredictable.
@@ -791,44 +619,37 @@ function aesoftwares_handle_rewrite( WP_REST_Request $request ) {
 Preserve all original meaning, facts, citations, and argument structure exactly.
 
 SENTENCE-LEVEL TECHNIQUES — apply all of these:
-- Choose the less obvious synonym sometimes: not "important" → try "consequential", "telling", or "worth pausing on". Not "shows" → try "hints at", "points toward", "complicates".
-- Start some sentences with conjunctions: And. But. Or. So. (These are low-probability openers for AI.)
+- Choose the less obvious synonym sometimes: not "important" → try "consequential", "telling", or "worth pausing on".
+- Start some sentences with conjunctions: And. But. Or. So.
 - Use deliberate fragments. Short ones. They work.
-- Use em-dashes to interrupt or redirect mid-sentence — like a mind catching itself — rather than always using commas.
-- Insert a parenthetical aside (a thought the writer has out loud) at least once per section.
-- Occasionally invert normal word order for emphasis: "What the data do not show is equally significant."
-- Let one sentence per section feel like an afterthought or a concession: "That said, ...", "Then again, ...", "Or perhaps not."
+- Use em-dashes to interrupt or redirect mid-sentence — like a mind catching itself.
+- Insert a parenthetical aside at least once per section.
+- Occasionally invert normal word order for emphasis.
+- Let one sentence per section feel like an afterthought: "That said, ...", "Then again, ...".
 
 PARAGRAPH-LEVEL TECHNIQUES — apply all of these:
 - Make at least two paragraphs exactly one sentence long.
 - Vary paragraph length unpredictably: 1 sentence, then 4, then 2, then 5.
-- Do NOT end paragraphs with a sentence that restates or summarises what the paragraph just said.
+- Do NOT end paragraphs with a sentence that restates or summarises.
 - Some paragraphs should start with a concrete detail or example, not a topic claim.
-- No two consecutive paragraphs may open with the same word or the same grammatical construction (e.g. not two "The ..." openers in a row).
+- No two consecutive paragraphs may open with the same word or construction.
 
-FORBIDDEN — these phrases and patterns appear with AI statistical frequency and will be flagged:
-- "This shows that", "This means that", "This demonstrates", "This highlights", "This is important because"
-- "Furthermore", "Moreover", "In addition", "In conclusion", "It is worth noting", "Notably", "Importantly"
-- "It is important to remember", "At first glance", "When we consider", "Taking this into account"
+FORBIDDEN phrases:
+- "This shows that", "This means that", "This demonstrates", "This highlights"
+- "Furthermore", "Moreover", "In addition", "In conclusion", "It is worth noting"
+- "It is important to remember", "At first glance", "When we consider"
 - Any 5+ consecutive words carried over unchanged from the source text
-- Paragraph-ending summary sentences
-- Two consecutive paragraphs with the same opening word or construction
 
-STYLE EXAMPLES — study the contrast between these two versions. The second version passed human-content detection; the first did not.
+STYLE EXAMPLES — study the contrast:
 
 FLAGGED AS AI (avoid this style):
-"A further reason why zoos are good is because it has research. Many people overlook this part. Research is very important in zoos. This shows that zoos help animals. Furthermore, zoos are beneficial to society. It is important to note that zoos provide conservation. Moreover, zoos educate the public."
+"A further reason why zoos are good is because it has research. Many people overlook this part. Research is very important in zoos. This shows that zoos help animals. Furthermore, zoos are beneficial to society."
 
 PASSED AS HUMAN (write like this):
 "I did not think I would choose it when I first started looking into zoos as a topic. One of those subjects on which people have already made up their minds — usually before they have spent much time thinking about it. But the research side surprised me. Not the headline conservation numbers, which get trotted out whenever someone defends a zoo, but the quieter institutional work: the studbooks, the reintroduction logistics, the veterinary data shared across facilities. It is not glamorous. And it probably does not make up for everything. Still."
 
-Notice: the passing version uses first person, admits uncertainty, interrupts itself, ends on an incomplete thought, and never uses transition words like "Furthermore" or "Moreover". The flagged version is structurally predictable — topic sentence, elaboration, transition, repeat.
-
 Output ONLY the rewritten text. No preamble, no labels, no markdown.';
 
-    // Split into ~800-word chunks on paragraph boundaries for large inputs.
-    // 800 words keeps each chunk within the model's comfortable output range
-    // while reducing the number of sequential AI calls vs the previous 500-word limit.
     $chunks = $word_count > 800 ? aesoftwares_chunk_text( $text, 800 ) : [ $text ];
     $total  = count( $chunks );
     $parts  = [];
@@ -847,15 +668,12 @@ Output ONLY the rewritten text. No preamble, no labels, no markdown.';
 
     $rewritten = implode( "\n\n", $parts );
 
-    // Validation is intentionally excluded from the rewrite response — it runs as
-    // a separate on-demand request via /aesoftwares/v1/validate to keep rewrite
-    // latency as low as possible.
     return new WP_REST_Response( [ 'rewritten' => $rewritten, 'validation' => null ], 200 );
 }
 
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 5. REST API — AI Email Drafter (same VPS backend)
+// 5. REST API — AI Email Drafter
 // ══════════════════════════════════════════════════════════════════════════════
 
 function aesoftwares_register_email_route() {
@@ -884,13 +702,13 @@ function aesoftwares_handle_email( WP_REST_Request $request ) {
     $tone   = $request->get_param( 'tone' );
 
     $tone_instructions = [
-        'professional' => 'Write a professional, polished email. Use clear, business-appropriate language. Be direct and respectful. Include a subject line on the first line prefixed with "Subject:", then a blank line, then the email body.',
-        'friendly'     => 'Write a warm, friendly email. Use a conversational tone, show genuine interest, and keep it approachable. Include a subject line on the first line prefixed with "Subject:", then a blank line, then the email body.',
-        'persuasive'   => 'Write a persuasive email that motivates action. Lead with value, address objections, and end with a clear call to action. Include a subject line on the first line prefixed with "Subject:", then a blank line, then the email body.',
-        'followup'     => 'Write a polite, non-pushy follow-up email. Reference the prior interaction naturally, restate the value briefly, and make it easy to respond. Include a subject line on the first line prefixed with "Subject:", then a blank line, then the email body.',
+        'professional' => 'Write a professional, polished email. Include a subject line on the first line prefixed with "Subject:", then a blank line, then the email body.',
+        'friendly'     => 'Write a warm, friendly email. Use a conversational tone. Include a subject line on the first line prefixed with "Subject:", then a blank line, then the email body.',
+        'persuasive'   => 'Write a persuasive email that motivates action. Lead with value and end with a clear call to action. Include a subject line on the first line prefixed with "Subject:", then a blank line, then the email body.',
+        'followup'     => 'Write a polite, non-pushy follow-up email. Include a subject line on the first line prefixed with "Subject:", then a blank line, then the email body.',
     ];
 
-    $system_prompt = 'You are an expert professional email writer. Write complete, ready-to-send emails based on the user\'s brief. The email must have a compelling subject line, a natural greeting, a well-structured body, and a clear sign-off. Output ONLY the email — subject line first, then the body — with no preamble, explanation, or markdown formatting.';
+    $system_prompt = 'You are an expert professional email writer. Write complete, ready-to-send emails based on the user\'s brief. Output ONLY the email — subject line first, then the body — with no preamble, explanation, or markdown formatting.';
     $user_message  = $tone_instructions[ $tone ] . "\n\nWrite an email based on this brief:\n\n" . $prompt;
 
     return aesoftwares_call_vps( $system_prompt, $user_message, 'email' );
@@ -898,7 +716,7 @@ function aesoftwares_handle_email( WP_REST_Request $request ) {
 
 
 // ══════════════════════════════════════════════════════════════════════════════
-// 6. REST API — AI Summarizer (same VPS backend)
+// 6. REST API — AI Summarizer
 // ══════════════════════════════════════════════════════════════════════════════
 
 function aesoftwares_register_summarize_route() {
@@ -927,19 +745,19 @@ function aesoftwares_handle_summarize( WP_REST_Request $request ) {
     $length = $request->get_param( 'length' );
 
     $length_instructions = [
-        'brief'    => 'Summarise the text in 3–5 concise bullet points. Each bullet should start with "• " and capture one key idea. No introduction, no conclusion — just the bullets.',
-        'standard' => 'Summarise the text in a single clear paragraph of 4–6 sentences. Capture the main argument, key points, and any important conclusion.',
-        'detailed' => 'Write a structured summary with the following sections: "Overview:" (2–3 sentences), "Key Points:" (4–6 bullets starting with "• "), and "Conclusion:" (1–2 sentences on the main takeaway). Keep each section clearly labelled.',
+        'brief'    => 'Summarise the text in 3–5 concise bullet points. Each bullet should start with "• ". No introduction, no conclusion.',
+        'standard' => 'Summarise the text in a single clear paragraph of 4–6 sentences.',
+        'detailed' => 'Write a structured summary with: "Overview:" (2–3 sentences), "Key Points:" (4–6 bullets starting with "• "), and "Conclusion:" (1–2 sentences).',
     ];
 
-    $system_prompt = 'You are a precise summarisation assistant. Summarise the provided text according to the instructions. Preserve meaning and accuracy. Output ONLY the summary — no preamble, no meta-commentary, no markdown formatting other than the bullet characters specified.';
+    $system_prompt = 'You are a precise summarisation assistant. Output ONLY the summary — no preamble, no meta-commentary, no markdown formatting other than bullet characters specified.';
     $user_message  = $length_instructions[ $length ] . "\n\nText to summarise:\n\n" . $text;
 
     return aesoftwares_call_vps( $system_prompt, $user_message, 'summary' );
 }
 
 
-// ── Shared VPS/Anthropic caller used by all AI tools ─────────────────────────
+// ── Shared VPS/Anthropic caller ───────────────────────────────────────────────
 function aesoftwares_call_vps( $system_prompt, $user_message, $response_key ) {
     $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
     $ollama_token = get_option( 'aesoftwares_ollama_token' );
@@ -977,10 +795,9 @@ function aesoftwares_call_vps( $system_prompt, $user_message, $response_key ) {
         }
     }
 
-    // Fallback: Anthropic
     $api_key = get_option( 'aesoftwares_anthropic_api_key' );
     if ( empty( $api_key ) ) {
-        return new WP_Error( 'no_backend', 'No AI backend configured. Set the Ollama Proxy URL or Anthropic API key in AE Settings.', [ 'status' => 500 ] );
+        return new WP_Error( 'no_backend', 'No AI backend configured.', [ 'status' => 500 ] );
     }
 
     $response = wp_remote_post( 'https://api.anthropic.com/v1/messages', [
@@ -1024,25 +841,11 @@ add_action( 'rest_api_init', function () {
     register_rest_route( 'aesoftwares/v1', '/marketplace', [
         'methods'             => 'POST',
         'callback'            => 'aesoftwares_handle_marketplace',
-        'permission_callback' => function () {
-            // Require a valid logged-in admin to call this endpoint
-            return current_user_can( 'manage_options' );
-        },
+        'permission_callback' => function () { return current_user_can( 'manage_options' ); },
         'args' => [
-            'city' => [
-                'required'          => true,
-                'sanitize_callback' => 'sanitize_text_field',
-                'validate_callback' => function ( $v ) { return is_string( $v ) && strlen( trim( $v ) ) > 0; },
-            ],
-            'query' => [
-                'required'          => true,
-                'sanitize_callback' => 'sanitize_text_field',
-                'validate_callback' => function ( $v ) { return is_string( $v ) && strlen( trim( $v ) ) > 0; },
-            ],
-            'max_price' => [
-                'required'          => false,
-                'validate_callback' => function ( $v ) { return is_numeric( $v ) && (int) $v >= 0; },
-            ],
+            'city'      => [ 'required' => true, 'sanitize_callback' => 'sanitize_text_field', 'validate_callback' => function ( $v ) { return is_string( $v ) && strlen( trim( $v ) ) > 0; } ],
+            'query'     => [ 'required' => true, 'sanitize_callback' => 'sanitize_text_field', 'validate_callback' => function ( $v ) { return is_string( $v ) && strlen( trim( $v ) ) > 0; } ],
+            'max_price' => [ 'required' => false, 'validate_callback' => function ( $v ) { return is_numeric( $v ) && (int) $v >= 0; } ],
         ],
     ] );
 } );
@@ -1056,21 +859,15 @@ function aesoftwares_handle_marketplace( WP_REST_Request $request ) {
     $fb_password   = get_option( 'aesoftwares_fb_password' );
 
     if ( empty( $service_url ) ) {
-        return new WP_Error( 'no_marketplace', 'Marketplace service is not configured. Set the URL in AE Settings.', [ 'status' => 500 ] );
+        return new WP_Error( 'no_marketplace', 'Marketplace service is not configured.', [ 'status' => 500 ] );
     }
 
     $city      = $request->get_param( 'city' );
     $query     = $request->get_param( 'query' );
     $max_price = $request->get_param( 'max_price' );
 
-    // Build query string for the FastAPI service
-    $params = [
-        'city'  => $city,
-        'query' => $query,
-    ];
-    if ( ! empty( $max_price ) ) {
-        $params['max_price'] = (int) $max_price;
-    }
+    $params = [ 'city' => $city, 'query' => $query ];
+    if ( ! empty( $max_price ) ) $params['max_price'] = (int) $max_price;
 
     $scraper_endpoint = rtrim( $service_url, '/' ) . '/crawl_facebook_marketplace?' . http_build_query( $params );
 
@@ -1078,15 +875,10 @@ function aesoftwares_handle_marketplace( WP_REST_Request $request ) {
         'Accept'              => 'application/json',
         'X-Marketplace-Token' => $service_token,
     ];
-
-    // Pass FB credentials as headers so they never touch query strings or logs
     if ( ! empty( $fb_email ) )    $headers['X-FB-Email']    = $fb_email;
     if ( ! empty( $fb_password ) ) $headers['X-FB-Password'] = $fb_password;
 
-    $response = wp_remote_get( $scraper_endpoint, [
-        'headers' => $headers,
-        'timeout' => 80,
-    ] );
+    $response = wp_remote_get( $scraper_endpoint, [ 'headers' => $headers, 'timeout' => 80 ] );
 
     if ( is_wp_error( $response ) ) {
         return new WP_Error( 'scraper_unreachable', 'Could not reach the marketplace scraper: ' . $response->get_error_message(), [ 'status' => 502 ] );
@@ -1101,10 +893,7 @@ function aesoftwares_handle_marketplace( WP_REST_Request $request ) {
         return new WP_Error( 'scraper_error', $msg, [ 'status' => 502 ] );
     }
 
-    // Normalise: the scraper returns a bare array of listing objects
-    $listings = is_array( $data ) ? $data : [];
-
-    return new WP_REST_Response( [ 'listings' => $listings ], 200 );
+    return new WP_REST_Response( [ 'listings' => is_array( $data ) ? $data : [] ], 200 );
 }
 
 
@@ -1117,8 +906,7 @@ function aesoftwares_register_chat_route() {
 }
 add_action( 'rest_api_init', 'aesoftwares_register_chat_route' );
 
-// On-demand validation endpoint — separated from /rewrite so the main rewrite
-// path returns immediately without waiting for the scoring AI call.
+// On-demand validation endpoint
 add_action( 'rest_api_init', function () {
     register_rest_route( 'aesoftwares/v1', '/validate', [
         'methods'             => 'POST',
@@ -1137,7 +925,7 @@ function aesoftwares_handle_validate( WP_REST_Request $request ) {
     return new WP_REST_Response( [ 'validation' => $validation ], 200 );
 }
 
-// Transcription endpoint — receives an audio file upload and proxies it to Speaches.
+// Transcription endpoint
 add_action( 'rest_api_init', function () {
     register_rest_route( 'aesoftwares/v1', '/transcribe', [
         'methods'             => 'POST',
@@ -1156,7 +944,6 @@ function aesoftwares_handle_transcribe( WP_REST_Request $request ) {
         return new WP_Error( 'no_speaches', 'Transcription service is not configured. Set the Speaches URL in AE Settings.', [ 'status' => 500 ] );
     }
 
-    // WordPress REST API passes multipart uploads via $_FILES, not WP_REST_Request.
     $files = ! empty( $_FILES ) ? $_FILES : [];
     if ( empty( $files['audio']['tmp_name'] ) || ! is_uploaded_file( $files['audio']['tmp_name'] ) ) {
         return new WP_Error( 'no_audio', 'No audio file received.', [ 'status' => 422 ] );
@@ -1168,8 +955,7 @@ function aesoftwares_handle_transcribe( WP_REST_Request $request ) {
     $model_name = get_option( 'aesoftwares_ollama_model', 'Systran/faster-whisper-small' );
 
     $endpoint = rtrim( $speaches_url, '/' ) . '/v1/audio/transcriptions';
-
-    $headers = [ 'Authorization: Bearer ' . $speaches_token ];
+    $headers  = [ 'Authorization: Bearer ' . $speaches_token ];
 
     $post_fields = [
         'file'  => new CURLFile( $tmp_path, $mime, $orig_name ),
@@ -1371,6 +1157,87 @@ Begin by warmly introducing yourself as an Operational Intelligence Consultant w
     return new WP_REST_Response( [ 'reply' => $data['content'][0]['text'] ?? '' ], 200 );
 }
 
+// ══════════════════════════════════════════════════════════════════════════════
+// 9. REST API — Text-to-Speech (Speaches / Kokoro)
+// ══════════════════════════════════════════════════════════════════════════════
+
+// TTS endpoint
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'aesoftwares/v1', '/tts', [
+        'methods'             => 'POST',
+        'callback'            => 'aesoftwares_handle_tts',
+        'permission_callback' => '__return_true',
+        'args'                => [
+            'text'  => [
+                'required'          => true,
+                'sanitize_callback' => 'sanitize_textarea_field',
+                'validate_callback' => function ( $v ) { return is_string( $v ) && strlen( trim( $v ) ) > 0; },
+            ],
+            'voice' => [
+                'default'           => 'af_bella',
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+        ],
+    ] );
+} );
+
+function aesoftwares_handle_tts( WP_REST_Request $request ) {
+    set_time_limit( 120 );
+
+    $speaches_url   = get_option( 'aesoftwares_speaches_url' );
+    $speaches_token = get_option( 'aesoftwares_speaches_token' );
+
+    if ( empty( $speaches_url ) ) {
+        return new WP_Error( 'no_speaches', 'TTS service is not configured. Set the Speaches URL in AE Settings.', [ 'status' => 500 ] );
+    }
+
+    $text  = $request->get_param( 'text' );
+    $voice = $request->get_param( 'voice' );
+
+    $allowed_voices = [ 'af_bella', 'af_sarah', 'af_sky', 'am_adam', 'am_michael', 'bf_emma', 'bm_george' ];
+    if ( ! in_array( $voice, $allowed_voices, true ) ) {
+        $voice = 'af_bella';
+    }
+
+    $payload = json_encode( [
+        'model'           => 'hexgrad/Kokoro-82M',
+        'input'           => $text,
+        'voice'           => $voice,
+        'response_format' => 'mp3',
+    ] );
+
+    $ch = curl_init( rtrim( $speaches_url, '/' ) . '/v1/audio/speech' );
+    curl_setopt_array( $ch, [
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => $payload,
+        CURLOPT_HTTPHEADER     => [
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $speaches_token,
+        ],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 120,
+    ] );
+
+    $body      = curl_exec( $ch );
+    $http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
+    $curl_err  = curl_error( $ch );
+    curl_close( $ch );
+
+    if ( $body === false || ! empty( $curl_err ) ) {
+        return new WP_Error( 'tts_unreachable', 'Could not reach the TTS server: ' . $curl_err, [ 'status' => 502 ] );
+    }
+
+    if ( $http_code !== 200 ) {
+        $data = json_decode( $body, true );
+        $msg  = $data['detail'] ?? $data['error']['message'] ?? ( 'TTS service returned HTTP ' . $http_code );
+        return new WP_Error( 'tts_error', $msg, [ 'status' => 502 ] );
+    }
+
+    return new WP_REST_Response( [
+        'audio'  => base64_encode( $body ),
+        'format' => 'mp3',
+    ], 200 );
+}
 
 function aesoftwares_handle_chat_message( WP_REST_Request $request ) {
     $n8n_url = get_option( 'aesoftwares_n8n_webhook_url' );

@@ -3,7 +3,7 @@
 <div class="page-hero transcriber-hero">
 	<div class="page-hero__eyebrow"><a href="<?php echo esc_url( home_url( '/free-tools/' ) ); ?>" class="hero-back-link">&larr; Free Tools</a></div>
 	<h1 class="page-hero__headline">AI Audio<br><em>Transcriber</em></h1>
-	<p class="page-hero__subtitle">Record from your microphone or upload an audio file and get a text transcript in seconds — powered by Whisper running on-site.</p>
+	<p class="page-hero__subtitle">Transcribe audio to text or convert text to speech &mdash; both powered by AI running on-site, nothing sent to third parties.</p>
 </div>
 
 <section class="transcriber-section">
@@ -28,9 +28,9 @@
 
 				<div class="transcriber-upload-area">
 					<label for="transcriber-file-input" class="transcriber-upload-label">
-						<span class="transcriber-upload-label__icon">↑</span>
+						<span class="transcriber-upload-label__icon">&uarr;</span>
 						<span class="transcriber-upload-label__text">Upload audio / video file</span>
-						<span class="transcriber-upload-label__hint">MP3, M4A, WAV, WebM, MP4 — max 25 MB</span>
+						<span class="transcriber-upload-label__hint">MP3, M4A, WAV, WebM, MP4 &mdash; max 25 MB</span>
 					</label>
 					<input
 						type="file"
@@ -44,7 +44,7 @@
 				<div class="transcriber-panel__footer">
 					<button id="transcriber-submit" class="rewriter-btn rewriter-btn--primary" disabled>
 						<span class="rewriter-btn__text">Transcribe</span>
-						<span class="rewriter-btn__arrow">→</span>
+						<span class="rewriter-btn__arrow">&rarr;</span>
 					</button>
 				</div>
 			</div>
@@ -61,12 +61,77 @@
 				><span class="transcriber-output__placeholder">Your transcript will appear here.</span></div>
 				<div id="transcriber-loader" class="rewriter-loader" hidden>
 					<div class="rewriter-loader__spinner"></div>
-					<span>Transcribing…</span>
+					<span>Transcribing&hellip;</span>
 				</div>
 				<div id="transcriber-error" class="rewriter-error" hidden></div>
 				<div class="transcriber-panel__footer">
 					<button id="transcriber-copy" class="rewriter-btn rewriter-btn--ghost" disabled>Copy</button>
 					<button id="transcriber-clear-output" class="rewriter-btn rewriter-btn--ghost" disabled>Clear</button>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</section>
+
+<section class="transcriber-section transcriber-section--tts">
+	<div class="transcriber-wrap">
+
+		<div class="transcriber-tool-label">
+			<span class="transcriber-tool-label__tag">Text to Speech</span>
+			<p class="transcriber-tool-label__desc">Type or paste text and generate spoken audio with a choice of voices.</p>
+		</div>
+
+		<div class="transcriber-panels">
+
+			<div class="transcriber-panel transcriber-panel--input">
+				<div class="transcriber-panel__header">
+					<span class="transcriber-panel__label">Text Input</span>
+					<span class="transcriber-panel__count"><span id="tts-input-count">0</span> words</span>
+				</div>
+				<textarea
+					id="tts-input"
+					class="rewriter-textarea"
+					placeholder="Type or paste the text you want spoken&hellip;"
+					rows="10"
+					spellcheck="false"
+				></textarea>
+				<div class="tts-voice-row">
+					<label for="tts-voice" class="tts-voice-label">Voice</label>
+					<select id="tts-voice" class="tts-voice-select">
+						<option value="af_bella">Bella &mdash; US Female</option>
+						<option value="af_sarah">Sarah &mdash; US Female</option>
+						<option value="af_sky">Sky &mdash; US Female</option>
+						<option value="am_adam">Adam &mdash; US Male</option>
+						<option value="am_michael">Michael &mdash; US Male</option>
+						<option value="bf_emma">Emma &mdash; UK Female</option>
+						<option value="bm_george">George &mdash; UK Male</option>
+					</select>
+				</div>
+				<div class="transcriber-panel__footer">
+					<button id="tts-clear" class="rewriter-btn rewriter-btn--ghost">Clear</button>
+					<button id="tts-submit" class="rewriter-btn rewriter-btn--primary" disabled>
+						<span class="rewriter-btn__text">Generate Speech</span>
+						<span class="rewriter-btn__arrow">&rarr;</span>
+					</button>
+				</div>
+			</div>
+
+			<div class="transcriber-panel transcriber-panel--output">
+				<div class="transcriber-panel__header">
+					<span class="transcriber-panel__label">Audio Output</span>
+				</div>
+				<div class="tts-output-area" id="tts-output-area">
+					<span class="transcriber-output__placeholder">Generated audio will appear here.</span>
+				</div>
+				<div id="tts-loader" class="rewriter-loader" hidden>
+					<div class="rewriter-loader__spinner"></div>
+					<span>Generating speech&hellip;</span>
+				</div>
+				<div id="tts-error" class="rewriter-error" hidden></div>
+				<div class="transcriber-panel__footer">
+					<button id="tts-download" class="rewriter-btn rewriter-btn--ghost" disabled>Download MP3</button>
 				</div>
 			</div>
 
@@ -83,7 +148,7 @@
 			<div class="rewriter-how__card">
 				<div class="rewriter-how__num">01</div>
 				<h3 class="rewriter-how__title">On-site Whisper</h3>
-				<p class="rewriter-how__desc">Audio is transcribed by OpenAI Whisper running on our own server — nothing is sent to third-party APIs.</p>
+				<p class="rewriter-how__desc">Audio is transcribed by OpenAI Whisper running on our own server &mdash; nothing is sent to third-party APIs.</p>
 			</div>
 			<div class="rewriter-how__card">
 				<div class="rewriter-how__num">02</div>
@@ -93,7 +158,7 @@
 			<div class="rewriter-how__card">
 				<div class="rewriter-how__num">03</div>
 				<h3 class="rewriter-how__title">Copy &amp; use</h3>
-				<p class="rewriter-how__desc">The transcript lands in plain text, ready to paste anywhere — into the rewriter, a document, or your CMS.</p>
+				<p class="rewriter-how__desc">The transcript lands in plain text, ready to paste anywhere &mdash; into the rewriter, a document, or your CMS.</p>
 			</div>
 		</div>
 	</div>
