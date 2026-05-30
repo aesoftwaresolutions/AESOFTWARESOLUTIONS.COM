@@ -3,6 +3,9 @@
  * Inspired by Opal Camera's design language:
  *   • Black page loader that fades out after load
  *   • Scroll-driven text reveal (words illuminate as you scroll past)
+ *   • Hero canvas — intelligence network graph (nodes + gold data connections)
+ *   • Hero headline — lines clip-slide in after loader clears
+ *   • Process connector — gold line draws across 4 steps on scroll entry
  *   • Fade-in for cards/sections on IntersectionObserver
  */
 (function () {
@@ -212,6 +215,201 @@
     });
   }
 
+  /* ══════════════════════════════════════════════════════════════════════════
+     7. HERO CANVAS — Intelligence network graph
+     Floating nodes connected by data paths. Gold nodes = compliance
+     checkpoints. Connections glow gold when touching a gold node.
+     Canvas sits behind hero text (z-index 1). Pauses when off-screen.
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  function initHeroCanvas() {
+    var hero = document.querySelector('.hero-section');
+    if (!hero) return;
+
+    var canvas = document.createElement('canvas');
+    canvas.id = 'hero-canvas';
+    canvas.setAttribute('aria-hidden', 'true');
+    hero.insertBefore(canvas, hero.firstChild);
+
+    var ctx = canvas.getContext('2d');
+    var W, H, nodes;
+    var NODE_COUNT = 38;
+    var MAX_DIST   = 170;
+    var time       = 0;
+    var animId     = null;
+
+    function mkNode() {
+      return {
+        x:     Math.random() * W,
+        y:     Math.random() * H,
+        vx:    (Math.random() - 0.5) * 0.3,
+        vy:    (Math.random() - 0.5) * 0.3,
+        r:     Math.random() * 1.8 + 0.6,
+        gold:  Math.random() > 0.78,
+        phase: Math.random() * Math.PI * 2
+      };
+    }
+
+    function resize() {
+      W = canvas.width  = hero.offsetWidth;
+      H = canvas.height = hero.offsetHeight;
+    }
+
+    function buildNodes() {
+      nodes = [];
+      for (var i = 0; i < NODE_COUNT; i++) nodes.push(mkNode());
+    }
+
+    function tick() {
+      time += 0.01;
+      ctx.clearRect(0, 0, W, H);
+
+      /* connections */
+      for (var i = 0; i < nodes.length; i++) {
+        for (var j = i + 1; j < nodes.length; j++) {
+          var dx = nodes[i].x - nodes[j].x;
+          var dy = nodes[i].y - nodes[j].y;
+          var d  = Math.sqrt(dx * dx + dy * dy);
+          if (d >= MAX_DIST) continue;
+
+          var t = 1 - d / MAX_DIST;
+          var isGold = nodes[i].gold || nodes[j].gold;
+
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+
+          if (isGold) {
+            ctx.strokeStyle = 'rgba(201,169,110,' + (t * 0.28) + ')';
+            ctx.lineWidth   = t * 1.3;
+          } else {
+            ctx.strokeStyle = 'rgba(255,255,255,' + (t * 0.07) + ')';
+            ctx.lineWidth   = t * 0.7;
+          }
+          ctx.stroke();
+        }
+      }
+
+      /* nodes */
+      for (var k = 0; k < nodes.length; k++) {
+        var n = nodes[k];
+        var pulse = Math.sin(time + n.phase);
+
+        if (n.gold) {
+          /* outer glow */
+          var grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 18 + pulse * 4);
+          grd.addColorStop(0, 'rgba(201,169,110,0.18)');
+          grd.addColorStop(1, 'rgba(201,169,110,0)');
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, 18 + pulse * 4, 0, Math.PI * 2);
+          ctx.fillStyle = grd;
+          ctx.fill();
+
+          /* core dot */
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.r + pulse * 0.4, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(201,169,110,0.9)';
+          ctx.fill();
+        } else {
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255,255,255,0.22)';
+          ctx.fill();
+        }
+
+        /* drift */
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < -24) n.x = W + 24;
+        if (n.x > W + 24) n.x = -24;
+        if (n.y < -24) n.y = H + 24;
+        if (n.y > H + 24) n.y = -24;
+      }
+
+      animId = requestAnimationFrame(tick);
+    }
+
+    function startCanvas() { if (!animId) tick(); }
+    function stopCanvas()  { cancelAnimationFrame(animId); animId = null; }
+
+    resize();
+    buildNodes();
+    startCanvas();
+
+    /* pause/resume on visibility */
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function(entries) {
+        entries[0].isIntersecting ? startCanvas() : stopCanvas();
+      }, { threshold: 0 }).observe(hero);
+    }
+
+    window.addEventListener('resize', function() {
+      resize(); buildNodes();
+    }, { passive: true });
+  }
+
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     8. HERO HEADLINE ENTRANCE
+     Each line slides up from beneath an overflow:hidden clip.
+     Triggered after the page loader dismisses (~650ms after load).
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  function initHeroHeadline() {
+    var lines = document.querySelectorAll('.hero-headline > span');
+    if (!lines.length) return;
+
+    lines.forEach(function(line) {
+      line.style.cssText += 'display:block;overflow:hidden;';
+
+      var inner = document.createElement('span');
+      inner.className = 'hline-inner';
+      inner.style.cssText = 'display:block;transform:translateY(108%);' +
+        'transition:transform 0.9s cubic-bezier(0.16,1,0.3,1);';
+      while (line.firstChild) inner.appendChild(line.firstChild);
+      line.appendChild(inner);
+    });
+
+    /* trigger after loader + small offset per line */
+    lines.forEach(function(line, i) {
+      setTimeout(function() {
+        var inner = line.querySelector('.hline-inner');
+        if (inner) inner.style.transform = 'translateY(0)';
+      }, 550 + i * 140);
+    });
+  }
+
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     9. PROCESS CONNECTOR
+     A gold line draws itself left→right across the process track when it
+     enters the viewport — visually links the 4 steps together.
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  function initProcessConnector() {
+    var track = document.querySelector('.process-track');
+    if (!track || !('IntersectionObserver' in window)) return;
+
+    new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) {
+        track.classList.add('connector-drawn');
+      }
+    }, { threshold: 0.25 }).observe(track);
+  }
+
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     10. FLOATING COMPLIANCE BADGES (assessment page)
+     Subtle animated badge icons that drift into view on the assessment hero.
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  function initAssessmentBadges() {
+    var hero = document.querySelector('.assessment-hero');
+    if (!hero) return;
+    hero.classList.add('badges-ready');
+  }
+
+
   /* ── Init ──────────────────────────────────────────────────────────────── */
   function init() {
     initRevealText();
@@ -219,6 +417,10 @@
     initNav();
     initCounters();
     initMobileNav();
+    initHeroCanvas();
+    initHeroHeadline();
+    initProcessConnector();
+    initAssessmentBadges();
   }
 
   if (document.readyState === 'loading') {
