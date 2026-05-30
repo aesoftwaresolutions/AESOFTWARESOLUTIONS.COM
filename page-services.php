@@ -9,11 +9,11 @@
 <!-- TIER 1 -->
 <section class="service-tier-section" id="tier-1">
     <div class="service-tier-inner">
-        <div class="service-tier-label">
+        <div class="service-tier-label js-fade" style="--delay:0s">
             <span class="service-tier-label__num">01</span>
             <span class="service-tier-label__tag">Assessment</span>
         </div>
-        <div class="service-tier-content">
+        <div class="service-tier-content js-fade" style="--delay:0.1s">
             <h2 class="service-tier-title">Operational Discovery</h2>
             <p class="service-tier-desc">Our AI-guided Business Intelligence Discovery Interview walks through 10 structured phases — mapping your workflows, technology stack, compliance requirements, and financial leaks. You receive a complete operational intelligence report at the end.</p>
             <div class="service-tier-cols">
@@ -50,11 +50,11 @@
 <!-- TIER 2 -->
 <section class="service-tier-section service-tier-section--alt" id="tier-2">
     <div class="service-tier-inner">
-        <div class="service-tier-label">
+        <div class="service-tier-label js-fade" style="--delay:0s">
             <span class="service-tier-label__num">02</span>
             <span class="service-tier-label__tag">Optimization</span>
         </div>
-        <div class="service-tier-content">
+        <div class="service-tier-content js-fade" style="--delay:0.1s">
             <h2 class="service-tier-title">Process Intelligence</h2>
             <p class="service-tier-desc">Anthony personally reviews your assessment findings, conducts follow-up interviews, and produces a comprehensive optimization package — process maps, automation architecture, and a costed implementation plan ranked by ROI.</p>
             <div class="service-tier-cols">
@@ -87,11 +87,11 @@
 <!-- TIER 3 -->
 <section class="service-tier-section" id="tier-3">
     <div class="service-tier-inner">
-        <div class="service-tier-label">
+        <div class="service-tier-label js-fade" style="--delay:0s">
             <span class="service-tier-label__num">03</span>
             <span class="service-tier-label__tag">Implementation</span>
         </div>
-        <div class="service-tier-content">
+        <div class="service-tier-content js-fade" style="--delay:0.1s">
             <h2 class="service-tier-title">Intelligent Deployment</h2>
             <p class="service-tier-desc">We build and deploy the actual systems — n8n workflow automation, AI agents trained on your business, compliance monitoring dashboards, and full integrations across your tech stack. You get a fully operational platform, not a slide deck.</p>
             <div class="service-tier-cols">
@@ -130,19 +130,19 @@
         <h2 class="section-title">Built for regulated<br>industries.</h2>
     </div>
     <div class="industries-grid-small">
-        <a href="<?php echo esc_url( home_url( '/industries/#mortgage' ) ); ?>" class="industry-card-small">
+        <a href="<?php echo esc_url( home_url( '/industries/#mortgage' ) ); ?>" class="industry-card-small js-fade" style="--delay:0s">
             <h4>Mortgage &amp; Lending</h4>
             <p>RESPA, TILA, HMDA compliance automation, audit trail management, disclosure workflows.</p>
         </a>
-        <a href="<?php echo esc_url( home_url( '/industries/#insurance' ) ); ?>" class="industry-card-small">
+        <a href="<?php echo esc_url( home_url( '/industries/#insurance' ) ); ?>" class="industry-card-small js-fade" style="--delay:0.08s">
             <h4>Insurance</h4>
             <p>Policy documentation, claims workflow automation, state filing tracking, E&amp;O compliance.</p>
         </a>
-        <a href="<?php echo esc_url( home_url( '/industries/#healthcare' ) ); ?>" class="industry-card-small">
+        <a href="<?php echo esc_url( home_url( '/industries/#healthcare' ) ); ?>" class="industry-card-small js-fade" style="--delay:0.16s">
             <h4>Healthcare</h4>
             <p>HIPAA-aware automation, billing and coding workflows, patient intake, credentialing.</p>
         </a>
-        <a href="<?php echo esc_url( home_url( '/industries/#construction' ) ); ?>" class="industry-card-small">
+        <a href="<?php echo esc_url( home_url( '/industries/#construction' ) ); ?>" class="industry-card-small js-fade" style="--delay:0.24s">
             <h4>Construction &amp; Trades</h4>
             <p>Permit tracking, lien waiver management, subcontractor compliance, job costing automation.</p>
         </a>

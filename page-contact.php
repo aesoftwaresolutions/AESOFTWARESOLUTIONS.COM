@@ -3,12 +3,12 @@
 <div class="page-hero contact-page-hero">
     <div class="page-hero__eyebrow">Get in touch</div>
     <h1 class="page-hero__headline">Let's build<br><em>something great.</em></h1>
-    <p class="page-hero__subtitle">Tell us about your project and we'll get back to you within 24 hours with a clear, personalised plan — no templates, no pressure.</p>
+    <p class="page-hero__subtitle" data-reveal-text>Tell us about your project and we'll get back to you within 24 hours with a clear, personalised plan — no templates, no pressure.</p>
 </div>
 
 <div class="contact-layout">
 
-    <div class="contact-form-col">
+    <div class="contact-form-col js-fade" style="--delay:0s">
         <form class="contact-form" action="mailto:anthony@aesoftwaresolutions.com" method="post" enctype="text/plain">
 
             <div class="form-row">
@@ -64,7 +64,7 @@
         </form>
     </div>
 
-    <aside class="contact-sidebar">
+    <aside class="contact-sidebar js-fade" style="--delay:0.15s">
 
         <div class="contact-sidebar__badge">
             <strong>24-hour response</strong>
@@ -97,22 +97,22 @@
 <section class="faq-section">
     <h2 class="faq-section__title">Frequently asked questions</h2>
 
-    <div class="faq-item">
+    <div class="faq-item js-fade" style="--delay:0s">
         <h3 class="faq-item__q">How long does a typical project take?</h3>
         <p class="faq-item__a">Most projects run 6–10 weeks from kickoff to launch. Simpler automations can be live in as few as 2 weeks; larger multi-integration builds take 3–4 months.</p>
     </div>
 
-    <div class="faq-item">
+    <div class="faq-item js-fade" style="--delay:0.08s">
         <h3 class="faq-item__q">What do you need from us to get started?</h3>
         <p class="faq-item__a">Just a conversation. After the discovery call we'll send a scoping document. From there, access to your tools and a primary point of contact is all we need to begin.</p>
     </div>
 
-    <div class="faq-item">
+    <div class="faq-item js-fade" style="--delay:0.16s">
         <h3 class="faq-item__q">Do you work with businesses outside the US?</h3>
         <p class="faq-item__a">Yes — we work with clients globally. All discovery calls and demos are conducted remotely via video call.</p>
     </div>
 
-    <div class="faq-item faq-item--last">
+    <div class="faq-item faq-item--last js-fade" style="--delay:0.24s">
         <h3 class="faq-item__q">Do you offer ongoing support after launch?</h3>
         <p class="faq-item__a">All projects include a 30-day post-launch support window. Monthly retainers are available for ongoing optimisation, monitoring, and feature additions.</p>
     </div>

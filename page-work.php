@@ -10,7 +10,7 @@
     <div class="work-grid">
 
         <!-- 01: Monarch MVC -->
-        <article class="work-card work-card--featured">
+        <article class="work-card work-card--featured js-fade" style="--delay:0s">
             <div class="work-card__header">
                 <span class="work-card__num">01</span>
                 <span class="work-card__tag">Health Tech Platform</span>
@@ -33,7 +33,7 @@
         </article>
 
         <!-- 02: Anthony Pioquinto -->
-        <article class="work-card">
+        <article class="work-card js-fade" style="--delay:0.08s">
             <div class="work-card__header">
                 <span class="work-card__num">02</span>
                 <span class="work-card__tag">Personal Portfolio</span>
@@ -55,7 +55,7 @@
         </article>
 
         <!-- 03: n8n Workflow Integrations -->
-        <article class="work-card">
+        <article class="work-card js-fade" style="--delay:0.16s">
             <div class="work-card__header">
                 <span class="work-card__num">03</span>
                 <span class="work-card__tag">Workflow Automation</span>
@@ -75,7 +75,7 @@
         </article>
 
         <!-- 04: Text Reminders -->
-        <article class="work-card">
+        <article class="work-card js-fade" style="--delay:0.24s">
             <div class="work-card__header">
                 <span class="work-card__num">04</span>
                 <span class="work-card__tag">SMS Automation</span>
@@ -95,7 +95,7 @@
         </article>
 
         <!-- 05: AI Chatbots (general showcase) -->
-        <article class="work-card">
+        <article class="work-card js-fade" style="--delay:0.32s">
             <div class="work-card__header">
                 <span class="work-card__num">05</span>
                 <span class="work-card__tag">Conversational AI</span>
@@ -114,7 +114,7 @@
         </article>
 
         <!-- 06: Data Dashboards -->
-        <article class="work-card">
+        <article class="work-card js-fade" style="--delay:0.40s">
             <div class="work-card__header">
                 <span class="work-card__num">06</span>
                 <span class="work-card__tag">Data & Analytics</span>

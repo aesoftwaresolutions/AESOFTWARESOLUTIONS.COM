@@ -9,12 +9,12 @@
 <!-- MORTGAGE -->
 <section class="industry-section" id="mortgage">
     <div class="industry-section__inner">
-        <div class="industry-section__header">
+        <div class="industry-section__header js-fade" style="--delay:0s">
             <span class="industry-section__tag">Mortgage &amp; Lending</span>
             <h2 class="industry-section__title">RESPA. TILA. HMDA.<br>We know the terrain.</h2>
         </div>
         <div class="industry-section__body">
-            <div class="industry-section__pain">
+            <div class="industry-section__pain js-fade" style="--delay:0s">
                 <h3>Common bottlenecks we find</h3>
                 <ul>
                     <li>Manual disclosure tracking across multiple loan officers with no audit trail</li>
@@ -24,7 +24,7 @@
                     <li>Closing condition tracking done in individual inboxes, causing delays and errors</li>
                 </ul>
             </div>
-            <div class="industry-section__solutions">
+            <div class="industry-section__solutions js-fade" style="--delay:0.15s">
                 <h3>What we build for you</h3>
                 <ul>
                     <li>Automated disclosure delivery and timestamped audit trails for RESPA/TILA compliance</li>
@@ -42,12 +42,12 @@
 <!-- INSURANCE -->
 <section class="industry-section industry-section--alt" id="insurance">
     <div class="industry-section__inner">
-        <div class="industry-section__header">
+        <div class="industry-section__header js-fade" style="--delay:0s">
             <span class="industry-section__tag">Insurance</span>
             <h2 class="industry-section__title">Policy lifecycle.<br>Claims workflow.<br>State compliance.</h2>
         </div>
         <div class="industry-section__body">
-            <div class="industry-section__pain">
+            <div class="industry-section__pain js-fade" style="--delay:0s">
                 <h3>Common bottlenecks we find</h3>
                 <ul>
                     <li>Policy renewals tracked in spreadsheets — agents manually calling at 60-day mark</li>
@@ -57,7 +57,7 @@
                     <li>Commission calculations done manually in Excel with high error rate</li>
                 </ul>
             </div>
-            <div class="industry-section__solutions">
+            <div class="industry-section__solutions js-fade" style="--delay:0.15s">
                 <h3>What we build for you</h3>
                 <ul>
                     <li>Policy renewal automation with tiered outreach sequences and renewal probability scoring</li>
@@ -75,12 +75,12 @@
 <!-- HEALTHCARE -->
 <section class="industry-section" id="healthcare">
     <div class="industry-section__inner">
-        <div class="industry-section__header">
+        <div class="industry-section__header js-fade" style="--delay:0s">
             <span class="industry-section__tag">Healthcare</span>
             <h2 class="industry-section__title">HIPAA-aware.<br>Billing-precise.<br>Patient-first.</h2>
         </div>
         <div class="industry-section__body">
-            <div class="industry-section__pain">
+            <div class="industry-section__pain js-fade" style="--delay:0s">
                 <h3>Common bottlenecks we find</h3>
                 <ul>
                     <li>Patient intake forms completed on paper, then manually entered into the EHR</li>
@@ -90,7 +90,7 @@
                     <li>Provider credentialing renewals tracked in a shared document no one maintains</li>
                 </ul>
             </div>
-            <div class="industry-section__solutions">
+            <div class="industry-section__solutions js-fade" style="--delay:0.15s">
                 <h3>What we build for you</h3>
                 <ul>
                     <li>HIPAA-compliant digital intake with EHR integration — zero duplicate data entry</li>
@@ -108,12 +108,12 @@
 <!-- CONSTRUCTION -->
 <section class="industry-section industry-section--alt" id="construction">
     <div class="industry-section__inner">
-        <div class="industry-section__header">
+        <div class="industry-section__header js-fade" style="--delay:0s">
             <span class="industry-section__tag">Construction &amp; Trades</span>
             <h2 class="industry-section__title">Permits. Lien waivers.<br>Subcontractor compliance.<br>Job costing.</h2>
         </div>
         <div class="industry-section__body">
-            <div class="industry-section__pain">
+            <div class="industry-section__pain js-fade" style="--delay:0s">
                 <h3>Common bottlenecks we find</h3>
                 <ul>
                     <li>Permit applications submitted late because no one owns the tracking process</li>
@@ -123,7 +123,7 @@
                     <li>Change orders communicated verbally — disputes arise over scope with no paper trail</li>
                 </ul>
             </div>
-            <div class="industry-section__solutions">
+            <div class="industry-section__solutions js-fade" style="--delay:0.15s">
                 <h3>What we build for you</h3>
                 <ul>
                     <li>Permit tracker with jurisdiction-specific checklists and automated status follow-up</li>

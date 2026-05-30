@@ -351,31 +351,62 @@
 
   /* ══════════════════════════════════════════════════════════════════════════
      8. HERO HEADLINE ENTRANCE
-     Each line slides up from beneath an overflow:hidden clip.
-     Triggered after the page loader dismisses (~650ms after load).
+     Front page: each .hero-headline > span line clips and slides up
+     sequentially (Opal-style stagger).
+     Inner pages: .page-hero__headline and .assessment-hero__headline slide
+     up as a unit; eyebrow/sub text fades in slightly earlier.
   ══════════════════════════════════════════════════════════════════════════ */
 
   function initHeroHeadline() {
+
+    /* ── Front page: line-by-line clip slide-up ─────────────────────────── */
     var lines = document.querySelectorAll('.hero-headline > span');
-    if (!lines.length) return;
+    if (lines.length) {
+      lines.forEach(function(line) {
+        line.style.cssText += 'display:block;overflow:hidden;';
+        var inner = document.createElement('span');
+        inner.className = 'hline-inner';
+        inner.style.cssText = 'display:block;transform:translateY(108%);' +
+          'transition:transform 0.9s cubic-bezier(0.16,1,0.3,1);';
+        while (line.firstChild) inner.appendChild(line.firstChild);
+        line.appendChild(inner);
+      });
+      lines.forEach(function(line, i) {
+        setTimeout(function() {
+          var inner = line.querySelector('.hline-inner');
+          if (inner) inner.style.transform = 'translateY(0)';
+        }, 550 + i * 140);
+      });
+    }
 
-    lines.forEach(function(line) {
-      line.style.cssText += 'display:block;overflow:hidden;';
+    /* ── Inner pages: full headline + eyebrow fade-up as a unit ─────────── */
+    var easing = 'cubic-bezier(0.16,1,0.3,1)';
+    var fadeUp = 'opacity:0;transform:translateY(28px);will-change:transform,opacity;';
 
-      var inner = document.createElement('span');
-      inner.className = 'hline-inner';
-      inner.style.cssText = 'display:block;transform:translateY(108%);' +
-        'transition:transform 0.9s cubic-bezier(0.16,1,0.3,1);';
-      while (line.firstChild) inner.appendChild(line.firstChild);
-      line.appendChild(inner);
+    /* Targets: page-hero__headline, assessment-hero__headline */
+    ['.page-hero__headline', '.assessment-hero__headline'].forEach(function(sel) {
+      var el = document.querySelector(sel);
+      if (!el) return;
+      el.style.cssText += fadeUp + 'transition:opacity 0.85s ' + easing + ',transform 0.85s ' + easing + ';';
+      setTimeout(function() { el.style.opacity='1'; el.style.transform='translateY(0)'; }, 420);
     });
 
-    /* trigger after loader + small offset per line */
-    lines.forEach(function(line, i) {
-      setTimeout(function() {
-        var inner = line.querySelector('.hline-inner');
-        if (inner) inner.style.transform = 'translateY(0)';
-      }, 550 + i * 140);
+    /* Eyebrow labels slide in first */
+    ['.page-hero__eyebrow', '.assessment-hero__eyebrow'].forEach(function(sel) {
+      var el = document.querySelector(sel);
+      if (!el) return;
+      el.style.cssText += 'opacity:0;transform:translateY(14px);' +
+        'transition:opacity 0.55s ease,transform 0.55s ease;';
+      setTimeout(function() { el.style.opacity='1'; el.style.transform='translateY(0)'; }, 230);
+    });
+
+    /* Sub-text fades in last */
+    ['.page-hero__subtitle', '.assessment-hero__sub'].forEach(function(sel) {
+      var el = document.querySelector(sel);
+      if (!el) return;
+      el.style.cssText += 'opacity:0;transform:translateY(14px);' +
+        'transition:opacity 0.7s ease,transform 0.7s ease;';
+      setTimeout(function() { el.style.opacity='1'; el.style.transform='translateY(0)'; }, 620);
     });
   }
 
