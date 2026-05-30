@@ -26,14 +26,13 @@
 
 		<nav class="site-header__nav">
 			<a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="site-header__nav-link">Services</a>
-			<a href="<?php echo esc_url( home_url( '/process/' ) ); ?>" class="site-header__nav-link">Process</a>
-			<a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="site-header__nav-link">Work</a>
+			<a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>" class="site-header__nav-link">Industries</a>
+			<a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="site-header__nav-link">Case Studies</a>
 			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="site-header__nav-link">About</a>
 			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="site-header__nav-link">Contact</a>
-			<a href="<?php echo esc_url( home_url( '/free-tools/' ) ); ?>" class="site-header__nav-link site-header__nav-link--tool">Free Tools <span class="nav-badge">Free</span></a>
 		</nav>
 
-		<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="site-header__cta btn btn--outline">Get in touch</a>
+		<a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="site-header__cta btn btn--primary">Start Assessment</a>
 	</div>
 </header>
 

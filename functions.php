@@ -102,6 +102,17 @@ function aesoftwares_enqueue_scripts() {
         ] );
     }
 
+    // ── Assessment discovery agent (assessment page only) ─────────────────
+    if ( is_page_template( 'page-assessment.php' ) ) {
+        wp_enqueue_script(
+            'ae-assessment',
+            $uri . '/assets/js/ae-assessment.js',
+            [],
+            filemtime( $js . 'ae-assessment.js' ),
+            [ 'in_footer' => true, 'strategy' => 'defer' ]
+        );
+    }
+
     // ── Cinematic stack (front page only) ─────────────────────────────────
     if ( is_front_page() ) {
 
@@ -1192,6 +1203,174 @@ function aesoftwares_handle_transcribe( WP_REST_Request $request ) {
 
     return new WP_REST_Response( [ 'text' => $data['text'] ?? '' ], 200 );
 }
+
+// ══════════════════════════════════════════════════════════════════════════════
+// 8. REST API — Business Intelligence Discovery Assessment
+// ══════════════════════════════════════════════════════════════════════════════
+
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'aesoftwares/v1', '/assessment', [
+        'methods'             => 'POST',
+        'callback'            => 'aesoftwares_handle_assessment',
+        'permission_callback' => '__return_true',
+    ] );
+} );
+
+function aesoftwares_handle_assessment( WP_REST_Request $request ) {
+    set_time_limit( 300 );
+
+    $body    = $request->get_json_params();
+    $message = sanitize_textarea_field( $body['message'] ?? '' );
+    $history = isset( $body['history'] ) && is_array( $body['history'] ) ? $body['history'] : [];
+
+    if ( empty( $message ) ) {
+        return new WP_Error( 'missing_message', 'No message provided.', [ 'status' => 422 ] );
+    }
+
+    // Cap history to last 40 turns to avoid context overflow
+    $history = array_slice( $history, -40 );
+
+    $safe_history = [];
+    foreach ( $history as $entry ) {
+        $role    = in_array( $entry['role'] ?? '', [ 'user', 'assistant' ], true ) ? $entry['role'] : 'user';
+        $content = sanitize_textarea_field( $entry['content'] ?? '' );
+        if ( $content !== '' ) {
+            $safe_history[] = [ 'role' => $role, 'content' => $content ];
+        }
+    }
+
+    // If the client sends the sentinel to begin, strip it — just let the system prompt speak first
+    if ( $message !== 'BEGIN_ASSESSMENT' ) {
+        $safe_history[] = [ 'role' => 'user', 'content' => $message ];
+    }
+
+    $system_prompt = 'You are an Operational Intelligence and Business Process Analysis Consultant for AE Software Solutions.
+
+Your purpose is to help business owners identify operational inefficiencies, automation opportunities, compliance risks, revenue leaks, documentation gaps, and growth opportunities.
+
+You are NOT a chatbot. You are conducting a structured business assessment. Your objective is to build a complete operational profile of the organization.
+
+CRITICAL RULES:
+- Ask ONLY ONE question at a time. Never list multiple questions in a single message.
+- Ask the single most valuable next question based on what you have already learned.
+- Keep your messages concise and conversational. No walls of text.
+- After gathering sufficient information across all phases, offer to generate a full Operational Intelligence Report.
+- Never mention phase numbers to the user — the conversation must feel natural.
+
+ASSESSMENT PHASES (work through these in order, following the conversation naturally):
+
+PHASE 1 — BUSINESS PROFILE
+Collect: business name, industry, number of employees, years in operation, revenue range, number of locations, primary products/services, geographic service area. Determine business maturity, operational complexity, and regulatory exposure.
+
+PHASE 2 — CUSTOMER JOURNEY
+Map lead generation (how customers find them, lead volume, conversion rates, follow-up procedures). Identify sales process (cycle length, manual tasks, approval steps, CRM usage, bottlenecks, abandoned opportunities). Document customer onboarding steps, personnel, systems, and manual work.
+
+PHASE 3 — OPERATIONAL ANALYSIS
+Identify what happens daily, weekly, and monthly. Find repetitive tasks, administrative burden, and human dependencies. Build a picture of: Task / Owner / Frequency / Systems Used / Pain Points.
+
+PHASE 4 — TECHNOLOGY AUDIT
+Collect existing systems (CRM, accounting, scheduling, inventory, HR, email). For each: purpose, user count, satisfaction level, integration capabilities. Identify data silos, duplicate data entry, and manual transfers between systems.
+
+PHASE 5 — COMPLIANCE ANALYSIS
+Determine regulatory requirements specific to their industry (mortgage: RESPA/TILA/HMDA; insurance: state filings/E&O; healthcare: HIPAA/billing; construction: permits/lien waivers). Collect required documentation, audit procedures, record retention policies, and reporting requirements. Identify compliance risks, missing controls, and manual tracking.
+
+PHASE 6 — KNOWLEDGE MANAGEMENT
+Assess whether SOPs, training manuals, and employee handbooks exist. Identify tribal knowledge, missing documentation, and training dependencies that create key-person risk.
+
+PHASE 7 — FINANCIAL LEAK ANALYSIS
+Identify revenue leakage: missed follow-ups, lost leads, slow invoicing, delayed collections. Identify cost leakage: duplicate software subscriptions, repetitive manual work, excessive labor costs, redundant approval chains.
+
+PHASE 8 — AUTOMATION DISCOVERY
+For every major workflow, evaluate automation potential in: email automation, CRM automation, document automation, customer service, reporting, compliance monitoring. Mentally note: Automation Opportunity / Estimated Time Saved / Implementation Complexity / Expected ROI.
+
+PHASE 9 — INTERNAL SCORING (do not reveal scores until report)
+Track internal scores 1–10 for: Operations, Automation, Compliance, Documentation, Technology, Scalability.
+
+PHASE 10 — REPORT GENERATION
+When sufficient information is gathered across phases 1–8, offer to generate the full Operational Intelligence Report. The report should include: Executive Summary, Operational Risks, Compliance Risks, Automation Opportunities (with estimated savings), Technology Recommendations, Operational Intelligence Scores, Implementation Roadmap (30/90/365 days), and Next Actions.
+
+Begin by warmly introducing yourself as an Operational Intelligence Consultant with AE Software Solutions and asking for their business name.';
+
+    $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
+    $ollama_token = get_option( 'aesoftwares_ollama_token' );
+    $ollama_model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
+
+    if ( ! empty( $ollama_url ) ) {
+        $payload = [
+            'model'   => $ollama_model,
+            'stream'  => false,
+            'options' => [
+                'temperature' => 0.7,
+                'top_p'       => 0.9,
+                'think'       => false,
+                'num_predict' => 600,
+            ],
+            'messages' => array_merge(
+                [ [ 'role' => 'system', 'content' => $system_prompt ] ],
+                $safe_history
+            ),
+        ];
+
+        $response = wp_remote_post( rtrim( $ollama_url, '/' ) . '/api/chat', [
+            'method'      => 'POST',
+            'headers'     => [
+                'Content-Type'   => 'application/json',
+                'x-ollama-token' => $ollama_token,
+            ],
+            'body'        => json_encode( $payload ),
+            'data_format' => 'body',
+            'timeout'     => 300,
+        ] );
+
+        if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
+            $body  = json_decode( wp_remote_retrieve_body( $response ), true );
+            $reply = $body['message']['content'] ?? '';
+            $reply = preg_replace( '/<think>[\s\S]*?<\/think>/i', '', $reply );
+            $reply = trim( $reply );
+            if ( $reply !== '' ) {
+                return new WP_REST_Response( [ 'reply' => $reply ], 200 );
+            }
+        }
+    }
+
+    // Fallback: Anthropic
+    $api_key = get_option( 'aesoftwares_anthropic_api_key' );
+    if ( empty( $api_key ) ) {
+        return new WP_Error( 'no_backend', 'No AI backend configured. Set the Ollama Proxy URL or Anthropic API key in AE Settings.', [ 'status' => 500 ] );
+    }
+
+    $response = wp_remote_post( 'https://api.anthropic.com/v1/messages', [
+        'method'      => 'POST',
+        'headers'     => [
+            'Content-Type'      => 'application/json',
+            'x-api-key'         => $api_key,
+            'anthropic-version' => '2023-06-01',
+        ],
+        'body'        => json_encode( [
+            'model'      => 'claude-haiku-4-5-20251001',
+            'max_tokens' => 1024,
+            'system'     => $system_prompt,
+            'messages'   => $safe_history ?: [ [ 'role' => 'user', 'content' => 'Begin the assessment.' ] ],
+        ] ),
+        'data_format' => 'body',
+        'timeout'     => 120,
+    ] );
+
+    if ( is_wp_error( $response ) ) {
+        return new WP_Error( 'api_error', 'Failed to reach the AI backend.', [ 'status' => 502 ] );
+    }
+
+    $code = wp_remote_retrieve_response_code( $response );
+    $data = json_decode( wp_remote_retrieve_body( $response ), true );
+
+    if ( $code !== 200 ) {
+        $msg = $data['error']['message'] ?? 'AI backend error.';
+        return new WP_Error( 'backend_error', $msg, [ 'status' => 502 ] );
+    }
+
+    return new WP_REST_Response( [ 'reply' => $data['content'][0]['text'] ?? '' ], 200 );
+}
+
 
 function aesoftwares_handle_chat_message( WP_REST_Request $request ) {
     $n8n_url = get_option( 'aesoftwares_n8n_webhook_url' );
