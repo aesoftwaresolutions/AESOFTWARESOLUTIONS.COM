@@ -1025,10 +1025,7 @@ function aesoftwares_handle_assessment( WP_REST_Request $request ) {
         }
     }
 
-    // If the client sends the sentinel to begin, strip it — just let the system prompt speak first
-    if ( $message !== 'BEGIN_ASSESSMENT' ) {
-        $safe_history[] = [ 'role' => 'user', 'content' => $message ];
-    }
+    $safe_history[] = [ 'role' => 'user', 'content' => $message ];
 
     $system_prompt = 'You are an Operational Intelligence and Business Process Analysis Consultant for AE Software Solutions.
 
@@ -1089,7 +1086,7 @@ Begin by warmly introducing yourself as an Operational Intelligence Consultant w
                 'temperature' => 0.7,
                 'top_p'       => 0.9,
                 'think'       => false,
-                'num_predict' => 600,
+                'num_predict' => 300,
             ],
             'messages' => array_merge(
                 [ [ 'role' => 'system', 'content' => $system_prompt ] ],

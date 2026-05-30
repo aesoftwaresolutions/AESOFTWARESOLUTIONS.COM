@@ -242,8 +242,17 @@ class AEAssessment extends HTMLElement {
         });
         this._input.addEventListener('input', () => this._autoResize());
 
-        // Kick off with an empty message so the agent sends its opening question
-        this._fetchReply('');
+        // Show the opening greeting instantly (no API call) so there's zero wait on init.
+        // The first real API call fires when the user submits their first reply.
+        this._showOpener();
+    }
+
+    _showOpener() {
+        const opener = "Hello! I'm your Operational Intelligence Consultant with AE Software Solutions.\n\nI'll be guiding you through a structured business assessment — we'll map your operations, surface compliance risks, and identify where automation can have the biggest impact.\n\nTo get started, what's the name of your business?";
+        // Push it into history so the model has context when the user replies
+        this._history.push({ role: 'assistant', content: opener });
+        this._appendMsg(opener, 'bot');
+        this._input.focus();
     }
 
     _autoResize() {
