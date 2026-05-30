@@ -22,7 +22,7 @@ get_header(); ?>
 					<span>operations. We protect</span>
 					<span>your <em>compliance.</em></span>
 				</h1>
-				<p class="hero-sub">A structured discovery process that finds bottlenecks, compliance gaps, and automation opportunities — then builds the systems to fix them.</p>
+				<p class="hero-sub" data-reveal-text>A structured discovery process that finds bottlenecks, compliance gaps, and automation opportunities — then builds the systems to fix them.</p>
 				<div class="hero-actions">
 					<a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="btn btn--primary">Start Your Assessment</a>
 					<a href="#process" class="btn btn--ghost">See how it works</a>
@@ -57,7 +57,7 @@ get_header(); ?>
 		<span class="reveal-bg-number" aria-hidden="true">01</span>
 		<div class="reveal-inner">
 			<p class="reveal-label">What we do</p>
-			<h2 class="reveal-headline">
+			<h2 class="reveal-headline" data-reveal-text>
 				<span class="reveal-line-1">We don't just automate.</span>
 				<span class="reveal-line-2">We <em>understand</em></span>
 				<span class="reveal-line-3">your business first.</span>
@@ -72,7 +72,7 @@ get_header(); ?>
 			<h2 class="section-title">Three tiers.<br>One outcome.</h2>
 		</div>
 		<div class="tiers-grid">
-			<div class="tier-card">
+			<div class="tier-card js-fade" style="--delay:0s">
 				<div class="tier-card__num">01</div>
 				<div class="tier-card__label">Assessment</div>
 				<h3 class="tier-card__title">Operational Discovery</h3>
@@ -84,7 +84,7 @@ get_header(); ?>
 				</ul>
 				<a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="tier-card__link">Start free assessment &rarr;</a>
 			</div>
-			<div class="tier-card tier-card--featured">
+			<div class="tier-card tier-card--featured js-fade" style="--delay:0.12s">
 				<div class="tier-card__num">02</div>
 				<div class="tier-card__label">Optimization</div>
 				<h3 class="tier-card__title">Process Intelligence</h3>
@@ -96,7 +96,7 @@ get_header(); ?>
 				</ul>
 				<a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="tier-card__link">View services &rarr;</a>
 			</div>
-			<div class="tier-card">
+			<div class="tier-card js-fade" style="--delay:0.24s">
 				<div class="tier-card__num">03</div>
 				<div class="tier-card__label">Implementation</div>
 				<h3 class="tier-card__title">Intelligent Deployment</h3>

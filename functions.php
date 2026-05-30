@@ -14,11 +14,28 @@ function aesoftwares_enqueue_scripts() {
     $uri  = get_template_directory_uri();
     $path = get_template_directory();
 
+    // Google Fonts: Inter (300, 400, 500, 600)
+    wp_enqueue_style(
+        'ae-inter',
+        'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap',
+        [],
+        null
+    );
+
     // Main stylesheet — filemtime() version for automatic cache busting
-    wp_enqueue_style( 'aesoftwares-style', get_stylesheet_uri(), [], filemtime( $path . '/style.css' ) );
+    wp_enqueue_style( 'aesoftwares-style', get_stylesheet_uri(), [ 'ae-inter' ], filemtime( $path . '/style.css' ) );
 
     // ── Web component JS (all pages) ──────────────────────────────────────
     $js = $path . '/assets/js/';
+
+    // ── Scroll & load animations (all pages, loads early) ─────────────────
+    wp_enqueue_script(
+        'ae-animations',
+        $uri . '/assets/js/ae-animations.js',
+        [],
+        filemtime( $js . 'ae-animations.js' ),
+        [ 'in_footer' => false, 'strategy' => 'defer' ]
+    );
 
     wp_enqueue_script( 'ae-greetings',    $uri . '/assets/js/ae-greetings.js',    [], filemtime( $js . 'ae-greetings.js' ),    [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'ae-products',     $uri . '/assets/js/ae-products.js',     [], filemtime( $js . 'ae-products.js' ),     [ 'in_footer' => true, 'strategy' => 'defer' ] );

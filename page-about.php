@@ -3,7 +3,7 @@
 <div class="page-hero about-page-hero">
     <div class="page-hero__eyebrow">Who we are</div>
     <h1 class="page-hero__headline">Intelligence before<br><em>automation.</em><br>Always.</h1>
-    <p class="page-hero__subtitle">AE Software Solutions is a Compliance-Aware Operational Intelligence consultancy. We map your business before we build anything — because the wrong automation at scale is worse than no automation at all.</p>
+    <p class="page-hero__subtitle" data-reveal-text>AE Software Solutions is a Compliance-Aware Operational Intelligence consultancy. We map your business before we build anything — because the wrong automation at scale is worse than no automation at all.</p>
 </div>
 
 <div class="mission-block">

@@ -3,7 +3,7 @@
 <div class="page-hero industries-page-hero">
     <div class="page-hero__eyebrow">Where we specialize</div>
     <h1 class="page-hero__headline">Compliance-heavy<br><em>industries</em><br>are our home.</h1>
-    <p class="page-hero__subtitle">We built our assessment methodology specifically for regulated sectors — where bad automation doesn't just waste money, it creates liability.</p>
+    <p class="page-hero__subtitle" data-reveal-text>We built our assessment methodology specifically for regulated sectors — where bad automation doesn't just waste money, it creates liability.</p>
 </div>
 
 <!-- MORTGAGE -->

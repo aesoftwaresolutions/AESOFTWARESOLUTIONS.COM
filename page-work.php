@@ -3,7 +3,7 @@
 <div class="page-hero work-page-hero">
     <div class="page-hero__eyebrow">Selected work</div>
     <h1 class="page-hero__headline">Real projects.<br><em>Real results.</em></h1>
-    <p class="page-hero__subtitle">A selection of platforms, automations, and digital products we've designed, built, and shipped — from consumer health apps to AI-powered workflow systems.</p>
+    <p class="page-hero__subtitle" data-reveal-text>A selection of platforms, automations, and digital products we've designed, built, and shipped — from consumer health apps to AI-powered workflow systems.</p>
 </div>
 
 <section class="work-section">

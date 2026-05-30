@@ -18,6 +18,9 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
+<!-- Page loader — black screen that fades out after load (Opal-style) -->
+<div id="ae-loader" aria-hidden="true"></div>
+
 <header class="site-header">
 	<div class="site-header__inner">
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__logo" rel="home">

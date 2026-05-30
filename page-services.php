@@ -3,7 +3,7 @@
 <div class="page-hero services-page-hero">
     <div class="page-hero__eyebrow">What we offer</div>
     <h1 class="page-hero__headline">Operational intelligence<br><em>built around</em><br>your compliance.</h1>
-    <p class="page-hero__subtitle">Three service tiers — from automated discovery to full deployment. Every engagement starts with understanding your business before touching a single line of code.</p>
+    <p class="page-hero__subtitle" data-reveal-text>Three service tiers — from automated discovery to full deployment. Every engagement starts with understanding your business before touching a single line of code.</p>
 </div>
 
 <!-- TIER 1 -->
