@@ -249,13 +249,13 @@ function aesoftwares_settings_init() {
 
     add_settings_section(
         'aesoftwares_ai_section',
-        'AI Rewriter Settings',
-        function() { echo '<p style="color:#999;font-size:13px;">Primary: Ollama on VPS. Fallback: Anthropic API (used if Ollama Proxy URL is empty).</p>'; },
+        'AI Backend Settings',
+        function() { echo '<p style="color:#999;font-size:13px;">Primary: Local AI Router (Gemma / OpenClaw) on VPS — auto-routes between gemma3:4b for short queries and gemma3:12b for long/complex ones. Fallback: Anthropic API (used if router URL is empty or unreachable).</p>'; },
         'aesoftwares_settings'
     );
-    add_settings_field( 'aesoftwares_ollama_proxy_url_field', 'Ollama Proxy URL',          'aesoftwares_ollama_proxy_url_field_html',    'aesoftwares_settings', 'aesoftwares_ai_section' );
-    add_settings_field( 'aesoftwares_ollama_token_field',     'Ollama Secret Token',        'aesoftwares_ollama_token_field_html',         'aesoftwares_settings', 'aesoftwares_ai_section' );
-    add_settings_field( 'aesoftwares_ollama_model_field',     'Ollama Model',               'aesoftwares_ollama_model_field_html',         'aesoftwares_settings', 'aesoftwares_ai_section' );
+    add_settings_field( 'aesoftwares_ollama_proxy_url_field', 'Local AI Router URL',        'aesoftwares_ollama_proxy_url_field_html',    'aesoftwares_settings', 'aesoftwares_ai_section' );
+    add_settings_field( 'aesoftwares_ollama_token_field',     'Router Secret Token',        'aesoftwares_ollama_token_field_html',         'aesoftwares_settings', 'aesoftwares_ai_section' );
+    add_settings_field( 'aesoftwares_ollama_model_field',     'Default Model',              'aesoftwares_ollama_model_field_html',         'aesoftwares_settings', 'aesoftwares_ai_section' );
     add_settings_field( 'aesoftwares_anthropic_api_key_field','Anthropic API Key (fallback)','aesoftwares_anthropic_api_key_field_html',   'aesoftwares_settings', 'aesoftwares_ai_section' );
 
     add_settings_section(
@@ -287,17 +287,17 @@ function aesoftwares_n8n_webhook_url_field_html() {
 
 function aesoftwares_ollama_proxy_url_field_html() {
     $url = get_option( 'aesoftwares_ollama_proxy_url', '' );
-    ?><input type="url" name="aesoftwares_ollama_proxy_url" value="<?php echo esc_attr( $url ); ?>" class="regular-text" placeholder="http://145.79.x.x:11435"><p class="description">VPS Nginx proxy URL (no trailing slash). Requests go to <code>{url}/api/chat</code>.</p><?php
+    ?><input type="url" name="aesoftwares_ollama_proxy_url" value="<?php echo esc_attr( $url ); ?>" class="regular-text" placeholder="http://145.79.x.x:9000"><p class="description">Local AI Router URL (no trailing slash). Gemma router on port <code>9000</code>, or Ollama directly on <code>11434/11435</code>. Requests go to <code>{url}/api/chat</code>.</p><?php
 }
 
 function aesoftwares_ollama_token_field_html() {
     $token = get_option( 'aesoftwares_ollama_token', '' );
-    ?><input type="password" name="aesoftwares_ollama_token" value="<?php echo esc_attr( $token ); ?>" class="regular-text" placeholder="your-secret-token"><p class="description">Sent as <code>x-ollama-token</code> header.</p><?php
+    ?><input type="password" name="aesoftwares_ollama_token" value="<?php echo esc_attr( $token ); ?>" class="regular-text" placeholder="your-secret-token"><p class="description">Sent as <code>x-ollama-token</code> header. Leave blank if router has no auth.</p><?php
 }
 
 function aesoftwares_ollama_model_field_html() {
-    $model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
-    ?><input type="text" name="aesoftwares_ollama_model" value="<?php echo esc_attr( $model ); ?>" class="regular-text" placeholder="qwen3:8b"><p class="description">Ollama model name. Default: <code>qwen3:8b</code>.</p><?php
+    $model = get_option( 'aesoftwares_ollama_model', 'gemma3:4b' );
+    ?><input type="text" name="aesoftwares_ollama_model" value="<?php echo esc_attr( $model ); ?>" class="regular-text" placeholder="gemma3:4b"><p class="description">Default model. Gemma router auto-escalates to <code>gemma3:12b</code> for long/complex queries. Suggested: <code>gemma3:4b</code> (fastest), <code>gemma3:12b</code> (highest quality), <code>gemma3:1b</code> (instant).</p><?php
 }
 
 function aesoftwares_anthropic_api_key_field_html() {
@@ -422,7 +422,7 @@ function aesoftwares_chunk_text( $text, $max_words = 500 ) {
 function aesoftwares_call_ai_backend( $system_prompt, $user_message ) {
     $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
     $ollama_token = get_option( 'aesoftwares_ollama_token' );
-    $ollama_model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
+    $ollama_model = get_option( 'aesoftwares_ollama_model', 'gemma3:4b' );
 
     if ( ! empty( $ollama_url ) ) {
         $payload = [
@@ -511,7 +511,7 @@ function aesoftwares_call_ai_backend( $system_prompt, $user_message ) {
 function aesoftwares_call_ai_backend_short( $system_prompt, $user_message ) {
     $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
     $ollama_token = get_option( 'aesoftwares_ollama_token' );
-    $ollama_model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
+    $ollama_model = get_option( 'aesoftwares_ollama_model', 'gemma3:4b' );
 
     if ( ! empty( $ollama_url ) ) {
         $payload = [
@@ -778,7 +778,7 @@ function aesoftwares_handle_summarize( WP_REST_Request $request ) {
 function aesoftwares_call_vps( $system_prompt, $user_message, $response_key ) {
     $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
     $ollama_token = get_option( 'aesoftwares_ollama_token' );
-    $ollama_model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
+    $ollama_model = get_option( 'aesoftwares_ollama_model', 'gemma3:4b' );
 
     if ( ! empty( $ollama_url ) ) {
         $payload = [
@@ -1091,19 +1091,20 @@ When sufficient information is gathered across phases 1–8, offer to generate t
 
 Begin by warmly introducing yourself as an Operational Intelligence Consultant with AE Software Solutions and asking for their business name.';
 
-    $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
-    $ollama_token = get_option( 'aesoftwares_ollama_token' );
-    $ollama_model = get_option( 'aesoftwares_ollama_model', 'qwen3:8b' );
+    // ── Primary: Local AI Router (Gemma 4b/12b via OpenClaw, or Ollama direct) ──
+    $router_url   = get_option( 'aesoftwares_ollama_proxy_url' );
+    $router_token = get_option( 'aesoftwares_ollama_token' );
+    $router_model = get_option( 'aesoftwares_ollama_model', 'gemma3:4b' );
 
-    if ( ! empty( $ollama_url ) ) {
+    if ( ! empty( $router_url ) ) {
         $payload = [
-            'model'   => $ollama_model,
+            'model'   => $router_model,
             'stream'  => false,
             'options' => [
                 'temperature' => 0.7,
                 'top_p'       => 0.9,
                 'think'       => false,
-                'num_predict' => 300,
+                'num_predict' => 1024,   // Gemma 4b cap; router escalates to 12b @ 4096 for complex
             ],
             'messages' => array_merge(
                 [ [ 'role' => 'system', 'content' => $system_prompt ] ],
@@ -1111,20 +1112,23 @@ Begin by warmly introducing yourself as an Operational Intelligence Consultant w
             ),
         ];
 
-        $response = wp_remote_post( rtrim( $ollama_url, '/' ) . '/api/chat', [
+        $headers = [ 'Content-Type' => 'application/json' ];
+        if ( ! empty( $router_token ) ) {
+            $headers['x-ollama-token'] = $router_token;
+        }
+
+        $response = wp_remote_post( rtrim( $router_url, '/' ) . '/api/chat', [
             'method'      => 'POST',
-            'headers'     => [
-                'Content-Type'   => 'application/json',
-                'x-ollama-token' => $ollama_token,
-            ],
+            'headers'     => $headers,
             'body'        => json_encode( $payload ),
             'data_format' => 'body',
-            'timeout'     => 300,
+            'timeout'     => 300,   // 12b fallback can take up to 300s on cold start
         ] );
 
         if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
             $body  = json_decode( wp_remote_retrieve_body( $response ), true );
             $reply = $body['message']['content'] ?? '';
+            // Strip <think> blocks from any reasoning model output
             $reply = preg_replace( '/<think>[\s\S]*?<\/think>/i', '', $reply );
             $reply = trim( $reply );
             if ( $reply !== '' ) {
