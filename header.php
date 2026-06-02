@@ -29,6 +29,7 @@
 
 		<nav class="site-header__nav">
 			<a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="site-header__nav-link">Services</a>
+			<a href="<?php echo esc_url( home_url( '/software/' ) ); ?>" class="site-header__nav-link">Software</a>
 			<a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>" class="site-header__nav-link">Industries</a>
 			<a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="site-header__nav-link">Case Studies</a>
 			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="site-header__nav-link">About</a>
@@ -50,6 +51,7 @@
 <nav class="mobile-nav-overlay" id="mobile-nav" aria-label="Mobile navigation">
 	<ul class="mobile-nav-overlay__links">
 		<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="mobile-nav-overlay__link">Services</a></li>
+		<li><a href="<?php echo esc_url( home_url( '/software/' ) ); ?>" class="mobile-nav-overlay__link">Software</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>" class="mobile-nav-overlay__link">Industries</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="mobile-nav-overlay__link">Case Studies</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="mobile-nav-overlay__link">About</a></li>
