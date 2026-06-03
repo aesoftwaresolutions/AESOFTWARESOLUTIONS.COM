@@ -129,6 +129,17 @@ function aesoftwares_enqueue_scripts() {
         );
     }
 
+    // ── Admin console — Cash Flow Intelligence web component ──────────────
+    if ( is_page_template( 'page-console.php' ) ) {
+        wp_enqueue_script(
+            'ae-cashflow',
+            $uri . '/assets/js/ae-cashflow.js',
+            [],
+            filemtime( $js . 'ae-cashflow.js' ),
+            [ 'in_footer' => true, 'strategy' => 'defer' ]
+        );
+    }
+
     // ── Cinematic stack (front page only) ─────────────────────────────────
     if ( is_front_page() ) {
 
@@ -243,6 +254,7 @@ function aesoftwares_settings_init() {
     register_setting( 'aesoftwares_settings', 'aesoftwares_marketplace_token' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_fb_email' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_fb_password' );
+    register_setting( 'aesoftwares_settings', 'aesoftwares_crm_url' );
 
     add_settings_section( 'aesoftwares_n8n_section', 'n8n Webhook Settings', null, 'aesoftwares_settings' );
     add_settings_field( 'aesoftwares_n8n_webhook_url_field', 'n8n Webhook URL', 'aesoftwares_n8n_webhook_url_field_html', 'aesoftwares_settings', 'aesoftwares_n8n_section' );
@@ -277,6 +289,14 @@ function aesoftwares_settings_init() {
     add_settings_field( 'aesoftwares_marketplace_token_field', 'Marketplace Service Token', 'aesoftwares_marketplace_token_field_html', 'aesoftwares_settings', 'aesoftwares_marketplace_section' );
     add_settings_field( 'aesoftwares_fb_email_field',           'Facebook Email',            'aesoftwares_fb_email_field_html',           'aesoftwares_settings', 'aesoftwares_marketplace_section' );
     add_settings_field( 'aesoftwares_fb_password_field',        'Facebook Password',         'aesoftwares_fb_password_field_html',        'aesoftwares_settings', 'aesoftwares_marketplace_section' );
+
+    add_settings_section(
+        'aesoftwares_console_section',
+        'Admin Console Settings',
+        function() { echo '<p style="color:#999;font-size:13px;">Configures the gated <code>/console/</code> page that hosts internal tools (aeCRM + Cash Flow analyzer).</p>'; },
+        'aesoftwares_settings'
+    );
+    add_settings_field( 'aesoftwares_crm_url_field', 'aeCRM URL', 'aesoftwares_crm_url_field_html', 'aesoftwares_settings', 'aesoftwares_console_section' );
 }
 add_action( 'admin_init', 'aesoftwares_settings_init' );
 
@@ -333,6 +353,11 @@ function aesoftwares_fb_email_field_html() {
 function aesoftwares_fb_password_field_html() {
     $pw = get_option( 'aesoftwares_fb_password', '' );
     ?><input type="password" name="aesoftwares_fb_password" value="<?php echo esc_attr( $pw ); ?>" class="regular-text" placeholder="••••••••"><p class="description">Facebook account password.</p><?php
+}
+
+function aesoftwares_crm_url_field_html() {
+    $url = get_option( 'aesoftwares_crm_url', '' );
+    ?><input type="url" name="aesoftwares_crm_url" value="<?php echo esc_attr( $url ); ?>" class="regular-text" placeholder="<?php echo esc_attr( home_url( '/crm/' ) ); ?>"><p class="description">URL of the aeCRM app. Embedded as an iframe on the <code>/console/</code> page. Defaults to <code><?php echo esc_html( home_url( '/crm/' ) ); ?></code> if blank. CRM must allow framing from this domain (no <code>X-Frame-Options: DENY</code>).</p><?php
 }
 
 

@@ -63,16 +63,16 @@
 
 <?php if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) : ?>
 <div class="admin-bar-chip admin-bar-chip--in">
-	<a href="<?php echo esc_url( home_url( '/marketplace/' ) ); ?>" class="admin-bar-chip__link" title="Marketplace">
+	<a href="<?php echo esc_url( home_url( '/console/' ) ); ?>" class="admin-bar-chip__link" title="Admin Console">
 		<span class="admin-bar-chip__avatar">
 			<?php echo get_avatar( get_current_user_id(), 28, '', '', [ 'class' => 'admin-bar-chip__img' ] ); ?>
 		</span>
-		<span class="admin-bar-chip__label">Marketplace</span>
+		<span class="admin-bar-chip__label">Console</span>
 	</a>
 	<a href="<?php echo esc_url( wp_logout_url( home_url( '/' ) ) ); ?>" class="admin-bar-chip__logout" title="Log out">&#x2715;</a>
 </div>
 <?php else : ?>
-<a href="<?php echo esc_url( wp_login_url( home_url( '/marketplace/' ) ) ); ?>" class="admin-bar-chip admin-bar-chip--out" title="Admin login">
+<a href="<?php echo esc_url( wp_login_url( home_url( '/console/' ) ) ); ?>" class="admin-bar-chip admin-bar-chip--out" title="Admin login">
 	<svg class="admin-bar-chip__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 		<circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.4"/>
 		<path d="M3 17c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>

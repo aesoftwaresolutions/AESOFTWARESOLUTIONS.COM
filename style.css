@@ -4739,3 +4739,239 @@ body.nav-open { overflow: hidden; }
 	.software-cta__title { font-size: clamp(1.75rem, 8vw, 2.5rem); }
 	.software-cta__sub { font-size: 0.95rem; }
 }
+
+
+/* ════════════════════════════════════════════════════════════════════════════
+   ADMIN CONSOLE PAGE
+   Gated /console/ page hosting both internal platforms via tabs
+   ════════════════════════════════════════════════════════════════════════════ */
+
+.console-page {
+	min-height: 100vh;
+	background: #080808;
+	color: #EDEDE9;
+}
+
+/* ── Hero strip ──────────────────────────────────────────────────────────── */
+.console-hero {
+	background: #0e0e0e;
+	border-bottom: 1px solid rgba(255,255,255,0.06);
+	padding: calc(80px + 1.5rem) clamp(1.25rem, 4vw, 3rem) 0;
+}
+
+.console-hero__inner {
+	max-width: 1400px;
+	margin: 0 auto;
+}
+
+.console-hero__row {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 2rem;
+	flex-wrap: wrap;
+	padding-bottom: 1.5rem;
+}
+
+.console-hero__eyebrow {
+	display: block;
+	font-size: 0.7rem;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--accent);
+	margin-bottom: 0.75rem;
+	font-weight: 600;
+}
+
+.console-hero__headline {
+	font-family: 'Inter', sans-serif;
+	font-weight: 300;
+	font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+	letter-spacing: -0.025em;
+	line-height: 1.1;
+	color: #EDEDE9;
+	margin: 0 0 0.5rem;
+}
+
+.console-hero__sub {
+	font-size: 0.9rem;
+	color: #888884;
+	line-height: 1.6;
+	margin: 0;
+	max-width: 520px;
+}
+
+/* User chip */
+.console-user {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	background: rgba(255,255,255,0.03);
+	border: 1px solid rgba(255,255,255,0.08);
+	border-radius: 40px;
+	padding: 0.5rem 1rem 0.5rem 0.5rem;
+}
+
+.console-user__avatar {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	display: block;
+}
+
+.console-user__name {
+	font-size: 0.8rem;
+	font-weight: 600;
+	color: #EDEDE9;
+	line-height: 1.1;
+}
+
+.console-user__logout {
+	font-size: 0.7rem;
+	color: #888884;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	text-decoration: none;
+	transition: color 0.2s;
+}
+.console-user__logout:hover { color: var(--accent); }
+
+/* ── Tab strip ───────────────────────────────────────────────────────────── */
+.console-tabs {
+	display: flex;
+	gap: 0.25rem;
+	align-items: center;
+	margin-top: 0.5rem;
+}
+
+.console-tab {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	background: transparent;
+	border: none;
+	color: #888884;
+	padding: 0.85rem 1.25rem;
+	font-size: 0.82rem;
+	font-weight: 500;
+	letter-spacing: 0.03em;
+	cursor: pointer;
+	border-bottom: 2px solid transparent;
+	font-family: inherit;
+	transition: color 0.2s, border-color 0.2s;
+	text-decoration: none;
+	position: relative;
+	bottom: -1px;
+}
+
+.console-tab__icon {
+	display: inline-flex;
+	color: currentColor;
+	opacity: 0.7;
+}
+
+.console-tab:hover {
+	color: #EDEDE9;
+}
+
+.console-tab.is-active {
+	color: var(--accent);
+	border-bottom-color: var(--accent);
+}
+.console-tab.is-active .console-tab__icon { opacity: 1; }
+
+.console-tab--ext {
+	margin-left: auto;
+	color: #6a6a66;
+	font-size: 0.72rem;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+}
+
+/* ── Panel ───────────────────────────────────────────────────────────────── */
+.console-panel {
+	padding: 2rem clamp(1.25rem, 4vw, 3rem);
+}
+
+.console-panel:not(.is-active) {
+	display: none;
+}
+
+.console-panel__inner {
+	max-width: 1400px;
+	margin: 0 auto;
+}
+
+/* ── Iframe wrapper for CRM ──────────────────────────────────────────────── */
+.console-iframe-wrap {
+	background: #0e0e0e;
+	border: 1px solid rgba(255,255,255,0.08);
+	border-radius: 10px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	height: calc(100vh - 240px);
+	min-height: 600px;
+}
+
+.console-iframe-bar {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.7rem 1rem;
+	background: #131313;
+	border-bottom: 1px solid rgba(255,255,255,0.06);
+	flex-wrap: wrap;
+}
+
+.console-iframe-bar__label {
+	font-size: 0.72rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--accent);
+	font-weight: 600;
+}
+
+.console-iframe-bar__url {
+	font-size: 0.78rem;
+	color: #888884;
+	font-family: 'SF Mono', 'Menlo', monospace;
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.console-iframe-bar__open {
+	font-size: 0.72rem;
+	color: var(--accent);
+	letter-spacing: 0.06em;
+	text-decoration: none;
+	white-space: nowrap;
+	transition: color 0.2s;
+}
+.console-iframe-bar__open:hover { color: #fff; }
+
+.console-iframe {
+	flex: 1;
+	width: 100%;
+	border: 0;
+	background: #fff;
+	display: block;
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+	.console-hero { padding-top: calc(72px + 1rem); }
+	.console-hero__row { gap: 1.25rem; padding-bottom: 1rem; }
+	.console-user { padding: 0.4rem 0.85rem 0.4rem 0.4rem; }
+	.console-user__avatar { width: 30px; height: 30px; }
+	.console-user__name { font-size: 0.75rem; }
+	.console-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+	.console-tab { flex-shrink: 0; padding: 0.7rem 1rem; }
+	.console-tab--ext { margin-left: 0.5rem; }
+	.console-panel { padding: 1.25rem; }
+	.console-iframe-wrap { height: calc(100vh - 200px); min-height: 480px; }
+	.console-iframe-bar__url { display: none; } /* tight on mobile */
+}
