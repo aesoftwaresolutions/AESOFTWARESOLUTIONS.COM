@@ -1,4 +1,83 @@
-<?php /* Template Name: Transcriber */ get_header(); ?>
+<?php
+/* Template Name: Transcriber */
+
+/* Inject TTS-section styles before the closing </head> */
+add_action( 'wp_head', function () { ?>
+<style>
+/* ── TTS section ──────────────────────────────────────────────────── */
+.transcriber-section--tts { padding-top: 0; }
+.transcriber-output__placeholder { color: var(--text-muted); font-style: italic; }
+.transcriber-file-name { color: var(--accent); }
+
+.transcriber-tool-label {
+	padding: 0 0 1.75rem;
+	border-bottom: 1px solid var(--border);
+	margin-bottom: 2rem;
+}
+.transcriber-tool-label__tag {
+	display: inline-block;
+	background: var(--accent);
+	color: var(--bg);
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	padding: 0.25rem 0.65rem;
+	border-radius: 3px;
+	margin-bottom: 0.6rem;
+}
+.transcriber-tool-label__desc {
+	margin: 0;
+	font-size: 0.95rem;
+	color: var(--text-muted);
+	max-width: 52ch;
+}
+.tts-voice-row {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.75rem 1.25rem;
+	border-top: 1px solid #2a2a2a;
+}
+.tts-voice-label {
+	font-size: 0.8rem;
+	font-weight: 600;
+	color: var(--text-muted);
+	white-space: nowrap;
+}
+.tts-voice-select {
+	flex: 1;
+	font-size: 0.85rem;
+	padding: 0.4rem 0.6rem;
+	border: 1px solid #333;
+	border-radius: 6px;
+	background: var(--bg-surface);
+	color: var(--text);
+	cursor: pointer;
+	max-width: 240px;
+}
+.tts-voice-select:focus {
+	outline: 2px solid var(--accent);
+	outline-offset: 1px;
+	border-color: var(--accent);
+}
+.tts-output-area {
+	flex: 1;
+	min-height: 120px;
+	padding: 1.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.tts-output-area audio {
+	display: block;
+	width: 100%;
+	border-radius: 6px;
+}
+</style>
+<?php }, 20 );
+
+get_header(); ?>
 
 <div class="page-hero transcriber-hero">
 	<div class="page-hero__eyebrow"><a href="<?php echo esc_url( home_url( '/free-tools/' ) ); ?>" class="hero-back-link">&larr; Free Tools</a></div>
