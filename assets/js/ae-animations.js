@@ -441,6 +441,155 @@
   }
 
 
+  /* ══════════════════════════════════════════════════════════════════════════
+     11. PAGE HERO CANVAS — same particle network on all inner pages
+     Targets every .page-hero section. Injects dot-grid, orbs, and canvas.
+     Uses 22 nodes (lighter than front-page 38) to match smaller hero height.
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  function initPageHeroCanvas() {
+    var heroes = document.querySelectorAll('.page-hero');
+    if (!heroes.length) return;
+
+    /* Inject shared CSS once */
+    var styleTag = document.createElement('style');
+    styleTag.textContent =
+      '.page-hero{position:relative;overflow:hidden;}' +
+      '.page-hero-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}' +
+      '.page-hero>*:not(.page-hero-canvas):not(.page-hero-bg-dots):not(.page-hero-orb--1):not(.page-hero-orb--2){position:relative;z-index:1;}' +
+      '.page-hero-bg-dots{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0;}' +
+      '.page-hero-orb--1{position:absolute;width:480px;height:480px;top:-160px;right:-100px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,0.065) 0%,transparent 70%);pointer-events:none;z-index:0;}' +
+      '.page-hero-orb--2{position:absolute;width:320px;height:320px;bottom:-110px;left:-70px;border-radius:50%;background:radial-gradient(circle,rgba(120,100,220,0.04) 0%,transparent 70%);pointer-events:none;z-index:0;}';
+    document.head.appendChild(styleTag);
+
+    heroes.forEach(function(hero) {
+      /* dot grid */
+      var dots = document.createElement('div');
+      dots.className = 'page-hero-bg-dots';
+      dots.setAttribute('aria-hidden', 'true');
+      hero.insertBefore(dots, hero.firstChild);
+
+      /* orbs */
+      var orb2 = document.createElement('div');
+      orb2.className = 'page-hero-orb--2';
+      orb2.setAttribute('aria-hidden', 'true');
+      hero.insertBefore(orb2, hero.firstChild);
+
+      var orb1 = document.createElement('div');
+      orb1.className = 'page-hero-orb--1';
+      orb1.setAttribute('aria-hidden', 'true');
+      hero.insertBefore(orb1, hero.firstChild);
+
+      /* canvas */
+      var canvas = document.createElement('canvas');
+      canvas.className = 'page-hero-canvas';
+      canvas.setAttribute('aria-hidden', 'true');
+      hero.insertBefore(canvas, hero.firstChild);
+
+      var ctx = canvas.getContext('2d');
+      var W, H, nodes;
+      var NODE_COUNT = 22;
+      var MAX_DIST   = 140;
+      var time       = 0;
+      var animId     = null;
+
+      function mkNode() {
+        return {
+          x:     Math.random() * W,
+          y:     Math.random() * H,
+          vx:    (Math.random() - 0.5) * 0.25,
+          vy:    (Math.random() - 0.5) * 0.25,
+          r:     Math.random() * 1.6 + 0.5,
+          gold:  Math.random() > 0.8,
+          phase: Math.random() * Math.PI * 2
+        };
+      }
+
+      function resize() {
+        W = canvas.width  = hero.offsetWidth;
+        H = canvas.height = hero.offsetHeight;
+      }
+
+      function buildNodes() {
+        nodes = [];
+        for (var i = 0; i < NODE_COUNT; i++) nodes.push(mkNode());
+      }
+
+      function tick() {
+        time += 0.008;
+        ctx.clearRect(0, 0, W, H);
+
+        for (var i = 0; i < nodes.length; i++) {
+          for (var j = i + 1; j < nodes.length; j++) {
+            var dx = nodes[i].x - nodes[j].x;
+            var dy = nodes[i].y - nodes[j].y;
+            var d  = Math.sqrt(dx * dx + dy * dy);
+            if (d >= MAX_DIST) continue;
+            var t = 1 - d / MAX_DIST;
+            var isGold = nodes[i].gold || nodes[j].gold;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            if (isGold) {
+              ctx.strokeStyle = 'rgba(201,169,110,' + (t * 0.22) + ')';
+              ctx.lineWidth   = t * 1.1;
+            } else {
+              ctx.strokeStyle = 'rgba(255,255,255,' + (t * 0.06) + ')';
+              ctx.lineWidth   = t * 0.6;
+            }
+            ctx.stroke();
+          }
+        }
+
+        for (var k = 0; k < nodes.length; k++) {
+          var n = nodes[k];
+          var pulse = Math.sin(time + n.phase);
+          if (n.gold) {
+            var grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 14 + pulse * 3);
+            grd.addColorStop(0, 'rgba(201,169,110,0.15)');
+            grd.addColorStop(1, 'rgba(201,169,110,0)');
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, 14 + pulse * 3, 0, Math.PI * 2);
+            ctx.fillStyle = grd;
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r + pulse * 0.3, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(201,169,110,0.85)';
+            ctx.fill();
+          } else {
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.18)';
+            ctx.fill();
+          }
+          n.x += n.vx; n.y += n.vy;
+          if (n.x < -20) n.x = W + 20;
+          if (n.x > W + 20) n.x = -20;
+          if (n.y < -20) n.y = H + 20;
+          if (n.y > H + 20) n.y = -20;
+        }
+
+        animId = requestAnimationFrame(tick);
+      }
+
+      function startCanvas() { if (!animId) tick(); }
+      function stopCanvas()  { cancelAnimationFrame(animId); animId = null; }
+
+      resize();
+      buildNodes();
+      startCanvas();
+
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function(entries) {
+          entries[0].isIntersecting ? startCanvas() : stopCanvas();
+        }, { threshold: 0 }).observe(hero);
+      }
+
+      window.addEventListener('resize', function() { resize(); buildNodes(); }, { passive: true });
+    });
+  }
+
+
   /* ── Init ──────────────────────────────────────────────────────────────── */
   function init() {
     initRevealText();
@@ -449,6 +598,7 @@
     initCounters();
     initMobileNav();
     initHeroCanvas();
+    initPageHeroCanvas();
     initHeroHeadline();
     initProcessConnector();
     initAssessmentBadges();

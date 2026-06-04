@@ -5,6 +5,21 @@
  *
  * @package AE_Softwares
  */
+add_action( 'wp_head', function () { ?>
+<style>
+/* ── Business Starter promo strip ──────────────────────────────────────── */
+.starter-promo-section{padding:clamp(64px,8vw,112px) clamp(1.5rem,5vw,4rem);background:var(--bg-surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.starter-promo-inner{max-width:var(--max-width);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.starter-promo__headline{font-family:var(--font-editorial);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:var(--text);line-height:1.1;margin:.75rem 0 1rem;}
+.starter-promo__headline em{font-style:italic;color:var(--accent);}
+.starter-promo__sub{font-size:1rem;color:var(--text-muted);line-height:1.75;max-width:46ch;margin:0 0 2rem;}
+.starter-promo-features{display:flex;flex-direction:column;gap:.75rem;}
+.starter-feature-pill{display:flex;align-items:center;gap:.65rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.85rem 1.1rem;font-size:.9rem;color:var(--text-muted);transition:border-color .2s ease,color .2s ease;}
+.starter-feature-pill svg{color:var(--accent);flex-shrink:0;}
+.starter-feature-pill:hover{border-color:var(--accent);color:var(--text);}
+@media(max-width:768px){.starter-promo-inner{grid-template-columns:1fr;gap:2.5rem;}}
+</style>
+<?php }, 20 );
 get_header(); ?>
 
 <div class="front-page-wrapper">
@@ -16,15 +31,15 @@ get_header(); ?>
 		<div class="hero-orb hero-orb--2" aria-hidden="true"></div>
 		<div class="hero-grid">
 			<div class="hero-text">
-				<span class="hero-eyebrow">Compliance-Aware Operational Intelligence</span>
+				<span class="hero-eyebrow">Business Operations &amp; Efficiency Platform</span>
 				<h1 class="hero-headline">
-					<span>We map your</span>
-					<span>operations. We protect</span>
-					<span>your <em>compliance.</em></span>
+					<span>We support your</span>
+					<span>business. We optimize</span>
+					<span>your <em>efficiency.</em></span>
 				</h1>
-				<p class="hero-sub" data-reveal-text>A structured discovery process that finds bottlenecks, compliance gaps, and automation opportunities — then builds the systems to fix them.</p>
+				<p class="hero-sub" data-reveal-text>From CRM and accounting tools to compliance guides and automation — we give growing businesses the systems they need to operate faster, smarter, and with confidence.</p>
 				<div class="hero-actions">
-					<a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="btn btn--primary">Start Your Assessment</a>
+					<a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="btn btn--primary">Get the Starter Package</a>
 					<a href="#process" class="btn btn--ghost">See how it works</a>
 				</div>
 			</div>
@@ -37,7 +52,7 @@ get_header(); ?>
 		<div class="stats-row">
 			<div class="stat-item">
 				<div class="stat-number" data-target="50" data-suffix="+">0+</div>
-				<div class="stat-label">Assessments delivered</div>
+				<div class="stat-label">Businesses supported</div>
 			</div>
 			<div class="stat-divider" aria-hidden="true"></div>
 			<div class="stat-item">
@@ -58,9 +73,9 @@ get_header(); ?>
 		<div class="reveal-inner">
 			<p class="reveal-label">What we do</p>
 			<h2 class="reveal-headline" data-reveal-text>
-				<span class="reveal-line-1">We don't just automate.</span>
-				<span class="reveal-line-2">We <em>understand</em></span>
-				<span class="reveal-line-3">your business first.</span>
+				<span class="reveal-line-1">We don't just sell software.</span>
+				<span class="reveal-line-2">We <em>empower</em></span>
+				<span class="reveal-line-3">your business to grow.</span>
 			</h2>
 		</div>
 	</section>
@@ -68,37 +83,34 @@ get_header(); ?>
 	<!-- SERVICE TIERS -->
 	<section class="tiers-section" id="services" aria-label="Service tiers">
 		<div class="section-header">
-			<span class="section-eyebrow">How we work</span>
-			<h2 class="section-title">Three tiers.<br>One outcome.</h2>
+			<span class="section-eyebrow">How we help</span>
+			<h2 class="section-title">Three ways.<br>One goal: your growth.</h2>
 		</div>
 		<div class="tiers-grid">
 
 			<div class="tier-card js-fade" style="--delay:0s">
 				<div class="tier-card__icon" aria-hidden="true">
-					<!-- Scan / magnifying glass with data lines -->
 					<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<circle cx="13" cy="13" r="8" stroke="currentColor" stroke-width="1.5"/>
-						<line x1="19" y1="19" x2="27" y2="27" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-						<line x1="9.5" y1="13" x2="16.5" y2="13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
-						<line x1="9.5" y1="10" x2="14.5" y2="10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.35"/>
-						<line x1="9.5" y1="16" x2="15.5" y2="16" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.35"/>
+						<rect x="4" y="6" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+						<rect x="18" y="6" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+						<rect x="4" y="20" width="10" height="6" rx="2" stroke="currentColor" stroke-width="1.5" opacity="0.45"/>
+						<rect x="18" y="20" width="10" height="6" rx="2" stroke="currentColor" stroke-width="1.5" opacity="0.45"/>
 					</svg>
 				</div>
 				<div class="tier-card__num">01</div>
-				<div class="tier-card__label">Assessment</div>
-				<h3 class="tier-card__title">Operational Discovery</h3>
-				<p class="tier-card__desc">Our AI-guided discovery interview maps your workflows, identifies compliance exposure, and surfaces bottlenecks. You receive a full operational intelligence report.</p>
+				<div class="tier-card__label">Starter</div>
+				<h3 class="tier-card__title">Business Starter Package</h3>
+				<p class="tier-card__desc">Everything a growing business needs in one affordable subscription — CRM, accounting tools, and state-specific compliance guides, all under one roof.</p>
 				<ul class="tier-card__list">
-					<li>10-phase business analysis</li>
-					<li>Compliance risk mapping</li>
-					<li>Automation opportunity score</li>
+					<li>aeCRM — manage leads &amp; clients</li>
+					<li>Accounting &amp; invoicing tools</li>
+					<li>Compliance guides for any state</li>
 				</ul>
-				<a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="tier-card__link">Start free assessment &rarr;</a>
+				<a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="tier-card__link">See the $50/mo plan &rarr;</a>
 			</div>
 
 			<div class="tier-card tier-card--featured js-fade" style="--delay:0.12s">
 				<div class="tier-card__icon" aria-hidden="true">
-					<!-- Ascending bar chart with trend line -->
 					<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect x="3" y="20" width="5.5" height="9" rx="1" fill="currentColor" opacity="0.25"/>
 						<rect x="12" y="13" width="5.5" height="16" rx="1" fill="currentColor" opacity="0.5"/>
@@ -109,18 +121,17 @@ get_header(); ?>
 				<div class="tier-card__num">02</div>
 				<div class="tier-card__label">Optimization</div>
 				<h3 class="tier-card__title">Process Intelligence</h3>
-				<p class="tier-card__desc">We personally review your findings, build process maps, design your automation architecture, and deliver a prioritized roadmap with ROI projections.</p>
+				<p class="tier-card__desc">We map your current workflows, identify bottlenecks, and build a clear roadmap for efficiency gains — with ROI projections and quick wins prioritized first.</p>
 				<ul class="tier-card__list">
+					<li>10-phase business assessment</li>
 					<li>Process maps &amp; SOPs</li>
-					<li>Automation design plan</li>
-					<li>ROI projections &amp; roadmap</li>
+					<li>Automation roadmap &amp; ROI plan</li>
 				</ul>
-				<a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="tier-card__link">View services &rarr;</a>
+				<a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="tier-card__link">Start free assessment &rarr;</a>
 			</div>
 
 			<div class="tier-card js-fade" style="--delay:0.24s">
 				<div class="tier-card__icon" aria-hidden="true">
-					<!-- Connected nodes / deployment flow -->
 					<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<circle cx="5" cy="16" r="3" stroke="currentColor" stroke-width="1.5"/>
 						<circle cx="16" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/>
@@ -135,11 +146,11 @@ get_header(); ?>
 				<div class="tier-card__num">03</div>
 				<div class="tier-card__label">Implementation</div>
 				<h3 class="tier-card__title">Intelligent Deployment</h3>
-				<p class="tier-card__desc">We build and deploy the actual systems — n8n workflows, AI agents, compliance monitoring, integrations — and hand you a fully operational platform.</p>
+				<p class="tier-card__desc">We build and deploy your automation stack — workflows, AI agents, integrations, and monitoring — and hand you a fully operational system ready to scale.</p>
 				<ul class="tier-card__list">
-					<li>n8n workflow automation</li>
+					<li>Custom workflow automation</li>
 					<li>AI agents &amp; integrations</li>
-					<li>Compliance monitoring</li>
+					<li>Ongoing support &amp; optimization</li>
 				</ul>
 				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="tier-card__link">Get a proposal &rarr;</a>
 			</div>
@@ -147,17 +158,46 @@ get_header(); ?>
 		</div>
 	</section>
 
+	<!-- BUSINESS STARTER PACKAGE PROMO -->
+	<section class="starter-promo-section js-fade" aria-label="Business Starter Package">
+		<div class="starter-promo-inner">
+			<div class="starter-promo-text">
+				<span class="section-eyebrow">New</span>
+				<h2 class="starter-promo__headline">Everything your business needs.<br><em>One simple subscription.</em></h2>
+				<p class="starter-promo__sub">For just $50/month, get access to aeCRM, accounting and invoicing tools, and compliance &amp; registration guides for any U.S. state — the essential stack for any growing business.</p>
+				<a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="btn btn--primary">Get Started for $50/mo</a>
+			</div>
+			<div class="starter-promo-features" aria-hidden="true">
+				<div class="starter-feature-pill">
+					<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					aeCRM
+				</div>
+				<div class="starter-feature-pill">
+					<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					Accounting &amp; Invoicing
+				</div>
+				<div class="starter-feature-pill">
+					<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					Compliance Guides — All 50 States
+				</div>
+				<div class="starter-feature-pill">
+					<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					Business Registration Guides
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<!-- PROCESS -->
 	<section class="process-section" id="process" aria-label="Our process">
 		<div class="process-header">
 			<span class="process-eyebrow">How we work</span>
-			<h2 class="process-title">From discovery<br>to deployment.</h2>
+			<h2 class="process-title">From onboarding<br>to results.</h2>
 		</div>
 		<div class="process-track">
 
 			<div class="process-step js-fade" style="--delay:0s">
 				<div class="process-step__icon" aria-hidden="true">
-					<!-- Document scan / clipboard -->
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect x="5" y="4" width="14" height="16" rx="2" stroke="currentColor" stroke-width="1.4"/>
 						<path d="M9 4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
@@ -173,7 +213,6 @@ get_header(); ?>
 
 			<div class="process-step js-fade" style="--delay:0.1s">
 				<div class="process-step__icon" aria-hidden="true">
-					<!-- Bar chart / data analysis -->
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<line x1="3" y1="20" x2="3" y2="4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity="0.4"/>
 						<line x1="3" y1="20" x2="21" y2="20" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity="0.4"/>
@@ -189,7 +228,6 @@ get_header(); ?>
 
 			<div class="process-step js-fade" style="--delay:0.2s">
 				<div class="process-step__icon" aria-hidden="true">
-					<!-- Blueprint / layout grid -->
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.4"/>
 						<line x1="3" y1="9" x2="21" y2="9" stroke="currentColor" stroke-width="1.2" opacity="0.45"/>
@@ -204,7 +242,6 @@ get_header(); ?>
 
 			<div class="process-step js-fade" style="--delay:0.3s">
 				<div class="process-step__icon" aria-hidden="true">
-					<!-- Lightning bolt / deploy -->
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
 					</svg>
@@ -228,7 +265,6 @@ get_header(); ?>
 
 				<a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>#mortgage" class="industry-chip js-fade" style="--delay:0s">
 					<span class="industry-chip__icon" aria-hidden="true">
-						<!-- House outline -->
 						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M3 9L10 3L17 9V17H13V13H7V17H3V9Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
 						</svg>
@@ -239,7 +275,6 @@ get_header(); ?>
 
 				<a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>#insurance" class="industry-chip js-fade" style="--delay:0.08s">
 					<span class="industry-chip__icon" aria-hidden="true">
-						<!-- Shield outline -->
 						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M10 2L3 5V10C3 13.87 6.08 17.5 10 18.5C13.92 17.5 17 13.87 17 10V5L10 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
 						</svg>
@@ -250,7 +285,6 @@ get_header(); ?>
 
 				<a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>#healthcare" class="industry-chip js-fade" style="--delay:0.16s">
 					<span class="industry-chip__icon" aria-hidden="true">
-						<!-- Medical cross -->
 						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<rect x="8" y="2" width="4" height="16" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
 							<rect x="2" y="8" width="16" height="4" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
@@ -262,7 +296,6 @@ get_header(); ?>
 
 				<a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>#construction" class="industry-chip js-fade" style="--delay:0.24s">
 					<span class="industry-chip__icon" aria-hidden="true">
-						<!-- Hard hat -->
 						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M3 13H17V15H3V13Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
 							<path d="M5 13C5 9.13 7.24 6 10 6C12.76 6 15 9.13 15 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>

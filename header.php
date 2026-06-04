@@ -13,6 +13,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 	<?php wp_head(); ?>
+<style>.site-header__nav-link--highlight{color:var(--accent)!important}.site-header__nav-link--highlight:hover,.site-header__nav-link--highlight:focus{color:var(--accent)!important;opacity:.8}</style>
 </head>
 
 <body <?php body_class(); ?>>
@@ -30,6 +31,7 @@
 		<nav class="site-header__nav">
 			<a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="site-header__nav-link">Services</a>
 			<a href="<?php echo esc_url( home_url( '/software/' ) ); ?>" class="site-header__nav-link">Software</a>
+			<a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="site-header__nav-link site-header__nav-link--highlight">Pricing</a>
 			<a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>" class="site-header__nav-link">Industries</a>
 			<a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="site-header__nav-link">Case Studies</a>
 			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="site-header__nav-link">About</a>
@@ -52,6 +54,7 @@
 	<ul class="mobile-nav-overlay__links">
 		<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="mobile-nav-overlay__link">Services</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/software/' ) ); ?>" class="mobile-nav-overlay__link">Software</a></li>
+		<li><a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="mobile-nav-overlay__link" style="color:var(--accent)">Pricing — $50/mo</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>" class="mobile-nav-overlay__link">Industries</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="mobile-nav-overlay__link">Case Studies</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="mobile-nav-overlay__link">About</a></li>
