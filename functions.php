@@ -5,6 +5,9 @@
  */
 
 
+// ── Aria REST API endpoints (push/status/assets) ─────────────────────────────
+require_once get_template_directory() . '/inc/aria-api.php';
+
 // ══════════════════════════════════════════════════════════════════════════════
 // 1. ENQUEUE SCRIPTS & STYLES
 // ══════════════════════════════════════════════════════════════════════════════
@@ -101,6 +104,20 @@ function aesoftwares_enqueue_scripts() {
         );
         wp_localize_script( 'ae-summarizer', 'ae_summarizer_settings', [
             'summarize_url' => get_rest_url( null, 'aesoftwares/v1/summarize' ),
+        ] );
+    }
+
+    // ── Aria dashboard (console page only) ───────────────────────────────
+    if ( is_page_template( 'page-console.php' ) ) {
+        wp_enqueue_script(
+            'ae-aria',
+            $uri . '/assets/js/ae-aria.js',
+            [],
+            filemtime( $js . 'ae-aria.js' ),
+            [ 'in_footer' => true, 'strategy' => 'defer' ]
+        );
+        wp_localize_script( 'ae-aria', 'ae_aria_settings', [
+            'status_url' => get_rest_url( null, 'aesoftwares/v1/aria/status' ),
         ] );
     }
 
@@ -255,6 +272,7 @@ function aesoftwares_settings_init() {
     register_setting( 'aesoftwares_settings', 'aesoftwares_fb_email' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_fb_password' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_crm_url' );
+    register_setting( 'aesoftwares_settings', 'ae_aria_push_token' );
 
     add_settings_section( 'aesoftwares_n8n_section', 'n8n Webhook Settings', null, 'aesoftwares_settings' );
     add_settings_field( 'aesoftwares_n8n_webhook_url_field', 'n8n Webhook URL', 'aesoftwares_n8n_webhook_url_field_html', 'aesoftwares_settings', 'aesoftwares_n8n_section' );
@@ -297,6 +315,14 @@ function aesoftwares_settings_init() {
         'aesoftwares_settings'
     );
     add_settings_field( 'aesoftwares_crm_url_field', 'aeCRM URL', 'aesoftwares_crm_url_field_html', 'aesoftwares_settings', 'aesoftwares_console_section' );
+
+    add_settings_section(
+        'ae_aria_section',
+        'Aria Agent Settings',
+        function() { echo '<p style="color:#999;font-size:13px;">Aria pushes her live status to this site via the <code>/wp-json/aesoftwares/v1/aria/push</code> endpoint. Set a secret token here and add the same token to HEARTBEAT.md on the Ubuntu agent so her pushes are authenticated.</p>'; },
+        'aesoftwares_settings'
+    );
+    add_settings_field( 'ae_aria_push_token_field', 'Aria Push Token', 'ae_aria_push_token_field_html', 'aesoftwares_settings', 'ae_aria_section' );
 }
 add_action( 'admin_init', 'aesoftwares_settings_init' );
 
@@ -358,6 +384,11 @@ function aesoftwares_fb_password_field_html() {
 function aesoftwares_crm_url_field_html() {
     $url = get_option( 'aesoftwares_crm_url', '' );
     ?><input type="url" name="aesoftwares_crm_url" value="<?php echo esc_attr( $url ); ?>" class="regular-text" placeholder="<?php echo esc_attr( home_url( '/crm/' ) ); ?>"><p class="description">URL of the aeCRM app. Embedded as an iframe on the <code>/console/</code> page. Defaults to <code><?php echo esc_html( home_url( '/crm/' ) ); ?></code> if blank. CRM must allow framing from this domain (no <code>X-Frame-Options: DENY</code>).</p><?php
+}
+
+function ae_aria_push_token_field_html() {
+    $token = get_option( 'ae_aria_push_token', '' );
+    ?><input type="password" name="ae_aria_push_token" value="<?php echo esc_attr( $token ); ?>" class="regular-text" placeholder="aria_push_ae2026_…"><p class="description">Secret Bearer token Aria uses when pushing heartbeat status to <code>POST /wp-json/aesoftwares/v1/aria/push</code>. Copy this value into HEARTBEAT.md on the Ubuntu agent under <strong>WP_PUSH_TOKEN</strong>. Must match exactly — no spaces.</p><?php
 }
 
 

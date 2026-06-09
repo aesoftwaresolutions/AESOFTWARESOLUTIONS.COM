@@ -63,6 +63,15 @@ get_header();
 					</span>
 					aeCRM
 				</button>
+				<button class="console-tab" role="tab" aria-selected="false" data-tab="aria">
+					<span class="console-tab__icon" aria-hidden="true">
+						<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+							<circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.4"/>
+							<path d="M8 5.5V8L9.5 9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+					</span>
+					Aria
+				</button>
 				<a class="console-tab console-tab--ext" href="<?php echo esc_url( admin_url() ); ?>">
 					<span class="console-tab__icon" aria-hidden="true">
 						<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -101,6 +110,13 @@ get_header();
 					sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"
 				></iframe>
 			</div>
+		</div>
+	</section>
+
+	<!-- TAB: Aria -->
+	<section class="console-panel" id="panel-aria" role="tabpanel" hidden>
+		<div class="console-panel__inner">
+			<!-- ae-aria.js bootstraps here via #panel-aria element -->
 		</div>
 	</section>
 

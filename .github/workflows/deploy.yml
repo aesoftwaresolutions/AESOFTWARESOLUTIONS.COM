@@ -48,6 +48,8 @@ jobs:
               [summarizer]='AI Text Summarizer'
               [transcriber]='AI Audio Transcriber'
               [marketplace]='Marketplace'
+              [console]='Admin Console'
+              [aria-store]='Aria Store'
             )
             for slug in \"\${!titles[@]}\"; do
               title=\"\${titles[\$slug]}\"
