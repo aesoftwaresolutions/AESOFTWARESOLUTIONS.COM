@@ -56,7 +56,9 @@ add_action( 'rest_api_init', function () {
 
 /** Verify Bearer token from Authorization header */
 function ae_aria_verify_token() {
-    $expected = get_option( 'ae_aria_push_token', '' );
+    // Option stored by aria-endpoints.php settings form under 'aesoftwares_aria_push_token';
+    // fall back to legacy 'ae_aria_push_token' key so either works.
+    $expected = get_option( 'aesoftwares_aria_push_token', get_option( 'ae_aria_push_token', '' ) );
     if ( empty( $expected ) ) return false;
     $auth = isset( $_SERVER['HTTP_AUTHORIZATION'] ) ? $_SERVER['HTTP_AUTHORIZATION'] : (
         isset( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) ? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] : ''
@@ -195,6 +197,35 @@ function ae_aria_create_asset( WP_REST_Request $req ) {
 
     update_post_meta( $product_id, '_aria_created',    1 );
     update_post_meta( $product_id, '_aria_created_at', time() );
+
+    // Optional: attach a cover image if provided as base64 PNG
+    $cover_b64 = $body['cover_image_b64'] ?? '';
+    $cover_filename = sanitize_file_name( $body['cover_filename'] ?? 'cover.png' );
+    if ( ! empty( $cover_b64 ) ) {
+        $image_bytes = base64_decode( $cover_b64 );
+        if ( $image_bytes && strlen( $image_bytes ) > 100 ) {
+            $upload_dir  = wp_upload_dir();
+            $covers_dir  = $upload_dir['basedir'] . '/aria-covers';
+            if ( ! file_exists( $covers_dir ) ) wp_mkdir_p( $covers_dir );
+            $cover_path = $covers_dir . '/' . $cover_filename;
+            file_put_contents( $cover_path, $image_bytes );
+
+            // Register as WP attachment and set as product thumbnail
+            $attach_id = wp_insert_attachment( [
+                'guid'           => $upload_dir['baseurl'] . '/aria-covers/' . $cover_filename,
+                'post_mime_type' => 'image/png',
+                'post_title'     => sanitize_text_field( $name . ' Cover' ),
+                'post_status'    => 'inherit',
+            ], $cover_path, $product_id );
+
+            if ( $attach_id && ! is_wp_error( $attach_id ) ) {
+                require_once ABSPATH . 'wp-admin/includes/image.php';
+                $attach_data = wp_generate_attachment_metadata( $attach_id, $cover_path );
+                wp_update_attachment_metadata( $attach_id, $attach_data );
+                set_post_thumbnail( $product_id, $attach_id );
+            }
+        }
+    }
 
     return new WP_REST_Response( [
         'ok'         => true,
