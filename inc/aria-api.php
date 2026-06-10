@@ -34,6 +34,18 @@ add_action( 'rest_api_init', function () {
             'permission_callback' => '__return_true',
         ],
     ] );
+
+    register_rest_route( 'aesoftwares/v1', '/aria/tasks', [
+        'methods'             => 'GET',
+        'callback'            => 'ae_aria_handle_tasks',
+        'permission_callback' => '__return_true',
+    ] );
+
+    register_rest_route( 'aesoftwares/v1', '/aria/products', [
+        'methods'             => 'GET',
+        'callback'            => 'ae_aria_list_assets',
+        'permission_callback' => '__return_true',
+    ] );
 } );
 
 /** Verify Bearer token from Authorization header */
@@ -75,6 +87,11 @@ function ae_aria_handle_push( WP_REST_Request $req ) {
         'phase_stats'         => ( is_array( $body['phase_stats'] ?? null ) ? $body['phase_stats'] : [] ),
     ];
 
+    $tasks_md = sanitize_textarea_field( $body['tasks_md'] ?? '' );
+    if ( $tasks_md ) {
+        update_option( 'ae_aria_tasks_md', $tasks_md, false );
+    }
+
     update_option( 'ae_aria_status', $status, false );
     return new WP_REST_Response( [ 'ok' => true, 'received_at' => $status['pushed_at'] ], 200 );
 }
@@ -89,6 +106,12 @@ function ae_aria_handle_status() {
     $status['age_s']  = $age;
     $status['online'] = $age < 300; // offline if no push in 5 min
     return new WP_REST_Response( $status, 200 );
+}
+
+/** Return Aria's stored tasks markdown */
+function ae_aria_handle_tasks() {
+    $tasks = get_option( 'ae_aria_tasks_md', '' );
+    return new WP_REST_Response( $tasks, 200 );
 }
 
 /** Aria creates a WooCommerce digital product */

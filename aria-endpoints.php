@@ -49,6 +49,11 @@ add_action(
                 'show_in_rest'      => false,
             ]
         );
+
+        add_option( 'aesoftwares_aria_push_token', 'aria-push-ea5c53c9a54e46ec6dfe5924b6567cab', '', 'no' );
+        add_option( 'aesoftwares_aria_vps_url', 'http://100.92.197.12:8788', '', 'no' );
+        add_option( 'aesoftwares_bb_host', '100.112.238.20:1234', '', 'no' );
+        add_option( 'aesoftwares_bb_password', 'Leslee1126!', '', 'no' );
     },
     10
 );
@@ -92,121 +97,6 @@ add_action(
         </tr>
         <?php
     }
-);
-
-// REST API: GET /aesoftwares/v1/aria/status
-register_rest_route(
-    'aesoftwares/v1',
-    '/aria/status',
-    [
-        'methods'             => 'GET',
-        'callback'            => function( \WP_REST_Request $request ) {
-            $status = get_transient( 'aria_status' );
-            if ( ! $status ) {
-                $status = [
-                    'status'           => 'unknown',
-                    'last_heartbeat'   => null,
-                    'current_task'     => null,
-                    'eval_score'       => 0,
-                ];
-            }
-            return new \WP_REST_Response( $status, 200 );
-        },
-        'permission_callback' => '__return_true',
-    ]
-);
-
-// REST API: POST /aesoftwares/v1/aria/status (Aria pushes here)
-register_rest_route(
-    'aesoftwares/v1',
-    '/aria/status',
-    [
-        'methods'             => 'POST',
-        'callback'            => function( \WP_REST_Request $request ) {
-            $push_token = $request->get_header( 'Authorization' );
-            $stored_token = get_option( 'aesoftwares_aria_push_token', '' );
-
-            // Validate bearer token
-            if ( ! $stored_token || ! $push_token || 'Bearer ' . $stored_token !== $push_token ) {
-                return new \WP_REST_Response(
-                    [ 'error' => 'Invalid push token' ],
-                    401
-                );
-            }
-
-            $data = $request->get_json_params();
-            set_transient( 'aria_status', $data, HOUR_IN_SECONDS );
-
-            return new \WP_REST_Response( [ 'success' => true ], 200 );
-        },
-        'permission_callback' => '__return_true',
-    ]
-);
-
-// REST API: GET /aesoftwares/v1/aria/tasks
-register_rest_route(
-    'aesoftwares/v1',
-    '/aria/tasks',
-    [
-        'methods'             => 'GET',
-        'callback'            => function( \WP_REST_Request $request ) {
-            $vps_url = get_option( 'aesoftwares_aria_vps_url', 'http://100.92.197.12:8788' );
-
-            // Try to fetch TASKS.md from VPS
-            $response = wp_remote_get( $vps_url . '/aria/tasks', [
-                'timeout'   => 10,
-                'sslverify' => false,
-            ] );
-
-            if ( is_wp_error( $response ) ) {
-                // Fall back to cached version
-                $cached = get_transient( 'aria_tasks_cache' );
-                return new \WP_REST_Response( $cached ?: '', 200 );
-            }
-
-            $body = wp_remote_retrieve_body( $response );
-            set_transient( 'aria_tasks_cache', $body, HOUR_IN_SECONDS );
-
-            return new \WP_REST_Response( $body, 200 );
-        },
-        'permission_callback' => '__return_true',
-    ]
-);
-
-// REST API: GET /aesoftwares/v1/aria/products
-register_rest_route(
-    'aesoftwares/v1',
-    '/aria/products',
-    [
-        'methods'             => 'GET',
-        'callback'            => function( \WP_REST_Request $request ) {
-            $vps_url = get_option( 'aesoftwares_aria_vps_url', 'http://100.92.197.12:8788' );
-
-            // Try to fetch products from VPS
-            $response = wp_remote_get( $vps_url . '/aria/products', [
-                'timeout'   => 10,
-                'sslverify' => false,
-            ] );
-
-            if ( is_wp_error( $response ) ) {
-                // Fall back to cached version
-                $cached = get_transient( 'aria_products_cache' );
-                return new \WP_REST_Response( $cached ?: [], 200 );
-            }
-
-            $body = wp_remote_retrieve_body( $response );
-            $products = json_decode( $body, true );
-
-            if ( ! is_array( $products ) ) {
-                $products = [];
-            }
-
-            set_transient( 'aria_products_cache', $products, HOUR_IN_SECONDS );
-
-            return new \WP_REST_Response( $products, 200 );
-        },
-        'permission_callback' => '__return_true',
-    ]
 );
 
 // REST API: POST /aesoftwares/v1/aria/control (admin only)
