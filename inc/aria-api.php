@@ -85,6 +85,9 @@ function ae_aria_handle_push( WP_REST_Request $req ) {
         'browser_task'        => sanitize_text_field( $body['browser_task']        ?? '' ),
         'browser_step'        => sanitize_text_field( $body['browser_step']        ?? '' ),
         'phase_stats'         => ( is_array( $body['phase_stats'] ?? null ) ? $body['phase_stats'] : [] ),
+        'activity_log'        => ( is_array( $body['activity_log'] ?? null )
+            ? array_slice( array_map( 'sanitize_text_field', $body['activity_log'] ), -40 )
+            : [] ),
     ];
 
     $tasks_md = sanitize_textarea_field( $body['tasks_md'] ?? '' );
