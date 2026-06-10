@@ -41,6 +41,12 @@ add_action( 'rest_api_init', function () {
         'permission_callback' => '__return_true',
     ] );
 
+    register_rest_route( 'aesoftwares/v1', '/aria/upload-report', [
+        'methods'             => 'POST',
+        'callback'            => 'ae_aria_upload_report',
+        'permission_callback' => 'ae_aria_verify_token',
+    ] );
+
     register_rest_route( 'aesoftwares/v1', '/aria/products', [
         'methods'             => 'GET',
         'callback'            => 'ae_aria_list_assets',
@@ -196,6 +202,37 @@ function ae_aria_create_asset( WP_REST_Request $req ) {
         'url'        => get_permalink( $product_id ),
         'cart_url'   => ( class_exists( 'WooCommerce' ) ? wc_get_cart_url() : '' ),
     ], 201 );
+}
+
+/** Aria uploads a PDF report; saves to wp-content/uploads/aria-reports/ */
+function ae_aria_upload_report( WP_REST_Request $req ) {
+    $body     = $req->get_json_params();
+    $filename = sanitize_file_name( $body['filename'] ?? 'report.pdf' );
+    $b64      = $body['data'] ?? '';
+
+    if ( empty( $b64 ) ) {
+        return new WP_Error( 'no_data', 'No PDF data provided.', [ 'status' => 422 ] );
+    }
+
+    $pdf_bytes = base64_decode( $b64 );
+    if ( $pdf_bytes === false || strlen( $pdf_bytes ) < 100 ) {
+        return new WP_Error( 'bad_data', 'Invalid base64 PDF.', [ 'status' => 422 ] );
+    }
+
+    $upload_dir  = wp_upload_dir();
+    $reports_dir = $upload_dir['basedir'] . '/aria-reports';
+    if ( ! file_exists( $reports_dir ) ) {
+        wp_mkdir_p( $reports_dir );
+    }
+
+    $filepath = $reports_dir . '/' . $filename;
+    $written  = file_put_contents( $filepath, $pdf_bytes );
+    if ( $written === false ) {
+        return new WP_Error( 'write_fail', 'Could not write PDF to disk.', [ 'status' => 500 ] );
+    }
+
+    $url = $upload_dir['baseurl'] . '/aria-reports/' . $filename;
+    return new WP_REST_Response( [ 'ok' => true, 'url' => $url, 'size' => $written ], 200 );
 }
 
 /** List all Aria-created products */
