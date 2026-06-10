@@ -7,8 +7,13 @@
  */
 
 // Require admin access
+if ( ! is_user_logged_in() ) {
+    wp_safe_redirect( wp_login_url( get_permalink() ) );
+    exit;
+}
 if ( ! current_user_can( 'manage_options' ) ) {
-    wp_die( 'Access denied.' );
+    wp_safe_redirect( home_url( '/' ) );
+    exit;
 }
 
 get_header(); ?>
