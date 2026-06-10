@@ -157,6 +157,41 @@ function aesoftwares_enqueue_scripts() {
         );
     }
 
+    // ── Aria Marketplace (public) ─────────────────────────────────────────
+    if ( is_page_template( 'page-aria-marketplace.php' ) ) {
+        wp_enqueue_script(
+            'ae-aria-marketplace',
+            $uri . '/assets/js/ae-aria-marketplace.js',
+            [],
+            filemtime( $js . 'ae-aria-marketplace.js' ),
+            [ 'in_footer' => true, 'strategy' => 'defer' ]
+        );
+        wp_localize_script( 'ae-aria-marketplace', 'ae_aria_settings', [
+            'products_url' => get_rest_url( null, 'aesoftwares/v1/aria/products' ),
+            'contact_url'  => home_url( '/contact/' ),
+        ] );
+    }
+
+    // ── Aria Console (admin) ──────────────────────────────────────────────
+    if ( is_page_template( 'page-aria-console.php' ) ) {
+        wp_enqueue_script(
+            'ae-aria-console',
+            $uri . '/assets/js/ae-aria-console.js',
+            [],
+            filemtime( $js . 'ae-aria-console.js' ),
+            [ 'in_footer' => true, 'strategy' => 'defer' ]
+        );
+        wp_localize_script( 'ae-aria-console', 'ae_aria_console', [
+            'status_url'   => get_rest_url( null, 'aesoftwares/v1/aria/status' ),
+            'tasks_url'    => get_rest_url( null, 'aesoftwares/v1/aria/tasks' ),
+            'control_url'  => get_rest_url( null, 'aesoftwares/v1/aria/control' ),
+            'messages_url' => get_rest_url( null, 'aesoftwares/v1/aria/messages' ),
+            'products_url' => get_rest_url( null, 'aesoftwares/v1/aria/products' ),
+            'nonce'        => wp_create_nonce( 'wp_rest' ),
+            'ws_url'       => 'ws://100.102.97.98:7478',
+        ] );
+    }
+
     // ── Cinematic stack (front page only) ─────────────────────────────────
     if ( is_front_page() ) {
 
@@ -1343,3 +1378,4 @@ function aesoftwares_handle_chat_message( WP_REST_Request $request ) {
 
     return $forward;
 }
+require_once get_template_directory() . '/aria-endpoints.php';
