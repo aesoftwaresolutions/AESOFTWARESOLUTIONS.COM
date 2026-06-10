@@ -308,6 +308,7 @@ function aesoftwares_settings_init() {
     register_setting( 'aesoftwares_settings', 'aesoftwares_fb_password' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_crm_url' );
     register_setting( 'aesoftwares_settings', 'ae_aria_push_token' );
+    add_option( 'ae_aria_push_token', 'aria-push-ea5c53c9a54e46ec6dfe5924b6567cab', '', 'no' );
 
     add_settings_section( 'aesoftwares_n8n_section', 'n8n Webhook Settings', null, 'aesoftwares_settings' );
     add_settings_field( 'aesoftwares_n8n_webhook_url_field', 'n8n Webhook URL', 'aesoftwares_n8n_webhook_url_field_html', 'aesoftwares_settings', 'aesoftwares_n8n_section' );
