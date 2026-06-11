@@ -198,13 +198,23 @@ function ae_aria_create_asset( WP_REST_Request $req ) {
         $product->set_status( 'publish' );
 
         if ( ! empty( $file_url ) ) {
-            $dl = new WC_Product_Download();
-            $dl->set_name( $file_name );
-            $dl->set_file( $file_url );
-            $dl->set_id( md5( $file_url ) );
-            $product->set_downloads( [ $dl ] );
-            $product->set_download_limit( -1 );
-            $product->set_download_expiry( -1 );
+            // Approve the aria-reports upload directory in WooCommerce's download allowlist
+            if ( class_exists( 'WC_Downloads_Approved_Directories' ) ) {
+                $adi = WC_Downloads_Approved_Directories::get_instance();
+                $adi->add_approved_directory( trailingslashit( dirname( $file_url ) ) );
+            }
+            try {
+                $dl = new WC_Product_Download();
+                $dl->set_name( $file_name );
+                $dl->set_file( $file_url );
+                $dl->set_id( md5( $file_url ) );
+                $product->set_downloads( [ $dl ] );
+                $product->set_download_limit( -1 );
+                $product->set_download_expiry( -1 );
+            } catch ( \Exception $e ) {
+                // File URL stored in _ae_file_url meta; WC download attachment skipped
+                error_log( '[aria-api] set_downloads skipped: ' . $e->getMessage() );
+            }
         }
 
         $all_tags = array_merge( $tags, [ 'aria-generated' ] );
