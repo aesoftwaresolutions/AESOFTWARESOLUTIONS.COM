@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Load SSH key into agent
         uses: webfactory/ssh-agent@v0.9.0
         with:
@@ -23,14 +20,15 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -p 65002 -T 10 157.173.209.5 >> ~/.ssh/known_hosts 2>/dev/null || true
 
-      - name: Deploy via rsync
+      - name: Deploy — git pull on server
         run: |
-          rsync -avz --delete \
-            --exclude='.git' \
-            --exclude='.github' \
-            -e "ssh -p 65002 -o StrictHostKeyChecking=no" \
-            ./ \
-            u257353593@157.173.209.5:/home/u257353593/domains/aesoftwaresolutions.com/public_html/wp-content/themes/aesoftwares-theme/
+          ssh -p 65002 -o StrictHostKeyChecking=no u257353593@157.173.209.5 "
+            set -e
+            cd /home/u257353593/domains/aesoftwaresolutions.com/public_html/wp-content/themes/aesoftwares-theme
+            git stash
+            git pull origin master
+            echo 'Deployed:' \$(git log --oneline -1)
+          "
 
       - name: Ensure WordPress pages exist
         run: |
