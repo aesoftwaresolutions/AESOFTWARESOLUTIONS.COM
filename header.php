@@ -34,6 +34,7 @@
 			<a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="site-header__nav-link site-header__nav-link--highlight">Pricing</a>
 			<a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>" class="site-header__nav-link">Industries</a>
 			<a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="site-header__nav-link">Case Studies</a>
+			<a href="<?php echo esc_url( home_url( '/aria-marketplace/' ) ); ?>" class="site-header__nav-link">Reports</a>
 			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="site-header__nav-link">About</a>
 			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="site-header__nav-link">Contact</a>
 		</nav>
@@ -57,6 +58,7 @@
 		<li><a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="mobile-nav-overlay__link" style="color:var(--accent)">Pricing — $50/mo</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>" class="mobile-nav-overlay__link">Industries</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="mobile-nav-overlay__link">Case Studies</a></li>
+		<li><a href="<?php echo esc_url( home_url( '/aria-marketplace/' ) ); ?>" class="mobile-nav-overlay__link">Reports</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="mobile-nav-overlay__link">About</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="mobile-nav-overlay__link">Contact</a></li>
 	</ul>

@@ -188,6 +188,85 @@ get_header(); ?>
 		</div>
 	</section>
 
+	<!-- ARIA INTELLIGENCE REPORTS -->
+	<section class="aria-intel-section" aria-label="Intelligence Reports by Aria">
+	<style>
+	.aria-intel-section{padding:clamp(64px,8vw,112px) clamp(1.5rem,5vw,4rem);background:var(--bg-surface);border-top:1px solid var(--border);}
+	.aria-intel-inner{max-width:var(--max-width);margin:0 auto;}
+	.aria-intel-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3rem;gap:2rem;flex-wrap:wrap;}
+	.aria-intel-badge{display:inline-flex;align-items:center;gap:.5rem;background:color-mix(in srgb,var(--accent) 10%,transparent);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:100px;padding:.35rem .9rem;font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem;}
+	.aria-intel-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent);animation:fp-aria-pulse 2s ease-in-out infinite;}
+	@keyframes fp-aria-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+	.aria-intel-title{font-family:var(--font-editorial);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:var(--text);line-height:1.1;margin:.5rem 0 1rem;}
+	.aria-intel-title em{font-style:italic;color:var(--accent);}
+	.aria-intel-sub{font-size:.95rem;color:var(--text-muted);line-height:1.7;max-width:44ch;margin:0;}
+	.aria-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s,transform .2s;display:flex;flex-direction:column;}
+	.aria-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+	.aria-card__img{aspect-ratio:16/9;background:color-mix(in srgb,var(--accent) 5%,var(--bg-surface));overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+	.aria-card__img img{width:100%;height:100%;object-fit:cover;display:block;}
+	.aria-card__body{padding:1.25rem;flex:1;display:flex;flex-direction:column;}
+	.aria-card__cat{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:.5rem;}
+	.aria-card__title{font-size:1rem;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:.6rem;}
+	.aria-card__desc{font-size:.875rem;color:var(--text-muted);line-height:1.6;flex:1;}
+	.aria-card__footer{margin-top:1rem;display:flex;align-items:center;justify-content:space-between;}
+	.aria-card__price{font-size:1.1rem;font-weight:700;color:var(--text);}
+	.aria-card__btn{font-size:.8rem;font-weight:600;color:var(--accent);text-decoration:none;border:1px solid var(--accent);border-radius:6px;padding:.35rem .8rem;transition:background .2s,color .2s;}
+	.aria-card__btn:hover{background:var(--accent);color:#fff;}
+	.aria-intel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;}
+	.aria-intel-skeleton{background:var(--bg);border:1px solid var(--border);border-radius:12px;height:280px;animation:fp-shimmer 1.5s infinite;}
+	@keyframes fp-shimmer{0%{opacity:.4}50%{opacity:.9}100%{opacity:.4}}
+	@media(max-width:640px){.aria-intel-header{flex-direction:column;align-items:flex-start;}}
+	</style>
+	<div class="aria-intel-inner">
+		<div class="aria-intel-header">
+			<div>
+				<div class="aria-intel-badge">Built by Aria &middot; AI Research Agent</div>
+				<h2 class="aria-intel-title">Market intelligence,<br><em>ready to deploy.</em></h2>
+				<p class="aria-intel-sub">Aria continuously researches your industry, synthesizes competitive data, and publishes actionable reports &mdash; available instantly.</p>
+			</div>
+			<a href="<?php echo esc_url( home_url( '/aria-marketplace/' ) ); ?>" class="btn btn--ghost" style="white-space:nowrap;flex-shrink:0;">Browse all reports &rarr;</a>
+		</div>
+		<div class="aria-intel-grid" id="fp-aria-grid">
+			<div class="aria-intel-skeleton"></div>
+			<div class="aria-intel-skeleton"></div>
+			<div class="aria-intel-skeleton"></div>
+		</div>
+	</div>
+	<script>
+	(function(){
+		var grid=document.getElementById('fp-aria-grid');
+		if(!grid)return;
+		function escH(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;}
+		fetch('<?php echo esc_url( rest_url( 'aesoftwares/v1/aria/products' ) ); ?>')
+			.then(function(r){return r.ok?r.json():Promise.reject(r.status);})
+			.then(function(data){
+				var products=Array.isArray(data)?data:(data.products||[]);
+				products=products.slice(0,3);
+				if(!products.length){grid.innerHTML='';return;}
+				grid.innerHTML=products.map(function(p){
+					var imgHtml=p.image
+						?'<img src="'+escH(p.image)+'" alt="'+escH(p.title)+'" loading="lazy">'
+						:'<svg width="36" height="36" viewBox="0 0 36 36" fill="none" style="opacity:.25"><rect x="4" y="6" width="28" height="24" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M4 22l9-8 6 6 5-4 9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+					var price=parseFloat(p.price)||0;
+					var desc=(p.description||'').substring(0,110);
+					if(desc.length===110)desc+='…';
+					return '<div class="aria-card">'
+						+'<div class="aria-card__img">'+imgHtml+'</div>'
+						+'<div class="aria-card__body">'
+						+'<div class="aria-card__cat">'+escH(p.category||'Intelligence Report')+'</div>'
+						+'<h3 class="aria-card__title">'+escH(p.title)+'</h3>'
+						+'<p class="aria-card__desc">'+escH(desc)+'</p>'
+						+'<div class="aria-card__footer">'
+						+'<span class="aria-card__price">$'+price.toFixed(2)+'</span>'
+						+'<a href="'+escH(p.url||'#')+'" class="aria-card__btn">View Report</a>'
+						+'</div></div></div>';
+				}).join('');
+			})
+			.catch(function(){grid.innerHTML='<p style="color:var(--text-muted);font-size:.9rem;grid-column:1/-1;opacity:.6">Reports loading&hellip;</p>';});
+	})();
+	</script>
+	</section>
+
 	<!-- PROCESS -->
 	<section class="process-section" id="process" aria-label="Our process">
 		<div class="process-header">
