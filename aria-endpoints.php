@@ -218,3 +218,129 @@ register_rest_route(
         },
     ]
 );
+
+// REST API: GET /aesoftwares/v1/aria/reports (public)
+// Lists PDFs from wp-content/uploads/aria-reports/
+register_rest_route(
+    'aesoftwares/v1',
+    '/aria/reports',
+    [
+        'methods'             => 'GET',
+        'callback'            => function() {
+            $upload_dir  = wp_upload_dir();
+            $reports_dir = $upload_dir['basedir'] . '/aria-reports/';
+            $reports_url = $upload_dir['baseurl'] . '/aria-reports/';
+
+            if ( ! is_dir( $reports_dir ) ) {
+                return new \WP_REST_Response( [], 200 );
+            }
+
+            $files = glob( $reports_dir . '*.pdf' );
+            if ( ! $files ) {
+                return new \WP_REST_Response( [], 200 );
+            }
+
+            usort( $files, function( $a, $b ) {
+                return filemtime( $b ) - filemtime( $a );
+            } );
+
+            $reports = array_map(
+                function( $file ) use ( $reports_url ) {
+                    $basename = basename( $file, '.pdf' );
+
+                    $industry = 'Research';
+                    if ( preg_match( '/^ae-(.+?)-\d{6}$/', $basename, $m ) ) {
+                        $slug = $m[1];
+                        if ( stripos( $slug, 'law' ) !== false || stripos( $slug, 'legal' ) !== false ) {
+                            $industry = 'Legal';
+                        } elseif ( stripos( $slug, 'home' ) !== false || stripos( $slug, 'service' ) !== false ) {
+                            $industry = 'Home Services';
+                        } elseif ( stripos( $slug, 'mortgage' ) !== false || stripos( $slug, 'lending' ) !== false ) {
+                            $industry = 'Mortgage';
+                        } elseif ( stripos( $slug, 'market' ) !== false ) {
+                            $industry = 'Market Intel';
+                        } elseif ( stripos( $slug, 'content' ) !== false ) {
+                            $industry = 'Content Strategy';
+                        }
+                    }
+
+                    $title = preg_replace( '/-\d{6}$/', '', $basename );
+                    $title = preg_replace( '/^ae-/', '', $title );
+                    $title = ucwords( str_replace( '-', ' ', $title ) );
+
+                    return [
+                        'title'    => $title,
+                        'industry' => $industry,
+                        'url'      => $reports_url . basename( $file ),
+                        'date'     => gmdate( 'F Y', filemtime( $file ) ),
+                    ];
+                },
+                $files
+            );
+
+            return new \WP_REST_Response( $reports, 200 );
+        },
+        'permission_callback' => '__return_true',
+    ]
+);
+
+// REST API: POST /aesoftwares/v1/aria/report-request (public)
+// Emails Anthony + fires a research directive to Aria
+register_rest_route(
+    'aesoftwares/v1',
+    '/aria/report-request',
+    [
+        'methods'             => 'POST',
+        'callback'            => function( \WP_REST_Request $request ) {
+            $data     = $request->get_json_params();
+            $name     = sanitize_text_field( $data['name'] ?? '' );
+            $email    = sanitize_email( $data['email'] ?? '' );
+            $business = sanitize_text_field( $data['business'] ?? '' );
+            $topic    = sanitize_textarea_field( $data['topic'] ?? '' );
+
+            if ( ! $name || ! $email || ! $business || ! $topic ) {
+                return new \WP_REST_Response( [ 'message' => 'All fields are required.' ], 422 );
+            }
+
+            if ( ! is_email( $email ) ) {
+                return new \WP_REST_Response( [ 'message' => 'Invalid email address.' ], 422 );
+            }
+
+            // 1. Email Anthony
+            $to      = 'anthony.aesoftwaresolutions@gmail.com';
+            $subject = '[AE Research Request] ' . $business . ' — ' . wp_trim_words( $topic, 8, '...' );
+            $body    = "New research report request from the website.\n\n";
+            $body   .= "Name:     {$name}\n";
+            $body   .= "Email:    {$email}\n";
+            $body   .= "Business: {$business}\n\n";
+            $body   .= "Research topic:\n{$topic}\n\n";
+            $body   .= "---\nSent from aesoftwaresolutions.com/aria-marketplace/\n";
+
+            wp_mail( $to, $subject, $body, [
+                'Content-Type: text/plain; charset=UTF-8',
+                "Reply-To: {$name} <{$email}>",
+            ] );
+
+            // 2. Send directive to Aria (non-blocking)
+            $vps_url   = get_option( 'aesoftwares_aria_vps_url', 'http://100.92.197.12:8788' );
+            $directive = "RESEARCH REQUEST from {$name} ({$email}), {$business}: {$topic}";
+
+            wp_remote_post(
+                trailingslashit( $vps_url ) . 'aria/webhook',
+                [
+                    'body'      => wp_json_encode( [
+                        'action' => 'directive',
+                        'text'   => $directive,
+                    ] ),
+                    'headers'   => [ 'Content-Type' => 'application/json' ],
+                    'timeout'   => 8,
+                    'sslverify' => false,
+                    'blocking'  => false,
+                ]
+            );
+
+            return new \WP_REST_Response( [ 'success' => true ], 200 );
+        },
+        'permission_callback' => '__return_true',
+    ]
+);
