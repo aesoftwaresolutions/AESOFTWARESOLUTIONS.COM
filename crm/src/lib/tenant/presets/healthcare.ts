@@ -6,9 +6,7 @@ import type { TenantConfig } from "../types";
  * Suitable for: telehealth, clinics, wellness centers, dental practices,
  * veterinary clinics, mental health practices, med spas.
  *
- * This is essentially the original Monarch MVC config — the platform's
- * first deployment. Includes PHI compliance, lab/medication order types,
- * and clinical pipeline stages.
+ * Includes PHI compliance, lab/medication order types, and clinical pipeline stages.
  */
 export const healthcarePreset: TenantConfig = {
   brand: {

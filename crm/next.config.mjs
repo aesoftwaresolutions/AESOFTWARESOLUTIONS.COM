@@ -7,7 +7,7 @@ const nextConfig = {
   },
   // Vercel Cron configuration lives in vercel.json
   async headers() {
-    const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || "https://monarchmvc.com";
+    const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || "https://aesoftwaresolutions.com";
     return [
       {
         // Allow the frontend to call all API routes

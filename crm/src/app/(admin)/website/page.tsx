@@ -472,12 +472,12 @@ export default function WebsitePage() {
           <p className="text-sm text-gray-500 mt-0.5">
             Edit the content on{" "}
             <a
-              href="https://monarchmvc.com"
+              href="https://aesoftwaresolutions.com"
               target="_blank"
               rel="noopener"
               className="text-gold hover:underline inline-flex items-center gap-1"
             >
-              monarchmvc.com <ExternalLink className="w-3 h-3" />
+              aesoftwaresolutions.com <ExternalLink className="w-3 h-3" />
             </a>
           </p>
         </div>
@@ -490,7 +490,7 @@ export default function WebsitePage() {
               <RefreshCw className="w-4 h-4" />
             </button>
           </Tooltip>
-          <Tooltip content="Save all changes — updates go live on monarchmvc.com within 60 seconds" side="bottom">
+          <Tooltip content="Save all changes — updates go live on aesoftwaresolutions.com within 60 seconds" side="bottom">
             <button
               onClick={handleSave}
               disabled={saving}
@@ -569,7 +569,7 @@ export default function WebsitePage() {
       {saved && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-xl text-sm font-medium animate-in slide-in-from-bottom-2">
           <CheckCircle className="w-4 h-4 text-green-400" />
-          Changes saved — monarchmvc.com will update within 60 seconds
+          Changes saved — aesoftwaresolutions.com will update within 60 seconds
         </div>
       )}
     </div>

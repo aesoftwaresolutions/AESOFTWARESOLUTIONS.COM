@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { tenantConfig } from "@/lib/tenant";
-import { BrandLogo } from "@/components/layout/monarch-logo";
+import { BrandLogo } from "@/components/layout/ae-logo";
 
 export default function SetupPage() {
   const router = useRouter();

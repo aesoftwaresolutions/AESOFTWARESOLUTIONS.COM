@@ -173,7 +173,7 @@ export default function PricingTiersPage() {
         <div>
           <h1 className="text-2xl font-display text-gray-900">Pricing Tiers</h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            Manage subscription tiers shown on monarchmvc.com. Published tiers go live immediately.
+            Manage subscription tiers shown on aesoftwaresolutions.com. Published tiers go live immediately.
           </p>
         </div>
         <div className="flex items-center gap-3">

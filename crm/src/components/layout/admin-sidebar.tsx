@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip } from "@/components/ui/tooltip";
-import { BrandLogo } from "./monarch-logo";
+import { BrandLogo } from "./ae-logo";
 import { tenantConfig, getEnabledModules } from "@/lib/tenant";
 
 // Map icon string names from config to actual Lucide components

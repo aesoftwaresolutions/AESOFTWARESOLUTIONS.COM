@@ -99,34 +99,34 @@ const CHAR_LIMITS: Record<string, number> = {
 
 const CONTENT_TEMPLATES = [
   {
-    label: "TRT Success Story",
-    platform: "instagram",
-    content: "Real results from our TRT protocol. Our patients are seeing...",
-    hashtags: "#TRT #TestosteroneOptimization #MensHealth #MonarchMVC",
-  },
-  {
-    label: "GLP-1 Transformation",
-    platform: "facebook",
-    content: "Weight loss results that speak for themselves...",
-    hashtags: "#GLP1 #WeightLoss #MedicalWeightLoss #MonarchMVC",
-  },
-  {
-    label: "Why Telehealth",
+    label: "Missed Call Recovery",
     platform: "linkedin",
-    content: "The future of men's health is physician-led, data-driven, and convenient...",
-    hashtags: "#Telehealth #MensHealth #HormoneOptimization",
+    content: "62% of business calls go unanswered. PA small businesses are recovering missed revenue with automated text-back in under 30 seconds. Here's how it works...",
+    hashtags: "#SmallBusiness #Pennsylvania #AIAutomation #AESoftware",
   },
   {
-    label: "Lab Results Explained",
+    label: "AI Automation Win",
+    platform: "facebook",
+    content: "A PA home services company reduced no-shows by 28% after deploying automated appointment reminders. The setup took 3 hours. The ROI was immediate...",
+    hashtags: "#HomeServices #Automation #Pennsylvania #AESoftware",
+  },
+  {
+    label: "Lead Response Speed",
     platform: "instagram",
-    content: "Your lab numbers tell a story. Here's what to look for in your testosterone panel...",
-    hashtags: "#LabResults #TRT #MensHealth",
+    content: "78% of buyers go with the first vendor that responds. If your competitor answers at 10 PM and you don't — you've already lost the lead. Automation fixes this...",
+    hashtags: "#LeadGeneration #SmallBusiness #AIAutomation",
   },
   {
-    label: "Morning Routine Tips",
+    label: "5-Workflow Breakdown",
+    platform: "linkedin",
+    content: "5 workflows PA small businesses are deploying this month: 1. Lead capture, 2. Missed call text-back, 3. Review requests, 4. Appointment reminders, 5. Monthly reporting...",
+    hashtags: "#Automation #Pennsylvania #BusinessGrowth #AESoftware",
+  },
+  {
+    label: "Free Assessment CTA",
     platform: "twitter",
-    content: "5 morning habits that support healthy testosterone levels: 1. Quality sleep...",
-    hashtags: "#MensHealth #Testosterone #MorningRoutine",
+    content: "Running a PA small business? We'll show you where your biggest revenue leak is in 15 minutes — free. No pitch, just data. Link in bio.",
+    hashtags: "#Pennsylvania #SmallBusiness #AI",
   },
 ];
 
