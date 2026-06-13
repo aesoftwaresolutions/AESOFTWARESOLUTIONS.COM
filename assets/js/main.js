@@ -5,7 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // IntersectionObserver isn't available / fires late).
     const counters = document.querySelectorAll('.stat-number[data-target]');
 
-    if (!counters.length) return;
+    if (!counters.length) {
+        initScrollHeader();
+        return;
+    }
 
     const ease = (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 
@@ -37,4 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(runCounters, 1000);
     }
 
+    initScrollHeader();
+
 });
+
+function initScrollHeader() {
+    const h = document.querySelector('.site-header');
+    if (!h) return;
+    window.addEventListener('scroll', () => {
+        h.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+}

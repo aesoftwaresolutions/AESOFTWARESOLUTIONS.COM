@@ -32,19 +32,20 @@
 		<div class="footer-col">
 			<h4>Services</h4>
 			<ul>
-				<li><a href="#services">AI Development</a></li>
-				<li><a href="#services">Automation</a></li>
-				<li><a href="#services">Chatbots</a></li>
-				<li><a href="#services">Consulting</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>">Operational Discovery</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/services/#tier-2' ) ); ?>">Process Intelligence</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/services/#tier-3' ) ); ?>">Intelligent Deployment</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>">Industries</a></li>
 			</ul>
 		</div>
 
 		<div class="footer-col">
 			<h4>Company</h4>
 			<ul>
-				<li><a href="#about">About</a></li>
-				<li><a href="#process">Process</a></li>
-				<li><a href="#testimonials">Testimonials</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/software/' ) ); ?>">Software</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>">Pricing</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/work/' ) ); ?>">Case Studies</a></li>
 			</ul>
 		</div>
 
@@ -52,7 +53,8 @@
 			<h4>Contact</h4>
 			<ul>
 				<li><a href="mailto:anthony@aesoftwaresolutions.com">Email us</a></li>
-				<li><a href="#contact">Start a project</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Start a project</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>">Free assessment</a></li>
 			</ul>
 		</div>
 	</div>
@@ -63,20 +65,10 @@
 		</div>
 		<div class="footer-social">
 			<a href="https://linkedin.com/company/ae-software-solutions" class="footer-social__link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-			<a href="#instagram" class="footer-social__link">Instagram</a>
+			<a href="https://instagram.com/aesoftwaresolutions" class="footer-social__link" target="_blank" rel="noopener noreferrer">Instagram</a>
 		</div>
 	</div>
 </footer><!-- .site-footer -->
-
-<script>
-(function(){
-	var h = document.querySelector('.site-header');
-	if(!h) return;
-	window.addEventListener('scroll', function(){
-		h.classList.toggle('scrolled', window.scrollY > 40);
-	}, {passive:true});
-})();
-</script>
 
 <?php wp_footer(); ?>
 
