@@ -4448,16 +4448,16 @@ body.nav-open { overflow: hidden; }
 
 .product-section {
 	padding: clamp(3rem, 6vw, 5.5rem) clamp(1.5rem, 5vw, 4rem);
-	background: #ffffff;
-	border-bottom: 1px solid rgba(0,0,0,0.07);
-	color: #0c0c0b;
-	--text: #0c0c0b;
-	--text-muted: #6a6a66;
-	--border: rgba(0,0,0,0.09);
+	background: var(--bg);
+	border-bottom: 1px solid var(--border);
+	color: var(--text);
+	--text: #EDEDE9;
+	--text-muted: #888884;
+	--border: rgba(255,255,255,0.08);
 }
 
 .product-section--alt {
-	background: #f5f5f3;
+	background: var(--bg-surface);
 }
 
 .product-section__inner {
@@ -4502,14 +4502,14 @@ body.nav-open { overflow: hidden; }
 	font-size: clamp(2rem, 4vw, 3.25rem);
 	line-height: 1.05;
 	letter-spacing: -0.025em;
-	color: #0c0c0b;
+	color: var(--text);
 	margin: 0 0 1.25rem 0;
 }
 
 .product-section__pitch {
 	font-size: 1.05rem;
 	line-height: 1.65;
-	color: #4a4a46;
+	color: var(--text-muted);
 	margin: 0;
 }
 
@@ -4533,7 +4533,7 @@ body.nav-open { overflow: hidden; }
 
 /* ── Feature list block ──────────────────────────────────────────────────── */
 .product-feature-list-block {
-	border-top: 1px solid rgba(0,0,0,0.08);
+	border-top: 1px solid var(--border);
 	padding-top: 1.25rem;
 }
 
@@ -4541,7 +4541,7 @@ body.nav-open { overflow: hidden; }
 	font-size: 0.7rem;
 	letter-spacing: 0.18em;
 	text-transform: uppercase;
-	color: #9a9a96;
+	color: rgba(237,237,233,0.35);
 	font-weight: 600;
 	margin: 0 0 1.25rem 0;
 }
@@ -4557,7 +4557,7 @@ body.nav-open { overflow: hidden; }
 
 .product-feature-list li {
 	font-size: 0.9rem;
-	color: #4a4a46;
+	color: var(--text-muted);
 	line-height: 1.55;
 	padding-left: 1.5rem;
 	position: relative;
@@ -4587,15 +4587,15 @@ body.nav-open { overflow: hidden; }
 	font-size: 0.72rem;
 	font-weight: 500;
 	letter-spacing: 0.02em;
-	color: #4a4a46;
-	background: #ffffff;
-	border: 1px solid rgba(0,0,0,0.1);
+	color: var(--text-muted);
+	background: var(--bg-card);
+	border: 1px solid var(--border);
 	padding: 0.35rem 0.75rem;
 	border-radius: 40px;
 }
 
 .product-section--alt .product-chip {
-	background: #ffffff;
+	background: var(--bg-card);
 }
 
 /* ── CTA row ─────────────────────────────────────────────────────────────── */
@@ -4606,14 +4606,14 @@ body.nav-open { overflow: hidden; }
 	margin-top: 0.5rem;
 }
 
-/* In light sections, btn--ghost needs darker text/border */
+/* In dark sections, btn--ghost uses light text/border */
 .product-section .btn--ghost {
-	color: #4a4a46;
-	border-color: rgba(0,0,0,0.18);
+	color: var(--text-muted);
+	border-color: var(--border);
 }
 .product-section .btn--ghost:hover {
-	color: #0c0c0b;
-	border-color: rgba(0,0,0,0.4);
+	color: var(--text);
+	border-color: rgba(255,255,255,0.3);
 }
 
 /* ── Visual / mockup ─────────────────────────────────────────────────────── */
@@ -4927,7 +4927,7 @@ body.nav-open { overflow: hidden; }
 	flex: 1;
 	width: 100%;
 	border: 0;
-	background: #fff;
+	background: #0e0e0e;
 	display: block;
 }
 
