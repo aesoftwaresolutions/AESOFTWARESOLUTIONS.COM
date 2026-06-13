@@ -3430,138 +3430,109 @@ button {
 
 /* ── Light-section variable overrides ───────────────────────────────────── */
 /*
-   Any element that carries .is-light re-defines the design tokens.
-   Child components reading var(--text), var(--bg-card) etc. auto-adapt.
+   .is-light/.is-light-alt are legacy utility classes — kept as selectors
+   but no longer override tokens since the site runs a unified dark theme.
 */
-.is-light {
-	--bg:           #ffffff;
-	--bg-surface:   #f5f5f3;
-	--bg-card:      #ffffff;
-	--text:         #0c0c0b;
-	--text-muted:   #6a6a66;
-	--border:       rgba(0,0,0,0.09);
-	--border-hover: rgba(0,0,0,0.2);
-	--shadow:       0 8px 32px rgba(0,0,0,0.08);
-	background-color: #ffffff;
-	color: #0c0c0b;
-}
-
-.is-light-alt {
-	--bg:           #f5f5f3;
-	--bg-surface:   #eeeeec;
-	--bg-card:      #f5f5f3;
-	--text:         #0c0c0b;
-	--text-muted:   #6a6a66;
-	--border:       rgba(0,0,0,0.09);
-	--border-hover: rgba(0,0,0,0.2);
-	background-color: #f5f5f3;
-	color: #0c0c0b;
-}
+.is-light,
+.is-light-alt { /* tokens inherit from :root dark values */ }
 
 
-/* ── Apply light/alt to specific front-page sections ────────────────────── */
-.stats-section     { background: #f5f5f3; color: #0c0c0b;
-                     --text: #0c0c0b; --text-muted: #6a6a66;
-                     --border: rgba(0,0,0,0.09); border-color: rgba(0,0,0,0.09); }
+/* ── Front-page sections: dark tokens ───────────────────────────────────── */
+.stats-section     { background: var(--bg-surface); color: var(--text); }
 
-.tiers-section     { background: #ffffff; color: #0c0c0b;
-                     --text: #0c0c0b; --text-muted: #6a6a66;
-                     --border: rgba(0,0,0,0.09); --bg-card: #ffffff; }
+.tiers-section     { background: var(--bg); color: var(--text);
+                     --bg-card: var(--bg-surface); }
 
-.process-section   { background: #f5f5f3; color: #0c0c0b;
-                     --text: #0c0c0b; --text-muted: #6a6a66;
-                     --border: rgba(0,0,0,0.09); --bg-card: #ffffff; }
+.process-section   { background: var(--bg-surface); color: var(--text);
+                     --bg-card: var(--bg); }
 
-.industries-strip  { background: #ffffff; color: #0c0c0b;
-                     --text: #0c0c0b; --text-muted: #6a6a66;
-                     --border: rgba(0,0,0,0.09); }
+.industries-strip  { background: var(--bg); color: var(--text); }
 
-/* Inner page white sections */
+/* Inner page sections — confirm dark tokens (inherit from :root) */
 .services-full-wrap,
 .inner-section-pad,
 .mission-block,
 .work-section,
 .faq-section,
 .process-timeline,
-.contact-layout     { --text: #0c0c0b; --text-muted: #6a6a66;
-                      --border: rgba(0,0,0,0.09); --bg-card: #ffffff;
-                      --bg-surface: #f5f5f3; }
+.contact-layout     { --text: #EDEDE9; --text-muted: #888884;
+                      --border: rgba(255,255,255,0.08); --bg-card: #141414;
+                      --bg-surface: #111111; }
 
 
-/* ── Stats section: light tokens ────────────────────────────────────────── */
-.stats-section { border-top: 1px solid rgba(0,0,0,0.07); border-bottom: 1px solid rgba(0,0,0,0.07); }
+/* ── Stats section ──────────────────────────────────────────────────────── */
+.stats-section { border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); }
 
 .stats-section .stat-number  { color: var(--accent); }
-.stats-section .stat-label   { color: #6a6a66; }
-.stats-section .stat-divider { background: rgba(0,0,0,0.1); }
+.stats-section .stat-label   { color: var(--text-muted); }
+.stats-section .stat-divider { background: rgba(255,255,255,0.1); }
 
 
-/* ── Tier cards: light theme ─────────────────────────────────────────────── */
-.tiers-section .section-eyebrow { color: #6a6a66; }
-.tiers-section .section-title   { color: #0c0c0b; }
+/* ── Tier cards ─────────────────────────────────────────────────────────── */
+.tiers-section .section-eyebrow { color: var(--text-muted); }
+.tiers-section .section-title   { color: var(--text); }
 
 .tiers-section .tiers-grid {
-	border-color: rgba(0,0,0,0.09);
+	border-color: var(--border);
 }
 
 .tiers-section .tier-card {
-	background: #ffffff;
-	border-right-color: rgba(0,0,0,0.09);
+	background: var(--bg-card);
+	border-right-color: var(--border);
 }
 
 .tiers-section .tier-card--featured {
-	background: #f8f6f1;
+	background: #1c1914;
 	border-color: rgba(201,169,110,0.25);
 }
 
 .tiers-section .tier-card:hover {
-	background: #fafafa;
+	background: #1c1c1c;
 }
 
-.tiers-section .tier-card__num   { color: #aaaaaa; }
+.tiers-section .tier-card__num   { color: rgba(255,255,255,0.2); }
 .tiers-section .tier-card__label { color: var(--accent); }
-.tiers-section .tier-card__title { color: #0c0c0b; }
-.tiers-section .tier-card__desc  { color: #6a6a66; }
+.tiers-section .tier-card__title { color: var(--text); }
+.tiers-section .tier-card__desc  { color: var(--text-muted); }
 
 .tiers-section .tier-card__list li {
-	color: #6a6a66;
-	border-top-color: rgba(0,0,0,0.07);
+	color: var(--text-muted);
+	border-top-color: var(--border);
 }
 
 .tiers-section .tier-card__link  { color: var(--accent); }
 
 
-/* ── Process steps: light theme ─────────────────────────────────────────── */
+/* ── Process steps ──────────────────────────────────────────────────────── */
 .process-section .process-eyebrow,
-.process-section .process-title { color: #0c0c0b; }
-.process-section .process-title { color: #0c0c0b; }
+.process-section .process-title { color: var(--text); }
 
 .process-section .process-step {
-	background: #ffffff;
-	border-color: rgba(0,0,0,0.08);
+	background: var(--bg-card);
+	border-color: var(--border);
 }
 
 .process-section .process-step:hover {
-	border-color: rgba(0,0,0,0.16);
+	border-color: rgba(255,255,255,0.16);
 }
 
-.process-section .process-step__title { color: #0c0c0b; }
-.process-section .process-step__text  { color: #6a6a66; }
+.process-section .process-step__title { color: var(--text); }
+.process-section .process-step__text  { color: var(--text-muted); }
 
 
-/* ── Industries strip: light theme ──────────────────────────────────────── */
-.industries-strip .industries-strip__label { color: #6a6a66; }
+/* ── Industries strip ────────────────────────────────────────────────────── */
+.industries-strip .industries-strip__label { color: var(--text-muted); }
 
 .industries-strip .industry-chip {
-	background: #f5f5f3;
-	border-color: rgba(0,0,0,0.1);
-	color: #0c0c0b;
+	background: var(--bg-surface);
+	border-color: var(--border);
+	color: var(--text);
 }
 
 .industries-strip .industry-chip:hover {
 	border-color: var(--accent);
-	background: #fff;
-	color: #0c0c0b;
+	background: var(--bg-card);
+	color: var(--text);
 }
 
 
@@ -3570,126 +3541,125 @@ button {
 	background: #000000;                       /* always dark */
 }
 
-/* Content areas below the page hero go white */
-.services-full-wrap { background: #ffffff; }
+/* Content areas below the page hero — dark theme */
+.services-full-wrap { background: var(--bg); }
 .services-full-wrap .service-card-full {
-	background: #f8f8f6;
-	border-color: rgba(0,0,0,0.08);
+	background: var(--bg-card);
+	border-color: var(--border);
 }
-.services-full-wrap .service-card-full:hover { background: #f0f0ee; }
+.services-full-wrap .service-card-full:hover { background: #1c1c1c; }
 .services-full-wrap .service-card-full__num   { color: rgba(201,169,110,0.4); }
-.services-full-wrap .service-card-full__title { color: #0c0c0b; }
-.services-full-wrap .service-card-full__desc  { color: #6a6a66; }
-.services-full-wrap .service-card-full__uses li { color: #6a6a66; border-top-color: rgba(0,0,0,0.07); }
+.services-full-wrap .service-card-full__title { color: var(--text); }
+.services-full-wrap .service-card-full__desc  { color: var(--text-muted); }
+.services-full-wrap .service-card-full__uses li { color: var(--text-muted); border-top-color: var(--border); }
 .services-full-wrap .service-card-full__tag   { color: var(--accent); }
 
 /* Mission / about */
-.mission-block { background: #ffffff; border-top-color: rgba(0,0,0,0.07); }
-.mission-block .mission-pullquote { color: #0c0c0b; }
-.mission-block .mission-body p    { color: #6a6a66; }
+.mission-block { background: var(--bg); border-top-color: var(--border); }
+.mission-block .mission-pullquote { color: var(--text); }
+.mission-block .mission-body p    { color: var(--text-muted); }
 
 /* Values grid */
-.values-grid { background: rgba(0,0,0,0.06); }
-.value-card  { background: #ffffff; }
-.value-card:hover { background: #f8f8f6; }
-.value-card__title { color: #0c0c0b; }
-.value-card__text  { color: #6a6a66; }
+.values-grid { background: rgba(255,255,255,0.03); }
+.value-card  { background: var(--bg-card); }
+.value-card:hover { background: #1c1c1c; }
+.value-card__title { color: var(--text); }
+.value-card__text  { color: var(--text-muted); }
 
 /* Work / case studies */
-.work-section { background: #ffffff; }
-.work-grid { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.06); }
-.work-card { background: #ffffff; }
-.work-card:hover { background: #f8f8f6; }
-.work-card__title { color: #0c0c0b; }
-.work-card__desc  { color: #6a6a66; }
-.work-card__outcomes li { color: #6a6a66; }
-.work-card__meta { border-top-color: rgba(0,0,0,0.07); }
-.work-card__tech { color: #9a9a96; }
-.work-cta-bar { background: #f5f5f3; border-top-color: rgba(0,0,0,0.08); }
-.work-cta-bar__text { color: #0c0c0b; }
+.work-section { background: var(--bg); }
+.work-grid { background: rgba(255,255,255,0.03); border-color: var(--border); }
+.work-card { background: var(--bg-card); }
+.work-card:hover { background: #1c1c1c; }
+.work-card__title { color: var(--text); }
+.work-card__desc  { color: var(--text-muted); }
+.work-card__outcomes li { color: var(--text-muted); }
+.work-card__meta { border-top-color: var(--border); }
+.work-card__tech { color: rgba(237,237,233,0.35); }
+.work-cta-bar { background: var(--bg-surface); border-top-color: var(--border); }
+.work-cta-bar__text { color: var(--text); }
 
 /* FAQ */
-.faq-section { background: #ffffff; }
-.faq-section__title { color: #0c0c0b; }
-.faq-item { border-bottom-color: rgba(0,0,0,0.08); }
-.faq-item__q { color: #0c0c0b; }
-.faq-item__a { color: #6a6a66; }
+.faq-section { background: var(--bg); }
+.faq-section__title { color: var(--text); }
+.faq-item { border-bottom-color: var(--border); }
+.faq-item__q { color: var(--text); }
+.faq-item__a { color: var(--text-muted); }
 
 /* Service tier sections (services page) */
 .service-tier-section {
-	background: #ffffff;
-	border-bottom-color: rgba(0,0,0,0.07);
+	background: var(--bg);
+	border-bottom-color: var(--border);
 }
-.service-tier-section--alt { background: #f5f5f3; }
+.service-tier-section--alt { background: var(--bg-surface); }
 .service-tier-label__num   { color: rgba(201,169,110,0.3); }
 .service-tier-label__tag   { color: var(--accent); }
-.service-tier-title        { color: #0c0c0b; }
-.service-tier-desc         { color: #6a6a66; }
-.service-tier-col__title   { color: #9a9a96; }
-.service-tier-list li      { color: #6a6a66; }
+.service-tier-title        { color: var(--text); }
+.service-tier-desc         { color: var(--text-muted); }
+.service-tier-col__title   { color: rgba(237,237,233,0.35); }
+.service-tier-list li      { color: var(--text-muted); }
 
 /* Industries page */
-.industry-section { background: #ffffff; border-bottom-color: rgba(0,0,0,0.07); }
-.industry-section--alt { background: #f5f5f3; }
+.industry-section { background: var(--bg); border-bottom-color: var(--border); }
+.industry-section--alt { background: var(--bg-surface); }
 .industry-section__tag   { color: var(--accent); border-color: rgba(201,169,110,0.3); }
-.industry-section__title { color: #0c0c0b; }
+.industry-section__title { color: var(--text); }
 .industry-section__pain h3,
-.industry-section__solutions h3 { color: #9a9a96; }
+.industry-section__solutions h3 { color: rgba(237,237,233,0.35); }
 .industry-section__pain li,
-.industry-section__solutions li { color: #6a6a66; }
+.industry-section__solutions li { color: var(--text-muted); }
 
 /* Industries small grid */
 .industries-grid-small .industry-card-small {
-	background: #ffffff;
-	border-color: rgba(0,0,0,0.09);
+	background: var(--bg-card);
+	border-color: var(--border);
 }
-.industries-grid-small .industry-card-small:hover { border-color: rgba(0,0,0,0.2); }
-.industries-grid-small .industry-card-small h4    { color: #0c0c0b; }
-.industries-grid-small .industry-card-small p     { color: #6a6a66; }
+.industries-grid-small .industry-card-small:hover { border-color: rgba(255,255,255,0.2); }
+.industries-grid-small .industry-card-small h4    { color: var(--text); }
+.industries-grid-small .industry-card-small p     { color: var(--text-muted); }
 
 /* Contact page */
-.contact-layout { background: #ffffff; }
-.contact-sidebar__badge { background: #f5f5f3; border-color: rgba(0,0,0,0.08); border-left-color: var(--accent); }
+.contact-layout { background: var(--bg); }
+.contact-sidebar__badge { background: var(--bg-card); border-color: var(--border); border-left-color: var(--accent); }
 .contact-sidebar__badge strong { color: var(--accent); }
-.contact-sidebar__badge p      { color: #6a6a66; }
-.contact-sidebar__label        { color: #9a9a96; }
-.contact-sidebar__email        { color: #0c0c0b; }
-.contact-sidebar__next li      { color: #6a6a66; border-bottom-color: rgba(0,0,0,0.07); }
-.form-field label              { color: #9a9a96; }
+.contact-sidebar__badge p      { color: var(--text-muted); }
+.contact-sidebar__label        { color: rgba(237,237,233,0.35); }
+.contact-sidebar__email        { color: var(--text); }
+.contact-sidebar__next li      { color: var(--text-muted); border-bottom-color: var(--border); }
+.form-field label              { color: rgba(237,237,233,0.35); }
 .form-field input,
 .form-field select,
-.form-field textarea           { background: #f5f5f3; border-color: rgba(0,0,0,0.1); color: #0c0c0b; }
+.form-field textarea           { background: var(--bg-surface); border-color: var(--border); color: var(--text); }
 .form-field input::placeholder,
-.form-field textarea::placeholder { color: #aaaaaa; }
+.form-field textarea::placeholder { color: rgba(237,237,233,0.3); }
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus     { border-color: var(--accent); }
 
 
-/* ── Nav: transparent on black hero, white+dark-text when scrolled ────────
-   Opal's exact pattern: nav has no background on the dark hero,
-   then flips to a clean white surface as you scroll into light sections.  */
+/* ── Nav: transparent on black hero, dark frosted glass when scrolled ──────
+   Site runs a unified dark theme — nav stays dark at all scroll positions. */
 .site-header {
 	background-color: transparent;
 }
 
 .site-header.scrolled {
-	background-color: rgba(255,255,255,0.96);
+	background-color: rgba(8,8,8,0.92);
 	backdrop-filter: blur(20px);
 	-webkit-backdrop-filter: blur(20px);
-	border-bottom: 1px solid rgba(0,0,0,0.07);
+	border-bottom: 1px solid rgba(255,255,255,0.07);
 }
 
-/* Nav links: white on dark hero, dark when scrolled */
+/* Nav links: white throughout */
 .site-header__logo        { color: #ffffff; }
 .site-header__nav-link    { color: rgba(255,255,255,0.65); }
 .site-header__nav-link:hover { color: #ffffff; }
 
-.site-header.scrolled .site-header__logo     { color: #0c0c0b; }
-.site-header.scrolled .site-header__nav-link { color: rgba(12,12,11,0.6); }
-.site-header.scrolled .site-header__nav-link:hover { color: #0c0c0b; }
+.site-header.scrolled .site-header__logo     { color: #ffffff; }
+.site-header.scrolled .site-header__nav-link { color: rgba(255,255,255,0.65); }
+.site-header.scrolled .site-header__nav-link:hover { color: #ffffff; }
 
-/* CTA pill: invert on scroll */
+/* CTA pill */
 .site-header__cta.btn--primary {
 	background: rgba(255,255,255,0.12);
 	color: #ffffff;
