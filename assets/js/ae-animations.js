@@ -590,10 +590,127 @@
   }
 
 
+  /* ══════════════════════════════════════════════════════════════════════════
+     12. AUTO FADE-STAGGER
+     Walks card grids + standalone section elements, assigns .js-fade + a
+     CSS --delay custom property so the IntersectionObserver in initFadeIn()
+     picks them up with a natural stagger. Must run BEFORE initFadeIn().
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  function initAutoFade() {
+    /* Single block elements that should slide up on entry */
+    [
+      '.stats-row',
+      '.process-header',
+      '.section-header',
+      '.subscription-section .subscription-lede',
+      '.subscription-section .subscription-features'
+    ].forEach(function(sel) {
+      document.querySelectorAll(sel).forEach(function(el) {
+        if (!el.classList.contains('js-fade')) el.classList.add('js-fade');
+      });
+    });
+
+    /* Card grids — stagger children */
+    [
+      '.tiers-grid',
+      '.tier-cols',
+      '.bs-cards',
+      '.service-cards-grid',
+      '.values-grid',
+      '.bs-features-grid'
+    ].forEach(function(parentSel) {
+      document.querySelectorAll(parentSel).forEach(function(parent) {
+        Array.prototype.slice.call(parent.children).forEach(function(child, i) {
+          if (!child.classList.contains('js-fade')) {
+            child.classList.add('js-fade');
+            child.style.setProperty('--delay', (i * 0.09) + 's');
+          }
+        });
+      });
+    });
+
+    /* Service card-fulls — stagger individually */
+    document.querySelectorAll('.service-card-full').forEach(function(el, i) {
+      if (!el.classList.contains('js-fade')) {
+        el.classList.add('js-fade');
+        el.style.setProperty('--delay', (i * 0.08) + 's');
+      }
+    });
+  }
+
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     13. EYEBROW LINE DRAW
+     Adds .ae-eyebrow-in to eyebrow elements when they scroll into view,
+     triggering the CSS ::after gold underline animation.
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  function initEyebrowLines() {
+    var eyebrows = document.querySelectorAll(
+      '.eyebrow, .section-eyebrow, .hero-eyebrow, ' +
+      '.page-hero__eyebrow, .reveal-label, .process-eyebrow'
+    );
+    if (!eyebrows.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+      eyebrows.forEach(function(el) { el.classList.add('ae-eyebrow-in'); });
+      return;
+    }
+
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('ae-eyebrow-in');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    eyebrows.forEach(function(el) { obs.observe(el); });
+  }
+
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     14. GOLD RULE INJECTOR
+     Inserts a thin .ae-gold-rule div before each major page section
+     (between consecutive <section> siblings). The rule scales from 0→1
+     when it enters the viewport — a tactile visual beat between sections.
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  function initGoldRules() {
+    if (!('IntersectionObserver' in window)) return;
+
+    /* Only inject on inner pages (not the front page with its own elaborate design) */
+    if (document.querySelector('.hero-section')) return;
+
+    var sections = document.querySelectorAll('.site-main > section');
+    sections.forEach(function(section, i) {
+      if (i === 0) return; /* skip the first (page hero) */
+
+      var rule = document.createElement('span');
+      rule.className = 'ae-gold-rule';
+      rule.setAttribute('aria-hidden', 'true');
+      section.parentNode.insertBefore(rule, section);
+
+      var obs = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting) {
+          rule.classList.add('ae-drawn');
+          obs.disconnect();
+        }
+      }, { threshold: 0.4 });
+      obs.observe(rule);
+    });
+  }
+
+
   /* ── Init ──────────────────────────────────────────────────────────────── */
   function init() {
+    initAutoFade();    /* must be before initFadeIn so grids get .js-fade first */
     initRevealText();
     initFadeIn();
+    initEyebrowLines();
+    initGoldRules();
     initNav();
     initCounters();
     initMobileNav();
