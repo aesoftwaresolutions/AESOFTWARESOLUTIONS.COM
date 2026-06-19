@@ -12,6 +12,130 @@ add_action( 'wp_head', function () { ?>
 /* HERO */
 .web-hero { text-align: center; }
 
+/* TEMPLATE SCROLL */
+.web-scroll-section {
+    padding: clamp(48px, 5vw, 80px) 0;
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+}
+.web-scroll-section__header {
+    text-align: center;
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
+    margin-bottom: 2.5rem;
+}
+.web-scroll-section__header .eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.65rem;
+}
+.web-scroll-section__header h2 {
+    font-family: var(--font-editorial);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 400;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.2;
+}
+.web-scroll-track-wrap {
+    position: relative;
+}
+/* Fade edges */
+.web-scroll-track-wrap::before,
+.web-scroll-track-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 120px;
+    z-index: 2;
+    pointer-events: none;
+}
+.web-scroll-track-wrap::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg-surface), transparent);
+}
+.web-scroll-track-wrap::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg-surface), transparent);
+}
+.web-scroll-track {
+    display: flex;
+    gap: 1.5rem;
+    width: max-content;
+    animation: web-marquee 38s linear infinite;
+    will-change: transform;
+}
+.web-scroll-track:hover { animation-play-state: paused; }
+@keyframes web-marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+.web-scroll-card {
+    flex-shrink: 0;
+    width: 320px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    background: var(--bg);
+    transition: border-color 0.2s, transform 0.25s;
+    cursor: default;
+}
+.web-scroll-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+}
+.web-scroll-card__browser {
+    background: #111;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.web-scroll-card__dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+}
+.web-scroll-card__dot--r { background: #ff5f57; }
+.web-scroll-card__dot--y { background: #febc2e; }
+.web-scroll-card__dot--g { background: #28c840; }
+.web-scroll-card__url {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    height: 16px;
+    margin-left: 4px;
+}
+.web-scroll-card__preview {
+    display: block;
+    width: 100%;
+    height: 220px;
+}
+.web-scroll-card__label {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+}
+.web-scroll-card__label-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+}
+.web-scroll-card__label-type {
+    font-size: 0.75rem;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
 /* TIER CARDS */
 .web-tiers-section {
     padding: clamp(64px, 7vw, 112px) clamp(1.5rem, 5vw, 4rem);
@@ -337,6 +461,355 @@ get_header(); ?>
     <h1 class="page-hero__headline">A website that<br><em>works harder</em><br>than a business card.</h1>
     <p class="page-hero__subtitle" data-reveal-text>Every site we build has one job: convert a visitor into a lead, a client, or a customer. Portfolio to full CRM platform — three tiers, one team.</p>
 </div>
+
+<!-- TEMPLATE SCROLL -->
+<section class="web-scroll-section">
+    <div class="web-scroll-section__header js-fade">
+        <span class="eyebrow">Example templates</span>
+        <h2>Sites we've designed<br>for your industry</h2>
+    </div>
+    <div class="web-scroll-track-wrap">
+        <div class="web-scroll-track">
+
+            <!-- Real Estate Agent — original -->
+            <div class="web-scroll-card">
+                <div class="web-scroll-card__browser">
+                    <span class="web-scroll-card__dot web-scroll-card__dot--r"></span>
+                    <span class="web-scroll-card__dot web-scroll-card__dot--y"></span>
+                    <span class="web-scroll-card__dot web-scroll-card__dot--g"></span>
+                    <span class="web-scroll-card__url"></span>
+                </div>
+                <svg class="web-scroll-card__preview" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+                    <!-- bg -->
+                    <rect width="320" height="220" fill="#0a1628"/>
+                    <!-- nav bar -->
+                    <rect width="320" height="36" fill="#07101e"/>
+                    <rect x="16" y="13" width="60" height="10" rx="3" fill="#c9a96e" opacity=".9"/>
+                    <rect x="212" y="14" width="44" height="8" rx="3" fill="rgba(255,255,255,.12)"/>
+                    <rect x="260" y="12" width="44" height="12" rx="4" fill="#c9a96e"/>
+                    <!-- hero headline -->
+                    <rect x="60" y="54" width="200" height="14" rx="3" fill="rgba(255,255,255,.85)"/>
+                    <rect x="80" y="74" width="160" height="14" rx="3" fill="rgba(255,255,255,.85)"/>
+                    <rect x="96" y="94" width="128" height="10" rx="3" fill="#c9a96e" opacity=".8"/>
+                    <!-- sub copy -->
+                    <rect x="72" y="114" width="176" height="6" rx="2" fill="rgba(255,255,255,.3)"/>
+                    <rect x="88" y="124" width="144" height="6" rx="2" fill="rgba(255,255,255,.3)"/>
+                    <!-- CTA buttons -->
+                    <rect x="80" y="140" width="72" height="22" rx="5" fill="#c9a96e"/>
+                    <rect x="164" y="140" width="76" height="22" rx="5" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+                    <!-- stats bar -->
+                    <rect x="0" y="172" width="320" height="48" fill="#c9a96e" opacity=".15"/>
+                    <rect x="24" y="183" width="52" height="12" rx="3" fill="#c9a96e" opacity=".9"/>
+                    <rect x="134" y="183" width="52" height="12" rx="3" fill="#c9a96e" opacity=".9"/>
+                    <rect x="244" y="183" width="52" height="12" rx="3" fill="#c9a96e" opacity=".9"/>
+                    <rect x="24" y="199" width="36" height="6" rx="2" fill="rgba(255,255,255,.3)"/>
+                    <rect x="134" y="199" width="36" height="6" rx="2" fill="rgba(255,255,255,.3)"/>
+                    <rect x="244" y="199" width="36" height="6" rx="2" fill="rgba(255,255,255,.3)"/>
+                </svg>
+                <div class="web-scroll-card__label">
+                    <span class="web-scroll-card__label-name">Real Estate Agent</span>
+                    <span class="web-scroll-card__label-type">Lead Funnel</span>
+                </div>
+            </div>
+
+            <!-- Home Services — original -->
+            <div class="web-scroll-card">
+                <div class="web-scroll-card__browser">
+                    <span class="web-scroll-card__dot web-scroll-card__dot--r"></span>
+                    <span class="web-scroll-card__dot web-scroll-card__dot--y"></span>
+                    <span class="web-scroll-card__dot web-scroll-card__dot--g"></span>
+                    <span class="web-scroll-card__url"></span>
+                </div>
+                <svg class="web-scroll-card__preview" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+                    <!-- bg -->
+                    <rect width="320" height="220" fill="#111827"/>
+                    <!-- nav - orange accent -->
+                    <rect width="320" height="38" fill="#0d1117"/>
+                    <rect x="14" y="14" width="64" height="10" rx="3" fill="#f97316" opacity=".9"/>
+                    <rect x="180" y="16" width="36" height="7" rx="2" fill="rgba(255,255,255,.12)"/>
+                    <rect x="224" y="16" width="36" height="7" rx="2" fill="rgba(255,255,255,.12)"/>
+                    <rect x="268" y="13" width="38" height="12" rx="4" fill="#f97316"/>
+                    <!-- trust bar -->
+                    <rect x="0" y="38" width="320" height="24" fill="#f97316" opacity=".12"/>
+                    <rect x="20" y="44" width="60" height="6" rx="2" fill="rgba(255,165,0,.5)"/>
+                    <rect x="130" y="44" width="60" height="6" rx="2" fill="rgba(255,165,0,.5)"/>
+                    <rect x="240" y="44" width="60" height="6" rx="2" fill="rgba(255,165,0,.5)"/>
+                    <!-- hero -->
+                    <rect x="24" y="76" width="180" height="14" rx="3" fill="rgba(255,255,255,.85)"/>
+                    <rect x="24" y="96" width="152" height="14" rx="3" fill="rgba(255,255,255,.85)"/>
+                    <rect x="24" y="116" width="120" height="8" rx="2" fill="#f97316" opacity=".7"/>
+                    <!-- body copy lines -->
+                    <rect x="24" y="134" width="168" height="5" rx="2" fill="rgba(255,255,255,.25)"/>
+                    <rect x="24" y="143" width="140" height="5" rx="2" fill="rgba(255,255,255,.25)"/>
+                    <!-- CTA -->
+                    <rect x="24" y="158" width="84" height="24" rx="5" fill="#f97316"/>
+                    <rect x="118" y="158" width="80" height="24" rx="5" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+                    <!-- service cards bottom strip -->
+                    <rect x="0" y="193" width="76" height="27" fill="rgba(249,115,22,.1)" rx="0"/>
+                    <rect x="82" y="193" width="76" height="27" fill="rgba(249,115,22,.1)" rx="0"/>
+                    <rect x="164" y="193" width="76" height="27" fill="rgba(249,115,22,.1)" rx="0"/>
+                    <rect x="246" y="193" width="74" height="27" fill="rgba(249,115,22,.1)" rx="0"/>
+                    <rect x="12" y="201" width="48" height="5" rx="2" fill="rgba(249,115,22,.6)"/>
+                    <rect x="94" y="201" width="48" height="5" rx="2" fill="rgba(249,115,22,.6)"/>
+                    <rect x="176" y="201" width="48" height="5" rx="2" fill="rgba(249,115,22,.6)"/>
+                    <rect x="258" y="201" width="48" height="5" rx="2" fill="rgba(249,115,22,.6)"/>
+                </svg>
+                <div class="web-scroll-card__label">
+                    <span class="web-scroll-card__label-name">Home Services</span>
+                    <span class="web-scroll-card__label-type">Lead Funnel</span>
+                </div>
+            </div>
+
+            <!-- Mortgage Broker — original -->
+            <div class="web-scroll-card">
+                <div class="web-scroll-card__browser">
+                    <span class="web-scroll-card__dot web-scroll-card__dot--r"></span>
+                    <span class="web-scroll-card__dot web-scroll-card__dot--y"></span>
+                    <span class="web-scroll-card__dot web-scroll-card__dot--g"></span>
+                    <span class="web-scroll-card__url"></span>
+                </div>
+                <svg class="web-scroll-card__preview" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+                    <!-- bg split: left text / right rate card -->
+                    <rect width="320" height="220" fill="#0f1f3d"/>
+                    <!-- nav -->
+                    <rect width="320" height="36" fill="#08142a"/>
+                    <rect x="14" y="13" width="70" height="10" rx="3" fill="white" opacity=".8"/>
+                    <rect x="16" y="26" width="30" height="4" rx="2" fill="#c9a96e" opacity=".6"/>
+                    <rect x="206" y="15" width="36" height="7" rx="2" fill="rgba(255,255,255,.1)"/>
+                    <rect x="250" y="14" width="54" height="10" rx="4" fill="#16a34a"/>
+                    <!-- left hero copy -->
+                    <rect x="16" y="50" width="140" height="12" rx="3" fill="rgba(255,255,255,.85)"/>
+                    <rect x="16" y="68" width="120" height="12" rx="3" fill="rgba(255,255,255,.85)"/>
+                    <rect x="16" y="86" width="100" height="12" rx="3" fill="#16a34a" opacity=".8"/>
+                    <rect x="16" y="108" width="130" height="5" rx="2" fill="rgba(255,255,255,.25)"/>
+                    <rect x="16" y="118" width="110" height="5" rx="2" fill="rgba(255,255,255,.25)"/>
+                    <!-- CTA row -->
+                    <rect x="16" y="134" width="68" height="20" rx="5" fill="#16a34a"/>
+                    <rect x="92" y="134" width="60" height="20" rx="5" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+                    <!-- right: rate card -->
+                    <rect x="174" y="44" width="134" height="148" rx="8" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+                    <rect x="184" y="56" width="60" height="6" rx="2" fill="#c9a96e" opacity=".7"/>
+                    <!-- rate rows -->
+                    <rect x="184" y="70" width="80" height="7" rx="2" fill="rgba(255,255,255,.5)"/>
+                    <rect x="290" y="68" width="8" height="11" rx="2" fill="white" opacity=".8"/>
+                    <rect x="286" y="67" width="16" height="13" rx="2" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+                    <rect x="184" y="88" width="80" height="7" rx="2" fill="rgba(255,255,255,.5)"/>
+                    <rect x="290" y="86" width="8" height="11" rx="2" fill="white" opacity=".8"/>
+                    <rect x="184" y="106" width="80" height="7" rx="2" fill="rgba(255,255,255,.5)"/>
+                    <rect x="290" y="104" width="8" height="11" rx="2" fill="white" opacity=".8"/>
+                    <!-- divider -->
+                    <line x1="184" y1="122" x2="298" y2="122" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+                    <!-- lock rate btn -->
+                    <rect x="184" y="130" width="114" height="22" rx="5" fill="#c9a96e"/>
+                    <!-- green stats bar -->
+                    <rect x="0" y="198" width="320" height="22" fill="#16a34a" opacity=".2"/>
+                    <rect x="20" y="205" width="50" height="6" rx="2" fill="#16a34a" opacity=".7"/>
+                    <rect x="130" y="205" width="60" height="6" rx="2" fill="#16a34a" opacity=".7"/>
+                    <rect x="250" y="205" width="50" height="6" rx="2" fill="#16a34a" opacity=".7"/>
+                </svg>
+                <div class="web-scroll-card__label">
+                    <span class="web-scroll-card__label-name">Mortgage Broker</span>
+                    <span class="web-scroll-card__label-type">Lead Funnel</span>
+                </div>
+            </div>
+
+            <!-- Insurance Agent — original -->
+            <div class="web-scroll-card">
+                <div class="web-scroll-card__browser">
+                    <span class="web-scroll-card__dot web-scroll-card__dot--r"></span>
+                    <span class="web-scroll-card__dot web-scroll-card__dot--y"></span>
+                    <span class="web-scroll-card__dot web-scroll-card__dot--g"></span>
+                    <span class="web-scroll-card__url"></span>
+                </div>
+                <svg class="web-scroll-card__preview" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+                    <!-- bg -->
+                    <rect width="320" height="220" fill="#1a1a2e"/>
+                    <!-- nav -->
+                    <rect width="320" height="36" fill="#12122a"/>
+                    <rect x="14" y="13" width="62" height="10" rx="3" fill="#818cf8" opacity=".9"/>
+                    <rect x="200" y="14" width="40" height="8" rx="3" fill="rgba(255,255,255,.1)"/>
+                    <rect x="250" y="12" width="54" height="12" rx="4" fill="#6366f1"/>
+                    <!-- hero section (dark left panel) -->
+                    <rect x="0" y="36" width="180" height="130" fill="#0f0f23"/>
+                    <rect x="14" y="52" width="148" height="12" rx="3" fill="rgba(255,255,255,.85)"/>
+                    <rect x="14" y="70" width="120" height="12" rx="3" fill="rgba(255,255,255,.85)"/>
+                    <rect x="14" y="88" width="100" height="8" rx="3" fill="#818cf8" opacity=".7"/>
+                    <rect x="14" y="106" width="140" height="5" rx="2" fill="rgba(255,255,255,.2)"/>
+                    <rect x="14" y="116" width="120" height="5" rx="2" fill="rgba(255,255,255,.2)"/>
+                    <rect x="14" y="132" width="72" height="20" rx="5" fill="#6366f1"/>
+                    <rect x="96" y="132" width="72" height="20" rx="5" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+                    <!-- right: quote box -->
+                    <rect x="186" y="44" width="120" height="116" rx="8" fill="rgba(255,255,255,.04)" stroke="rgba(129,140,248,.2)" stroke-width="1"/>
+                    <rect x="196" y="56" width="70" height="7" rx="2" fill="rgba(255,255,255,.6)"/>
+                    <rect x="196" y="70" width="100" height="10" rx="3" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+                    <rect x="196" y="86" width="100" height="10" rx="3" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+                    <rect x="196" y="102" width="100" height="10" rx="3" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+                    <rect x="196" y="122" width="100" height="22" rx="5" fill="#6366f1"/>
+                    <!-- trust strip -->
+                    <rect x="0" y="166" width="320" height="32" fill="rgba(99,102,241,.1)"/>
+                    <rect x="20" y="175" width="52" height="6" rx="2" fill="rgba(129,140,248,.5)"/>
+                    <rect x="130" y="175" width="60" height="6" rx="2" fill="rgba(129,140,248,.5)"/>
+                    <rect x="248" y="175" width="52" height="6" rx="2" fill="rgba(129,140,248,.5)"/>
+                    <!-- testimonials strip -->
+                    <rect x="0" y="198" width="104" height="22" fill="rgba(255,255,255,.03)"/>
+                    <rect x="108" y="198" width="104" height="22" fill="rgba(255,255,255,.03)"/>
+                    <rect x="216" y="198" width="104" height="22" fill="rgba(255,255,255,.03)"/>
+                    <rect x="10" y="206" width="70" height="5" rx="2" fill="rgba(255,255,255,.2)"/>
+                    <rect x="118" y="206" width="70" height="5" rx="2" fill="rgba(255,255,255,.2)"/>
+                    <rect x="226" y="206" width="70" height="5" rx="2" fill="rgba(255,255,255,.2)"/>
+                </svg>
+                <div class="web-scroll-card__label">
+                    <span class="web-scroll-card__label-name">Insurance Agent</span>
+                    <span class="web-scroll-card__label-type">Quote Funnel</span>
+                </div>
+            </div>
+
+            <!-- Law Firm — original -->
+            <div class="web-scroll-card">
+                <div class="web-scroll-card__browser">
+                    <span class="web-scroll-card__dot web-scroll-card__dot--r"></span>
+                    <span class="web-scroll-card__dot web-scroll-card__dot--y"></span>
+                    <span class="web-scroll-card__dot web-scroll-card__dot--g"></span>
+                    <span class="web-scroll-card__url"></span>
+                </div>
+                <svg class="web-scroll-card__preview" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+                    <!-- bg -->
+                    <rect width="320" height="220" fill="#0c0c0c"/>
+                    <!-- full-bleed hero image simulation -->
+                    <rect width="320" height="150" fill="#1a1008"/>
+                    <!-- dark overlay gradient -->
+                    <rect width="320" height="150" fill="url(#law-grad)"/>
+                    <defs>
+                        <linearGradient id="law-grad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#0c0c0c" stop-opacity=".5"/>
+                            <stop offset="100%" stop-color="#0c0c0c" stop-opacity=".85"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- nav -->
+                    <rect x="14" y="12" width="72" height="10" rx="3" fill="#b8922a" opacity=".9"/>
+                    <rect x="14" y="25" width="40" height="4" rx="2" fill="rgba(184,146,42,.4)"/>
+                    <rect x="200" y="13" width="36" height="7" rx="2" fill="rgba(255,255,255,.12)"/>
+                    <rect x="244" y="13" width="36" height="7" rx="2" fill="rgba(255,255,255,.12)"/>
+                    <rect x="284" y="11" width="22" height="12" rx="4" fill="#b8922a"/>
+                    <!-- serif headline -->
+                    <rect x="24" y="52" width="200" height="16" rx="2" fill="rgba(255,255,255,.9)"/>
+                    <rect x="24" y="74" width="170" height="16" rx="2" fill="rgba(255,255,255,.9)"/>
+                    <rect x="24" y="96" width="140" height="10" rx="2" fill="#b8922a" opacity=".75"/>
+                    <!-- tagline -->
+                    <rect x="24" y="116" width="180" height="5" rx="2" fill="rgba(255,255,255,.25)"/>
+                    <rect x="24" y="126" width="160" height="5" rx="2" fill="rgba(255,255,255,.25)"/>
+                    <rect x="24" y="140" width="76" height="20" rx="0" fill="#b8922a"/>
+                    <!-- practice areas cards -->
+                    <rect x="0" y="158" width="80" height="62" fill="#141414"/>
+                    <rect x="84" y="158" width="80" height="62" fill="#141414"/>
+                    <rect x="168" y="158" width="80" height="62" fill="#141414"/>
+                    <rect x="252" y="158" width="68" height="62" fill="#141414"/>
+                    <rect x="10" y="168" width="56" height="6" rx="2" fill="#b8922a" opacity=".7"/>
+                    <rect x="94" y="168" width="56" height="6" rx="2" fill="#b8922a" opacity=".7"/>
+                    <rect x="178" y="168" width="56" height="6" rx="2" fill="#b8922a" opacity=".7"/>
+                    <rect x="262" y="168" width="44" height="6" rx="2" fill="#b8922a" opacity=".7"/>
+                    <rect x="10" y="180" width="52" height="4" rx="2" fill="rgba(255,255,255,.2)"/>
+                    <rect x="10" y="188" width="46" height="4" rx="2" fill="rgba(255,255,255,.2)"/>
+                    <rect x="94" y="180" width="52" height="4" rx="2" fill="rgba(255,255,255,.2)"/>
+                    <rect x="94" y="188" width="46" height="4" rx="2" fill="rgba(255,255,255,.2)"/>
+                    <rect x="178" y="180" width="52" height="4" rx="2" fill="rgba(255,255,255,.2)"/>
+                    <rect x="178" y="188" width="46" height="4" rx="2" fill="rgba(255,255,255,.2)"/>
+                    <rect x="262" y="180" width="42" height="4" rx="2" fill="rgba(255,255,255,.2)"/>
+                    <rect x="262" y="188" width="36" height="4" rx="2" fill="rgba(255,255,255,.2)"/>
+                </svg>
+                <div class="web-scroll-card__label">
+                    <span class="web-scroll-card__label-name">Law Firm</span>
+                    <span class="web-scroll-card__label-type">Intake Funnel</span>
+                </div>
+            </div>
+
+            <!-- Consultant / Coach — original -->
+            <div class="web-scroll-card">
+                <div class="web-scroll-card__browser">
+                    <span class="web-scroll-card__dot web-scroll-card__dot--r"></span>
+                    <span class="web-scroll-card__dot web-scroll-card__dot--y"></span>
+                    <span class="web-scroll-card__dot web-scroll-card__dot--g"></span>
+                    <span class="web-scroll-card__url"></span>
+                </div>
+                <svg class="web-scroll-card__preview" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+                    <!-- bg -->
+                    <rect width="320" height="220" fill="#f8f7f4"/>
+                    <!-- nav light -->
+                    <rect width="320" height="38" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
+                    <rect x="16" y="14" width="68" height="10" rx="3" fill="#1a1a1a"/>
+                    <rect x="180" y="16" width="36" height="7" rx="2" fill="#9ca3af"/>
+                    <rect x="224" y="16" width="36" height="7" rx="2" fill="#9ca3af"/>
+                    <rect x="272" y="13" width="32" height="12" rx="4" fill="#1a1a1a"/>
+                    <!-- hero center -->
+                    <rect x="60" y="56" width="200" height="14" rx="3" fill="#1a1a1a" opacity=".85"/>
+                    <rect x="80" y="76" width="160" height="14" rx="3" fill="#1a1a1a" opacity=".85"/>
+                    <!-- accent underline -->
+                    <rect x="100" y="95" width="120" height="3" rx="1.5" fill="#c9a96e"/>
+                    <!-- subtext -->
+                    <rect x="80" y="108" width="160" height="5" rx="2" fill="#9ca3af"/>
+                    <rect x="96" y="118" width="128" height="5" rx="2" fill="#9ca3af"/>
+                    <!-- CTA -->
+                    <rect x="108" y="134" width="104" height="24" rx="5" fill="#1a1a1a"/>
+                    <!-- social proof row -->
+                    <rect x="80" y="168" width="160" height="5" rx="2" fill="#d1d5db"/>
+                    <!-- testimonial cards -->
+                    <rect x="12" y="183" width="92" height="37" rx="6" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
+                    <rect x="114" y="183" width="92" height="37" rx="6" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
+                    <rect x="216" y="183" width="92" height="37" rx="6" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
+                    <rect x="20" y="192" width="52" height="4" rx="2" fill="#374151"/>
+                    <rect x="20" y="200" width="40" height="4" rx="2" fill="#9ca3af"/>
+                    <rect x="122" y="192" width="52" height="4" rx="2" fill="#374151"/>
+                    <rect x="122" y="200" width="40" height="4" rx="2" fill="#9ca3af"/>
+                    <rect x="224" y="192" width="52" height="4" rx="2" fill="#374151"/>
+                    <rect x="224" y="200" width="40" height="4" rx="2" fill="#9ca3af"/>
+                </svg>
+                <div class="web-scroll-card__label">
+                    <span class="web-scroll-card__label-name">Consultant / Coach</span>
+                    <span class="web-scroll-card__label-type">Portfolio + Booking</span>
+                </div>
+            </div>
+
+            <!-- Duplicate set for seamless loop -->
+
+            <div class="web-scroll-card">
+                <div class="web-scroll-card__browser"><span class="web-scroll-card__dot web-scroll-card__dot--r"></span><span class="web-scroll-card__dot web-scroll-card__dot--y"></span><span class="web-scroll-card__dot web-scroll-card__dot--g"></span><span class="web-scroll-card__url"></span></div>
+                <svg class="web-scroll-card__preview" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#0a1628"/><rect width="320" height="36" fill="#07101e"/><rect x="16" y="13" width="60" height="10" rx="3" fill="#c9a96e" opacity=".9"/><rect x="212" y="14" width="44" height="8" rx="3" fill="rgba(255,255,255,.12)"/><rect x="260" y="12" width="44" height="12" rx="4" fill="#c9a96e"/><rect x="60" y="54" width="200" height="14" rx="3" fill="rgba(255,255,255,.85)"/><rect x="80" y="74" width="160" height="14" rx="3" fill="rgba(255,255,255,.85)"/><rect x="96" y="94" width="128" height="10" rx="3" fill="#c9a96e" opacity=".8"/><rect x="72" y="114" width="176" height="6" rx="2" fill="rgba(255,255,255,.3)"/><rect x="88" y="124" width="144" height="6" rx="2" fill="rgba(255,255,255,.3)"/><rect x="80" y="140" width="72" height="22" rx="5" fill="#c9a96e"/><rect x="164" y="140" width="76" height="22" rx="5" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/><rect x="0" y="172" width="320" height="48" fill="#c9a96e" opacity=".15"/><rect x="24" y="183" width="52" height="12" rx="3" fill="#c9a96e" opacity=".9"/><rect x="134" y="183" width="52" height="12" rx="3" fill="#c9a96e" opacity=".9"/><rect x="244" y="183" width="52" height="12" rx="3" fill="#c9a96e" opacity=".9"/><rect x="24" y="199" width="36" height="6" rx="2" fill="rgba(255,255,255,.3)"/><rect x="134" y="199" width="36" height="6" rx="2" fill="rgba(255,255,255,.3)"/><rect x="244" y="199" width="36" height="6" rx="2" fill="rgba(255,255,255,.3)"/></svg>
+                <div class="web-scroll-card__label"><span class="web-scroll-card__label-name">Real Estate Agent</span><span class="web-scroll-card__label-type">Lead Funnel</span></div>
+            </div>
+
+            <div class="web-scroll-card">
+                <div class="web-scroll-card__browser"><span class="web-scroll-card__dot web-scroll-card__dot--r"></span><span class="web-scroll-card__dot web-scroll-card__dot--y"></span><span class="web-scroll-card__dot web-scroll-card__dot--g"></span><span class="web-scroll-card__url"></span></div>
+                <svg class="web-scroll-card__preview" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#111827"/><rect width="320" height="38" fill="#0d1117"/><rect x="14" y="14" width="64" height="10" rx="3" fill="#f97316" opacity=".9"/><rect x="180" y="16" width="36" height="7" rx="2" fill="rgba(255,255,255,.12)"/><rect x="224" y="16" width="36" height="7" rx="2" fill="rgba(255,255,255,.12)"/><rect x="268" y="13" width="38" height="12" rx="4" fill="#f97316"/><rect x="0" y="38" width="320" height="24" fill="#f97316" opacity=".12"/><rect x="20" y="44" width="60" height="6" rx="2" fill="rgba(255,165,0,.5)"/><rect x="130" y="44" width="60" height="6" rx="2" fill="rgba(255,165,0,.5)"/><rect x="240" y="44" width="60" height="6" rx="2" fill="rgba(255,165,0,.5)"/><rect x="24" y="76" width="180" height="14" rx="3" fill="rgba(255,255,255,.85)"/><rect x="24" y="96" width="152" height="14" rx="3" fill="rgba(255,255,255,.85)"/><rect x="24" y="116" width="120" height="8" rx="2" fill="#f97316" opacity=".7"/><rect x="24" y="134" width="168" height="5" rx="2" fill="rgba(255,255,255,.25)"/><rect x="24" y="143" width="140" height="5" rx="2" fill="rgba(255,255,255,.25)"/><rect x="24" y="158" width="84" height="24" rx="5" fill="#f97316"/><rect x="118" y="158" width="80" height="24" rx="5" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/><rect x="0" y="193" width="76" height="27" fill="rgba(249,115,22,.1)" rx="0"/><rect x="82" y="193" width="76" height="27" fill="rgba(249,115,22,.1)" rx="0"/><rect x="164" y="193" width="76" height="27" fill="rgba(249,115,22,.1)" rx="0"/><rect x="246" y="193" width="74" height="27" fill="rgba(249,115,22,.1)" rx="0"/><rect x="12" y="201" width="48" height="5" rx="2" fill="rgba(249,115,22,.6)"/><rect x="94" y="201" width="48" height="5" rx="2" fill="rgba(249,115,22,.6)"/><rect x="176" y="201" width="48" height="5" rx="2" fill="rgba(249,115,22,.6)"/><rect x="258" y="201" width="48" height="5" rx="2" fill="rgba(249,115,22,.6)"/></svg>
+                <div class="web-scroll-card__label"><span class="web-scroll-card__label-name">Home Services</span><span class="web-scroll-card__label-type">Lead Funnel</span></div>
+            </div>
+
+            <div class="web-scroll-card">
+                <div class="web-scroll-card__browser"><span class="web-scroll-card__dot web-scroll-card__dot--r"></span><span class="web-scroll-card__dot web-scroll-card__dot--y"></span><span class="web-scroll-card__dot web-scroll-card__dot--g"></span><span class="web-scroll-card__url"></span></div>
+                <svg class="web-scroll-card__preview" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#0f1f3d"/><rect width="320" height="36" fill="#08142a"/><rect x="14" y="13" width="70" height="10" rx="3" fill="white" opacity=".8"/><rect x="16" y="26" width="30" height="4" rx="2" fill="#c9a96e" opacity=".6"/><rect x="206" y="15" width="36" height="7" rx="2" fill="rgba(255,255,255,.1)"/><rect x="250" y="14" width="54" height="10" rx="4" fill="#16a34a"/><rect x="16" y="50" width="140" height="12" rx="3" fill="rgba(255,255,255,.85)"/><rect x="16" y="68" width="120" height="12" rx="3" fill="rgba(255,255,255,.85)"/><rect x="16" y="86" width="100" height="12" rx="3" fill="#16a34a" opacity=".8"/><rect x="16" y="108" width="130" height="5" rx="2" fill="rgba(255,255,255,.25)"/><rect x="16" y="118" width="110" height="5" rx="2" fill="rgba(255,255,255,.25)"/><rect x="16" y="134" width="68" height="20" rx="5" fill="#16a34a"/><rect x="92" y="134" width="60" height="20" rx="5" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/><rect x="174" y="44" width="134" height="148" rx="8" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.1)" stroke-width="1"/><rect x="184" y="56" width="60" height="6" rx="2" fill="#c9a96e" opacity=".7"/><rect x="184" y="70" width="80" height="7" rx="2" fill="rgba(255,255,255,.5)"/><rect x="290" y="68" width="8" height="11" rx="2" fill="white" opacity=".8"/><rect x="286" y="67" width="16" height="13" rx="2" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/><rect x="184" y="88" width="80" height="7" rx="2" fill="rgba(255,255,255,.5)"/><rect x="290" y="86" width="8" height="11" rx="2" fill="white" opacity=".8"/><rect x="184" y="106" width="80" height="7" rx="2" fill="rgba(255,255,255,.5)"/><rect x="290" y="104" width="8" height="11" rx="2" fill="white" opacity=".8"/><line x1="184" y1="122" x2="298" y2="122" stroke="rgba(255,255,255,.1)" stroke-width="1"/><rect x="184" y="130" width="114" height="22" rx="5" fill="#c9a96e"/><rect x="0" y="198" width="320" height="22" fill="#16a34a" opacity=".2"/><rect x="20" y="205" width="50" height="6" rx="2" fill="#16a34a" opacity=".7"/><rect x="130" y="205" width="60" height="6" rx="2" fill="#16a34a" opacity=".7"/><rect x="250" y="205" width="50" height="6" rx="2" fill="#16a34a" opacity=".7"/></svg>
+                <div class="web-scroll-card__label"><span class="web-scroll-card__label-name">Mortgage Broker</span><span class="web-scroll-card__label-type">Lead Funnel</span></div>
+            </div>
+
+            <div class="web-scroll-card">
+                <div class="web-scroll-card__browser"><span class="web-scroll-card__dot web-scroll-card__dot--r"></span><span class="web-scroll-card__dot web-scroll-card__dot--y"></span><span class="web-scroll-card__dot web-scroll-card__dot--g"></span><span class="web-scroll-card__url"></span></div>
+                <svg class="web-scroll-card__preview" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#1a1a2e"/><rect width="320" height="36" fill="#12122a"/><rect x="14" y="13" width="62" height="10" rx="3" fill="#818cf8" opacity=".9"/><rect x="200" y="14" width="40" height="8" rx="3" fill="rgba(255,255,255,.1)"/><rect x="250" y="12" width="54" height="12" rx="4" fill="#6366f1"/><rect x="0" y="36" width="180" height="130" fill="#0f0f23"/><rect x="14" y="52" width="148" height="12" rx="3" fill="rgba(255,255,255,.85)"/><rect x="14" y="70" width="120" height="12" rx="3" fill="rgba(255,255,255,.85)"/><rect x="14" y="88" width="100" height="8" rx="3" fill="#818cf8" opacity=".7"/><rect x="14" y="106" width="140" height="5" rx="2" fill="rgba(255,255,255,.2)"/><rect x="14" y="116" width="120" height="5" rx="2" fill="rgba(255,255,255,.2)"/><rect x="14" y="132" width="72" height="20" rx="5" fill="#6366f1"/><rect x="96" y="132" width="72" height="20" rx="5" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/><rect x="186" y="44" width="120" height="116" rx="8" fill="rgba(255,255,255,.04)" stroke="rgba(129,140,248,.2)" stroke-width="1"/><rect x="196" y="56" width="70" height="7" rx="2" fill="rgba(255,255,255,.6)"/><rect x="196" y="70" width="100" height="10" rx="3" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.12)" stroke-width="1"/><rect x="196" y="86" width="100" height="10" rx="3" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.12)" stroke-width="1"/><rect x="196" y="102" width="100" height="10" rx="3" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.12)" stroke-width="1"/><rect x="196" y="122" width="100" height="22" rx="5" fill="#6366f1"/><rect x="0" y="166" width="320" height="32" fill="rgba(99,102,241,.1)"/><rect x="20" y="175" width="52" height="6" rx="2" fill="rgba(129,140,248,.5)"/><rect x="130" y="175" width="60" height="6" rx="2" fill="rgba(129,140,248,.5)"/><rect x="248" y="175" width="52" height="6" rx="2" fill="rgba(129,140,248,.5)"/><rect x="0" y="198" width="104" height="22" fill="rgba(255,255,255,.03)"/><rect x="108" y="198" width="104" height="22" fill="rgba(255,255,255,.03)"/><rect x="216" y="198" width="104" height="22" fill="rgba(255,255,255,.03)"/><rect x="10" y="206" width="70" height="5" rx="2" fill="rgba(255,255,255,.2)"/><rect x="118" y="206" width="70" height="5" rx="2" fill="rgba(255,255,255,.2)"/><rect x="226" y="206" width="70" height="5" rx="2" fill="rgba(255,255,255,.2)"/></svg>
+                <div class="web-scroll-card__label"><span class="web-scroll-card__label-name">Insurance Agent</span><span class="web-scroll-card__label-type">Quote Funnel</span></div>
+            </div>
+
+            <div class="web-scroll-card">
+                <div class="web-scroll-card__browser"><span class="web-scroll-card__dot web-scroll-card__dot--r"></span><span class="web-scroll-card__dot web-scroll-card__dot--y"></span><span class="web-scroll-card__dot web-scroll-card__dot--g"></span><span class="web-scroll-card__url"></span></div>
+                <svg class="web-scroll-card__preview" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#0c0c0c"/><rect width="320" height="150" fill="#1a1008"/><rect width="320" height="150" fill="url(#law-grad2)"/><defs><linearGradient id="law-grad2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0c0c0c" stop-opacity=".5"/><stop offset="100%" stop-color="#0c0c0c" stop-opacity=".85"/></linearGradient></defs><rect x="14" y="12" width="72" height="10" rx="3" fill="#b8922a" opacity=".9"/><rect x="14" y="25" width="40" height="4" rx="2" fill="rgba(184,146,42,.4)"/><rect x="200" y="13" width="36" height="7" rx="2" fill="rgba(255,255,255,.12)"/><rect x="244" y="13" width="36" height="7" rx="2" fill="rgba(255,255,255,.12)"/><rect x="284" y="11" width="22" height="12" rx="4" fill="#b8922a"/><rect x="24" y="52" width="200" height="16" rx="2" fill="rgba(255,255,255,.9)"/><rect x="24" y="74" width="170" height="16" rx="2" fill="rgba(255,255,255,.9)"/><rect x="24" y="96" width="140" height="10" rx="2" fill="#b8922a" opacity=".75"/><rect x="24" y="116" width="180" height="5" rx="2" fill="rgba(255,255,255,.25)"/><rect x="24" y="126" width="160" height="5" rx="2" fill="rgba(255,255,255,.25)"/><rect x="24" y="140" width="76" height="20" rx="0" fill="#b8922a"/><rect x="0" y="158" width="80" height="62" fill="#141414"/><rect x="84" y="158" width="80" height="62" fill="#141414"/><rect x="168" y="158" width="80" height="62" fill="#141414"/><rect x="252" y="158" width="68" height="62" fill="#141414"/><rect x="10" y="168" width="56" height="6" rx="2" fill="#b8922a" opacity=".7"/><rect x="94" y="168" width="56" height="6" rx="2" fill="#b8922a" opacity=".7"/><rect x="178" y="168" width="56" height="6" rx="2" fill="#b8922a" opacity=".7"/><rect x="262" y="168" width="44" height="6" rx="2" fill="#b8922a" opacity=".7"/><rect x="10" y="180" width="52" height="4" rx="2" fill="rgba(255,255,255,.2)"/><rect x="10" y="188" width="46" height="4" rx="2" fill="rgba(255,255,255,.2)"/><rect x="94" y="180" width="52" height="4" rx="2" fill="rgba(255,255,255,.2)"/><rect x="94" y="188" width="46" height="4" rx="2" fill="rgba(255,255,255,.2)"/><rect x="178" y="180" width="52" height="4" rx="2" fill="rgba(255,255,255,.2)"/><rect x="178" y="188" width="46" height="4" rx="2" fill="rgba(255,255,255,.2)"/><rect x="262" y="180" width="42" height="4" rx="2" fill="rgba(255,255,255,.2)"/><rect x="262" y="188" width="36" height="4" rx="2" fill="rgba(255,255,255,.2)"/></svg>
+                <div class="web-scroll-card__label"><span class="web-scroll-card__label-name">Law Firm</span><span class="web-scroll-card__label-type">Intake Funnel</span></div>
+            </div>
+
+            <div class="web-scroll-card">
+                <div class="web-scroll-card__browser"><span class="web-scroll-card__dot web-scroll-card__dot--r"></span><span class="web-scroll-card__dot web-scroll-card__dot--y"></span><span class="web-scroll-card__dot web-scroll-card__dot--g"></span><span class="web-scroll-card__url"></span></div>
+                <svg class="web-scroll-card__preview" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="220" fill="#f8f7f4"/><rect width="320" height="38" fill="#fff" stroke="#e5e7eb" stroke-width="1"/><rect x="16" y="14" width="68" height="10" rx="3" fill="#1a1a1a"/><rect x="180" y="16" width="36" height="7" rx="2" fill="#9ca3af"/><rect x="224" y="16" width="36" height="7" rx="2" fill="#9ca3af"/><rect x="272" y="13" width="32" height="12" rx="4" fill="#1a1a1a"/><rect x="60" y="56" width="200" height="14" rx="3" fill="#1a1a1a" opacity=".85"/><rect x="80" y="76" width="160" height="14" rx="3" fill="#1a1a1a" opacity=".85"/><rect x="100" y="95" width="120" height="3" rx="1.5" fill="#c9a96e"/><rect x="80" y="108" width="160" height="5" rx="2" fill="#9ca3af"/><rect x="96" y="118" width="128" height="5" rx="2" fill="#9ca3af"/><rect x="108" y="134" width="104" height="24" rx="5" fill="#1a1a1a"/><rect x="80" y="168" width="160" height="5" rx="2" fill="#d1d5db"/><rect x="12" y="183" width="92" height="37" rx="6" fill="#fff" stroke="#e5e7eb" stroke-width="1"/><rect x="114" y="183" width="92" height="37" rx="6" fill="#fff" stroke="#e5e7eb" stroke-width="1"/><rect x="216" y="183" width="92" height="37" rx="6" fill="#fff" stroke="#e5e7eb" stroke-width="1"/><rect x="20" y="192" width="52" height="4" rx="2" fill="#374151"/><rect x="20" y="200" width="40" height="4" rx="2" fill="#9ca3af"/><rect x="122" y="192" width="52" height="4" rx="2" fill="#374151"/><rect x="122" y="200" width="40" height="4" rx="2" fill="#9ca3af"/><rect x="224" y="192" width="52" height="4" rx="2" fill="#374151"/><rect x="224" y="200" width="40" height="4" rx="2" fill="#9ca3af"/></svg>
+                <div class="web-scroll-card__label"><span class="web-scroll-card__label-name">Consultant / Coach</span><span class="web-scroll-card__label-type">Portfolio + Booking</span></div>
+            </div>
+
+        </div><!-- .web-scroll-track -->
+    </div><!-- .web-scroll-track-wrap -->
+</section>
 
 <!-- TIER CARDS -->
 <section class="web-tiers-section">
