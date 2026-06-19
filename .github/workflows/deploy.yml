@@ -50,6 +50,11 @@ jobs:
               [aria-store]='Aria Store'
               [aria-console]='Aria Console'
               [aria-marketplace]='Aria Marketplace'
+              [websites]='Websites'
+              [software]='Software'
+              [industries]='Industries'
+              [assessment]='Assessment'
+              [business-starter]='Business Starter'
             )
             for slug in \"\${!titles[@]}\"; do
               title=\"\${titles[\$slug]}\"
