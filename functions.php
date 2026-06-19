@@ -17,16 +17,16 @@ function aesoftwares_enqueue_scripts() {
     $uri  = get_template_directory_uri();
     $path = get_template_directory();
 
-    // Google Fonts: Inter (300, 400, 500, 600)
+    // Google Fonts: Inter + DM Serif Display
     wp_enqueue_style(
-        'ae-inter',
-        'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap',
+        'ae-fonts',
+        'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap',
         [],
         null
     );
 
     // Main stylesheet — filemtime() version for automatic cache busting
-    wp_enqueue_style( 'aesoftwares-style', get_stylesheet_uri(), [ 'ae-inter' ], filemtime( $path . '/style.css' ) );
+    wp_enqueue_style( 'aesoftwares-style', get_stylesheet_uri(), [ 'ae-fonts' ], filemtime( $path . '/style.css' ) );
 
     // ── Web component JS (all pages) ──────────────────────────────────────
     $js = $path . '/assets/js/';

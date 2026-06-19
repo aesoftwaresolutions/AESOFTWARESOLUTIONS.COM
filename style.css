@@ -21,7 +21,7 @@ Text Domain: aesoftwares
 	--shadow:       0 24px 64px rgba(0,0,0,0.6);
 	--radius:       4px;
 	--font-sans:    'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-	--font-editorial: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+	--font-editorial: 'DM Serif Display', Georgia, 'Times New Roman', serif;
 	--transition:   0.3s cubic-bezier(0.4,0,0.2,1);
 	--max-width:    1280px;
 	--section-pad:  clamp(48px, 5vw, 88px);
@@ -58,14 +58,21 @@ button { font-family: inherit; }
 
 input, textarea { font-family: inherit; }
 
-.section-eyebrow {
+/* ── Unified eyebrow label — used across all pages ──────────────── */
+.eyebrow,
+.section-eyebrow,
+.hero-eyebrow,
+.page-hero__eyebrow,
+.reveal-label,
+.process-eyebrow {
 	display: block;
-	font-size: 0.75rem;
-	letter-spacing: 0.2em;
+	font-family: var(--font-sans);
+	font-size: 0.72rem;
+	letter-spacing: 0.16em;
 	text-transform: uppercase;
-	color: var(--text-muted);
-	margin-bottom: 1.5rem;
-	font-weight: 500;
+	color: var(--accent);
+	margin-bottom: 1.25rem;
+	font-weight: 600;
 }
 
 .section-title {
@@ -84,24 +91,7 @@ input, textarea { font-family: inherit; }
 	margin-right: auto;
 }
 
-.reveal-label, .process-eyebrow {
-	display: block;
-	font-size: 0.75rem;
-	letter-spacing: 0.2em;
-	text-transform: uppercase;
-	color: var(--text-muted);
-	margin-bottom: 1.5rem;
-	font-weight: 500;
-}
-
-.process-title {
-	font-family: var(--font-editorial);
-	font-size: clamp(2.5rem, 5vw, 4.5rem);
-	font-weight: 400;
-	line-height: 1.1;
-	color: var(--text);
-	margin-bottom: 0;
-}
+/* .process-title is identical to .section-title — consolidated above */
 
 .btn {
 	display: inline-flex;
@@ -671,29 +661,54 @@ input, textarea { font-family: inherit; }
 
 /* ── Shared page hero ─────────────────────────────────────────── */
 .page-hero {
-	padding: clamp(120px, 14vw, 180px) clamp(1.5rem, 5vw, 4rem) clamp(48px, 5vw, 88px);
-	background: var(--bg);
+	position: relative;
+	overflow: hidden;
+	padding: clamp(130px, 15vw, 190px) clamp(1.5rem, 5vw, 4rem) clamp(64px, 6vw, 96px);
 	max-width: var(--max-width);
 	margin: 0 auto;
 }
 
-.page-hero__eyebrow {
-	display: block;
-	font-size: 0.7rem;
-	letter-spacing: 0.2em;
-	text-transform: uppercase;
-	color: var(--accent);
-	margin-bottom: 1.5rem;
-	font-weight: 500;
+/* Dot grid — matches homepage hero texture */
+.page-hero::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: radial-gradient(circle, rgba(201,169,110,0.055) 1px, transparent 1px);
+	background-size: 32px 32px;
+	pointer-events: none;
+	z-index: 0;
+}
+
+/* Soft gold glow top-right */
+.page-hero::after {
+	content: '';
+	position: absolute;
+	width: 560px;
+	height: 560px;
+	border-radius: 50%;
+	background: radial-gradient(circle, rgba(201,169,110,0.09) 0%, transparent 70%);
+	top: -180px;
+	right: -120px;
+	pointer-events: none;
+	z-index: 0;
+}
+
+/* Keep text above pseudo-elements */
+.page-hero__eyebrow,
+.page-hero__headline,
+.page-hero__subtitle,
+.page-hero__actions {
+	position: relative;
+	z-index: 1;
 }
 
 .page-hero__headline {
 	font-family: var(--font-editorial);
-	font-size: clamp(3rem, 6vw, 6rem);
+	font-size: clamp(3rem, 6vw, 6.5rem);
 	font-weight: 400;
-	line-height: 1.05;
+	line-height: 1.04;
 	color: var(--text);
-	margin: 0 0 0 0;
+	margin: 0;
 }
 
 .page-hero__headline em {
@@ -704,9 +719,14 @@ input, textarea { font-family: inherit; }
 .page-hero__subtitle {
 	font-size: 1.05rem;
 	color: var(--text-muted);
-	max-width: 580px;
+	max-width: 560px;
 	line-height: 1.75;
 	margin: 1.75rem 0 0 0;
+}
+
+/* Thin rule separating hero from content on inner pages */
+.page-hero + * {
+	border-top: 1px solid var(--border);
 }
 
 /* ── Inner page section helpers ───────────────────────────────── */

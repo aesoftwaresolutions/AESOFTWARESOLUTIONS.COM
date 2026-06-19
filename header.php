@@ -25,17 +25,14 @@
 <header class="site-header">
 	<div class="site-header__inner">
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__logo" rel="home">
-			<?php bloginfo( 'name' ); ?>
+			AE Software
 		</a>
 
 		<nav class="site-header__nav">
 			<a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="site-header__nav-link">Services</a>
 			<a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="site-header__nav-link">Websites</a>
-			<a href="<?php echo esc_url( home_url( '/software/' ) ); ?>" class="site-header__nav-link">Software</a>
-			<a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="site-header__nav-link site-header__nav-link--highlight">Pricing</a>
 			<a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>" class="site-header__nav-link">Industries</a>
-			<a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="site-header__nav-link">Case Studies</a>
-			<a href="<?php echo esc_url( home_url( '/aria-marketplace/' ) ); ?>" class="site-header__nav-link">Reports</a>
+			<a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="site-header__nav-link site-header__nav-link--highlight">Pricing</a>
 			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="site-header__nav-link">About</a>
 			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="site-header__nav-link">Contact</a>
 		</nav>
@@ -57,15 +54,14 @@
 		<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="mobile-nav-overlay__link">Services</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="mobile-nav-overlay__link">Websites</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/software/' ) ); ?>" class="mobile-nav-overlay__link">Software</a></li>
-		<li><a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="mobile-nav-overlay__link" style="color:var(--accent)">Pricing — $50/mo</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>" class="mobile-nav-overlay__link">Industries</a></li>
+		<li><a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="mobile-nav-overlay__link" style="color:var(--accent)">Pricing — $50/mo</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="mobile-nav-overlay__link">Case Studies</a></li>
-		<li><a href="<?php echo esc_url( home_url( '/aria-marketplace/' ) ); ?>" class="mobile-nav-overlay__link">Reports</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="mobile-nav-overlay__link">About</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="mobile-nav-overlay__link">Contact</a></li>
 	</ul>
 	<a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="btn btn--primary mobile-nav-overlay__cta">Start Assessment</a>
-	<p class="mobile-nav-overlay__footer">AE Software Solutions</p>
+	<p class="mobile-nav-overlay__footer">AE Software</p>
 </nav>
 
 <?php if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) : ?>

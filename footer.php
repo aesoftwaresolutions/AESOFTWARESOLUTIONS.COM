@@ -14,7 +14,7 @@
 	<div class="footer-top">
 		<div class="footer-col footer-col--brand">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="footer-logo" rel="home">
-				<?php bloginfo( 'name' ); ?>
+				AE Software
 			</a>
 			<p class="footer-tagline">Building intelligence. Delivering results.</p>
 		</div>
@@ -35,6 +35,7 @@
 				<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>">Operational Discovery</a></li>
 				<li><a href="<?php echo esc_url( home_url( '/services/#tier-2' ) ); ?>">Process Intelligence</a></li>
 				<li><a href="<?php echo esc_url( home_url( '/services/#tier-3' ) ); ?>">Intelligent Deployment</a></li>
+				<li><a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>">Websites</a></li>
 				<li><a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>">Industries</a></li>
 			</ul>
 		</div>
