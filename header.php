@@ -30,6 +30,7 @@
 
 		<nav class="site-header__nav">
 			<a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="site-header__nav-link">Services</a>
+			<a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="site-header__nav-link">Websites</a>
 			<a href="<?php echo esc_url( home_url( '/software/' ) ); ?>" class="site-header__nav-link">Software</a>
 			<a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="site-header__nav-link site-header__nav-link--highlight">Pricing</a>
 			<a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>" class="site-header__nav-link">Industries</a>
@@ -54,6 +55,7 @@
 <nav class="mobile-nav-overlay" id="mobile-nav" aria-label="Mobile navigation">
 	<ul class="mobile-nav-overlay__links">
 		<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="mobile-nav-overlay__link">Services</a></li>
+		<li><a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="mobile-nav-overlay__link">Websites</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/software/' ) ); ?>" class="mobile-nav-overlay__link">Software</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="mobile-nav-overlay__link" style="color:var(--accent)">Pricing — $50/mo</a></li>
 		<li><a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>" class="mobile-nav-overlay__link">Industries</a></li>
