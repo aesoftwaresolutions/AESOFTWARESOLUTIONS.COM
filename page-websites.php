@@ -237,19 +237,20 @@ add_action( 'wp_head', function () { ?>
 .web-tier__price {
     display: flex;
     align-items: baseline;
-    gap: 0.35rem;
-    margin-bottom: 1.75rem;
-    padding-bottom: 1.75rem;
-    border-bottom: 1px solid var(--border);
+    gap: 0.3rem;
+    margin-top: auto;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    margin-bottom: 1.25rem;
 }
-.web-tier__price-from { font-size: 0.8rem; color: var(--text-muted); }
+.web-tier__price-from { font-size: 0.72rem; color: var(--text-muted); }
 .web-tier__price-num {
-    font-size: 2.4rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: var(--text);
     line-height: 1;
 }
-.web-tier__price-range { font-size: 0.85rem; color: var(--text-muted); }
+.web-tier__price-range { font-size: 0.78rem; color: var(--text-muted); }
 
 .web-tier__includes-label {
     font-size: 0.72rem;
@@ -826,11 +827,6 @@ get_header(); ?>
             <div class="web-tier__num">Tier 01</div>
             <h2 class="web-tier__name">Online Presence</h2>
             <p class="web-tier__tagline">Your professional home on the internet — built to impress, fast to load, and easy to update.</p>
-            <div class="web-tier__price">
-                <span class="web-tier__price-from">from</span>
-                <span class="web-tier__price-num">$1,500</span>
-                <span class="web-tier__price-range">– $3,500</span>
-            </div>
             <div class="web-tier__includes-label">What's included</div>
             <ul class="web-tier__list">
                 <li>5–8 page custom-designed site</li>
@@ -843,6 +839,11 @@ get_header(); ?>
                 <li>30 days post-launch support</li>
             </ul>
             <div class="web-tier__timeline">Delivered in 5–10 business days</div>
+            <div class="web-tier__price">
+                <span class="web-tier__price-from">from</span>
+                <span class="web-tier__price-num">$1,500</span>
+                <span class="web-tier__price-range">– $3,500</span>
+            </div>
             <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>?service=website-presence" class="btn btn--ghost web-tier__cta">Get a Quote</a>
         </div>
 
@@ -852,11 +853,6 @@ get_header(); ?>
             <div class="web-tier__num">Tier 02</div>
             <h2 class="web-tier__name">Business Lead Funnel</h2>
             <p class="web-tier__tagline">A conversion-engineered site that captures, qualifies, and routes leads automatically — so you wake up to booked appointments.</p>
-            <div class="web-tier__price">
-                <span class="web-tier__price-from">from</span>
-                <span class="web-tier__price-num">$4,500</span>
-                <span class="web-tier__price-range">– $7,500</span>
-            </div>
             <div class="web-tier__includes-label">Everything in Tier 01, plus</div>
             <ul class="web-tier__list">
                 <li>Conversion-focused copywriting</li>
@@ -869,6 +865,11 @@ get_header(); ?>
                 <li>60 days post-launch support</li>
             </ul>
             <div class="web-tier__timeline">Delivered in 10–18 business days</div>
+            <div class="web-tier__price">
+                <span class="web-tier__price-from">from</span>
+                <span class="web-tier__price-num">$4,500</span>
+                <span class="web-tier__price-range">– $7,500</span>
+            </div>
             <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>?service=website-funnel" class="btn btn--primary web-tier__cta">Get a Quote</a>
         </div>
 
@@ -877,11 +878,6 @@ get_header(); ?>
             <div class="web-tier__num">Tier 03</div>
             <h2 class="web-tier__name">Digital Operations Platform</h2>
             <p class="web-tier__tagline">A full-stack web presence with a custom CRM, AI automation, and everything connected — built for operators who are done duct-taping tools together.</p>
-            <div class="web-tier__price">
-                <span class="web-tier__price-from">from</span>
-                <span class="web-tier__price-num">$8,000</span>
-                <span class="web-tier__price-range">– $13,000</span>
-            </div>
             <div class="web-tier__includes-label">Everything in Tier 02, plus</div>
             <ul class="web-tier__list">
                 <li>Custom CRM portal — contacts, pipeline, deals</li>
@@ -894,6 +890,11 @@ get_header(); ?>
                 <li>90 days post-launch support + training</li>
             </ul>
             <div class="web-tier__timeline">Delivered in 3–6 weeks</div>
+            <div class="web-tier__price">
+                <span class="web-tier__price-from">from</span>
+                <span class="web-tier__price-num">$8,000</span>
+                <span class="web-tier__price-range">– $13,000</span>
+            </div>
             <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>?service=website-platform" class="btn btn--ghost web-tier__cta">Get a Quote</a>
         </div>
 
