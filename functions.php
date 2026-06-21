@@ -46,6 +46,7 @@ function aesoftwares_enqueue_scripts() {
     wp_enqueue_script( 'ae-cta',          $uri . '/assets/js/ae-cta.js',          [], filemtime( $js . 'ae-cta.js' ),          [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'ae-assistant',    $uri . '/assets/js/ae-assistant.js',    [], filemtime( $js . 'ae-assistant.js' ),    [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'main',            $uri . '/assets/js/main.js',            [], filemtime( $js . 'main.js' ),            [ 'in_footer' => true, 'strategy' => 'defer' ] );
+    wp_enqueue_script( 'ae-widget',       $uri . '/assets/js/ae-widget.js',       [], filemtime( $js . 'ae-widget.js' ),       [ 'in_footer' => true, 'strategy' => 'defer' ] );
 
     wp_localize_script( 'ae-assistant', 'ae_settings', [
         'proxy_url' => get_rest_url( null, 'aesoftwares/v1/chat' ),
