@@ -38,7 +38,7 @@
 
     <div class="assessment-chat-wrap">
         <ae-assessment
-            endpoint="<?php echo esc_url( get_rest_url( null, 'aesoftwares/v1/assessment' ) ); ?>"
+            endpoint="https://admin.aesoftwaresolutions.com/api/widget/chat"
         ></ae-assessment>
     </div>
 

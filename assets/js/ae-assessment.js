@@ -231,7 +231,12 @@ class AEAssessment extends HTMLElement {
     }
 
     connectedCallback() {
-        this._endpoint = this.getAttribute('endpoint') || '/wp-json/aesoftwares/v1/assessment';
+        this._endpoint = this.getAttribute('endpoint') || 'https://admin.aesoftwaresolutions.com/api/widget/chat';
+
+        // Session persistence — matches ae-widget.js pattern
+        this._sessionId  = sessionStorage.getItem('ae_assess_session') || null;
+        this._visitorId  = localStorage.getItem('ae_visitor_id') || crypto.randomUUID();
+        localStorage.setItem('ae_visitor_id', this._visitorId);
 
         this._send.addEventListener('click', () => this._handleSend());
         this._input.addEventListener('keydown', (e) => {
@@ -281,14 +286,14 @@ class AEAssessment extends HTMLElement {
         const typing = this._showTyping();
 
         try {
-            const body = userMessage
-                ? { message: userMessage, history: this._history.slice(0, -1) }
-                : { message: 'BEGIN_ASSESSMENT', history: [] };
-
             const res = await fetch(this._endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
+                body: JSON.stringify({
+                    message:    userMessage,
+                    session_id: this._sessionId,
+                    visitor_id: this._visitorId,
+                }),
             });
 
             this._removeTyping(typing);
@@ -299,9 +304,15 @@ class AEAssessment extends HTMLElement {
             }
 
             const data = await res.json();
-            const reply = data.reply || data.data?.reply || '';
+            const reply = data.reply || '';
 
             if (!reply) throw new Error('Empty response from server.');
+
+            // Persist session so history is maintained server-side
+            if (data.session_id) {
+                this._sessionId = data.session_id;
+                sessionStorage.setItem('ae_assess_session', data.session_id);
+            }
 
             this._history.push({ role: 'assistant', content: reply });
             this._appendMsg(reply, 'bot');
