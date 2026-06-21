@@ -47,6 +47,7 @@ function aesoftwares_enqueue_scripts() {
     wp_enqueue_script( 'ae-assistant',    $uri . '/assets/js/ae-assistant.js',    [], filemtime( $js . 'ae-assistant.js' ),    [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'main',            $uri . '/assets/js/main.js',            [], filemtime( $js . 'main.js' ),            [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'ae-widget',       $uri . '/assets/js/ae-widget.js',       [], filemtime( $js . 'ae-widget.js' ),       [ 'in_footer' => true, 'strategy' => 'defer' ] );
+    wp_add_inline_script( 'ae-widget', 'window.AE_WIDGET_URL = "https://admin.aesoftwaresolutions.com";', 'before' );
 
     wp_localize_script( 'ae-assistant', 'ae_settings', [
         'proxy_url' => get_rest_url( null, 'aesoftwares/v1/chat' ),

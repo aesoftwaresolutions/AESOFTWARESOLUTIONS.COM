@@ -3833,6 +3833,12 @@ body.nav-open { overflow: hidden; }
 	.site-header__nav  { display: none !important; }
 	.site-header__cta  { display: none; }
 
+	/* Admin login chip overlaps buttons on mobile — hide it */
+	.admin-bar-chip { display: none; }
+
+	/* Hide chat widget button while mobile nav is open */
+	body.nav-open .ae-widget-container { display: none; }
+
 	/* Hero */
 	.hero-section {
 		align-items: flex-start;
