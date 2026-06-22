@@ -1382,3 +1382,16 @@ function aesoftwares_handle_chat_message( WP_REST_Request $request ) {
     return $forward;
 }
 require_once get_template_directory() . '/aria-endpoints.php';
+
+// ── Route all WP mail through Zoho SMTP so it passes SPF/DKIM ────────────────
+add_action( 'phpmailer_init', function ( $phpmailer ) {
+    $phpmailer->isSMTP();
+    $phpmailer->Host       = 'smtp.zoho.com';
+    $phpmailer->SMTPAuth   = true;
+    $phpmailer->Port       = 587;
+    $phpmailer->SMTPSecure = 'tls';
+    $phpmailer->Username   = 'admin@aesoftwaresolutions.com';
+    $phpmailer->Password   = get_option( 'ae_zoho_smtp_pass', '' );
+    $phpmailer->From       = 'admin@aesoftwaresolutions.com';
+    $phpmailer->FromName   = 'AE Software Solutions';
+} );
