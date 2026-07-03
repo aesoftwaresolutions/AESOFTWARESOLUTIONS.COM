@@ -1383,6 +1383,47 @@ function aesoftwares_handle_chat_message( WP_REST_Request $request ) {
 }
 require_once get_template_directory() . '/aria-endpoints.php';
 
+// ── SEO: default og:image (Yoast emits none when a page has no featured
+// image, so social shares render without a preview card) ─────────────────────
+add_action( 'wpseo_add_opengraph_images', function ( $image_container ) {
+    if ( method_exists( $image_container, 'has_images' ) && $image_container->has_images() ) {
+        return;
+    }
+    $image_container->add_image_by_url( 'https://aesoftwaresolutions.com/wp-content/uploads/2025/11/cropped-Let-us-do-the-work-for-you.jpeg' );
+} );
+
+// ── SEO: ProfessionalService schema on the front page. Yoast only emits a
+// generic Organization node; this adds the local-business signals (service
+// area, locality, price range) that Google uses for "near me" queries. ───────
+add_action( 'wp_head', function () {
+    if ( ! is_front_page() ) {
+        return;
+    }
+    $schema = [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'ProfessionalService',
+        'name'        => 'AE Software Solutions LLC',
+        'url'         => home_url( '/' ),
+        'email'       => 'admin@aesoftwaresolutions.com',
+        'image'       => 'https://aesoftwaresolutions.com/wp-content/uploads/2025/11/cropped-Let-us-do-the-work-for-you.jpeg',
+        'description' => 'Custom workflow automation, AI agents, and websites for small businesses — missed-call text-back, instant lead follow-up, and booking automation.',
+        'address'     => [
+            '@type'           => 'PostalAddress',
+            'addressLocality' => 'Chambersburg',
+            'addressRegion'   => 'PA',
+            'addressCountry'  => 'US',
+        ],
+        'areaServed'  => [ 'Pennsylvania', 'Maryland', 'Virginia', 'Washington DC' ],
+        'priceRange'  => '$750 - $8,000',
+        'makesOffer'  => [
+            [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Workflow Automation (missed-call text-back, lead follow-up, booking)' ] ],
+            [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Business Websites with Lead Capture' ] ],
+            [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'AI Agents and Custom CRM' ] ],
+        ],
+    ];
+    echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
+}, 20 );
+
 // ── Route all WP mail through Zoho SMTP so it passes SPF/DKIM ────────────────
 add_action( 'phpmailer_init', function ( $phpmailer ) {
     $phpmailer->isSMTP();
