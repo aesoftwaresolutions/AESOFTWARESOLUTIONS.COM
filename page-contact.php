@@ -9,7 +9,10 @@
 <div class="contact-layout">
 
     <div class="contact-form-col js-fade" style="--delay:0s">
-        <form class="contact-form" action="mailto:anthony@aesoftwaresolutions.com" method="post" enctype="text/plain">
+        <form class="contact-form" id="ae-contact-form" action="#" method="post">
+
+            <!-- Honeypot: bots fill every field; humans never see this one -->
+            <input type="text" name="website_url" id="contact-hp" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;height:0;width:0;opacity:0;">
 
             <div class="form-row">
                 <div class="form-field">
@@ -58,10 +61,61 @@
                 <textarea id="contact-message" name="message" placeholder="Describe the problem you're trying to solve, your current tools, and any timeline or constraints." required></textarea>
             </div>
 
-            <button type="submit" class="btn btn--primary">Send message &rarr;</button>
+            <button type="submit" class="btn btn--primary" id="contact-submit">Send message &rarr;</button>
             <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.75rem;">We respond to every inquiry within 24 hours. Your information is never shared.</p>
+            <p id="contact-form-status" style="font-size:0.875rem; margin-top:0.75rem;" hidden></p>
 
         </form>
+
+        <script>
+        (function () {
+            var form = document.getElementById('ae-contact-form');
+            if (!form) return;
+            var statusEl = document.getElementById('contact-form-status');
+            var submitBtn = document.getElementById('contact-submit');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (document.getElementById('contact-hp').value) return; // bot
+
+                var f = new FormData(form);
+                var notes = 'Service: ' + (f.get('service') || '-') +
+                            ' | Budget: ' + (f.get('budget') || '-') +
+                            '\n\n' + (f.get('message') || '');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending…';
+
+                fetch('https://admin.aesoftwaresolutions.com/api/business/webhook/inbound-lead', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: f.get('name'),
+                        email: f.get('email'),
+                        company: f.get('company') || null,
+                        source: 'website_contact_form',
+                        notes: notes
+                    })
+                }).then(function (r) {
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    form.reset();
+                    statusEl.hidden = false;
+                    statusEl.style.color = '#7fbf7f';
+                    statusEl.textContent = "Message sent — you'll hear from Anthony within 24 hours.";
+                    submitBtn.textContent = 'Sent ✓';
+                }).catch(function () {
+                    // Endpoint unreachable — fall back to a pre-filled email
+                    statusEl.hidden = false;
+                    statusEl.style.color = '#e0b33a';
+                    statusEl.textContent = 'Direct send failed — opening your email app instead.';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Send message →';
+                    var body = encodeURIComponent(notes + '\n\n' + (f.get('name') || '') + ' — ' + (f.get('email') || ''));
+                    window.location.href = 'mailto:anthony@aesoftwaresolutions.com?subject=' +
+                        encodeURIComponent('Project inquiry from ' + (f.get('name') || 'website')) + '&body=' + body;
+                });
+            });
+        })();
+        </script>
     </div>
 
     <aside class="contact-sidebar js-fade" style="--delay:0.15s">
