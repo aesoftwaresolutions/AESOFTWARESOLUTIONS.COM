@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "echo '--- STAGED FILES ---'; ls -la src/lib src/lib/tenant src/components/ui; echo '--- IMPORTS ---'; sed -n '1,12p' 'src/app/(admin)/appointments/page.tsx' | cat -A; echo '--- TSCONFIG ---'; cat tsconfig.json; echo '--- BUILD ---'; next build",
+    "build": "rm -rf .next node_modules/.cache && next build",
     "start": "next start",
     "lint": "next lint",
     "seed": "tsx src/lib/db/seed.ts"
