@@ -1,0 +1,17 @@
+# Secrets & env
+.env
+.env.*
+!.env.example
+
+# Dependencies & build output
+node_modules/
+crm/.next/
+crm/out/
+
+# Logs & OS junk
+*.log
+.DS_Store
+Thumbs.db
+
+# Local tooling
+.vercel
