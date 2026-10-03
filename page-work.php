@@ -15,6 +15,9 @@
                 <span class="work-card__num">01</span>
                 <span class="work-card__tag">Health Tech Platform</span>
             </div>
+            <a href="https://monarchmvc.com" target="_blank" rel="noopener" aria-label="Visit monarchmvc.com">
+                <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fmonarchmvc.com?w=1200" alt="Live screenshot of monarchmvc.com" loading="lazy" style="display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;border-radius:12px;margin-bottom:18px;background:#0f1216;">
+            </a>
             <h2 class="work-card__title">Monarch MVC</h2>
             <p class="work-card__desc">A full-stack men's health platform serving 1,000+ active patients across all 50 states. Clinician-led hormone optimisation, advanced blood testing, and personalised treatment — all managed through a custom patient portal and provider dashboard.</p>
             <ul class="work-card__outcomes">
@@ -54,10 +57,35 @@
             </div>
         </article>
 
-        <!-- 03: n8n Workflow Integrations -->
+        <!-- 03: Learn English with Evie -->
         <article class="work-card js-fade" style="--delay:0.16s">
             <div class="work-card__header">
                 <span class="work-card__num">03</span>
+                <span class="work-card__tag">Creator & Education Brand</span>
+            </div>
+            <a href="https://learnenglishwithevie.com" target="_blank" rel="noopener" aria-label="Visit learnenglishwithevie.com">
+                <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Flearnenglishwithevie.com?w=1200" alt="Live screenshot of learnenglishwithevie.com" loading="lazy" style="display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;border-radius:12px;margin-bottom:18px;background:#0f1216;">
+            </a>
+            <h2 class="work-card__title">Learn English with Evie</h2>
+            <p class="work-card__desc">A custom-built brand and marketing site for a UK-based English educator — turning YouTube viewers and podcast listeners into paying students. Fast, responsive pages with a conversion-focused journey from free content to memberships and courses.</p>
+            <ul class="work-card__outcomes">
+                <li>Custom design system tuned to the creator's brand</li>
+                <li>Conversion funnel from video content to membership sign-ups</li>
+                <li>Newsletter and lead-capture integration</li>
+                <li>Mobile-first, performance-optimised build</li>
+            </ul>
+            <div class="work-card__meta">
+                <span class="work-card__tech">Custom Build &middot; Responsive Design &middot; Education</span>
+                <a href="https://learnenglishwithevie.com" target="_blank" rel="noopener" class="work-card__link">
+                    learnenglishwithevie.com <span aria-hidden="true">&#8599;</span>
+                </a>
+            </div>
+        </article>
+
+        <!-- 04: n8n Workflow Integrations -->
+        <article class="work-card js-fade" style="--delay:0.24s">
+            <div class="work-card__header">
+                <span class="work-card__num">04</span>
                 <span class="work-card__tag">Workflow Automation</span>
             </div>
             <h2 class="work-card__title">n8n Automation Workflows</h2>
@@ -74,10 +102,10 @@
             </div>
         </article>
 
-        <!-- 04: Text Reminders -->
-        <article class="work-card js-fade" style="--delay:0.24s">
+        <!-- 05: Text Reminders -->
+        <article class="work-card js-fade" style="--delay:0.32s">
             <div class="work-card__header">
-                <span class="work-card__num">04</span>
+                <span class="work-card__num">05</span>
                 <span class="work-card__tag">SMS Automation</span>
             </div>
             <h2 class="work-card__title">Text Reminder System</h2>
@@ -94,10 +122,10 @@
             </div>
         </article>
 
-        <!-- 05: AI Chatbots (general showcase) -->
-        <article class="work-card js-fade" style="--delay:0.32s">
+        <!-- 06: AI Chatbots (general showcase) -->
+        <article class="work-card js-fade" style="--delay:0.40s">
             <div class="work-card__header">
-                <span class="work-card__num">05</span>
+                <span class="work-card__num">06</span>
                 <span class="work-card__tag">Conversational AI</span>
             </div>
             <h2 class="work-card__title">Custom AI Assistants</h2>
@@ -113,10 +141,10 @@
             </div>
         </article>
 
-        <!-- 06: Data Dashboards -->
-        <article class="work-card js-fade" style="--delay:0.40s">
+        <!-- 07: Data Dashboards -->
+        <article class="work-card js-fade" style="--delay:0.48s">
             <div class="work-card__header">
-                <span class="work-card__num">06</span>
+                <span class="work-card__num">07</span>
                 <span class="work-card__tag">Data & Analytics</span>
             </div>
             <h2 class="work-card__title">Business Intelligence Dashboards</h2>
