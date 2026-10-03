@@ -7,6 +7,7 @@ get_header();
 $ae_dist = get_template_directory_uri() . '/assets/refresh';
 ?>
 <link rel="stylesheet" href="<?php echo esc_url( $ae_dist . '/refresh.css' ); ?>?v=1.0.0">
+<link rel="stylesheet" href="<?php echo esc_url( $ae_dist . '/ae-motion.css' ); ?>?v=1.0.1">
 
 <main id="primary" class="site-main ae-refresh">
 
@@ -148,5 +149,6 @@ $ae_dist = get_template_directory_uri() . '/assets/refresh';
 </main>
 
 <script defer src="<?php echo esc_url( $ae_dist . '/refresh.js' ); ?>?v=1.0.0"></script>
+<script defer src="<?php echo esc_url( $ae_dist . '/ae-motion.js' ); ?>?v=1.0.1"></script>
 <?php
 get_footer();
