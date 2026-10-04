@@ -1,24 +1,127 @@
 /* ============================================================
-   AE Motion v2 — palette-free motion layer (front page)
-   Loaded after refresh.css. Adds motion ONLY. Inherits every
-   color from the base refresh layer via currentColor, so this
-   works identically on a dark or light base theme. Degrades
-   silently: with JS off the page renders exactly as before.
+   AE Motion v2.1 — motion + light editorial skin (front page)
+   Loaded after refresh.css. Scoped entirely under .ae-refresh:
+   global header/footer and all other templates are untouched.
+   Motion primitives added in v2 are preserved unchanged below.
    ============================================================ */
 
-/* ---- Bracketed meta labels (color inherited) --------------- */
+/* ---- Light canvas tokens --------------------------------- */
+.ae-refresh {
+  --aem-bg: #f4f3ef;
+  --aem-ink: #161510;
+  --aem-sub: #6b665c;
+  --aem-line: #d9d4c8;
+  --aem-card: #fbfaf7;
+  background: var(--aem-bg);
+  color: var(--aem-ink);
+}
+.ae-refresh a { color: inherit; }
+
+/* ---- Reading hierarchy ----------------------------------- */
+.ae-refresh .ae-lede,
+.ae-refresh .ae-sec-sub,
+.ae-refresh .ae-card p,
+.ae-refresh .ae-why-list span,
+.ae-refresh .ae-steps p { color: var(--aem-sub); }
+
+/* Gradient phrase rebuilt for a light canvas */
+.ae-refresh .ae-grad {
+  background: linear-gradient(92deg, var(--aem-ink) 0%, var(--aem-sub) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ---- Bracketed meta labels (overrideable, more specific) -- */
 .ae-refresh .ae-eyebrow {
   font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
   font-size: .72rem;
   font-weight: 400;
   letter-spacing: .16em;
   text-transform: uppercase;
-  opacity: .75;
+  color: var(--aem-sub);
+  opacity: 1;
 }
 .ae-refresh .ae-eyebrow::before { content: "[ "; }
 .ae-refresh .ae-eyebrow::after  { content: " ]"; }
 
-/* ---- Hairline draws across sections (color inherited) ----- */
+/* ---- Stats strip becomes rule-separated ------------------- */
+.ae-refresh .ae-strip {
+  background: transparent;
+  border-top: 1px solid var(--aem-line);
+  border-bottom: 1px solid var(--aem-line);
+}
+.ae-refresh .ae-stat b { color: var(--aem-ink); }
+.ae-refresh .ae-stat span { color: var(--aem-sub); }
+
+/* ---- Service cards flattened into editorial rows ---------- */
+.ae-refresh .ae-card {
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--aem-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+.ae-refresh .ae-card:hover { background: rgba(22, 21, 16, .03); }
+.ae-refresh .ae-icon { color: var(--aem-ink); background: transparent; }
+.ae-refresh .ae-card h3 { color: var(--aem-ink); }
+
+/* ---- Buttons ------------------------------------------------ */
+.ae-refresh .ae-btn-primary {
+  background: var(--aem-ink);
+  color: var(--aem-bg);
+  border: 1px solid var(--aem-ink);
+}
+.ae-refresh .ae-btn-primary:hover { background: #000; }
+.ae-refresh .ae-btn-ghost {
+  border: 1px solid var(--aem-line);
+  color: var(--aem-ink);
+  background: transparent;
+}
+.ae-refresh .ae-btn-ghost:hover { border-color: var(--aem-ink); }
+
+/* ---- Hero widget cards on the light canvas ------------------ */
+.ae-refresh .tilt-card {
+  background: var(--aem-card);
+  border: 1px solid #e6e2d7;
+  color: var(--aem-ink);
+  box-shadow: 0 24px 48px -28px rgba(22, 21, 16, .22);
+}
+.ae-refresh .card-label {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: .68rem;
+  font-weight: 400;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--aem-sub);
+}
+.ae-refresh .ae-scroll-hint { border-color: var(--aem-line); }
+
+/* ---- Process steps / why list breathers -------------------- */
+.ae-refresh .ae-steps li b { color: var(--aem-sub); }
+.ae-refresh .ae-why-list li { border-color: var(--aem-line); }
+
+/* ---- CTA band: deliberate dark bookend ---------------------- */
+.ae-refresh .ae-cta-band {
+  background: var(--aem-ink);
+  color: var(--aem-bg);
+}
+.ae-refresh .ae-cta-band .ae-sec-sub { color: rgba(244, 243, 239, .65); }
+.ae-refresh .ae-cta-band .ae-btn-primary {
+  background: var(--aem-bg);
+  color: var(--aem-ink);
+  border-color: var(--aem-bg);
+}
+.ae-refresh .ae-cta-band .ae-btn-ghost {
+  border-color: rgba(244, 243, 239, .35);
+  color: var(--aem-bg);
+}
+.ae-refresh .ae-cta-band .ae-btn-ghost:hover { border-color: var(--aem-bg); }
+
+/* --- (motion from v2, unchanged) --------------------------- */
+
+/* Hairline draws across sections */
 .ae-refresh .aem-hr {
   width: 100%;
   height: 1px;
@@ -31,7 +134,7 @@
 }
 .ae-refresh .aem-hr.aem-in { transform: scaleX(1); }
 
-/* ---- Underline sweep on service card titles --------------- */
+/* Underline sweep on service card titles */
 .ae-refresh .ae-card h3 {
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
@@ -41,10 +144,7 @@
 }
 .ae-refresh .ae-card:hover h3 { background-size: 100% 2px; }
 
-/* ---- Masked word reveal for the hero headline -------------- */
-/* No pre-hiding of the headline: deferred scripts run before   */
-/* first paint, so the split happens invisibly; if JS fails the */
-/* original headline stays on screen untouched.                 */
+/* Masked word reveal for the hero headline */
 .ae-refresh .aem-mask {
   display: inline-block;
   overflow: hidden;
@@ -60,7 +160,7 @@
 }
 .ae-refresh h1.aem-play .aem-w { transform: translateY(0); }
 
-/* ---- Accessibility: honor reduced-motion preferences ------- */
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   .ae-refresh .aem-w { transform: none; transition: none; }
   .ae-refresh .aem-hr { transform: scaleX(1); transition: none; }
