@@ -1,15 +1,11 @@
-name: Deploy WordPress Theme
+name: Deploy WordPress Theme (manual)
+
+# MANUAL-ONLY fallback deployer. The primary deploy path is hPanel Git
+# following the deploy/theme branch (see build-theme-branch.yml).
+# Run this manually only if you need to bypass hPanel Git.
 
 on:
   workflow_dispatch:
-  push:
-    branches: [master]
-    paths:
-      - '**.php'
-      - 'style.css'
-      - 'assets/**'
-      - 'inc/**'
-      - '.github/workflows/deploy-theme.yml'
 
 concurrency:
   group: theme-deploy

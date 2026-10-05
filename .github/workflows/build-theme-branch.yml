@@ -1,0 +1,64 @@
+name: Build Theme Deploy Branch
+
+# Builds a theme-only snapshot branch (deploy/theme) that hPanel Git
+# can safely auto-deploy into wp-content/themes/aesoftwares-theme.
+# master stays the monorepo; deploy/theme contains ONLY theme files.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - '**.php'
+      - 'style.css'
+      - 'assets/**'
+      - 'inc/**'
+      - '.github/workflows/build-theme-branch.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: theme-branch-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v4
+
+      # Remove everything the public theme folder must never serve:
+      # CRM source, deploy scripts, docs, package manifests, git metadata.
+      - name: Prune repo to theme-only files
+        run: |
+          rm -rf .github crm scripts src
+          rm -f -- *.md package.json package-lock.json .gitignore .gitattributes
+          echo "Remaining top-level entries after prune:"
+          ls -la
+
+      # Fail loudly if the prune went wrong and theme essentials vanished.
+      - name: Sanity check theme essentials
+        run: |
+          test -f style.css || { echo "::error::style.css missing after prune"; exit 1; }
+          test -f functions.php || { echo "::error::functions.php missing after prune"; exit 1; }
+          test -f index.php || { echo "::error::index.php missing after prune"; exit 1; }
+          test -d assets || { echo "::error::assets/ missing after prune"; exit 1; }
+          echo "Theme snapshot looks sane."
+
+      # deploy/theme is a derived artifact rebuilt from master every run;
+      # force-updating it is intentional and safe (it is never edited by hand).
+      - name: Push snapshot to deploy/theme
+        run: |
+          git config user.name "theme-deploy-bot"
+          git config user.email "theme-deploy-bot@users.noreply.github.com"
+          git checkout -B deploy/theme
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No theme changes to publish."
+            exit 0
+          fi
+          git commit -m "Theme-only snapshot of master ${{ github.sha }}"
+          git push --force origin deploy/theme
