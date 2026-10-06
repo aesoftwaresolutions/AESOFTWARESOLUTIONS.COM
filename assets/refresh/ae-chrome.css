@@ -1,32 +1,27 @@
 /* ============================================================
-   AE Chrome v3.1 — cohesive dual-world chrome (site-wide)
-   Editorial scope: warm paper + ink + gold accent on every
-   content/marketing page. Operational scope: original dark UI
-   preserved for forms, tools, marketplaces, consoles. All chrome
-   colors are token-driven so each page type stays self-consistent.
+   AE Chrome v3.2 — single-world editorial theme (site-wide)
+   Global :root token flip: since this file loads after style.css
+   in every page head, every var()-driven rule sitewide adopts the
+   paper palette with no template scoping. Brand gold preserved.
    ============================================================ */
 
 :root {
+  --bg:            #f4f3ef;
+  --bg-card:       #fbfaf7;
+  --text:          #161510;
+  --text-muted:    #6b665c;
+  --border:        rgba(22, 21, 16, .12);
+  --border-hover:  rgba(22, 21, 16, .24);
   --aec-hair-dark: rgba(255, 255, 255, .08);
   --aec-hair-light: rgba(22, 21, 16, .10);
 }
 
-/* ---------- Scope A: editorial pages flip to paper ---------- */
-/* WordPress emits page-template-{file}-php body classes; tools   */
-/* and consoles stay dark by exclusion.                           */
-body:not(.page-template-page-contact-php):not(.page-template-page-assessment-php):not(.page-template-page-console-php):not(.page-template-page-aria-console-php):not(.page-template-page-marketplace-php):not(.page-template-page-aria-marketplace-php):not(.page-template-page-aria-store-php):not(.page-template-page-rewriter-php):not(.page-template-page-transcriber-php):not(.page-template-page-email-drafter-php):not(.page-template-page-summarizer-php) {
-  --bg: #f4f3ef;
-  --bg-card: #fbfaf7;
-  --text: #161510;
-  --text-muted: #6b665c;
-  --border: rgba(22, 21, 16, .12);
-  --border-hover: rgba(22, 21, 16, .24);
+body {
+  background: var(--bg);
+  color: var(--text);
 }
 
-/* ---------- Scope B: operational pages stay dark ------------- */
-/* (Nothing to do: untouched tokens keep their native values.)    */
-
-/* ---------- Header bar (token-driven chrome) ------------------ */
+/* ---------- Header bar ------------------------------------- */
 header.site-header {
   position: sticky;
   top: 0;
@@ -42,40 +37,12 @@ header.site-header {
   padding-bottom: 10px;
 }
 
-/* Dark chrome variant on operational pages */
-body.page-template-page-contact-php header.site-header,
-body.page-template-page-assessment-php header.site-header,
-body.page-template-page-console-php header.site-header,
-body.page-template-page-aria-console-php header.site-header,
-body.page-template-page-marketplace-php header.site-header,
-body.page-template-page-aria-marketplace-php header.site-header,
-body.page-template-page-aria-store-php header.site-header,
-body.page-template-page-rewriter-php header.site-header,
-body.page-template-page-transcriber-php header.site-header,
-body.page-template-page-email-drafter-php header.site-header,
-body.page-template-page-summarizer-php header.site-header {
-  background: rgba(11, 15, 25, .78);
-  border-bottom-color: var(--aec-hair-dark);
-}
-
-/* ---------- Logo / nav / CTA ---------------------------------- */
 .site-header__logo {
   font-weight: 600;
   letter-spacing: -.01em;
-  color: #161510;
+  color: var(--text);
   text-decoration: none;
 }
-body.page-template-page-contact-php .site-header__logo,
-body.page-template-page-assessment-php .site-header__logo,
-body.page-template-page-console-php .site-header__logo,
-body.page-template-page-aria-console-php .site-header__logo,
-body.page-template-page-marketplace-php .site-header__logo,
-body.page-template-page-aria-marketplace-php .site-header__logo,
-body.page-template-page-aria-store-php .site-header__logo,
-body.page-template-page-rewriter-php .site-header__logo,
-body.page-template-page-transcriber-php .site-header__logo,
-body.page-template-page-email-drafter-php .site-header__logo,
-body.page-template-page-summarizer-php .site-header__logo { color: #e7ecf5; }
 
 .site-header__nav-link {
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
@@ -83,7 +50,7 @@ body.page-template-page-summarizer-php .site-header__logo { color: #e7ecf5; }
   font-weight: 400;
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: #6b665c;
+  color: var(--text-muted);
   text-decoration: none;
   padding: 2px 0;
   background-image: linear-gradient(currentColor, currentColor);
@@ -95,85 +62,29 @@ body.page-template-page-summarizer-php .site-header__logo { color: #e7ecf5; }
 .site-header__nav-link::before { content: "[ "; opacity: .45; }
 .site-header__nav-link::after  { content: " ]"; opacity: .45; }
 .site-header__nav-link:hover {
-  color: #161510;
+  color: var(--text);
   background-size: 100% 1px;
 }
-body.page-template-page-contact-php .site-header__nav-link,
-body.page-template-page-assessment-php .site-header__nav-link,
-body.page-template-page-console-php .site-header__nav-link,
-body.page-template-page-aria-console-php .site-header__nav-link,
-body.page-template-page-marketplace-php .site-header__nav-link,
-body.page-template-page-aria-marketplace-php .site-header__nav-link,
-body.page-template-page-aria-store-php .site-header__nav-link,
-body.page-template-page-rewriter-php .site-header__nav-link,
-body.page-template-page-transcriber-php .site-header__nav-link,
-body.page-template-page-email-drafter-php .site-header__nav-link,
-body.page-template-page-summarizer-php .site-header__nav-link { color: #9aa7bf; }
-body.page-template-page-contact-php .site-header__nav-link:hover,
-body.page-template-page-assessment-php .site-header__nav-link:hover,
-body.page-template-page-console-php .site-header__nav-link:hover,
-body.page-template-page-aria-console-php .site-header__nav-link:hover,
-body.page-template-page-marketplace-php .site-header__nav-link:hover,
-body.page-template-page-aria-marketplace-php .site-header__nav-link:hover,
-body.page-template-page-aria-store-php .site-header__nav-link:hover,
-body.page-template-page-rewriter-php .site-header__nav-link:hover,
-body.page-template-page-transcriber-php .site-header__nav-link:hover,
-body.page-template-page-email-drafter-php .site-header__nav-link:hover,
-body.page-template-page-summarizer-php .site-header__nav-link:hover { color: #ffffff; }
 
-/* Header CTA pill */
 .site-header__cta.btn.btn--primary {
   border-radius: 999px;
   padding: 10px 20px;
   font-size: .74rem;
   letter-spacing: .08em;
   text-transform: uppercase;
-  background: #161510;
-  color: #f4f3ef;
+  background: var(--text);
+  color: var(--bg);
   border: none;
   transition: background .25s;
 }
-.site-header__cta.btn.btn--primary:hover { background: #000000; }
-body.page-template-page-contact-php .site-header__cta.btn.btn--primary,
-body.page-template-page-assessment-php .site-header__cta.btn.btn--primary,
-body.page-template-page-console-php .site-header__cta.btn.btn--primary,
-body.page-template-page-aria-console-php .site-header__cta.btn.btn--primary,
-body.page-template-page-marketplace-php .site-header__cta.btn.btn--primary,
-body.page-template-page-aria-marketplace-php .site-header__cta.btn.btn--primary,
-body.page-template-page-aria-store-php .site-header__cta.btn.btn--primary,
-body.page-template-page-rewriter-php .site-header__cta.btn.btn--primary,
-body.page-template-page-transcriber-php .site-header__cta.btn.btn--primary,
-body.page-template-page-email-drafter-php .site-header__cta.btn.btn--primary,
-body.page-template-page-summarizer-php .site-header__cta.btn.btn--primary {
-  background: #e7ecf5;
-  color: #0b0f19;
-}
-body.page-template-page-contact-php .site-header__cta.btn.btn--primary:hover,
-body.page-template-page-assessment-php .site-header__cta.btn.btn--primary:hover,
-body.page-template-page-console-php .site-header__cta.btn.btn--primary:hover,
-body.page-template-page-aria-console-php .site-header__cta.btn.btn--primary:hover,
-body.page-template-page-marketplace-php .site-header__cta.btn.btn--primary:hover,
-body.page-template-page-aria-marketplace-php .site-header__cta.btn.btn--primary:hover,
-body.page-template-page-aria-store-php .site-header__cta.btn.btn--primary:hover,
-body.page-template-page-rewriter-php .site-header__cta.btn.btn--primary:hover,
-body.page-template-page-transcriber-php .site-header__cta.btn.btn--primary:hover,
-body.page-template-page-email-drafter-php .site-header__cta.btn.btn--primary:hover,
-body.page-template-page-summarizer-php .site-header__cta.btn.btn--primary:hover { background: #ffffff; }
+.site-header__cta.btn.btn--primary:hover { background: #000; }
 
-.nav-toggle { color: #161510; }
-body.page-template-page-contact-php .nav-toggle,
-body.page-template-page-assessment-php .nav-toggle,
-body.page-template-page-console-php .nav-toggle,
-body.page-template-page-aria-console-php .nav-toggle,
-body.page-template-page-marketplace-php .nav-toggle,
-body.page-template-page-aria-marketplace-php .nav-toggle,
-body.page-template-page-aria-store-php .nav-toggle,
-body.page-template-page-rewriter-php .nav-toggle,
-body.page-template-page-transcriber-php .nav-toggle,
-body.page-template-page-email-drafter-php .nav-toggle,
-body.page-template-page-summarizer-php .nav-toggle { color: #e7ecf5; }
+.nav-toggle { color: var(--text); }
 
-/* ---------- Mobile overlay: numbered editorial list ----------- */
+/* ---------- Mobile overlay -------------------------------- */
+/* Overlay keeps its own dark background (set in style.css) —  */
+/* deliberate inversion moment, like Matthieu's menu.          */
+.mobile-nav-overlay { background: #0e0d0b !important; }
 .mobile-nav-overlay__links { counter-reset: mnv; list-style: none; }
 .mobile-nav-overlay__links li { counter-increment: mnv; }
 .mobile-nav-overlay__link {
@@ -181,7 +92,7 @@ body.page-template-page-summarizer-php .nav-toggle { color: #e7ecf5; }
   font-style: italic;
   font-size: clamp(1.8rem, 7vw, 2.6rem);
   line-height: 1.15;
-  color: #e7ecf5;
+  color: #f4f3ef;
   text-decoration: none;
 }
 .mobile-nav-overlay__link::before {
@@ -193,10 +104,10 @@ body.page-template-page-summarizer-php .nav-toggle { color: #e7ecf5; }
   font-size: .68rem;
   letter-spacing: .14em;
   vertical-align: middle;
-  color: #6b7691;
+  color: #8b867c;
 }
 
-/* ---------- Editorial labels (bracketed, sitewide on light) --- */
+/* ---------- Editorial labels (bracketed, sitewide) ---------- */
 .page-hero__eyebrow,
 .work-card__tag {
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
@@ -208,8 +119,8 @@ body.page-template-page-summarizer-php .nav-toggle { color: #e7ecf5; }
 .page-hero__eyebrow::before { content: "[ "; }
 .page-hero__eyebrow::after  { content: " ]"; }
 
-/* ---------- Footer (token-adaptive both worlds) --------------- */
-.site-footer { border-top: 1px solid var(--border, var(--aec-hair-dark)); }
+/* ---------- Footer ---------------------------------------- */
+.site-footer { border-top: 1px solid var(--border); }
 
 .footer-col h3,
 .footer-col h4 {
@@ -244,7 +155,7 @@ body.page-template-page-summarizer-php .nav-toggle { color: #e7ecf5; }
 
 .footer-newsletter__input {
   background: transparent;
-  border: 1px solid var(--border, var(--aec-hair-dark));
+  border: 1px solid var(--border);
   border-radius: 999px 0 0 999px;
   padding: 10px 16px;
   color: inherit;
