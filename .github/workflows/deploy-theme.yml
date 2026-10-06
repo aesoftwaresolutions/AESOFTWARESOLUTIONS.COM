@@ -30,7 +30,7 @@ jobs:
           if [ -n "${{ secrets.SSH_KNOWN_HOSTS }}" ]; then
             echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
           else
-            ssh-keyscan -p 65002 -T 10 157.173.209.5 >> ~/.ssh/known_hosts 2>/dev/null
+            ssh-keyscan -p 65002 -T 10 82.29.199.105 >> ~/.ssh/known_hosts 2>/dev/null
           fi
 
       # Only theme files ever leave the repo. Never public_html, never wp-config.
@@ -42,7 +42,7 @@ jobs:
             --exclude '*.md' --exclude 'package.json' --exclude 'package-lock.json' \
             --exclude '.gitignore' --exclude '.gitattributes' \
             -e "ssh -p 65002" \
-            ./ u257353593@157.173.209.5:domains/aesoftwaresolutions.com/public_html/wp-content/themes/aesoftwares-theme/
+            ./ u198003533@82.29.199.105:domains/aesoftwaresolutions.com/public_html/wp-content/themes/aesoftwares-theme/
 
       - name: Soft-verify site after deploy
         run: |
