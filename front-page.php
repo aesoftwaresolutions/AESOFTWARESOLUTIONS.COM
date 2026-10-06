@@ -1,178 +1,205 @@
 <?php
 /**
- * Front Page — AE Software Solutions (Visual Refresh 2026-10)
- * Self-contained: enqueues its own refresh layer from /assets/refresh/
+ * The template for displaying the front page — v4.0 Matthieu Givelet Inspired
+ *
+ * @package AE_Softwares
  */
+
 get_header();
-$ae_dist = get_template_directory_uri() . '/assets/refresh';
 ?>
-<link rel="stylesheet" href="<?php echo esc_url( $ae_dist . '/refresh.css' ); ?>?v=1.0.0">
-<link rel="stylesheet" href="<?php echo esc_url( $ae_dist . '/ae-motion.css' ); ?>?v=2.3.0">
 
-<main id="primary" class="site-main ae-refresh">
-
-  <!-- HERO -->
-  <section class="ae-hero">
-    <canvas id="ae-fx-canvas" aria-hidden="true"></canvas>
-    <div class="ae-wrap ae-hero-grid">
-      <div class="ae-hero-copy" data-reveal>
-        <p class="ae-eyebrow">AE Software Solutions &middot; Chambersburg, PA &middot; Mid-Atlantic</p>
-        <h1>AI-powered software, <span class="ae-grad">built around your business.</span></h1>
-        <p class="ae-lede">Custom CRM platforms, AI agents, and workflow automation for businesses across Pennsylvania, Maryland, Virginia, and DC — designed, built, and supported by one studio.</p>
-        <div class="ae-cta-row">
-          <a class="ae-btn ae-btn-primary" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Start a project</a>
-          <a class="ae-btn ae-btn-ghost" href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>">Get a free assessment</a>
-        </div>
-        <ul class="ae-hero-points" data-reveal data-reveal-delay="150">
-          <li>Full-stack in-house — no outsourcing</li>
-          <li>AI agents &amp; RAG systems that actually ship</li>
-          <li>Ongoing support with a direct line</li>
-        </ul>
-      </div>
-      <div class="ae-hero-stage" aria-hidden="true">
-        <div class="tilt-card tilt-a" data-tilt>
-          <div class="card-label">CRM Pipeline</div>
-          <div class="pipe-row"><span>New lead</span><b>12</b></div>
-          <div class="pipe-row"><span>Qualified</span><b>7</b></div>
-          <div class="pipe-row"><span>Proposal</span><b>3</b></div>
-          <div class="pipe-bar"><i style="width:64%"></i></div>
-        </div>
-        <div class="tilt-card tilt-b" data-tilt>
-          <div class="card-label">AI Agent</div>
-          <div class="agent-line you">Draft the follow-up email</div>
-          <div class="agent-line bot">Done — sent to 7 qualified leads.</div>
-        </div>
-        <div class="tilt-card tilt-c" data-tilt>
-          <div class="card-label">Automation</div>
-          <div class="flow"><span>Form</span><em>&rarr;</em><span>CRM</span><em>&rarr;</em><span>Email</span></div>
-          <div class="flow-status">Running &middot; 214 tasks today</div>
-        </div>
-        <a class="tilt-card tilt-d aem-shot" data-tilt href="https://monarchmvc.com" target="_blank" rel="noopener" aria-label="Visit monarchmvc.com — live client platform">
-          <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fmonarchmvc.com?w=960" alt="Live preview of monarchmvc.com" loading="lazy">
-          <div class="card-label">Monarch MVC &middot; live client platform <span aria-hidden="true">&#8599;</span></div>
-        </a>
-      </div>
-    </div>
-    <div class="ae-scroll-hint" aria-hidden="true"><span></span></div>
-  </section>
-
-  <!-- CAPABILITY TICKER -->
-  <div class="aem-marquee" aria-hidden="true">
-    <div class="aem-marquee__track">
-      <span>Custom CRM platforms</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-      <span>AI agents &amp; RAG systems</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-      <span>Workflow automation</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-      <span>Websites that convert</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-      <span>Mobile applications</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-      <span>SEO &amp; lead generation</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-      <span>Full-stack, in-house</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-      <span>Custom CRM platforms</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-      <span>AI agents &amp; RAG systems</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-      <span>Workflow automation</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-      <span>Websites that convert</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-      <span>Mobile applications</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-      <span>SEO &amp; lead generation</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-      <span>Full-stack, in-house</span><span class="aem-sep" aria-hidden="true">&middot;</span>
-    </div>
+<!-- 1. HERO: OVERSIZED SEAMLESS REVEAL -->
+<section class="hero-container">
+  <div class="hero-main-title">
+    <span style="display:block;">Helping your</span>
+    <span style="display:block;">business work</span>
+    <span style="display:block;color:var(--accent-highlight);">better.</span>
   </div>
 
-  <!-- STATS STRIP -->
-  <section class="ae-strip" data-reveal>
-    <div class="ae-wrap ae-strip-grid">
-      <div class="ae-stat"><b data-count="6">0</b><span>Core services</span></div>
-      <div class="ae-stat"><b data-count="4">0</b><span>States served</span></div>
-      <div class="ae-stat"><b data-count="100">0</b><span>% custom code</span></div>
-      <div class="ae-stat"><b data-count="1">0</b><span>Dedicated studio</span></div>
+  <div class="hero-description-grid">
+    <div class="hero-meta-col">
+      [ Focus ]<br>
+      Business Systems &amp; Operations
+      <br>
+      <span style="display:inline-block;padding:2px 8px;border:1px solid var(--border-strong);border-radius:4px;margin-top:8px;color:var(--text);font-weight:500;">
+        Est. 2024 &middot; Veteran-Owned
+      </span>
     </div>
-  </section>
 
-  <!-- SERVICES -->
-  <section class="ae-section" id="services">
-    <div class="ae-wrap">
-      <header class="ae-sec-head" data-reveal>
-        <p class="ae-eyebrow">What we build</p>
-        <h2>Software that pays for itself</h2>
-        <p class="ae-sec-sub">Every engagement is scoped around a business outcome — fewer manual hours, faster follow-up, more closed deals.</p>
-      </header>
-      <div class="ae-card-grid">
-        <a class="ae-card" href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" data-reveal>
-          <div class="ae-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18M3 5v14h18V5M3 9h18M6 7h.01M8 7h.01"/></svg></div>
-          <h3>Websites</h3><p>Conversion-focused sites engineered for speed, SEO, and easy editing.</p>
-        </a>
-        <a class="ae-card" href="<?php echo esc_url( home_url( '/software/' ) ); ?>" data-reveal data-reveal-delay="60">
-          <div class="ae-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6M13 4l-2 16"/></svg></div>
-          <h3>Proprietary software &amp; CRM</h3><p>Purpose-built platforms that replace spreadsheets and patchwork tools.</p>
-        </a>
-        <a class="ae-card" href="<?php echo esc_url( home_url( '/services/' ) ); ?>" data-reveal data-reveal-delay="120">
-          <div class="ae-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3a5 5 0 015 5c0 2-1 3-1 5H8c0-2-1-3-1-5a5 5 0 015-5zM9 17h6M10 21h4"/></svg></div>
-          <h3>AI agents</h3><p>Agents that answer, draft, route, and follow up — inside your workflows.</p>
-        </a>
-        <a class="ae-card" href="<?php echo esc_url( home_url( '/services/' ) ); ?>" data-reveal data-reveal-delay="180">
-          <div class="ae-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h10v18H7zM11 18h2"/></svg></div>
-          <h3>Mobile applications</h3><p>Native-feel mobile experiences backed by your existing systems.</p>
-        </a>
-        <a class="ae-card" href="<?php echo esc_url( home_url( '/services/' ) ); ?>" data-reveal data-reveal-delay="240">
-          <div class="ae-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h4l2-7 4 14 2-7h4"/></svg></div>
-          <h3>Workflow automation</h3><p>Your tools, data, and people — connected, with the busywork removed.</p>
-        </a>
-        <a class="ae-card" href="<?php echo esc_url( home_url( '/services/' ) ); ?>" data-reveal data-reveal-delay="300">
-          <div class="ae-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21V10l7-7 7 7v11M9 21v-6h4v6"/></svg></div>
-          <h3>SEO &amp; lead generation</h3><p>Local search presence and pipelines that keep the phone ringing.</p>
-        </a>
+    <p class="hero-desc-lead">
+      We partner with small businesses to untangle daily workflows, build clear customer-facing websites, and put practical systems in place that free up your time.
+    </p>
+
+    <div class="hero-meta-col" style="text-align:right;">
+      [ Location ]<br>
+      Chambersburg, PA<br>
+      Serving nationwide
+    </div>
+  </div>
+</section>
+
+<!-- 2. EDITORIAL STATEMENT / PHILOSOPHY -->
+<section style="padding:100px 40px;max-width:1400px;margin:0 auto;display:grid;grid-template-columns:280px 1fr 200px;gap:60px;align-items:flex-start;border-top:1px solid var(--border);" id="approach">
+  <div style="font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);">
+    [ Approach ]
+  </div>
+  
+  <div style="font-size:clamp(1.5rem, 2.8vw, 2.4rem);font-weight:400;line-height:1.3;letter-spacing:-0.03em;">
+    01 &nbsp; Always looking for <strong>simple, thoughtful solutions</strong> that fit the way your business actually operates and feel good to use. <span style="color:var(--text-secondary);">No unnecessary complexity or bloated software.</span>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" style="font-size:0.88rem;font-weight:600;text-decoration:none;color:var(--text);">
+      &rarr; More about us
+    </a>
+    <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" style="font-size:0.88rem;font-weight:600;text-decoration:none;color:var(--text);">
+      &rarr; Book a discovery
+    </a>
+  </div>
+</section>
+
+<!-- 3. 2-COLUMN SELECTED SOLUTIONS SHOWCASE (Matthieu Grid) -->
+<section class="works-section" id="work">
+  <div class="works-header">
+    <h2 style="font-size:clamp(2rem, 4vw, 3.2rem);font-weight:700;letter-spacing:-0.03em;text-transform:uppercase;">
+      Selected Solutions
+    </h2>
+    <span style="font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);">
+      [ 03 Case Systems ]
+    </span>
+  </div>
+
+  <div class="works-grid">
+    <!-- Work 01 -->
+    <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="work-card">
+      <div class="work-preview-frame">
+        <div style="width:85%;height:75%;background:#FFFFFF;border:1px solid var(--border-strong);border-radius:8px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between;">
+          <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:12px;">
+            <div style="display:flex;gap:6px;">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--border-strong);"></span>
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--border-strong);"></span>
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--border-strong);"></span>
+            </div>
+            <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-tertiary);">CLIENT PORTAL &amp; WORKFLOW</span>
+          </div>
+          <div style="padding:16px 0;">
+            <div style="height:10px;background:var(--surface-subtle);border-radius:4px;margin-bottom:10px;width:75%;"></div>
+            <div style="height:10px;background:var(--surface-subtle);border-radius:4px;margin-bottom:10px;width:50%;"></div>
+            <div style="display:flex;gap:16px;margin-top:16px;">
+              <div style="flex:1;padding:12px;background:var(--surface-subtle);border-radius:4px;font-family:var(--font-mono);font-size:0.75rem;">
+                <div>Weekly Hours Saved</div>
+                <div style="font-weight:700;font-size:1.1rem;color:var(--text);">14.5 hrs</div>
+              </div>
+              <div style="flex:1;padding:12px;background:var(--surface-subtle);border-radius:4px;font-family:var(--font-mono);font-size:0.75rem;">
+                <div>Inquiry Response</div>
+                <div style="font-weight:700;font-size:1.1rem;color:var(--text);">&lt; 3 mins</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <!-- PROCESS -->
-  <section class="ae-section ae-alt" id="process">
-    <div class="ae-wrap">
-      <header class="ae-sec-head" data-reveal>
-        <p class="ae-eyebrow">How it works</p>
-        <h2>A process you can follow</h2>
-      </header>
-      <ol class="ae-steps">
-        <li data-reveal><b>01</b><h3>Discover</h3><p>A working session to map your workflow, bottlenecks, and goals.</p></li>
-        <li data-reveal data-reveal-delay="80"><b>02</b><h3>Design</h3><p>Architecture, screens, and a fixed scope you sign off on before code.</p></li>
-        <li data-reveal data-reveal-delay="160"><b>03</b><h3>Build</h3><p>Weekly demos in a staging environment — you watch it come together.</p></li>
-        <li data-reveal data-reveal-delay="240"><b>04</b><h3>Support</h3><p>Launch is the start: hosting, iteration, and a direct line to the builder.</p></li>
-      </ol>
-      <div class="ae-center" data-reveal><a class="ae-btn ae-btn-ghost" href="<?php echo esc_url( home_url( '/process/' ) ); ?>">See the full process</a></div>
-    </div>
-  </section>
-
-  <!-- WHY -->
-  <section class="ae-section" id="why">
-    <div class="ae-wrap ae-why-grid">
-      <div data-reveal>
-        <p class="ae-eyebrow">Why AE</p>
-        <h2>One studio. Zero hand-offs.</h2>
-        <p class="ae-sec-sub">The person who scopes your project is the person who builds it — and the person you call afterward. Based in Chambersburg, serving the Mid-Atlantic.</p>
-        <a class="ae-btn ae-btn-primary" href="<?php echo esc_url( home_url( '/work/' ) ); ?>">See recent work</a>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;">
+        <div style="display:flex;align-items:baseline;gap:12px;">
+          <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">01</span>
+          <h3 style="font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;">Operational Workflow Redesign</h3>
+        </div>
+        <span style="font-size:1.2rem;">&rarr;</span>
       </div>
-      <ul class="ae-why-list">
-        <li data-reveal><b>Local &amp; accountable</b><span>On-site sessions available across PA, MD, VA, and DC.</span></li>
-        <li data-reveal data-reveal-delay="80"><b>AI-first, not AI-washed</b><span>Working agents and RAG systems — not slide-deck promises.</span></li>
-        <li data-reveal data-reveal-delay="160"><b>Performance as a feature</b><span>Fast loads, clean Core Web Vitals, and SEO baked in from line one.</span></li>
-        <li data-reveal data-reveal-delay="240"><b>You own everything</b><span>Your code, your data, your accounts. No hostage hosting.</span></li>
-      </ul>
-    </div>
-  </section>
+      <p style="font-size:0.9rem;color:var(--text-secondary);margin-top:6px;padding-left:32px;line-height:1.5;">
+        Centralized inquiry tracking and follow-up automation for service contractors.
+      </p>
+    </a>
 
-  <!-- CTA BAND -->
-  <section class="ae-cta-band" data-reveal>
-    <div class="ae-wrap ae-center">
-      <h2>Not sure where to start?</h2>
-      <p class="ae-sec-sub">Take the free assessment — five minutes, and you get a concrete plan, not a sales pitch.</p>
-      <div class="ae-cta-row ae-center-row">
-        <a class="ae-btn ae-btn-primary" href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>">Start the assessment</a>
-        <a class="ae-btn ae-btn-ghost" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Just talk to us</a>
+    <!-- Work 02 -->
+    <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="work-card">
+      <div class="work-preview-frame" style="background:#EAECE8;">
+        <div style="width:85%;height:75%;background:#FFFFFF;border:1px solid rgba(42,69,53,0.2);border-radius:8px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between;">
+          <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:12px;">
+            <div style="display:flex;gap:6px;">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-highlight);"></span>
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--border-strong);"></span>
+            </div>
+            <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--accent-highlight);">CUSTOM WEB ARCHITECTURE</span>
+          </div>
+          <div style="padding:16px 0;">
+            <div style="height:10px;background:var(--surface-subtle);border-radius:4px;margin-bottom:10px;width:90%;"></div>
+            <div style="height:10px;background:var(--surface-subtle);border-radius:4px;margin-bottom:10px;width:40%;"></div>
+            <div style="display:flex;gap:16px;margin-top:16px;">
+              <div style="flex:1;padding:12px;background:#FFFFFF;border-radius:4px;font-family:var(--font-mono);font-size:0.75rem;">
+                <div>Speed Score</div>
+                <div style="font-weight:700;font-size:1.1rem;color:var(--text);">99 / 100</div>
+              </div>
+              <div style="flex:1;padding:12px;background:#FFFFFF;border-radius:4px;font-family:var(--font-mono);font-size:0.75rem;">
+                <div>Lead Conversion</div>
+                <div style="font-weight:700;font-size:1.1rem;color:var(--text);">+34%</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;">
+        <div style="display:flex;align-items:baseline;gap:12px;">
+          <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">02</span>
+          <h3 style="font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;">Bespoke Brand &amp; Web Platform</h3>
+        </div>
+        <span style="font-size:1.2rem;">&rarr;</span>
+      </div>
+      <p style="font-size:0.9rem;color:var(--text-secondary);margin-top:6px;padding-left:32px;line-height:1.5;">
+        High-performance editorial web presence with direct booking and customer intake.
+      </p>
+    </a>
+  </div>
+</section>
+
+<!-- 4. CORE SERVICES / CAPABILITIES -->
+<section style="padding:80px 40px 120px;max-width:1400px;margin:0 auto;border-top:1px solid var(--border);" id="services">
+  <div class="works-header">
+    <h2 style="font-size:clamp(2rem, 4vw, 3.2rem);font-weight:700;letter-spacing:-0.03em;text-transform:uppercase;">
+      How We Help
+    </h2>
+    <span style="font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);">
+      [ 04 Core Services ]
+    </span>
+  </div>
+
+  <div style="display:flex;flex-direction:column;">
+    <div style="border-bottom:1px solid var(--border);padding:32px 0;display:grid;grid-template-columns:80px 1.5fr 2fr 100px;align-items:center;">
+      <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">01</span>
+      <h3 style="font-size:1.6rem;font-weight:700;letter-spacing:-0.02em;">Business Review &amp; Audit</h3>
+      <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.5;padding-right:20px;">
+        We analyze your daily operations, find bottlenecks slowing down your team, and outline a straightforward plan of action.
+      </p>
+      <span style="text-align:right;font-family:var(--font-mono);font-size:0.8rem;color:var(--text);font-weight:600;">[ Plan ]</span>
     </div>
-  </section>
 
-</main>
+    <div style="border-bottom:1px solid var(--border);padding:32px 0;display:grid;grid-template-columns:80px 1.5fr 2fr 100px;align-items:center;">
+      <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">02</span>
+      <h3 style="font-size:1.6rem;font-weight:700;letter-spacing:-0.02em;">Workflow Automation</h3>
+      <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.5;padding-right:20px;">
+        Connect disjointed apps, eliminate manual copy-pasting, and ensure quotes and follow-ups happen automatically.
+      </p>
+      <span style="text-align:right;font-family:var(--font-mono);font-size:0.8rem;color:var(--text);font-weight:600;">[ Streamline ]</span>
+    </div>
 
-<script defer src="<?php echo esc_url( $ae_dist . '/refresh.js' ); ?>?v=1.0.0"></script>
-<script defer src="<?php echo esc_url( $ae_dist . '/ae-motion.js' ); ?>?v=2.3.0"></script>
+    <div style="border-bottom:1px solid var(--border);padding:32px 0;display:grid;grid-template-columns:80px 1.5fr 2fr 100px;align-items:center;">
+      <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">03</span>
+      <h3 style="font-size:1.6rem;font-weight:700;letter-spacing:-0.02em;">Modern Websites</h3>
+      <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.5;padding-right:20px;">
+        Fast, accessible, and clean web design that represents your expertise and converts visitors into conversations.
+      </p>
+      <span style="text-align:right;font-family:var(--font-mono);font-size:0.8rem;color:var(--text);font-weight:600;">[ Build ]</span>
+    </div>
+
+    <div style="border-bottom:1px solid var(--border);padding:32px 0;display:grid;grid-template-columns:80px 1.5fr 2fr 100px;align-items:center;">
+      <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">04</span>
+      <h3 style="font-size:1.6rem;font-weight:700;letter-spacing:-0.02em;">CRM &amp; Systems Setup</h3>
+      <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.5;padding-right:20px;">
+        Organize leads, client history, and documents into a simple, reliable hub tailored to your staff.
+      </p>
+      <span style="text-align:right;font-family:var(--font-mono);font-size:0.8rem;color:var(--text);font-weight:600;">[ Support ]</span>
+    </div>
+  </div>
+</section>
+
 <?php
 get_footer();
