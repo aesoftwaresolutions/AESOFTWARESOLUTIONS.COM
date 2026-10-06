@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying the front page — v4.0 Matthieu Givelet Inspired
+ * The template for displaying the front page — v4.1 Matthieu Givelet Inspired
  *
  * @package AE_Softwares
  */
@@ -22,7 +22,7 @@ get_header();
       Business Systems &amp; Operations
       <br>
       <span style="display:inline-block;padding:2px 8px;border:1px solid var(--border-strong);border-radius:4px;margin-top:8px;color:var(--text);font-weight:500;">
-        Est. 2024 &middot; Veteran-Owned
+        Est. 2024 &middot; Small Business Consulting
       </span>
     </div>
 
@@ -58,94 +58,131 @@ get_header();
   </div>
 </section>
 
-<!-- 3. 2-COLUMN SELECTED SOLUTIONS SHOWCASE (Matthieu Grid) -->
+<!-- 3. 2-COLUMN SELECTED SOLUTIONS SHOWCASE (Matthieu Grid with Real Project Previews) -->
 <section class="works-section" id="work">
   <div class="works-header">
     <h2 style="font-size:clamp(2rem, 4vw, 3.2rem);font-weight:700;letter-spacing:-0.03em;text-transform:uppercase;">
-      Selected Solutions
+      Selected Work &amp; Systems
     </h2>
-    <span style="font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);">
-      [ 03 Case Systems ]
-    </span>
+    <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" style="font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text);text-decoration:none;">
+      [ See All Work &rarr; ]
+    </a>
   </div>
 
   <div class="works-grid">
-    <!-- Work 01 -->
-    <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="work-card">
+    <!-- Project 01: Home Services Platform -->
+    <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="work-card">
       <div class="work-preview-frame">
-        <div style="width:85%;height:75%;background:#FFFFFF;border:1px solid var(--border-strong);border-radius:8px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between;">
-          <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:12px;">
-            <div style="display:flex;gap:6px;">
-              <span style="width:8px;height:8px;border-radius:50%;background:var(--border-strong);"></span>
-              <span style="width:8px;height:8px;border-radius:50%;background:var(--border-strong);"></span>
-              <span style="width:8px;height:8px;border-radius:50%;background:var(--border-strong);"></span>
+        <div style="width:90%;height:84%;background:#FFFFFF;border:1px solid var(--border-strong);border-radius:6px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,0.06);display:flex;flex-direction:column;">
+          <div style="background:#F2F2EF;padding:8px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;gap:5px;">
+              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
+              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
+              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
             </div>
-            <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-tertiary);">CLIENT PORTAL &amp; WORKFLOW</span>
+            <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-secondary);letter-spacing:0.04em;">Apex Home Services</span>
           </div>
-          <div style="padding:16px 0;">
-            <div style="height:10px;background:var(--surface-subtle);border-radius:4px;margin-bottom:10px;width:75%;"></div>
-            <div style="height:10px;background:var(--surface-subtle);border-radius:4px;margin-bottom:10px;width:50%;"></div>
-            <div style="display:flex;gap:16px;margin-top:16px;">
-              <div style="flex:1;padding:12px;background:var(--surface-subtle);border-radius:4px;font-family:var(--font-mono);font-size:0.75rem;">
-                <div>Weekly Hours Saved</div>
-                <div style="font-weight:700;font-size:1.1rem;color:var(--text);">14.5 hrs</div>
-              </div>
-              <div style="flex:1;padding:12px;background:var(--surface-subtle);border-radius:4px;font-family:var(--font-mono);font-size:0.75rem;">
-                <div>Inquiry Response</div>
-                <div style="font-weight:700;font-size:1.1rem;color:var(--text);">&lt; 3 mins</div>
-              </div>
-            </div>
+          <div style="flex:1;position:relative;overflow:hidden;background:#F9F9F7;">
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/template-previews/home-services.jpg' ); ?>" alt="Home Services Website Project Preview" style="width:100%;height:100%;object-fit:cover;object-position:top;" loading="lazy">
           </div>
         </div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;">
         <div style="display:flex;align-items:baseline;gap:12px;">
           <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">01</span>
-          <h3 style="font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;">Operational Workflow Redesign</h3>
+          <h3 style="font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;">Apex Home Services &amp; Dispatch</h3>
         </div>
         <span style="font-size:1.2rem;">&rarr;</span>
       </div>
       <p style="font-size:0.9rem;color:var(--text-secondary);margin-top:6px;padding-left:32px;line-height:1.5;">
-        Centralized inquiry tracking and follow-up automation for service contractors.
+        Local service brand architecture, automated estimate booking, and real-time mobile customer intake.
       </p>
     </a>
 
-    <!-- Work 02 -->
+    <!-- Project 02: Professional Legal Practice -->
     <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="work-card">
-      <div class="work-preview-frame" style="background:#EAECE8;">
-        <div style="width:85%;height:75%;background:#FFFFFF;border:1px solid rgba(42,69,53,0.2);border-radius:8px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between;">
-          <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:12px;">
-            <div style="display:flex;gap:6px;">
-              <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-highlight);"></span>
-              <span style="width:8px;height:8px;border-radius:50%;background:var(--border-strong);"></span>
+      <div class="work-preview-frame" style="background:#EFEFEA;">
+        <div style="width:90%;height:84%;background:#FFFFFF;border:1px solid var(--border-strong);border-radius:6px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,0.06);display:flex;flex-direction:column;">
+          <div style="background:#F2F2EF;padding:8px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;gap:5px;">
+              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
+              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
+              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
             </div>
-            <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--accent-highlight);">CUSTOM WEB ARCHITECTURE</span>
+            <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-secondary);letter-spacing:0.04em;">Vanguard Legal Counsel</span>
           </div>
-          <div style="padding:16px 0;">
-            <div style="height:10px;background:var(--surface-subtle);border-radius:4px;margin-bottom:10px;width:90%;"></div>
-            <div style="height:10px;background:var(--surface-subtle);border-radius:4px;margin-bottom:10px;width:40%;"></div>
-            <div style="display:flex;gap:16px;margin-top:16px;">
-              <div style="flex:1;padding:12px;background:#FFFFFF;border-radius:4px;font-family:var(--font-mono);font-size:0.75rem;">
-                <div>Speed Score</div>
-                <div style="font-weight:700;font-size:1.1rem;color:var(--text);">99 / 100</div>
-              </div>
-              <div style="flex:1;padding:12px;background:#FFFFFF;border-radius:4px;font-family:var(--font-mono);font-size:0.75rem;">
-                <div>Lead Conversion</div>
-                <div style="font-weight:700;font-size:1.1rem;color:var(--text);">+34%</div>
-              </div>
-            </div>
+          <div style="flex:1;position:relative;overflow:hidden;background:#F9F9F7;">
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/template-previews/law-firm.jpg' ); ?>" alt="Law Firm Practice Website Preview" style="width:100%;height:100%;object-fit:cover;object-position:top;" loading="lazy">
           </div>
         </div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;">
         <div style="display:flex;align-items:baseline;gap:12px;">
           <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">02</span>
-          <h3 style="font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;">Bespoke Brand &amp; Web Platform</h3>
+          <h3 style="font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;">Vanguard Legal Counsel</h3>
         </div>
         <span style="font-size:1.2rem;">&rarr;</span>
       </div>
       <p style="font-size:0.9rem;color:var(--text-secondary);margin-top:6px;padding-left:32px;line-height:1.5;">
-        High-performance editorial web presence with direct booking and customer intake.
+        Editorial legal platform focused on trust, practice area navigation, and confidential client consultation intake.
+      </p>
+    </a>
+
+    <!-- Project 03: Modern Dental Practice -->
+    <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="work-card" style="margin-top:20px;">
+      <div class="work-preview-frame">
+        <div style="width:90%;height:84%;background:#FFFFFF;border:1px solid var(--border-strong);border-radius:6px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,0.06);display:flex;flex-direction:column;">
+          <div style="background:#F2F2EF;padding:8px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;gap:5px;">
+              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
+              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
+              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
+            </div>
+            <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-secondary);letter-spacing:0.04em;">Lumina Dental Care</span>
+          </div>
+          <div style="flex:1;position:relative;overflow:hidden;background:#F9F9F7;">
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/template-previews/dental-practice.jpg' ); ?>" alt="Dental Clinic Website Preview" style="width:100%;height:100%;object-fit:cover;object-position:top;" loading="lazy">
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;">
+        <div style="display:flex;align-items:baseline;gap:12px;">
+          <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">03</span>
+          <h3 style="font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;">Lumina Dental Studio</h3>
+        </div>
+        <span style="font-size:1.2rem;">&rarr;</span>
+      </div>
+      <p style="font-size:0.9rem;color:var(--text-secondary);margin-top:6px;padding-left:32px;line-height:1.5;">
+        Calm, patient-friendly web portal with online appointment scheduling, team bios, and service outlines.
+      </p>
+    </a>
+
+    <!-- Project 04: Real Estate & Property Group -->
+    <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="work-card" style="margin-top:20px;">
+      <div class="work-preview-frame" style="background:#EAECE8;">
+        <div style="width:90%;height:84%;background:#FFFFFF;border:1px solid var(--border-strong);border-radius:6px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,0.06);display:flex;flex-direction:column;">
+          <div style="background:#F2F2EF;padding:8px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;gap:5px;">
+              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
+              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
+              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
+            </div>
+            <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-secondary);letter-spacing:0.04em;">Meridian Real Estate</span>
+          </div>
+          <div style="flex:1;position:relative;overflow:hidden;background:#F9F9F7;">
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/template-previews/real-estate-agent.jpg' ); ?>" alt="Real Estate Website Preview" style="width:100%;height:100%;object-fit:cover;object-position:top;" loading="lazy">
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;">
+        <div style="display:flex;align-items:baseline;gap:12px;">
+          <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">04</span>
+          <h3 style="font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;">Meridian Property Group</h3>
+        </div>
+        <span style="font-size:1.2rem;">&rarr;</span>
+      </div>
+      <p style="font-size:0.9rem;color:var(--text-secondary);margin-top:6px;padding-left:32px;line-height:1.5;">
+        Property showcase architecture featuring interactive listings, agent profiles, and direct lead capture.
       </p>
     </a>
   </div>
