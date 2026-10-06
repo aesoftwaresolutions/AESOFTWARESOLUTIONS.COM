@@ -1,8 +1,9 @@
 /* ============================================================
-   AE Chrome v3.0 — header/footer editorial layer (site-wide)
-   Two variants: dark glass chrome on interior pages, warm-paper
-   glass on the front page (body.home). Pure CSS + optional JS;
-   all hooks/IDs/scripts from style.css and main.js untouched.
+   AE Chrome v3.1 — cohesive dual-world chrome (site-wide)
+   Editorial scope: warm paper + ink + gold accent on every
+   content/marketing page. Operational scope: original dark UI
+   preserved for forms, tools, marketplaces, consoles. All chrome
+   colors are token-driven so each page type stays self-consistent.
    ============================================================ */
 
 :root {
@@ -10,15 +11,30 @@
   --aec-hair-light: rgba(22, 21, 16, .10);
 }
 
-/* ---------- Header bar ------------------------------------ */
+/* ---------- Scope A: editorial pages flip to paper ---------- */
+/* WordPress emits page-template-{file}-php body classes; tools   */
+/* and consoles stay dark by exclusion.                           */
+body:not(.page-template-page-contact-php):not(.page-template-page-assessment-php):not(.page-template-page-console-php):not(.page-template-page-aria-console-php):not(.page-template-page-marketplace-php):not(.page-template-page-aria-marketplace-php):not(.page-template-page-aria-store-php):not(.page-template-page-rewriter-php):not(.page-template-page-transcriber-php):not(.page-template-page-email-drafter-php):not(.page-template-page-summarizer-php) {
+  --bg: #f4f3ef;
+  --bg-card: #fbfaf7;
+  --text: #161510;
+  --text-muted: #6b665c;
+  --border: rgba(22, 21, 16, .12);
+  --border-hover: rgba(22, 21, 16, .24);
+}
+
+/* ---------- Scope B: operational pages stay dark ------------- */
+/* (Nothing to do: untouched tokens keep their native values.)    */
+
+/* ---------- Header bar (token-driven chrome) ------------------ */
 header.site-header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(11, 15, 25, .78);
+  background: rgba(244, 243, 239, .82);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--aec-hair-dark);
+  border-bottom: 1px solid var(--aec-hair-light);
 }
 .site-header__inner { transition: padding .35s cubic-bezier(.19, 1, .22, 1); }
 .site-header.aec--scrolled .site-header__inner {
@@ -26,22 +42,48 @@ header.site-header {
   padding-bottom: 10px;
 }
 
-/* Logo: tightened editorial wordmark */
+/* Dark chrome variant on operational pages */
+body.page-template-page-contact-php header.site-header,
+body.page-template-page-assessment-php header.site-header,
+body.page-template-page-console-php header.site-header,
+body.page-template-page-aria-console-php header.site-header,
+body.page-template-page-marketplace-php header.site-header,
+body.page-template-page-aria-marketplace-php header.site-header,
+body.page-template-page-aria-store-php header.site-header,
+body.page-template-page-rewriter-php header.site-header,
+body.page-template-page-transcriber-php header.site-header,
+body.page-template-page-email-drafter-php header.site-header,
+body.page-template-page-summarizer-php header.site-header {
+  background: rgba(11, 15, 25, .78);
+  border-bottom-color: var(--aec-hair-dark);
+}
+
+/* ---------- Logo / nav / CTA ---------------------------------- */
 .site-header__logo {
   font-weight: 600;
   letter-spacing: -.01em;
-  color: #e7ecf5;
+  color: #161510;
   text-decoration: none;
 }
+body.page-template-page-contact-php .site-header__logo,
+body.page-template-page-assessment-php .site-header__logo,
+body.page-template-page-console-php .site-header__logo,
+body.page-template-page-aria-console-php .site-header__logo,
+body.page-template-page-marketplace-php .site-header__logo,
+body.page-template-page-aria-marketplace-php .site-header__logo,
+body.page-template-page-aria-store-php .site-header__logo,
+body.page-template-page-rewriter-php .site-header__logo,
+body.page-template-page-transcriber-php .site-header__logo,
+body.page-template-page-email-drafter-php .site-header__logo,
+body.page-template-page-summarizer-php .site-header__logo { color: #e7ecf5; }
 
-/* Desktop nav: bracketed mono labels with hover sweep */
 .site-header__nav-link {
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
   font-size: .72rem;
   font-weight: 400;
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: #9aa7bf;
+  color: #6b665c;
   text-decoration: none;
   padding: 2px 0;
   background-image: linear-gradient(currentColor, currentColor);
@@ -53,40 +95,85 @@ header.site-header {
 .site-header__nav-link::before { content: "[ "; opacity: .45; }
 .site-header__nav-link::after  { content: " ]"; opacity: .45; }
 .site-header__nav-link:hover {
-  color: #ffffff;
+  color: #161510;
   background-size: 100% 1px;
 }
+body.page-template-page-contact-php .site-header__nav-link,
+body.page-template-page-assessment-php .site-header__nav-link,
+body.page-template-page-console-php .site-header__nav-link,
+body.page-template-page-aria-console-php .site-header__nav-link,
+body.page-template-page-marketplace-php .site-header__nav-link,
+body.page-template-page-aria-marketplace-php .site-header__nav-link,
+body.page-template-page-aria-store-php .site-header__nav-link,
+body.page-template-page-rewriter-php .site-header__nav-link,
+body.page-template-page-transcriber-php .site-header__nav-link,
+body.page-template-page-email-drafter-php .site-header__nav-link,
+body.page-template-page-summarizer-php .site-header__nav-link { color: #9aa7bf; }
+body.page-template-page-contact-php .site-header__nav-link:hover,
+body.page-template-page-assessment-php .site-header__nav-link:hover,
+body.page-template-page-console-php .site-header__nav-link:hover,
+body.page-template-page-aria-console-php .site-header__nav-link:hover,
+body.page-template-page-marketplace-php .site-header__nav-link:hover,
+body.page-template-page-aria-marketplace-php .site-header__nav-link:hover,
+body.page-template-page-aria-store-php .site-header__nav-link:hover,
+body.page-template-page-rewriter-php .site-header__nav-link:hover,
+body.page-template-page-transcriber-php .site-header__nav-link:hover,
+body.page-template-page-email-drafter-php .site-header__nav-link:hover,
+body.page-template-page-summarizer-php .site-header__nav-link:hover { color: #ffffff; }
 
-/* Header CTA: quiet pill, but readable */
+/* Header CTA pill */
 .site-header__cta.btn.btn--primary {
   border-radius: 999px;
   padding: 10px 20px;
   font-size: .74rem;
   letter-spacing: .08em;
   text-transform: uppercase;
-  background: #e7ecf5;
-  color: #0b0f19;
+  background: #161510;
+  color: #f4f3ef;
   border: none;
   transition: background .25s;
 }
-.site-header__cta.btn.btn--primary:hover { background: #ffffff; }
-
-/* Hamburger follows chrome tone */
-.nav-toggle { color: #e7ecf5; }
-
-/* ---------- Front-page chrome variant (warm paper) ---------- */
-body.home header.site-header {
-  background: rgba(244, 243, 239, .82);
-  border-bottom-color: var(--aec-hair-light);
+.site-header__cta.btn.btn--primary:hover { background: #000000; }
+body.page-template-page-contact-php .site-header__cta.btn.btn--primary,
+body.page-template-page-assessment-php .site-header__cta.btn.btn--primary,
+body.page-template-page-console-php .site-header__cta.btn.btn--primary,
+body.page-template-page-aria-console-php .site-header__cta.btn.btn--primary,
+body.page-template-page-marketplace-php .site-header__cta.btn.btn--primary,
+body.page-template-page-aria-marketplace-php .site-header__cta.btn.btn--primary,
+body.page-template-page-aria-store-php .site-header__cta.btn.btn--primary,
+body.page-template-page-rewriter-php .site-header__cta.btn.btn--primary,
+body.page-template-page-transcriber-php .site-header__cta.btn.btn--primary,
+body.page-template-page-email-drafter-php .site-header__cta.btn.btn--primary,
+body.page-template-page-summarizer-php .site-header__cta.btn.btn--primary {
+  background: #e7ecf5;
+  color: #0b0f19;
 }
-body.home .site-header__logo { color: #161510; }
-body.home .site-header__nav-link { color: #6b665c; }
-body.home .site-header__nav-link:hover { color: #161510; }
-body.home .site-header__cta.btn.btn--primary { background: #161510; color: #f4f3ef; }
-body.home .site-header__cta.btn.btn--primary:hover { background: #000000; }
-body.home .nav-toggle { color: #161510; }
+body.page-template-page-contact-php .site-header__cta.btn.btn--primary:hover,
+body.page-template-page-assessment-php .site-header__cta.btn.btn--primary:hover,
+body.page-template-page-console-php .site-header__cta.btn.btn--primary:hover,
+body.page-template-page-aria-console-php .site-header__cta.btn.btn--primary:hover,
+body.page-template-page-marketplace-php .site-header__cta.btn.btn--primary:hover,
+body.page-template-page-aria-marketplace-php .site-header__cta.btn.btn--primary:hover,
+body.page-template-page-aria-store-php .site-header__cta.btn.btn--primary:hover,
+body.page-template-page-rewriter-php .site-header__cta.btn.btn--primary:hover,
+body.page-template-page-transcriber-php .site-header__cta.btn.btn--primary:hover,
+body.page-template-page-email-drafter-php .site-header__cta.btn.btn--primary:hover,
+body.page-template-page-summarizer-php .site-header__cta.btn.btn--primary:hover { background: #ffffff; }
 
-/* ---------- Mobile overlay: numbered editorial list -------- */
+.nav-toggle { color: #161510; }
+body.page-template-page-contact-php .nav-toggle,
+body.page-template-page-assessment-php .nav-toggle,
+body.page-template-page-console-php .nav-toggle,
+body.page-template-page-aria-console-php .nav-toggle,
+body.page-template-page-marketplace-php .nav-toggle,
+body.page-template-page-aria-marketplace-php .nav-toggle,
+body.page-template-page-aria-store-php .nav-toggle,
+body.page-template-page-rewriter-php .nav-toggle,
+body.page-template-page-transcriber-php .nav-toggle,
+body.page-template-page-email-drafter-php .nav-toggle,
+body.page-template-page-summarizer-php .nav-toggle { color: #e7ecf5; }
+
+/* ---------- Mobile overlay: numbered editorial list ----------- */
 .mobile-nav-overlay__links { counter-reset: mnv; list-style: none; }
 .mobile-nav-overlay__links li { counter-increment: mnv; }
 .mobile-nav-overlay__link {
@@ -109,8 +196,20 @@ body.home .nav-toggle { color: #161510; }
   color: #6b7691;
 }
 
-/* ---------- Footer ---------------------------------------- */
-.site-footer { border-top: 1px solid var(--aec-hair-dark); }
+/* ---------- Editorial labels (bracketed, sitewide on light) --- */
+.page-hero__eyebrow,
+.work-card__tag {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: .70rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  opacity: .8;
+}
+.page-hero__eyebrow::before { content: "[ "; }
+.page-hero__eyebrow::after  { content: " ]"; }
+
+/* ---------- Footer (token-adaptive both worlds) --------------- */
+.site-footer { border-top: 1px solid var(--border, var(--aec-hair-dark)); }
 
 .footer-col h3,
 .footer-col h4 {
@@ -119,7 +218,7 @@ body.home .nav-toggle { color: #161510; }
   font-weight: 400;
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: #6b7691;
+  opacity: .6;
   margin-bottom: 14px;
 }
 .footer-col h3::before,
@@ -127,12 +226,12 @@ body.home .nav-toggle { color: #161510; }
 .footer-col h3::after,
 .footer-col h4::after  { content: " ]"; }
 
-/* Footer links: underline sweep */
 .footer-mid a,
 .footer-social a,
 .footer-copy a,
 .footer-col li a {
   text-decoration: none;
+  color: inherit;
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-position: 0 100%;
@@ -143,13 +242,12 @@ body.home .nav-toggle { color: #161510; }
 .footer-social a:hover,
 .footer-col li a:hover { background-size: 100% 1px; }
 
-/* Newsletter stays visually anchored (handler is a placeholder) */
 .footer-newsletter__input {
   background: transparent;
-  border: 1px solid var(--aec-hair-dark);
+  border: 1px solid var(--border, var(--aec-hair-dark));
   border-radius: 999px 0 0 999px;
   padding: 10px 16px;
-  color: #e7ecf5;
+  color: inherit;
 }
 .footer-newsletter__button {
   border-radius: 0 999px 999px 0;
@@ -159,17 +257,16 @@ body.home .nav-toggle { color: #161510; }
   text-transform: uppercase;
 }
 
-/* Live local-time row */
 .footer-meta {
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
   font-size: .68rem;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: #575f74;
+  opacity: .5;
   margin-top: 10px;
 }
 
-/* Reduced motion: shrink transition off, everything else static */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .site-header__inner { transition: none; }
   .site-header__nav-link { transition: none; }

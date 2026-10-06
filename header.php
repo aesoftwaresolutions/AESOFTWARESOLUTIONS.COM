@@ -14,7 +14,7 @@
 <link rel="profile" href="https://gmpg.org/xfn/11">
 <?php wp_head(); ?>
 <style>.site-header__nav-link--highlight{color:var(--accent)!important}.site-header__nav-link--highlight:hover,.site-header__nav-link--highlight:focus{color:var(--accent)!important;opacity:.8}</style>
-<link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/refresh/ae-chrome.css?v=3.0.0">
+<link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/refresh/ae-chrome.css?v=3.1.0">
 </head>
 
 <body <?php body_class(); ?>>
