@@ -1,8 +1,6 @@
 <?php
 /**
- * The template for displaying the footer
- *
- * @link [https://developer.wordpress.org/themes/basics/template-files/#template-partials](https://developer.wordpress.org/themes/basics/template-files/#template-partials)
+ * The template for displaying the footer — v4.0 Matthieu Givelet Inspired
  *
  * @package AE_Softwares
  */
@@ -11,67 +9,71 @@
 </main><!-- .site-main -->
 
 <footer class="site-footer">
-<div class="footer-top">
-<div class="footer-col footer-col--brand">
-<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="footer-logo" rel="home">
-AE Software
-</a>
-<p class="footer-tagline">Building intelligence. Delivering results.</p>
-</div>
+  <div class="footer-col">
+    <h4>[ Information ]</h4>
+    <div class="footer-big-text">
+      I'm always looking to meet small business owners, collaborate on new systems, and solve real workflow bottlenecks. <a href="mailto:anthony@aesoftwaresolutions.com">Feel free to say hello.</a>
+    </div>
+  </div>
 
-<div class="footer-col footer-col--newsletter">
-<h3>Newsletter</h3>
-<form class="footer-newsletter" method="post" action="#">
-<input type="email" class="footer-newsletter__input" placeholder="your@email.com" required>
-<button type="submit" class="footer-newsletter__button">Subscribe</button>
-</form>
-</div>
-</div>
+  <div class="footer-col">
+    <h4>[ Navigation ]</h4>
+    <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;font-size:0.95rem;">
+      <li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" style="color:var(--text);text-decoration:none;">Services & Consulting</a></li>
+      <li><a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" style="color:var(--text);text-decoration:none;">Selected Works</a></li>
+      <li><a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" style="color:var(--text);text-decoration:none;">Custom Websites</a></li>
+      <li><a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" style="color:var(--text);text-decoration:none;">Pricing ($50/mo)</a></li>
+      <li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" style="color:var(--text);text-decoration:none;">About AE Software</a></li>
+    </ul>
+  </div>
 
-<div class="footer-mid">
-<div class="footer-col">
-<h4>Services</h4>
-<ul>
-<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>">Operational Discovery</a></li>
-<li><a href="<?php echo esc_url( home_url( '/services/#tier-2' ) ); ?>">Process Intelligence</a></li>
-<li><a href="<?php echo esc_url( home_url( '/services/#tier-3' ) ); ?>">Intelligent Deployment</a></li>
-<li><a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>">Websites</a></li>
-<li><a href="<?php echo esc_url( home_url( '/industries/' ) ); ?>">Industries</a></li>
-</ul>
-</div>
+  <div class="footer-col">
+    <h4>[ Direct Contact ]</h4>
+    <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:0.9rem;color:var(--text-secondary);">
+      <li><strong style="color:var(--text);">Email:</strong> anthony@aesoftwaresolutions.com</li>
+      <li><strong style="color:var(--text);">Location:</strong> Chambersburg, PA</li>
+      <li><strong style="color:var(--text);">Hours:</strong> Mon – Fri, 9am – 5pm ET</li>
+    </ul>
+  </div>
 
-<div class="footer-col">
-<h4>Company</h4>
-<ul>
-<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a></li>
-<li><a href="<?php echo esc_url( home_url( '/software/' ) ); ?>">Software</a></li>
-<li><a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>">Pricing</a></li>
-<li><a href="<?php echo esc_url( home_url( '/work/' ) ); ?>">Case Studies</a></li>
-</ul>
-</div>
+  <div style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;padding-top:40px;margin-top:30px;border-top:1px solid var(--border);font-family:var(--font-mono);font-size:0.75rem;color:var(--text-tertiary);">
+    <div>&copy; <?php echo esc_html( date( 'Y' ) ); ?> AE Software Solutions LLC. All rights reserved.</div>
+    <div>[ Practical systems. Real business outcomes. ]</div>
+  </div>
+</footer>
 
-<div class="footer-col">
-<h4>Contact</h4>
-<ul>
-<li><a href="mailto:anthony@aesoftwaresolutions.com">Email us</a></li>
-<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Start a project</a></li>
-<li><a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>">Free assessment</a></li>
-</ul>
-</div>
-</div>
+<script>
+  // Seamless Counter loader matching Matthieu Givelet's entrance
+  (function() {
+    var count = 0;
+    var num = document.getElementById('ae-loader-num');
+    var loader = document.getElementById('ae-loader');
+    if (num && loader) {
+      var timer = setInterval(function() {
+        count += Math.floor(Math.random() * 16) + 8;
+        if (count >= 100) {
+          count = 100;
+          num.textContent = '100%';
+          clearInterval(timer);
+          setTimeout(function() {
+            loader.style.transform = 'translateY(-100%)';
+          }, 250);
+        } else {
+          num.textContent = count + '%';
+        }
+      }, 35);
+    }
 
-<div class="footer-bottom">
-<div class="footer-copy">
-&copy; <?php echo esc_html( date( 'Y' ) ); ?> AE Software Solutions. All rights reserved.
-</div>
-<div class="footer-social">
-<a href="https://linkedin.com/company/ae-software-solutions" class="footer-social__link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-<a href="https://instagram.com/aesoftwaresolutions" class="footer-social__link" target="_blank" rel="noopener noreferrer">Instagram</a>
-</div>
-</div>
-</footer><!-- .site-footer -->
+    // Scroll-triggered header compression
+    var header = document.querySelector('header.site-header');
+    if (header) {
+      window.addEventListener('scroll', function() {
+        header.classList.toggle('aec--scrolled', window.scrollY > 40);
+      }, { passive: true });
+    }
+  })();
+</script>
 
-<script defer src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/refresh/ae-chrome.js?v=3.0.0"></script>
 <?php wp_footer(); ?>
 
 </body>

@@ -1,185 +1,312 @@
 /* ============================================================
-   AE Chrome v3.2 — single-world editorial theme (site-wide)
-   Global :root token flip: since this file loads after style.css
-   in every page head, every var()-driven rule sitewide adopts the
-   paper palette with no template scoping. Brand gold preserved.
+   AE Software Solutions — Theme Core v4.0
+   Design Inspiration: Matthieu Givelet (Awwwards SOTD / Portfolio)
+   Palette: Editorial Off-White / Crisp Ink / Subtle Sage Accent
    ============================================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 :root {
-  --bg:            #f4f3ef;
-  --bg-card:       #fbfaf7;
-  --text:          #161510;
-  --text-muted:    #6b665c;
-  --border:        rgba(22, 21, 16, .12);
-  --border-hover:  rgba(22, 21, 16, .24);
-  --aec-hair-dark: rgba(255, 255, 255, .08);
-  --aec-hair-light: rgba(22, 21, 16, .10);
+  --bg: #F7F7F5;
+  --surface: #FFFFFF;
+  --surface-subtle: #EEEEEC;
+  --text: #121212;
+  --text-secondary: #666663;
+  --text-tertiary: #999994;
+  --border: rgba(18, 18, 18, 0.08);
+  --border-strong: rgba(18, 18, 18, 0.18);
+  --accent: #1A1A18;
+  --accent-highlight: #2A4535;
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Space Grotesk', monospace, sans-serif;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--bg);
   color: var(--text);
+  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
 }
 
-/* ---------- Header bar ------------------------------------- */
+/* ============================================================
+   1. FIXED 3-COLUMN EDITORIAL TOP BAR
+   ============================================================ */
 header.site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 1000;
-  background: rgba(244, 243, 239, .82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--aec-hair-light);
+  padding: 24px 40px;
+  background: rgba(247, 247, 245, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: padding 0.35s var(--ease-out-expo);
 }
-.site-header__inner { transition: padding .35s cubic-bezier(.19, 1, .22, 1); }
-.site-header.aec--scrolled .site-header__inner {
-  padding-top: 10px;
-  padding-bottom: 10px;
+
+.site-header.aec--scrolled {
+  padding: 14px 40px;
+}
+
+.site-header__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 2fr 1fr;
+  align-items: center;
 }
 
 .site-header__logo {
-  font-weight: 600;
-  letter-spacing: -.01em;
-  color: var(--text);
+  display: flex;
+  flex-direction: column;
   text-decoration: none;
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.site-header__logo span.sub {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+  text-transform: none;
+}
+
+.site-header__nav {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
 }
 
 .site-header__nav-link {
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: .72rem;
-  font-weight: 400;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--text-muted);
   text-decoration: none;
-  padding: 2px 0;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-repeat: no-repeat;
-  background-position: 50% 100%;
-  background-size: 0% 1px;
-  transition: color .25s, background-size .4s cubic-bezier(.19, 1, .22, 1);
-}
-.site-header__nav-link::before { content: "[ "; opacity: .45; }
-.site-header__nav-link::after  { content: " ]"; opacity: .45; }
-.site-header__nav-link:hover {
   color: var(--text);
-  background-size: 100% 1px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.2s ease;
 }
 
-.site-header__cta.btn.btn--primary {
+.site-header__nav-link sup {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  margin-left: 4px;
+}
+
+.site-header__nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background: var(--text);
+  transition: width 0.3s var(--ease-out-expo);
+}
+
+.site-header__nav-link:hover::after {
+  width: 100%;
+}
+
+.site-header__cta.btn {
+  justify-self: end;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text);
+  padding: 8px 18px;
+  border: 1px solid var(--text);
   border-radius: 999px;
-  padding: 10px 20px;
-  font-size: .74rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  background: transparent;
+  transition: all 0.25s var(--ease-out-expo);
+}
+
+.site-header__cta.btn:hover {
   background: var(--text);
   color: var(--bg);
-  border: none;
-  transition: background .25s;
-}
-.site-header__cta.btn.btn--primary:hover { background: #000; }
-
-.nav-toggle { color: var(--text); }
-
-/* ---------- Mobile overlay -------------------------------- */
-/* Overlay keeps its own dark background (set in style.css) —  */
-/* deliberate inversion moment, like Matthieu's menu.          */
-.mobile-nav-overlay { background: #0e0d0b !important; }
-.mobile-nav-overlay__links { counter-reset: mnv; list-style: none; }
-.mobile-nav-overlay__links li { counter-increment: mnv; }
-.mobile-nav-overlay__link {
-  font-family: "DM Serif Display", Georgia, serif;
-  font-style: italic;
-  font-size: clamp(1.8rem, 7vw, 2.6rem);
-  line-height: 1.15;
-  color: #f4f3ef;
-  text-decoration: none;
-}
-.mobile-nav-overlay__link::before {
-  content: "0" counter(mnv);
-  display: inline-block;
-  margin-right: .9em;
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-style: normal;
-  font-size: .68rem;
-  letter-spacing: .14em;
-  vertical-align: middle;
-  color: #8b867c;
 }
 
-/* ---------- Editorial labels (bracketed, sitewide) ---------- */
-.page-hero__eyebrow,
-.work-card__tag {
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: .70rem;
-  letter-spacing: .16em;
+/* ============================================================
+   2. MATTHIEU-STYLE EDITORIAL HERO & SECTIONS
+   ============================================================ */
+.hero-container {
+  padding: 160px 40px 90px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.hero-main-title {
+  font-size: clamp(3.4rem, 9.2vw, 8.8rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
   text-transform: uppercase;
-  opacity: .8;
+  margin-bottom: 48px;
 }
-.page-hero__eyebrow::before { content: "[ "; }
-.page-hero__eyebrow::after  { content: " ]"; }
 
-/* ---------- Footer ---------------------------------------- */
-.site-footer { border-top: 1px solid var(--border); }
+.hero-description-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr 1fr;
+  gap: 30px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
 
-.footer-col h3,
-.footer-col h4 {
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: .70rem;
+.hero-desc-lead {
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
   font-weight: 400;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  opacity: .6;
-  margin-bottom: 14px;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  grid-column: 2;
 }
-.footer-col h3::before,
-.footer-col h4::before { content: "[ "; }
-.footer-col h3::after,
-.footer-col h4::after  { content: " ]"; }
 
-.footer-mid a,
-.footer-social a,
-.footer-copy a,
-.footer-col li a {
+.hero-meta-col {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   3. 2-COLUMN SELECTED WORKS (Matthieu Grid)
+   ============================================================ */
+.works-section {
+  padding: 60px 40px 120px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.works-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-strong);
+  margin-bottom: 40px;
+}
+
+.works-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+}
+
+.work-card {
   text-decoration: none;
-  color: inherit;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 0% 1px;
-  transition: color .25s, background-size .4s cubic-bezier(.19, 1, .22, 1);
+  color: var(--text);
+  display: block;
 }
-.footer-mid a:hover,
-.footer-social a:hover,
-.footer-col li a:hover { background-size: 100% 1px; }
 
-.footer-newsletter__input {
-  background: transparent;
+.work-preview-frame {
+  width: 100%;
+  height: 480px;
+  background: var(--surface-subtle);
   border: 1px solid var(--border);
-  border-radius: 999px 0 0 999px;
-  padding: 10px 16px;
-  color: inherit;
-}
-.footer-newsletter__button {
-  border-radius: 0 999px 999px 0;
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: .70rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.6s var(--ease-out-expo), box-shadow 0.6s var(--ease-out-expo);
 }
 
-.footer-meta {
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: .68rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  opacity: .5;
-  margin-top: 10px;
+.work-card:hover .work-preview-frame {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .site-header__inner { transition: none; }
-  .site-header__nav-link { transition: none; }
-  .footer-mid a, .footer-social a, .footer-col li a { transition: none; }
+/* ============================================================
+   4. EDITORIAL FOOTER
+   ============================================================ */
+footer.site-footer {
+  border-top: 1px solid var(--border-strong);
+  padding: 80px 40px 50px;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1fr;
+  gap: 60px;
+}
+
+.footer-col h4 {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-tertiary);
+  margin-bottom: 20px;
+}
+
+.footer-big-text {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.footer-big-text a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 960px) {
+  header.site-header {
+    padding: 18px 24px;
+  }
+  .site-header__inner {
+    grid-template-columns: 1fr auto;
+  }
+  .site-header__nav {
+    display: none;
+  }
+  .hero-container {
+    padding: 120px 24px 60px;
+  }
+  .hero-description-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .hero-desc-lead {
+    grid-column: 1;
+  }
+  .works-section {
+    padding: 40px 24px 80px;
+  }
+  .works-grid {
+    grid-template-columns: 1fr;
+  }
+  footer.site-footer {
+    grid-template-columns: 1fr;
+    padding: 60px 24px 40px;
+    gap: 40px;
+  }
 }
