@@ -1,0 +1,4 @@
+AE Software Solutions theme auto-deployment test
+Marker: ae-theme-auto-deploy-20261005-2223
+Source branch: master
+Deployment branch: deploy/theme
