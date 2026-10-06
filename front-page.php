@@ -7,7 +7,7 @@ get_header();
 $ae_dist = get_template_directory_uri() . '/assets/refresh';
 ?>
 <link rel="stylesheet" href="<?php echo esc_url( $ae_dist . '/refresh.css' ); ?>?v=1.0.0">
-<link rel="stylesheet" href="<?php echo esc_url( $ae_dist . '/ae-motion.css' ); ?>?v=2.2.0">
+<link rel="stylesheet" href="<?php echo esc_url( $ae_dist . '/ae-motion.css' ); ?>?v=2.3.0">
 
 <main id="primary" class="site-main ae-refresh">
 
@@ -47,10 +47,34 @@ $ae_dist = get_template_directory_uri() . '/assets/refresh';
           <div class="flow"><span>Form</span><em>&rarr;</em><span>CRM</span><em>&rarr;</em><span>Email</span></div>
           <div class="flow-status">Running &middot; 214 tasks today</div>
         </div>
+        <a class="tilt-card tilt-d aem-shot" data-tilt href="https://monarchmvc.com" target="_blank" rel="noopener" aria-label="Visit monarchmvc.com — live client platform">
+          <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fmonarchmvc.com?w=960" alt="Live preview of monarchmvc.com" loading="lazy">
+          <div class="card-label">Monarch MVC &middot; live client platform <span aria-hidden="true">&#8599;</span></div>
+        </a>
       </div>
     </div>
     <div class="ae-scroll-hint" aria-hidden="true"><span></span></div>
   </section>
+
+  <!-- CAPABILITY TICKER -->
+  <div class="aem-marquee" aria-hidden="true">
+    <div class="aem-marquee__track">
+      <span>Custom CRM platforms</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+      <span>AI agents &amp; RAG systems</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+      <span>Workflow automation</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+      <span>Websites that convert</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+      <span>Mobile applications</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+      <span>SEO &amp; lead generation</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+      <span>Full-stack, in-house</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+      <span>Custom CRM platforms</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+      <span>AI agents &amp; RAG systems</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+      <span>Workflow automation</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+      <span>Websites that convert</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+      <span>Mobile applications</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+      <span>SEO &amp; lead generation</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+      <span>Full-stack, in-house</span><span class="aem-sep" aria-hidden="true">&middot;</span>
+    </div>
+  </div>
 
   <!-- STATS STRIP -->
   <section class="ae-strip" data-reveal>
@@ -149,6 +173,6 @@ $ae_dist = get_template_directory_uri() . '/assets/refresh';
 </main>
 
 <script defer src="<?php echo esc_url( $ae_dist . '/refresh.js' ); ?>?v=1.0.0"></script>
-<script defer src="<?php echo esc_url( $ae_dist . '/ae-motion.js' ); ?>?v=2.2.0"></script>
+<script defer src="<?php echo esc_url( $ae_dist . '/ae-motion.js' ); ?>?v=2.3.0"></script>
 <?php
 get_footer();

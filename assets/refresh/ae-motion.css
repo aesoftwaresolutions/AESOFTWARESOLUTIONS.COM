@@ -1,24 +1,22 @@
 /* ============================================================
-   AE Motion v2.2 — token-driven light skin + motion (front page)
-   Loaded AFTER refresh.css. The base layer is design-token driven,
-   so this file restates .ae-refresh's own custom properties: every
-   light-theme change happens in ONE place and cascades to panels,
-   borders, shadows, gradient text, buttons — no rule-by-rule fight.
-   Motion primitives are unchanged from v2. JS-off renders normally.
+   AE Motion v2.3 — light editorial skin + expressive motion
+   Token-driven light theme (proven in v2.2) + aurora backdrop,
+   cursor glow, live hero image, capability ticker, magnetic CTAs.
+   All effects degrade silently: no-JS renders the base refresh.
    ============================================================ */
 
-/* ---- Light theme tokens (override base layer via cascade) -- */
+/* ---- Light theme tokens (cascade override of refresh.css) - */
 .ae-refresh {
-  --ae-bg: #f4f3ef;                 /* dark navy → warm paper     */
-  --ae-bg-2: #ece9e0;               /* alt sections, slightly dim */
-  --ae-panel: rgba(255, 255, 255, .66);   /* glass he→ light panel */
-  --ae-border: rgba(22, 21, 16, .12);     /* white-9% → ink-12%   */
-  --ae-text: #161510;               /* light text → near-black  */
-  --ae-dim: #6b665c;                /* slate → charcoal          */
-  --ae-a1: #4f46e5;                 /* brand indigo, light-safe  */
-  --ae-a2: #0891b2;                 /* brand cyan, darkened      */
+  --ae-bg: #f4f3ef;
+  --ae-bg-2: #ece9e0;
+  --ae-panel: rgba(255, 255, 255, .66);
+  --ae-border: rgba(22, 21, 16, .12);
+  --ae-text: #161510;
+  --ae-dim: #6b665c;
+  --ae-a1: #4f46e5;
+  --ae-a2: #0891b2;
   --ae-grad: linear-gradient(120deg, var(--ae-a1), var(--ae-a2));
-  --ae-shadow: 0 24px 48px rgba(22, 21, 16, .12); /* softer on light */
+  --ae-shadow: 0 24px 48px rgba(22, 21, 16, .12);
 }
 
 /* ---- Bracketed meta labels -------------------------------- */
@@ -34,9 +32,105 @@
 .ae-refresh .ae-eyebrow::before { content: "[ "; }
 .ae-refresh .ae-eyebrow::after  { content: " ]"; }
 
-/* --- (motion primitives, unchanged from v2) ----------------- */
+/* ---- Editorial display type -------------------------------- */
+.ae-refresh .ae-hero h1 {
+  font-size: clamp(2.7rem, 6.2vw, 4.8rem);
+  line-height: 1.04;
+  letter-spacing: -.02em;
+}
+.ae-refresh .ae-hero h1 .ae-grad {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-style: italic;
+  letter-spacing: 0;
+}
+.ae-refresh .ae-sec-head h2 {
+  font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+  letter-spacing: -.015em;
+}
 
-/* Hairline draws across sections */
+/* ---- Hero aurora backdrop (brand-tone blooms) --------------- */
+.ae-refresh .ae-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 48% at 18% 26%, rgba(79, 70, 229, .16), transparent 62%),
+    radial-gradient(38% 44% at 82% 18%, rgba(8, 145, 178, .14), transparent 66%),
+    radial-gradient(30% 36% at 64% 78%, rgba(79, 70, 229, .08), transparent 60%);
+  animation: aem-drift 22s ease-in-out infinite alternate;
+}
+@keyframes aem-drift {
+  from { transform: translate3d(-2.4%, -1.6%, 0) scale(1.02); }
+  to   { transform: translate3d( 2.2%,  2.4%, 0) scale(1.06); }
+}
+
+/* ---- Cursor-reactive glow (JS feeds --aem-x / --aem-y) ------ */
+.ae-refresh .ae-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(340px circle at var(--aem-x, 50%) var(--aem-y, 24%), rgba(79, 70, 229, .10), transparent 65%);
+}
+
+/* ---- Capability ticker ------------------------------------- */
+.ae-refresh .aem-marquee {
+  overflow: hidden;
+  border-top: 1px solid var(--ae-border);
+  border-bottom: 1px solid var(--ae-border);
+  padding: 14px 0;
+}
+.ae-refresh .aem-marquee__track {
+  display: flex;
+  gap: 48px;
+  width: max-content;
+  white-space: nowrap;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: .72rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ae-dim);
+  animation: aem-marquee 30s linear infinite;
+}
+.ae-refresh .aem-marquee__track .aem-sep { color: var(--ae-a1); }
+@keyframes aem-marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* ---- Hero live-image card (self-updating client screenshot) - */
+.ae-refresh .aem-shot {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  text-decoration: none;
+  animation: aem-clip 1s .25s cubic-bezier(.19, 1, .22, 1) backwards;
+}
+.ae-refresh .aem-shot img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/10;
+  object-fit: cover;
+  object-position: top;
+  transform: scale(1.04);
+  transition: transform .7s cubic-bezier(.19, 1, .22, 1);
+}
+.ae-refresh .aem-shot:hover img { transform: scale(1); }
+.ae-refresh .aem-shot .card-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--ae-border);
+}
+@keyframes aem-clip {
+  from { clip-path: inset(0 0 100% 0); opacity: .35; transform: translateY(18px); }
+  to   { clip-path: inset(0); opacity: 1; transform: none; }
+}
+
+/* --- (motion primitives, unchanged from v2) ----------------- */
 .ae-refresh .aem-hr {
   width: 100%;
   height: 1px;
@@ -49,7 +143,6 @@
 }
 .ae-refresh .aem-hr.aem-in { transform: scaleX(1); }
 
-/* Underline sweep on service card titles */
 .ae-refresh .ae-card h3 {
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
@@ -59,7 +152,6 @@
 }
 .ae-refresh .ae-card:hover h3 { background-size: 100% 2px; }
 
-/* Masked word reveal for the hero headline */
 .ae-refresh .aem-mask {
   display: inline-block;
   overflow: hidden;
@@ -79,4 +171,7 @@
 @media (prefers-reduced-motion: reduce) {
   .ae-refresh .aem-w { transform: none; transition: none; }
   .ae-refresh .aem-hr { transform: scaleX(1); transition: none; }
+  .ae-refresh .ae-hero::before { animation: none; }
+  .ae-refresh .aem-marquee__track { animation: none; transform: none; }
+  .ae-refresh .aem-shot { animation: none; }
 }
