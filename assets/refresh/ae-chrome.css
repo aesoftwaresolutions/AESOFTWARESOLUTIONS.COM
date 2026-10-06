@@ -1,0 +1,177 @@
+/* ============================================================
+   AE Chrome v3.0 — header/footer editorial layer (site-wide)
+   Two variants: dark glass chrome on interior pages, warm-paper
+   glass on the front page (body.home). Pure CSS + optional JS;
+   all hooks/IDs/scripts from style.css and main.js untouched.
+   ============================================================ */
+
+:root {
+  --aec-hair-dark: rgba(255, 255, 255, .08);
+  --aec-hair-light: rgba(22, 21, 16, .10);
+}
+
+/* ---------- Header bar ------------------------------------ */
+header.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(11, 15, 25, .78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--aec-hair-dark);
+}
+.site-header__inner { transition: padding .35s cubic-bezier(.19, 1, .22, 1); }
+.site-header.aec--scrolled .site-header__inner {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* Logo: tightened editorial wordmark */
+.site-header__logo {
+  font-weight: 600;
+  letter-spacing: -.01em;
+  color: #e7ecf5;
+  text-decoration: none;
+}
+
+/* Desktop nav: bracketed mono labels with hover sweep */
+.site-header__nav-link {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #9aa7bf;
+  text-decoration: none;
+  padding: 2px 0;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 50% 100%;
+  background-size: 0% 1px;
+  transition: color .25s, background-size .4s cubic-bezier(.19, 1, .22, 1);
+}
+.site-header__nav-link::before { content: "[ "; opacity: .45; }
+.site-header__nav-link::after  { content: " ]"; opacity: .45; }
+.site-header__nav-link:hover {
+  color: #ffffff;
+  background-size: 100% 1px;
+}
+
+/* Header CTA: quiet pill, but readable */
+.site-header__cta.btn.btn--primary {
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-size: .74rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: #e7ecf5;
+  color: #0b0f19;
+  border: none;
+  transition: background .25s;
+}
+.site-header__cta.btn.btn--primary:hover { background: #ffffff; }
+
+/* Hamburger follows chrome tone */
+.nav-toggle { color: #e7ecf5; }
+
+/* ---------- Front-page chrome variant (warm paper) ---------- */
+body.home header.site-header {
+  background: rgba(244, 243, 239, .82);
+  border-bottom-color: var(--aec-hair-light);
+}
+body.home .site-header__logo { color: #161510; }
+body.home .site-header__nav-link { color: #6b665c; }
+body.home .site-header__nav-link:hover { color: #161510; }
+body.home .site-header__cta.btn.btn--primary { background: #161510; color: #f4f3ef; }
+body.home .site-header__cta.btn.btn--primary:hover { background: #000000; }
+body.home .nav-toggle { color: #161510; }
+
+/* ---------- Mobile overlay: numbered editorial list -------- */
+.mobile-nav-overlay__links { counter-reset: mnv; list-style: none; }
+.mobile-nav-overlay__links li { counter-increment: mnv; }
+.mobile-nav-overlay__link {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.8rem, 7vw, 2.6rem);
+  line-height: 1.15;
+  color: #e7ecf5;
+  text-decoration: none;
+}
+.mobile-nav-overlay__link::before {
+  content: "0" counter(mnv);
+  display: inline-block;
+  margin-right: .9em;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-style: normal;
+  font-size: .68rem;
+  letter-spacing: .14em;
+  vertical-align: middle;
+  color: #6b7691;
+}
+
+/* ---------- Footer ---------------------------------------- */
+.site-footer { border-top: 1px solid var(--aec-hair-dark); }
+
+.footer-col h3,
+.footer-col h4 {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: .70rem;
+  font-weight: 400;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #6b7691;
+  margin-bottom: 14px;
+}
+.footer-col h3::before,
+.footer-col h4::before { content: "[ "; }
+.footer-col h3::after,
+.footer-col h4::after  { content: " ]"; }
+
+/* Footer links: underline sweep */
+.footer-mid a,
+.footer-social a,
+.footer-copy a,
+.footer-col li a {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: color .25s, background-size .4s cubic-bezier(.19, 1, .22, 1);
+}
+.footer-mid a:hover,
+.footer-social a:hover,
+.footer-col li a:hover { background-size: 100% 1px; }
+
+/* Newsletter stays visually anchored (handler is a placeholder) */
+.footer-newsletter__input {
+  background: transparent;
+  border: 1px solid var(--aec-hair-dark);
+  border-radius: 999px 0 0 999px;
+  padding: 10px 16px;
+  color: #e7ecf5;
+}
+.footer-newsletter__button {
+  border-radius: 0 999px 999px 0;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: .70rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+/* Live local-time row */
+.footer-meta {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #575f74;
+  margin-top: 10px;
+}
+
+/* Reduced motion: shrink transition off, everything else static */
+@media (prefers-reduced-motion: reduce) {
+  .site-header__inner { transition: none; }
+  .site-header__nav-link { transition: none; }
+  .footer-mid a, .footer-social a, .footer-col li a { transition: none; }
+}
