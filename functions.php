@@ -224,6 +224,25 @@ add_filter( 'wp_resource_hints', function ( $urls, $relation ) {
 }, 10, 2 );
 
 
+// ── Purge the page cache after a theme deploy ───────────────────────────────
+// hPanel Git updates the theme files but LiteSpeed Cache kept serving pages
+// rendered by the old theme for more than a day. When any key theme file
+// changes, purge LiteSpeed once (no-op if the plugin isn't active).
+add_action( 'init', function () {
+    $dir   = get_template_directory();
+    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js' ];
+    $sig   = '';
+    foreach ( $files as $f ) {
+        $sig .= file_exists( $dir . $f ) ? filemtime( $dir . $f ) : '0';
+    }
+    $sig = md5( $sig );
+    if ( get_option( 'ae_theme_build_sig' ) !== $sig ) {
+        update_option( 'ae_theme_build_sig', $sig, false );
+        do_action( 'litespeed_purge_all' );
+    }
+}, 99 );
+
+
 // ── Theme supports ────────────────────────────────────────────────────────
 function aesoftwares_setup() {
     add_theme_support( 'title-tag' );

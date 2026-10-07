@@ -652,3 +652,13 @@ html.ae-calm .mobile-nav-overlay__link { transform: none; transition: none; }
   .site-header .site-header__cta { display: none; }
 }
 html:not(.ae-js) #ae-transition { display: none; }
+
+/* ── Phones: nothing may widen the page (iOS zooms out to fit overflow) ── */
+html, body { overflow-x: clip; }
+.v5-approach > *, .v5-hero__meta > *, .v5-section-head > *, .v5-card__caption > * { min-width: 0; }
+.v5-approach__statement { overflow-wrap: break-word; }
+@media (max-width: 640px) {
+  .v5-approach { padding-top: 32px; gap: 16px; }
+  .v5-approach__statement { font-size: clamp(1.3rem, 6.2vw, 1.6rem); max-width: none; }
+  .v5-approach__num { display: block; margin: 0 0 10px; }
+}
