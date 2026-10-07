@@ -152,13 +152,8 @@
     </div>
 </section>
 
-<section class="inner-section-pad">
-    <div class="inner-section-header">
-        <span class="section-eyebrow">What clients say</span>
-        <h2 class="section-title">Results that<br>speak for themselves.</h2>
-    </div>
-    <ae-testimonials></ae-testimonials>
-</section>
+<!-- "What clients say" removed: it showed invented clients with stock photos.
+     Add it back only with real, named clients who agreed in writing. -->
 
 <ae-cta></ae-cta>
 

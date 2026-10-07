@@ -14,7 +14,9 @@ Custom WordPress theme for [AE Software Solutions LLC](https://aesoftwaresolutio
 | `assets/js/ae-assistant.js` | Frontend JS for the site AI assistant chat |
 | `header.php` | Global site header |
 | `footer.php` | Global site footer |
-| `front-page.php` | Homepage template with cinematic GSAP stack |
+| `front-page.php` | Homepage template (v4 editorial layout) |
+| `assets/refresh/ae-chrome.css` | v4 light editorial tokens, header, footer, reveal animations |
+| `assets/refresh/ae-fixes.css` | v4.3 fixes layer loaded last: contrast, mobile menu, small-screen layout |
 | `style.css` | Theme stylesheet + metadata |
 
 ---
@@ -136,9 +138,9 @@ The floating chat assistant proxies messages through `POST /wp-json/aesoftwares/
 
 ---
 
-## Cinematic Stack (Front Page Only)
+## Animations
 
-Loads GSAP + ScrollTrigger + Lenis for the animated homepage. Looks for local vendor files first (`assets/js/vendor/gsap.min.js`), falls back to CDN if not present.
+Scroll reveals use `data-reveal` attributes, styled in `assets/refresh/ae-chrome.css` and triggered by the IntersectionObserver in `footer.php`. The old GSAP + ScrollTrigger + Lenis "cinematic" stack was removed in v4.3 because the v4 front page no longer contains any of the elements it animated.
 
 ---
 
@@ -228,11 +230,21 @@ if ( ! empty( $ollama_url ) ) {
    - Anthropic API Key (optional fallback)
    - n8n Webhook URL (for AI assistant)
 4. Create a WordPress page and assign template **Rewriter** for the rewriter tool
-5. For the GSAP cinematic homepage, download GSAP files to `assets/js/vendor/` (see SETUP.md)
 
 ---
 
 ## Changelog
+
+### 2026-10-06 — v4.3 review fixes
+
+- Aria REST routes now register on `rest_api_init`; registering them at load time is a fatal error on a stock WordPress install
+- Mobile menu works again (hamburger was hidden by an inline style and the overlay markup was missing)
+- Fixed unreadable text sitewide where the old dark theme and the v4 light tokens overlapped (footer, page heroes, primary buttons, cards, section titles) via `assets/refresh/ae-fixes.css`
+- Home page no longer scrolls sideways on phones; contact page stacks on phones
+- Removed invented testimonials from About and Services, and the unused `ae-testimonials`, `ae-greetings`, `ae-products`, `ae-assistant` and `cinematic.js` scripts
+- Legacy `template-contact/about/services.php` now render the current pages (the old contact template showed a (555) number)
+- `/chat` proxy requires a nonce, is rate-limited and forwards only known fields; public AI tool endpoints are rate-limited per IP
+- Page loader shows once per visit, is skipped for reduced motion, and no longer hides the site when JavaScript is off
 
 ### 2026-05-03 — Ollama VPS Integration Session
 
@@ -269,7 +281,7 @@ if ( ! empty( $ollama_url ) ) {
 - Removed failed Docker `root-ollama-1` container (port conflict with native Ollama on 11434)
 - Updated Nginx Proxy Manager host `ollama.srv1013089.hstgr.cloud` — changed forward host from `ollama` (Docker) to `172.17.0.1` (host bridge IP)
 - Added `x-ollama-token` header authentication to Nginx proxy (returns 403 without valid token)
-- Token set: `aes-ollama-secret-2025` (stored in WP AE Settings)
+- Token set (value redacted — it was committed here in plain text, so rotate it; the live value belongs only in WP AE Settings and the Nginx proxy config)
 - Cleaned `/root/docker-compose.yml` — removed `ollama` service and `ollama_data` volume (backed up to `.bak`)
 - Verified proxy: `HTTP 403` without token, `HTTP 200` with valid token and model list returned
 

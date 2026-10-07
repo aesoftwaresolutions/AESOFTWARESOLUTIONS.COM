@@ -330,7 +330,7 @@
         color: #edede9;
         padding: 10px 12px;
         border-radius: 6px;
-        font-size: 14px;
+        font-size: 16px; /* 16px minimum: iOS Safari zooms the page on smaller inputs */
         font-family: Inter, sans-serif;
         outline: none;
         transition: background-color 0.2s ease;

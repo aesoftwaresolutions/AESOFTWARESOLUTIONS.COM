@@ -30,13 +30,13 @@
   <div class="footer-col delay-3" data-reveal>
     <h4>[ Direct Contact ]</h4>
     <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:0.9rem;color:var(--text-secondary);">
-      <li><strong style="color:var(--text);">Email:</strong> anthony@aesoftwaresolutions.com</li>
+      <li><strong style="color:var(--text);">Email:</strong> <a href="mailto:anthony@aesoftwaresolutions.com" style="color:inherit;">anthony@aesoftwaresolutions.com</a></li>
       <li><strong style="color:var(--text);">Location:</strong> Chambersburg, PA</li>
       <li><strong style="color:var(--text);">Hours:</strong> Mon – Fri, 9am – 5pm ET</li>
     </ul>
   </div>
 
-  <div style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;padding-top:40px;margin-top:30px;border-top:1px solid var(--border);font-family:var(--font-mono);font-size:0.75rem;color:var(--text-tertiary);" data-reveal>
+  <div class="footer-legal-row" style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;padding-top:40px;margin-top:30px;border-top:1px solid var(--border);font-family:var(--font-mono);font-size:0.75rem;color:var(--text-tertiary);" data-reveal>
     <div>&copy; <?php echo esc_html( date( 'Y' ) ); ?> AE Software Solutions LLC. All rights reserved.</div>
     <div>[ Practical systems. Real business outcomes. ]</div>
   </div>
@@ -62,7 +62,9 @@
       });
     }
 
-    if (num && loader) {
+    var skipLoader = document.documentElement.classList.contains('ae-skip-loader');
+
+    if (num && loader && !skipLoader) {
       var timer = setInterval(function() {
         count += Math.floor(Math.random() * 16) + 8;
         if (count >= 100) {

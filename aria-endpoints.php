@@ -99,6 +99,11 @@ add_action(
     }
 );
 
+// Routes must be registered on rest_api_init. Registering them while the theme
+// loads builds the REST server before WP_Site_Health exists, which is a fatal
+// error on a stock install and only works today if a plugin happens to load it.
+add_action( 'rest_api_init', function () {
+
 // REST API: POST /aesoftwares/v1/aria/control (admin only)
 register_rest_route(
     'aesoftwares/v1',
@@ -344,3 +349,5 @@ register_rest_route(
         'permission_callback' => '__return_true',
     ]
 );
+
+} );

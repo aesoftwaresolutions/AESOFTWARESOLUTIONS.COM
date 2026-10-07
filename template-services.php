@@ -1,19 +1,12 @@
 <?php
-/*
-Template Name: Services Page
-*/
-get_header();
-?>
+/**
+ * Template Name: Services Page
+ *
+ * Legacy template name kept so any page still assigned to it keeps working.
+ * It used to render an old version of this page (placeholder phone number,
+ * invented testimonials); it now renders the current page-services.php.
+ *
+ * @package AE_Softwares
+ */
 
-<div class="content-area">
-    <div class="content-container">
-        <h1 class="page-title">Our Services</h1>
-        <p class="page-intro">We offer a range of AI-powered solutions designed to elevate your business. From intelligent chatbots that improve customer engagement to powerful automation that streamlines your operations, our services are built to deliver results.</p>
-        <ae-products 
-            show-all="true"
-            title="Explore Our Solutions"
-        ></ae-products>
-    </div>
-</div>
-
-<?php get_footer(); ?>
+require get_template_directory() . '/page-services.php';

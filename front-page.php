@@ -39,7 +39,7 @@ get_header();
 </section>
 
 <!-- 2. EDITORIAL STATEMENT / PHILOSOPHY -->
-<section style="padding:100px 40px;max-width:1400px;margin:0 auto;display:grid;grid-template-columns:280px 1fr 200px;gap:60px;align-items:flex-start;border-top:1px solid var(--border);" id="approach">
+<section class="approach-section" id="approach">
   <div style="font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);" data-reveal>
     [ Approach ]
   </div>

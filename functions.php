@@ -1,7 +1,7 @@
 <?php
 /**
  * AE Softwares — functions.php
- * Handles all script/style enqueuing, admin settings, REST proxy, and cinematic stack.
+ * Handles all script/style enqueuing, admin settings and REST endpoints.
  */
 
 
@@ -40,18 +40,13 @@ function aesoftwares_enqueue_scripts() {
         [ 'in_footer' => false, 'strategy' => 'defer' ]
     );
 
-    wp_enqueue_script( 'ae-greetings',    $uri . '/assets/js/ae-greetings.js',    [], filemtime( $js . 'ae-greetings.js' ),    [ 'in_footer' => true, 'strategy' => 'defer' ] );
-    wp_enqueue_script( 'ae-products',     $uri . '/assets/js/ae-products.js',     [], filemtime( $js . 'ae-products.js' ),     [ 'in_footer' => true, 'strategy' => 'defer' ] );
-    wp_enqueue_script( 'ae-testimonials', $uri . '/assets/js/ae-testimonials.js', [], filemtime( $js . 'ae-testimonials.js' ), [ 'in_footer' => true, 'strategy' => 'defer' ] );
+    // ae-greetings, ae-products, ae-testimonials and ae-assistant were removed:
+    // nothing on the current pages uses them (the floating ae-widget is the
+    // live chat), and ae-testimonials showed invented clients and stock photos.
     wp_enqueue_script( 'ae-cta',          $uri . '/assets/js/ae-cta.js',          [], filemtime( $js . 'ae-cta.js' ),          [ 'in_footer' => true, 'strategy' => 'defer' ] );
-    wp_enqueue_script( 'ae-assistant',    $uri . '/assets/js/ae-assistant.js',    [], filemtime( $js . 'ae-assistant.js' ),    [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'main',            $uri . '/assets/js/main.js',            [], filemtime( $js . 'main.js' ),            [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'ae-widget',       $uri . '/assets/js/ae-widget.js',       [], filemtime( $js . 'ae-widget.js' ),       [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_add_inline_script( 'ae-widget', 'window.AE_WIDGET_URL = "https://admin.aesoftwaresolutions.com";', 'before' );
-
-    wp_localize_script( 'ae-assistant', 'ae_settings', [
-        'proxy_url' => get_rest_url( null, 'aesoftwares/v1/chat' ),
-    ] );
 
     // ── Free tool JS (one script per tool page) ──────────────────────────
     if ( is_page_template( 'page-rewriter.php' ) ) {
@@ -194,40 +189,10 @@ function aesoftwares_enqueue_scripts() {
         ] );
     }
 
-    // ── Cinematic stack (front page only) ─────────────────────────────────
-    if ( is_front_page() ) {
-
-        $vendor = $path . '/assets/js/vendor/';
-        $vendor_uri = $uri . '/assets/js/vendor/';
-
-        if ( file_exists( $vendor . 'gsap.min.js' ) ) {
-            wp_enqueue_script( 'gsap',
-                $vendor_uri . 'gsap.min.js',
-                [],
-                filemtime( $vendor . 'gsap.min.js' ),
-                [ 'in_footer' => true, 'strategy' => 'defer' ]
-            );
-
-            wp_enqueue_script( 'gsap-scrolltrigger',
-                $vendor_uri . 'ScrollTrigger.min.js',
-                [ 'gsap' ],
-                filemtime( $vendor . 'ScrollTrigger.min.js' ),
-                [ 'in_footer' => true, 'strategy' => 'defer' ]
-            );
-        } else {
-            wp_enqueue_script( 'gsap',               'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js',               [], '3.12.5', [ 'in_footer' => true, 'strategy' => 'defer' ] );
-            wp_enqueue_script( 'gsap-scrolltrigger', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js',      [ 'gsap' ], '3.12.5', [ 'in_footer' => true, 'strategy' => 'defer' ] );
-        }
-
-        wp_enqueue_script( 'lenis', 'https://unpkg.com/lenis@1.3.23/dist/lenis.min.js', [], '1.3.23', [ 'in_footer' => true, 'strategy' => 'defer' ] );
-
-        wp_enqueue_script( 'ae-cinematic',
-            $uri . '/assets/js/cinematic.js',
-            [ 'gsap', 'gsap-scrolltrigger', 'lenis' ],
-            filemtime( $js . 'cinematic.js' ),
-            [ 'in_footer' => true, 'strategy' => 'defer' ]
-        );
-    }
+    // The GSAP + ScrollTrigger + Lenis "cinematic" stack was removed: the v4
+    // front page has none of the elements it animated, so it only added ~150KB
+    // of script, console warnings, and scroll-jacking on desktop. Reveals are
+    // handled by the IntersectionObserver in footer.php and ae-chrome.css.
 }
 add_action( 'wp_enqueue_scripts', 'aesoftwares_enqueue_scripts' );
 
@@ -249,15 +214,6 @@ add_action( 'init', function () {
 } );
 
 
-// ── Preconnect hints ────────────────────────────────────────────────────────
-function aesoftwares_preconnect() {
-    if ( ! is_front_page() ) return;
-    echo '<link rel="preconnect" href="https://unpkg.com">' . "\n";
-    echo '<link rel="preconnect" href="https://cdn.jsdelivr.net">' . "\n";
-}
-add_action( 'wp_head', 'aesoftwares_preconnect', 1 );
-
-
 // ── Theme supports ────────────────────────────────────────────────────────
 function aesoftwares_setup() {
     add_theme_support( 'title-tag' );
@@ -265,6 +221,22 @@ function aesoftwares_setup() {
     add_theme_support( 'html5', [ 'search-form', 'comment-form', 'gallery', 'caption' ] );
 }
 add_action( 'after_setup_theme', 'aesoftwares_setup' );
+
+// ── Per-IP rate limit for the public AI tool endpoints ───────────────────────
+// These call Ollama/Claude on every request and had no limit at all, so one
+// script could run up API costs or tie up the VPS. 30 calls per 10 minutes per
+// tool is far above what a person typing into the free tools will hit.
+function aesoftwares_public_rate_limit( $bucket, $limit = 30, $window = 600 ) {
+    return function () use ( $bucket, $limit, $window ) {
+        $key   = 'ae_rl_' . $bucket . '_' . md5( aesoftwares_client_ip() );
+        $count = (int) get_transient( $key );
+        if ( $count >= $limit ) {
+            return new WP_Error( 'ae_rate_limited', 'Too many requests. Please wait a few minutes and try again.', [ 'status' => 429 ] );
+        }
+        set_transient( $key, $count + 1, $window );
+        return true;
+    };
+}
 
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -442,7 +414,7 @@ function aesoftwares_register_rewrite_route() {
     register_rest_route( 'aesoftwares/v1', '/rewrite', [
         'methods'             => 'POST',
         'callback'            => 'aesoftwares_handle_rewrite',
-        'permission_callback' => '__return_true',
+        'permission_callback' => aesoftwares_public_rate_limit( 'rewrite' ),
         'args'                => [
             'text' => [
                 'required'          => true,
@@ -791,7 +763,7 @@ function aesoftwares_register_email_route() {
     register_rest_route( 'aesoftwares/v1', '/email', [
         'methods'             => 'POST',
         'callback'            => 'aesoftwares_handle_email',
-        'permission_callback' => '__return_true',
+        'permission_callback' => aesoftwares_public_rate_limit( 'email' ),
         'args'                => [
             'prompt' => [
                 'required'          => true,
@@ -834,7 +806,7 @@ function aesoftwares_register_summarize_route() {
     register_rest_route( 'aesoftwares/v1', '/summarize', [
         'methods'             => 'POST',
         'callback'            => 'aesoftwares_handle_summarize',
-        'permission_callback' => '__return_true',
+        'permission_callback' => aesoftwares_public_rate_limit( 'summarize' ),
         'args'                => [
             'text' => [
                 'required'          => true,
@@ -1008,11 +980,84 @@ function aesoftwares_handle_marketplace( WP_REST_Request $request ) {
 }
 
 
+// ── /chat: n8n proxy ────────────────────────────────────────────────────────
+// Previously an open proxy: anyone could POST any JSON, any size, as often as
+// they liked, and it was forwarded to n8n untouched. Nothing on the site calls
+// it today (the live chat is ae-widget -> CRM), so it now requires a nonce from
+// a page load on this site, is rate-limited per IP, and forwards only known
+// fields. Front-end code that wants it must send the 'X-WP-Nonce' header.
+define( 'AE_CHAT_MAX_MESSAGE_LENGTH', 1000 ); // characters per message
+define( 'AE_CHAT_RATE_LIMIT', 20 );           // requests allowed ...
+define( 'AE_CHAT_RATE_WINDOW', 600 );         // ... per IP per 10 minutes
+define( 'AE_CHAT_MAX_HISTORY_TURNS', 10 );    // conversation turns forwarded
+
+// Only trust Cloudflare's client-IP header when the site is actually behind
+// Cloudflare; otherwise anyone can send a fake one to dodge the rate limit.
+// Set this to true in wp-config.php if you put Cloudflare in front of the site.
+if ( ! defined( 'AE_BEHIND_CLOUDFLARE' ) ) {
+    define( 'AE_BEHIND_CLOUDFLARE', false );
+}
+
+function aesoftwares_client_ip() {
+    $ip = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
+    if ( AE_BEHIND_CLOUDFLARE && ! empty( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) {
+        $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
+    }
+    $ip = filter_var( wp_unslash( $ip ), FILTER_VALIDATE_IP );
+    return $ip ? $ip : '0.0.0.0';
+}
+
+function aesoftwares_chat_rate_limited() {
+    $key   = 'ae_chat_rl_' . md5( aesoftwares_client_ip() );
+    $count = (int) get_transient( $key );
+    if ( $count >= AE_CHAT_RATE_LIMIT ) {
+        return true;
+    }
+    set_transient( $key, $count + 1, AE_CHAT_RATE_WINDOW );
+    return false;
+}
+
+function aesoftwares_chat_permission_check( WP_REST_Request $request ) {
+    $nonce = $request->get_header( 'X-WP-Nonce' );
+    if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+        return new WP_Error( 'ae_chat_bad_nonce', 'Session expired. Reload the page and try again.', [ 'status' => 403 ] );
+    }
+    if ( aesoftwares_chat_rate_limited() ) {
+        return new WP_Error( 'ae_chat_rate_limited', 'Too many messages. Try again in a few minutes.', [ 'status' => 429 ] );
+    }
+    return true;
+}
+
 function aesoftwares_register_chat_route() {
     register_rest_route( 'aesoftwares/v1', '/chat', [
         'methods'             => 'POST',
         'callback'            => 'aesoftwares_handle_chat_message',
-        'permission_callback' => '__return_true',
+        'permission_callback' => 'aesoftwares_chat_permission_check',
+        'args'                => [
+            'message'    => [
+                'required'          => true,
+                'type'              => 'string',
+                'validate_callback' => function ( $value ) {
+                    $len = function_exists( 'mb_strlen' ) ? mb_strlen( (string) $value ) : strlen( (string) $value );
+                    return $len > 0 && $len <= AE_CHAT_MAX_MESSAGE_LENGTH;
+                },
+                'sanitize_callback' => 'sanitize_textarea_field',
+            ],
+            'session_id' => [
+                'required'          => false,
+                'type'              => 'string',
+                'sanitize_callback' => 'sanitize_key',
+            ],
+            'page_url'   => [
+                'required'          => false,
+                'type'              => 'string',
+                'sanitize_callback' => 'esc_url_raw',
+            ],
+            'history'    => [
+                'required' => false,
+                'type'     => 'array',
+            ],
+        ],
     ] );
 }
 add_action( 'rest_api_init', 'aesoftwares_register_chat_route' );
@@ -1022,7 +1067,7 @@ add_action( 'rest_api_init', function () {
     register_rest_route( 'aesoftwares/v1', '/validate', [
         'methods'             => 'POST',
         'callback'            => 'aesoftwares_handle_validate',
-        'permission_callback' => '__return_true',
+        'permission_callback' => aesoftwares_public_rate_limit( 'validate', 60 ),
     ] );
 } );
 
@@ -1041,7 +1086,7 @@ add_action( 'rest_api_init', function () {
     register_rest_route( 'aesoftwares/v1', '/transcribe', [
         'methods'             => 'POST',
         'callback'            => 'aesoftwares_handle_transcribe',
-        'permission_callback' => '__return_true',
+        'permission_callback' => aesoftwares_public_rate_limit( 'transcribe' ),
     ] );
 } );
 
@@ -1109,7 +1154,7 @@ add_action( 'rest_api_init', function () {
     register_rest_route( 'aesoftwares/v1', '/assessment', [
         'methods'             => 'POST',
         'callback'            => 'aesoftwares_handle_assessment',
-        'permission_callback' => '__return_true',
+        'permission_callback' => aesoftwares_public_rate_limit( 'assessment', 80 ),
     ] );
 } );
 
@@ -1278,7 +1323,7 @@ add_action( 'rest_api_init', function () {
     register_rest_route( 'aesoftwares/v1', '/tts', [
         'methods'             => 'POST',
         'callback'            => 'aesoftwares_handle_tts',
-        'permission_callback' => '__return_true',
+        'permission_callback' => aesoftwares_public_rate_limit( 'tts' ),
         'args'                => [
             'text'  => [
                 'required'          => true,
@@ -1351,35 +1396,74 @@ function aesoftwares_handle_tts( WP_REST_Request $request ) {
     ], 200 );
 }
 
+function aesoftwares_sanitize_chat_history( $raw ) {
+    if ( ! is_array( $raw ) ) {
+        return [];
+    }
+    $clean = [];
+    foreach ( array_slice( $raw, -AE_CHAT_MAX_HISTORY_TURNS ) as $turn ) {
+        if ( ! is_array( $turn ) || ! isset( $turn['role'], $turn['content'] ) || ! is_string( $turn['content'] ) ) {
+            continue;
+        }
+        if ( ! in_array( $turn['role'], [ 'user', 'assistant' ], true ) ) {
+            continue;
+        }
+        $content = sanitize_textarea_field( $turn['content'] );
+        $content = function_exists( 'mb_substr' ) ? mb_substr( $content, 0, AE_CHAT_MAX_MESSAGE_LENGTH ) : substr( $content, 0, AE_CHAT_MAX_MESSAGE_LENGTH );
+        if ( '' !== trim( $content ) ) {
+            $clean[] = [ 'role' => $turn['role'], 'content' => $content ];
+        }
+    }
+    return $clean;
+}
+
 function aesoftwares_handle_chat_message( WP_REST_Request $request ) {
     $n8n_url = get_option( 'aesoftwares_n8n_webhook_url' );
 
-    if ( empty( $n8n_url ) ) {
+    if ( empty( $n8n_url ) || ! wp_http_validate_url( $n8n_url ) ) {
         return new WP_Error( 'no_webhook_url', 'The n8n webhook URL is not configured.', [ 'status' => 500 ] );
     }
 
-    $body = $request->get_json_params();
+    // Allowlist: only these fields reach n8n, whatever else was posted.
+    $payload = [
+        'message'    => $request->get_param( 'message' ),
+        'session_id' => $request->get_param( 'session_id' ),
+        'page_url'   => $request->get_param( 'page_url' ),
+        'history'    => aesoftwares_sanitize_chat_history( $request->get_param( 'history' ) ),
+        'source'     => 'website',
+    ];
 
     $response = wp_remote_post( $n8n_url, [
-        'method'      => 'POST',
         'headers'     => [ 'Content-Type' => 'application/json; charset=utf-8' ],
-        'body'        => json_encode( $body ),
+        'body'        => wp_json_encode( $payload ),
         'data_format' => 'body',
-        'timeout'     => 15,
+        'timeout'     => 20,
     ] );
 
     if ( is_wp_error( $response ) ) {
-        return new WP_Error( 'proxy_error', 'Failed to connect to the webhook.', [ 'status' => 502 ] );
+        return new WP_Error( 'proxy_error', 'Failed to connect to the assistant.', [ 'status' => 502 ] );
     }
 
-    $response_body = wp_remote_retrieve_body( $response );
-    $response_code = wp_remote_retrieve_response_code( $response );
+    $code = wp_remote_retrieve_response_code( $response );
+    $body = json_decode( wp_remote_retrieve_body( $response ), true );
 
-    $forward = new WP_REST_Response( json_decode( $response_body ) );
-    $forward->set_status( $response_code );
-    $forward->header( 'Content-Type', 'application/json' );
+    // Never hand the raw upstream body back to the browser: return only the reply.
+    $reply = '';
+    if ( is_array( $body ) ) {
+        foreach ( [ 'reply', 'output', 'text', 'message' ] as $key ) {
+            if ( ! empty( $body[ $key ] ) && is_string( $body[ $key ] ) ) {
+                $reply = $body[ $key ];
+                break;
+            }
+        }
+    }
+    if ( '' === $reply ) {
+        return new WP_Error( 'proxy_empty', 'The assistant did not return a reply.', [ 'status' => 502 ] );
+    }
 
-    return $forward;
+    $out = new WP_REST_Response( [ 'reply' => $reply ] );
+    $out->set_status( $code >= 200 && $code < 300 ? 200 : 502 );
+    return $out;
 }
 require_once get_template_directory() . '/aria-endpoints.php';
 

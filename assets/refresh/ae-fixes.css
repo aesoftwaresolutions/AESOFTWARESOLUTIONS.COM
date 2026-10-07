@@ -1,0 +1,387 @@
+/* ============================================================
+   AE Software Solutions — v4.3 fixes layer
+   Loaded last (after style.css and ae-chrome.css) from header.php.
+
+   Why this file exists: the v4 light "editorial" tokens in ae-chrome.css
+   (--text: #121212, --accent: #1A1A18 ...) sit on top of the old dark theme
+   in style.css, which still paints many sections with hard-coded dark
+   backgrounds and hard-coded light text. The result was dark-on-dark and
+   light-on-light text across the site (footer, page heroes, buttons, cards).
+
+   1. Dark sections get a local "dark" token set, so anything that uses the
+      tokens turns light automatically inside them.
+   2. Legacy text that hard-codes a light colour now uses the tokens, so it
+      is dark on light sections and light inside dark ones.
+   3. Header, mobile menu, small-screen overflow, and a few a11y basics.
+   ============================================================ */
+
+/* ── Global token tweaks ──────────────────────────────────────────────────
+   #999994 on the off-white background was 2.7:1, under the 4.5:1 minimum. */
+:root {
+  --text-tertiary: #6E6E6A;
+  --text-muted: #666663; /* legacy grey #888884 was 3.3:1 on the paper background */
+  --btn-hover-bg: #000000;
+}
+
+/* ── 1. Dark sections: switch the tokens to their dark-world values ───── */
+.page-hero,
+.site-footer,
+.stats-section,
+.work-card,
+.value-card,
+.web-tier,
+.web-scroll-section,
+.web-process-section,
+.web-industries-strip,
+.starter-feature-card,
+.starter-state-item,
+.starter-pricing-section,
+.industry-section--alt,
+.product-section--alt,
+.service-tier-section--alt,
+.software-cta,
+.free-tools-note,
+.work-cta-bar,
+.contact-sidebar__badge,
+.industry-card-small,
+.rewriter-how__card,
+.rewriter-panel,
+.transcriber-panel,
+.assessment-phase {
+  --bg: #080808;
+  --surface: #141414;
+  --surface-subtle: #1C1C1C;
+  --text: #EDEDE9;
+  --text-secondary: #B4B4AE;
+  --text-tertiary: #8E8E89;
+  --text-muted: #A3A39E;
+  --border: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.22);
+  --accent: #C9A96E;
+  --accent-highlight: #C9A96E;
+  --btn-hover-bg: #A8853D;
+  color: var(--text);
+}
+
+/* Featured website tier: its gradient started from a 6% gold wash that was
+   meant to sit on the old black page; on paper it faded from white to black
+   and the price disappeared. Give it an opaque dark base like its siblings. */
+.web-tier.web-tier--featured {
+  background: linear-gradient(160deg, #1F1B12 0%, #111111 60%);
+}
+
+/* style.css also forces dark-world tokens onto these containers even though
+   they now sit on the light page background — light text on light paper.
+   (--bg-card / --bg-surface are left alone so dark cards inside stay dark.) */
+.services-full-wrap,
+.inner-section-pad,
+.mission-block,
+.work-section,
+.faq-section,
+.process-timeline,
+.contact-layout,
+.product-section:not(.product-section--alt) {
+  --text: #121212;
+  --text-muted: #666663;
+  --border: rgba(18, 18, 18, 0.08);
+}
+
+/* Browser mock-ups on the home work cards are light inside a dark card. */
+.work-card .work-preview-frame {
+  --text: #121212;
+  --text-secondary: #666663;
+  --border: rgba(18, 18, 18, 0.08);
+  --border-strong: rgba(18, 18, 18, 0.18);
+}
+
+/* The footer markup (v4.2) was written for the light theme; keep the dark
+   band style.css gives it, and let the tokens above do the colours. */
+footer.site-footer { max-width: none; }
+@media (min-width: 961px) {
+  footer.site-footer {
+    padding-left: max(40px, calc((100% - 1400px) / 2 + 40px));
+    padding-right: max(40px, calc((100% - 1400px) / 2 + 40px));
+  }
+}
+.site-footer .footer-col h4 { color: var(--text-tertiary); }
+.site-footer a:hover { color: var(--accent); }
+.footer-legal-row { flex-wrap: wrap; gap: 8px 24px; }
+
+/* ── 2. Legacy hard-coded light text → tokens ─────────────────────────── */
+.section-title,
+.faq-section__title,
+.faq-item__q,
+.process-phase__title,
+.product-section__title,
+.service-tier-title,
+.industry-section__title,
+.web-tier__name,
+.starter-feature-card__title,
+.mission-block .rw,
+.mission-pullquote {
+  color: var(--text);
+}
+
+.contact-form label,
+.contact-sidebar__label,
+.service-tier-col__title,
+.industry-section h3,
+.product-feature-list__label,
+.work-card__tech,
+.starter-pricing-note {
+  color: var(--text-secondary);
+}
+
+.product-chip { color: #D6D6D1; } /* chips keep their dark fill on every section */
+
+.contact-sidebar__email {
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+/* Big decorative numerals were 25–30% opacity gold: invisible on light. */
+.value-card__num,
+.service-tier-label__num,
+.product-section__num,
+.rewriter-how__num {
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+/* Contact form fields: dark boxes on a light page → light fields */
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  background: var(--surface, #FFFFFF);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  font-size: 16px; /* stops iOS Safari zooming in on focus */
+}
+.contact-form input::placeholder,
+.contact-form textarea::placeholder { color: var(--text-tertiary); }
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  outline: 2px solid var(--text);
+  outline-offset: 1px;
+}
+
+/* ── Primary buttons ──────────────────────────────────────────────────────
+   Legacy rule: background var(--accent) + text #080808. With the light tokens
+   --accent is near-black, so the label was black on black. Text now uses the
+   page background colour: light on light pages, dark on gold in dark ones. */
+.btn--primary,
+body .report-request-btn {
+  color: var(--bg);
+}
+
+/* Free-tool panels: hard-coded greys that were ~2:1 on the dark panels */
+.rewriter-output__placeholder,
+.transcriber-upload-label__hint,
+.transcriber-divider span {
+  color: var(--text-secondary);
+}
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  background-color: var(--btn-hover-bg);
+  border-color: var(--btn-hover-bg);
+  color: var(--bg);
+}
+
+/* ── 3a. Header: the old dark "scrolled" bar ──────────────────────────────
+   main.js and ae-animations.js still add .scrolled, which style.css turned
+   into a black bar with white links — and the CTA stayed black on black. */
+.site-header.scrolled {
+  background-color: rgba(247, 247, 245, 0.92);
+  border-bottom: 1px solid var(--border);
+}
+.site-header.scrolled .site-header__logo,
+.site-header.scrolled .site-header__nav-link,
+.site-header.scrolled .site-header__nav-link:hover {
+  color: var(--text);
+}
+
+/* ── 3b. Mobile menu (markup in header.php, behaviour in ae-animations.js) */
+.nav-toggle { color: var(--text); }
+
+@media (max-width: 960px) {
+  .site-header__inner {
+    grid-template-columns: 1fr auto auto;
+    gap: 12px;
+  }
+  .site-header__nav { display: none !important; }
+  .nav-toggle,
+  .site-header.scrolled .nav-toggle {
+    display: flex;
+    color: var(--text);
+  }
+}
+
+.mobile-nav-overlay {
+  background: var(--bg);
+  z-index: 999; /* under the fixed header (1000) so the close button stays visible */
+  padding: 96px 24px 40px;
+  justify-content: space-between;
+}
+.mobile-nav-overlay__links { margin: 0 0 2rem; }
+.mobile-nav-overlay__link {
+  font-family: var(--font-main);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  padding: 4px 0;
+}
+.mobile-nav-overlay__link:hover,
+.mobile-nav-overlay__link:focus-visible { color: var(--accent-highlight); }
+.mobile-nav-overlay__cta.btn {
+  border: 1px solid var(--text);
+  border-radius: 999px;
+  color: var(--text);
+  background: transparent;
+  padding: 12px 24px;
+}
+.mobile-nav-overlay__footer {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+@media (min-width: 961px) {
+  .mobile-nav-overlay,
+  .mobile-nav-overlay.is-open { display: none; }
+}
+
+/* ── 3c. Home "Approach" section (was an inline 3-column grid that made the
+   whole home page 780px wide on phones) ─────────────────────────────────── */
+.approach-section {
+  padding: 100px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 280px 1fr 200px;
+  gap: 60px;
+  align-items: flex-start;
+  border-top: 1px solid var(--border);
+}
+@media (max-width: 960px) {
+  .approach-section {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 64px 24px;
+  }
+  .hero-description-grid .hero-meta-col { text-align: left !important; }
+}
+
+/* ── 3d. Accessibility basics ───────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 100000;
+  padding: 10px 16px;
+  background: var(--text);
+  color: var(--bg);
+  border-radius: 6px;
+  font-weight: 600;
+}
+.skip-link:focus { top: 16px; }
+
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Hover lifts shouldn't stick after a tap on touch screens */
+@media (hover: none) {
+  .site-header__cta.btn:hover,
+  .work-card:hover .work-preview-frame,
+  .cap-item-row:hover {
+    transform: none;
+    padding-left: 0;
+  }
+}
+
+/* ── 3e. Contact page on phones ───────────────────────────────────────────
+   style.css sets the 2-column contact grid again after its own mobile media
+   query, so the form and sidebar were squeezed side by side on phones. */
+@media (max-width: 900px) {
+  .contact-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem;
+  }
+  .contact-layout .form-row { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ── 3f. Small-screen overflow on tool pages ──────────────────────────────── */
+.rewriter-modes__btns { flex-wrap: wrap; }
+@media (max-width: 600px) {
+  .solid-table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ── 3g. Generic pages, blog index and posts (page.php, index.php, single.php)
+   These had no v4 styles: content sat under the fixed header and titles used
+   the old light-on-dark colour. ─────────────────────────────────────────── */
+.content-area {
+  padding: 140px 24px 96px;
+}
+.content-container {
+  max-width: 760px;
+  margin: 0 auto;
+  color: var(--text);
+}
+.content-container .page-title,
+.content-container > .entry-title {
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+.content-container article + article {
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+}
+.content-container .entry-header .entry-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+.content-container .entry-title a { color: var(--text); }
+.entry-meta {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  margin-bottom: 0.75rem;
+}
+.entry-summary,
+.entry-content {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+.entry-content > * + * { margin-top: 1.1em; }
+.entry-content h2,
+.entry-content h3 {
+  color: var(--text);
+  line-height: 1.25;
+  margin-top: 2em;
+}
+.entry-content ul { list-style: disc; padding-left: 1.25em; }
+.entry-content ol { list-style: decimal; padding-left: 1.25em; }
+.entry-content a,
+.entry-summary a,
+.entry-back a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.entry-back { margin-top: 3rem; }
