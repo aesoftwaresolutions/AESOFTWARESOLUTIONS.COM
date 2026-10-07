@@ -236,9 +236,12 @@ add_action( 'init', function () {
         $sig .= file_exists( $dir . $f ) ? filemtime( $dir . $f ) : '0';
     }
     $sig = md5( $sig );
-    if ( get_option( 'ae_theme_build_sig' ) !== $sig ) {
-        update_option( 'ae_theme_build_sig', $sig, false );
-        do_action( 'litespeed_purge_all' );
+    if ( get_option( 'ae_theme_build_sig2' ) !== $sig ) {
+        update_option( 'ae_theme_build_sig2', $sig, false );
+        do_action( 'litespeed_purge_all' );          // LiteSpeed Cache plugin, if active
+        if ( ! headers_sent() ) {
+            header( 'X-LiteSpeed-Purge: *' );        // LiteSpeed server cache, plugin or not
+        }
     }
 }, 99 );
 
