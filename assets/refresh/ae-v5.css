@@ -662,3 +662,26 @@ html, body { overflow-x: clip; }
   .v5-approach__statement { font-size: clamp(1.3rem, 6.2vw, 1.6rem); max-width: none; }
   .v5-approach__num { display: block; margin: 0 0 10px; }
 }
+
+/* ── Reduced motion: gentle fades instead of no animation at all ──────────
+   Windows ships with "Animation effects" off on many machines, which turns
+   on prefers-reduced-motion. Those visitors get opacity fades only: no
+   sliding, zooming, loader or page wipes. */
+html.ae-js.ae-calm:not(.ae-motion-failed) :is([data-reveal], .js-fade, .ae-split):not(.is-revealed):not(.js-fade--in),
+html.ae-js.ae-calm:not(.ae-motion-failed) .ae-media:not(.is-revealed) img {
+  opacity: 0 !important;
+  transform: none !important;
+  clip-path: none !important;
+  transition: opacity .9s ease var(--delay, 0s) !important;
+}
+html.ae-js.ae-calm :is([data-reveal], .js-fade, .ae-split, .ae-media img) {
+  transform: none !important;
+  clip-path: none !important;
+  transition: opacity .9s ease var(--delay, 0s) !important;
+}
+html.ae-calm .ae-split .ae-wi { transform: none !important; transition: none !important; }
+html.ae-js.ae-calm .ae-rule { background-size: 0% 1px; transition: background-size 1.2s ease; }
+html.ae-js.ae-calm .ae-rule.is-revealed { background-size: 100% 1px; }
+html.ae-js.ae-calm .v5-approach.is-revealed,
+html.ae-js.ae-calm .v5-closing.is-revealed,
+html.ae-js.ae-calm footer.site-footer.v5-footer.is-revealed { background-size: calc(100% - 2 * var(--gutter)) 1px; }

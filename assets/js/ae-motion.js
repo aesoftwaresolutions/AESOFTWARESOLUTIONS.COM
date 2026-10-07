@@ -167,10 +167,12 @@
       '.eyebrow, .section-eyebrow, .hero-eyebrow, .page-hero__eyebrow, .reveal-label, .process-eyebrow';
     var els = doc.querySelectorAll(sel);
 
-    if (calm || !('IntersectionObserver' in window)) {
+    if (!('IntersectionObserver' in window)) {
       els.forEach(reveal);
       return;
     }
+    // Reduced motion still observes: blocks fade in as they scroll into
+    // view (opacity only, see .ae-calm rules in ae-v5.css), nothing moves.
 
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
