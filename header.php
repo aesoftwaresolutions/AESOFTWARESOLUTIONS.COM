@@ -18,18 +18,31 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="profile" href="https://gmpg.org/xfn/11">
 <script>
-  // Show the counter loader only on the first page of a visit, and never for
-  // people who asked for reduced motion. Runs before paint, so no flash.
+  // Runs before first paint.
+  //  ae-js            : motion CSS may hide elements that ae-motion.js will reveal
+  //  ae-skip-loader   : the counter loader shows only on the first page of a visit
+  //  ae-arriving      : we got here through a page transition, so start covered
+  //  ae-motion-failed : safety net, reveals everything if the motion script never runs
   (function () {
+    var html = document.documentElement;
+    html.classList.add('ae-js');
     try {
-      var seen = sessionStorage.getItem('ae_loader_seen') === '1';
       var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (seen || calm) { document.documentElement.classList.add('ae-skip-loader'); }
+      if (calm) { html.classList.add('ae-calm'); }
+      if (sessionStorage.getItem('ae_loader_seen') === '1' || calm) { html.classList.add('ae-skip-loader'); }
       sessionStorage.setItem('ae_loader_seen', '1');
+      if (!calm && sessionStorage.getItem('ae_transition') === '1') { html.classList.add('ae-arriving'); }
+      sessionStorage.removeItem('ae_transition');
     } catch (e) {}
+    setTimeout(function () {
+      if (!html.classList.contains('ae-motion-ready')) { html.classList.add('ae-motion-failed'); }
+    }, 4000);
   })();
 </script>
-<style>.ae-skip-loader #ae-loader{display:none!important}</style>
+<style>
+  .ae-skip-loader #ae-loader{display:none!important}
+  .ae-arriving #ae-transition{transform:translateY(0)!important}
+</style>
 <noscript><style>
   #ae-loader{display:none!important}
   [data-reveal],[data-reveal] *{opacity:1!important;transform:none!important;clip-path:none!important}
@@ -38,17 +51,21 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
 <?php wp_head(); ?>
 <link rel="stylesheet" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/refresh/ae-chrome.css?v=<?php echo esc_attr( $ae_asset_ver( '/assets/refresh/ae-chrome.css' ) ); ?>">
 <link rel="stylesheet" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/refresh/ae-fixes.css?v=<?php echo esc_attr( $ae_asset_ver( '/assets/refresh/ae-fixes.css' ) ); ?>">
+<link rel="stylesheet" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/refresh/ae-v5.css?v=<?php echo esc_attr( $ae_asset_ver( '/assets/refresh/ae-v5.css' ) ); ?>">
 </head>
 
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <a class="skip-link" href="#main-content">Skip to content</a>
 
-<!-- Page loader: smooth reveal counter (first page of a visit only) -->
-<div id="ae-loader" aria-hidden="true" style="position:fixed;inset:0;background:#F7F7F5;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);">
-  <div id="ae-loader-num" style="font-family:'Space Grotesk',monospace;font-size:3rem;font-weight:600;color:#121212;">0%</div>
-  <div style="font-family:'Space Grotesk',monospace;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.18em;color:#6B6B67;margin-top:8px;">AE Software Solutions</div>
+<!-- Page loader: first page of a visit only; the counter tracks real image/font loading (ae-motion.js) -->
+<div id="ae-loader" aria-hidden="true">
+  <span id="ae-loader-num" class="ae-loader__num">0%</span>
+  <span class="ae-loader__name">AE Software Solutions</span>
 </div>
+
+<!-- Page transition panel (ae-motion.js) -->
+<div id="ae-transition" aria-hidden="true"></div>
 
 <header class="site-header">
   <div class="site-header__inner">
@@ -59,7 +76,7 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
 
     <nav class="site-header__nav" aria-label="Main">
       <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="site-header__nav-link">Services<sup>04</sup></a>
-      <a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="site-header__nav-link">Work<sup>03</sup></a>
+      <a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="site-header__nav-link">Work<sup>07</sup></a>
       <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="site-header__nav-link">Websites</a>
       <a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="site-header__nav-link">Pricing</a>
       <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="site-header__nav-link">About</a>

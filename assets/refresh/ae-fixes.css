@@ -8,8 +8,7 @@
    backgrounds and hard-coded light text. The result was dark-on-dark and
    light-on-light text across the site (footer, page heroes, buttons, cards).
 
-   1. Dark sections get a local "dark" token set, so anything that uses the
-      tokens turns light automatically inside them.
+   (v5: the old dark sections are now converted to light in ae-v5.css.)
    2. Legacy text that hard-codes a light colour now uses the tokens, so it
       is dark on light sections and light inside dark ones.
    3. Header, mobile menu, small-screen overflow, and a few a11y basics.
@@ -21,53 +20,6 @@
   --text-tertiary: #6E6E6A;
   --text-muted: #666663; /* legacy grey #888884 was 3.3:1 on the paper background */
   --btn-hover-bg: #000000;
-}
-
-/* ── 1. Dark sections: switch the tokens to their dark-world values ───── */
-.page-hero,
-.site-footer,
-.stats-section,
-.work-card,
-.value-card,
-.web-tier,
-.web-scroll-section,
-.web-process-section,
-.web-industries-strip,
-.starter-feature-card,
-.starter-state-item,
-.starter-pricing-section,
-.industry-section--alt,
-.product-section--alt,
-.service-tier-section--alt,
-.software-cta,
-.free-tools-note,
-.work-cta-bar,
-.contact-sidebar__badge,
-.industry-card-small,
-.rewriter-how__card,
-.rewriter-panel,
-.transcriber-panel,
-.assessment-phase {
-  --bg: #080808;
-  --surface: #141414;
-  --surface-subtle: #1C1C1C;
-  --text: #EDEDE9;
-  --text-secondary: #B4B4AE;
-  --text-tertiary: #8E8E89;
-  --text-muted: #A3A39E;
-  --border: rgba(255, 255, 255, 0.10);
-  --border-strong: rgba(255, 255, 255, 0.22);
-  --accent: #C9A96E;
-  --accent-highlight: #C9A96E;
-  --btn-hover-bg: #A8853D;
-  color: var(--text);
-}
-
-/* Featured website tier: its gradient started from a 6% gold wash that was
-   meant to sit on the old black page; on paper it faded from white to black
-   and the price disappeared. Give it an opaque dark base like its siblings. */
-.web-tier.web-tier--featured {
-  background: linear-gradient(160deg, #1F1B12 0%, #111111 60%);
 }
 
 /* style.css also forces dark-world tokens onto these containers even though
@@ -94,19 +46,6 @@
   --border-strong: rgba(18, 18, 18, 0.18);
 }
 
-/* The footer markup (v4.2) was written for the light theme; keep the dark
-   band style.css gives it, and let the tokens above do the colours. */
-footer.site-footer { max-width: none; }
-@media (min-width: 961px) {
-  footer.site-footer {
-    padding-left: max(40px, calc((100% - 1400px) / 2 + 40px));
-    padding-right: max(40px, calc((100% - 1400px) / 2 + 40px));
-  }
-}
-.site-footer .footer-col h4 { color: var(--text-tertiary); }
-.site-footer a:hover { color: var(--accent); }
-.footer-legal-row { flex-wrap: wrap; gap: 8px 24px; }
-
 /* ── 2. Legacy hard-coded light text → tokens ─────────────────────────── */
 .section-title,
 .faq-section__title,
@@ -131,8 +70,6 @@ footer.site-footer { max-width: none; }
 .starter-pricing-note {
   color: var(--text-secondary);
 }
-
-.product-chip { color: #D6D6D1; } /* chips keep their dark fill on every section */
 
 .contact-sidebar__email {
   color: var(--text);

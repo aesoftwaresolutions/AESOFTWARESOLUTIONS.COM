@@ -17,10 +17,11 @@ function aesoftwares_enqueue_scripts() {
     $uri  = get_template_directory_uri();
     $path = get_template_directory();
 
-    // Google Fonts: Inter + DM Serif Display
+    // One type family sitewide (v5): Plus Jakarta Sans, with Space Grotesk for
+    // small bracketed labels. Inter and DM Serif Display were dropped.
     wp_enqueue_style(
         'ae-fonts',
-        'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap',
+        'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Space+Grotesk:wght@400;500&display=swap',
         [],
         null
     );
@@ -31,12 +32,12 @@ function aesoftwares_enqueue_scripts() {
     // ── Web component JS (all pages) ──────────────────────────────────────
     $js = $path . '/assets/js/';
 
-    // ── Scroll & load animations (all pages, loads early) ─────────────────
+    // ── Motion engine (all pages): loader, reveals, page transitions, menu ─
     wp_enqueue_script(
-        'ae-animations',
-        $uri . '/assets/js/ae-animations.js',
+        'ae-motion',
+        $uri . '/assets/js/ae-motion.js',
         [],
-        filemtime( $js . 'ae-animations.js' ),
+        filemtime( $js . 'ae-motion.js' ),
         [ 'in_footer' => false, 'strategy' => 'defer' ]
     );
 
@@ -44,7 +45,6 @@ function aesoftwares_enqueue_scripts() {
     // nothing on the current pages uses them (the floating ae-widget is the
     // live chat), and ae-testimonials showed invented clients and stock photos.
     wp_enqueue_script( 'ae-cta',          $uri . '/assets/js/ae-cta.js',          [], filemtime( $js . 'ae-cta.js' ),          [ 'in_footer' => true, 'strategy' => 'defer' ] );
-    wp_enqueue_script( 'main',            $uri . '/assets/js/main.js',            [], filemtime( $js . 'main.js' ),            [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'ae-widget',       $uri . '/assets/js/ae-widget.js',       [], filemtime( $js . 'ae-widget.js' ),       [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_add_inline_script( 'ae-widget', 'window.AE_WIDGET_URL = "https://admin.aesoftwaresolutions.com";', 'before' );
 
@@ -214,6 +214,16 @@ add_action( 'init', function () {
 } );
 
 
+// ── Preconnect to Google Fonts so the type arrives before the first reveal ──
+add_filter( 'wp_resource_hints', function ( $urls, $relation ) {
+    if ( 'preconnect' === $relation ) {
+        $urls[] = 'https://fonts.googleapis.com';
+        $urls[] = [ 'href' => 'https://fonts.gstatic.com', 'crossorigin' ];
+    }
+    return $urls;
+}, 10, 2 );
+
+
 // ── Theme supports ────────────────────────────────────────────────────────
 function aesoftwares_setup() {
     add_theme_support( 'title-tag' );
@@ -223,7 +233,7 @@ function aesoftwares_setup() {
 add_action( 'after_setup_theme', 'aesoftwares_setup' );
 
 // ── Per-IP rate limit for the public AI tool endpoints ───────────────────────
-// These call Ollama/Claude on every request and had no limit at all, so one
+// These call the Anthropic API on every request and had no limit at all, so one
 // script could run up API costs or tie up the VPS. 30 calls per 10 minutes per
 // tool is far above what a person typing into the free tools will hit.
 function aesoftwares_public_rate_limit( $bucket, $limit = 30, $window = 600 ) {
@@ -270,9 +280,6 @@ function aesoftwares_settings_page_html() {
 
 function aesoftwares_settings_init() {
     register_setting( 'aesoftwares_settings', 'aesoftwares_n8n_webhook_url' );
-    register_setting( 'aesoftwares_settings', 'aesoftwares_ollama_proxy_url' );
-    register_setting( 'aesoftwares_settings', 'aesoftwares_ollama_token' );
-    register_setting( 'aesoftwares_settings', 'aesoftwares_ollama_model' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_anthropic_api_key' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_speaches_url' );
     register_setting( 'aesoftwares_settings', 'aesoftwares_speaches_token' );
@@ -290,13 +297,10 @@ function aesoftwares_settings_init() {
     add_settings_section(
         'aesoftwares_ai_section',
         'AI Backend Settings',
-        function() { echo '<p style="color:#999;font-size:13px;">Primary: Local AI Router (Gemma / OpenClaw) on VPS — auto-routes between gemma3:4b for short queries and gemma3:12b for long/complex ones. Fallback: Anthropic API (used if router URL is empty or unreachable).</p>'; },
+        function() { echo '<p style="color:#666;font-size:13px;">The free tools (rewriter, email drafter, summariser) and the assessment call the Anthropic API with this key.</p>'; },
         'aesoftwares_settings'
     );
-    add_settings_field( 'aesoftwares_ollama_proxy_url_field', 'Local AI Router URL',        'aesoftwares_ollama_proxy_url_field_html',    'aesoftwares_settings', 'aesoftwares_ai_section' );
-    add_settings_field( 'aesoftwares_ollama_token_field',     'Router Secret Token',        'aesoftwares_ollama_token_field_html',         'aesoftwares_settings', 'aesoftwares_ai_section' );
-    add_settings_field( 'aesoftwares_ollama_model_field',     'Default Model',              'aesoftwares_ollama_model_field_html',         'aesoftwares_settings', 'aesoftwares_ai_section' );
-    add_settings_field( 'aesoftwares_anthropic_api_key_field','Anthropic API Key (fallback)','aesoftwares_anthropic_api_key_field_html',   'aesoftwares_settings', 'aesoftwares_ai_section' );
+    add_settings_field( 'aesoftwares_anthropic_api_key_field','Anthropic API Key','aesoftwares_anthropic_api_key_field_html',   'aesoftwares_settings', 'aesoftwares_ai_section' );
 
     add_settings_section(
         'aesoftwares_speaches_section',
@@ -336,29 +340,25 @@ function aesoftwares_settings_init() {
 }
 add_action( 'admin_init', 'aesoftwares_settings_init' );
 
+// The VPS Ollama/Gemma router was retired (2026-10). Remove its stored URL,
+// token and model name from the database the first time an admin page loads.
+add_action( 'admin_init', function () {
+    foreach ( [ 'aesoftwares_ollama_proxy_url', 'aesoftwares_ollama_token', 'aesoftwares_ollama_model' ] as $opt ) {
+        if ( false !== get_option( $opt, false ) ) {
+            delete_option( $opt );
+        }
+    }
+} );
+
+
 function aesoftwares_n8n_webhook_url_field_html() {
     $url = get_option( 'aesoftwares_n8n_webhook_url', '' );
     ?><input type="url" name="aesoftwares_n8n_webhook_url" value="<?php echo esc_attr( $url ); ?>" class="regular-text" placeholder="https://your-n8n-instance.com/webhook/path"><p class="description">Enter the full URL for your n8n webhook.</p><?php
 }
 
-function aesoftwares_ollama_proxy_url_field_html() {
-    $url = get_option( 'aesoftwares_ollama_proxy_url', '' );
-    ?><input type="url" name="aesoftwares_ollama_proxy_url" value="<?php echo esc_attr( $url ); ?>" class="regular-text" placeholder="http://145.79.x.x:9000"><p class="description">Local AI Router URL (no trailing slash). Gemma router on port <code>9000</code>, or Ollama directly on <code>11434/11435</code>. Requests go to <code>{url}/api/chat</code>.</p><?php
-}
-
-function aesoftwares_ollama_token_field_html() {
-    $token = get_option( 'aesoftwares_ollama_token', '' );
-    ?><input type="password" name="aesoftwares_ollama_token" value="<?php echo esc_attr( $token ); ?>" class="regular-text" placeholder="your-secret-token"><p class="description">Sent as <code>x-ollama-token</code> header. Leave blank if router has no auth.</p><?php
-}
-
-function aesoftwares_ollama_model_field_html() {
-    $model = get_option( 'aesoftwares_ollama_model', 'gemma3:4b' );
-    ?><input type="text" name="aesoftwares_ollama_model" value="<?php echo esc_attr( $model ); ?>" class="regular-text" placeholder="gemma3:4b"><p class="description">Default model. Gemma router auto-escalates to <code>gemma3:12b</code> for long/complex queries. Suggested: <code>gemma3:4b</code> (fastest), <code>gemma3:12b</code> (highest quality), <code>gemma3:1b</code> (instant).</p><?php
-}
-
 function aesoftwares_anthropic_api_key_field_html() {
     $key = get_option( 'aesoftwares_anthropic_api_key', '' );
-    ?><input type="password" name="aesoftwares_anthropic_api_key" value="<?php echo esc_attr( $key ); ?>" class="regular-text" placeholder="sk-ant-…"><p class="description">Fallback only — used when Ollama Proxy URL is empty.</p><?php
+    ?><input type="password" name="aesoftwares_anthropic_api_key" value="<?php echo esc_attr( $key ); ?>" class="regular-text" placeholder="sk-ant-…"><p class="description">Used by the free tools and the assessment.</p><?php
 }
 
 function aesoftwares_speaches_url_field_html() {
@@ -485,167 +485,52 @@ function aesoftwares_chunk_text( $text, $max_words = 500 ) {
     return $chunks;
 }
 
-function aesoftwares_call_ai_backend( $system_prompt, $user_message ) {
-    $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
-    $ollama_token = get_option( 'aesoftwares_ollama_token' );
-    $ollama_model = get_option( 'aesoftwares_ollama_model', 'gemma3:4b' );
-
-    if ( ! empty( $ollama_url ) ) {
-        $payload = [
-            'model'    => $ollama_model,
-            'stream'   => false,
-            'options'  => [
-                'temperature' => 0.95,
-                'top_p'       => 0.95,
-                'top_k'       => 40,
-                'think'       => false,
-                'num_predict' => 1100,
-            ],
-            'messages' => [
-                [ 'role' => 'system', 'content' => $system_prompt ],
-                [ 'role' => 'user',   'content' => $user_message  ],
-            ],
-        ];
-
-        $response = wp_remote_post( rtrim( $ollama_url, '/' ) . '/api/chat', [
-            'method'      => 'POST',
-            'headers'     => [
-                'Content-Type'   => 'application/json',
-                'x-ollama-token' => $ollama_token,
-            ],
-            'body'        => json_encode( $payload ),
-            'data_format' => 'body',
-            'timeout'     => 300,
-        ] );
-
-        if ( ! is_wp_error( $response ) ) {
-            $code = wp_remote_retrieve_response_code( $response );
-            $body = json_decode( wp_remote_retrieve_body( $response ), true );
-
-            if ( $code === 200 ) {
-                $rewritten = $body['message']['content'] ?? '';
-                $rewritten = preg_replace( '/<think>[\s\S]*?<\/think>/i', '', $rewritten );
-                $rewritten = trim( $rewritten );
-                if ( $rewritten !== '' ) {
-                    return $rewritten;
-                }
-            }
-        }
-    }
-
+// ── Anthropic call shared by the free tools and the assessment ──────────────
+// Returns the reply text, or a WP_Error. (The VPS Ollama router that used to
+// sit in front of this was retired in 2026-10.)
+function aesoftwares_anthropic_chat( $system_prompt, $messages, $max_tokens = 1024, $timeout = 60 ) {
     $api_key = get_option( 'aesoftwares_anthropic_api_key' );
     if ( empty( $api_key ) ) {
-        return new WP_Error( 'no_backend', 'No AI backend is configured. Set the Ollama Proxy URL or Anthropic API key in AE Settings.', [ 'status' => 500 ] );
+        return new WP_Error( 'no_backend', 'The AI service is not configured. Add the Anthropic API key in AE Settings.', [ 'status' => 500 ] );
     }
 
-    $payload = [
-        'model'      => 'claude-haiku-4-5-20251001',
-        'max_tokens' => 4096,
-        'system'     => $system_prompt,
-        'messages'   => [
-            [ 'role' => 'user', 'content' => $user_message ],
-        ],
-    ];
-
     $response = wp_remote_post( 'https://api.anthropic.com/v1/messages', [
-        'method'      => 'POST',
         'headers'     => [
             'Content-Type'      => 'application/json',
             'x-api-key'         => $api_key,
             'anthropic-version' => '2023-06-01',
         ],
-        'body'        => json_encode( $payload ),
+        'body'        => wp_json_encode( [
+            'model'      => 'claude-haiku-4-5-20251001',
+            'max_tokens' => $max_tokens,
+            'system'     => $system_prompt,
+            'messages'   => $messages,
+        ] ),
         'data_format' => 'body',
-        'timeout'     => 120,
+        'timeout'     => $timeout,
     ] );
 
     if ( is_wp_error( $response ) ) {
-        return new WP_Error( 'api_error', 'Failed to reach the Anthropic API.', [ 'status' => 502 ] );
+        return new WP_Error( 'api_error', 'Failed to reach the AI service.', [ 'status' => 502 ] );
     }
 
     $code = wp_remote_retrieve_response_code( $response );
     $body = json_decode( wp_remote_retrieve_body( $response ), true );
-
-    if ( $code !== 200 ) {
-        $msg = $body['error']['message'] ?? 'Anthropic API error.';
+    if ( 200 !== $code ) {
+        $msg = $body['error']['message'] ?? 'AI service error.';
         return new WP_Error( 'anthropic_error', $msg, [ 'status' => 502 ] );
     }
 
-    return $body['content'][0]['text'] ?? '';
+    return trim( $body['content'][0]['text'] ?? '' );
+}
+
+function aesoftwares_call_ai_backend( $system_prompt, $user_message ) {
+    return aesoftwares_anthropic_chat( $system_prompt, [ [ 'role' => 'user', 'content' => $user_message ] ], 4096, 120 );
 }
 
 function aesoftwares_call_ai_backend_short( $system_prompt, $user_message ) {
-    $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
-    $ollama_token = get_option( 'aesoftwares_ollama_token' );
-    $ollama_model = get_option( 'aesoftwares_ollama_model', 'gemma3:4b' );
-
-    if ( ! empty( $ollama_url ) ) {
-        $payload = [
-            'model'    => $ollama_model,
-            'stream'   => false,
-            'options'  => [
-                'temperature' => 0.3,
-                'top_p'       => 0.9,
-            ],
-            'messages' => [
-                [ 'role' => 'system', 'content' => $system_prompt ],
-                [ 'role' => 'user',   'content' => $user_message  ],
-            ],
-        ];
-
-        $response = wp_remote_post( rtrim( $ollama_url, '/' ) . '/api/chat', [
-            'method'      => 'POST',
-            'headers'     => [
-                'Content-Type'   => 'application/json',
-                'x-ollama-token' => $ollama_token,
-            ],
-            'body'        => json_encode( $payload ),
-            'data_format' => 'body',
-            'timeout'     => 45,
-        ] );
-
-        if ( ! is_wp_error( $response ) ) {
-            $code = wp_remote_retrieve_response_code( $response );
-            $body = json_decode( wp_remote_retrieve_body( $response ), true );
-
-            if ( $code === 200 ) {
-                $text = $body['message']['content'] ?? '';
-                $text = preg_replace( '/<think>[\s\S]*?<\/think>/i', '', $text );
-                $text = trim( $text );
-                if ( $text !== '' ) return $text;
-            }
-        }
-    }
-
-    $api_key = get_option( 'aesoftwares_anthropic_api_key' );
-    if ( empty( $api_key ) ) return new WP_Error( 'no_backend', 'No AI backend configured.', [ 'status' => 500 ] );
-
-    $payload = [
-        'model'      => 'claude-haiku-4-5-20251001',
-        'max_tokens' => 1024,
-        'system'     => $system_prompt,
-        'messages'   => [ [ 'role' => 'user', 'content' => $user_message ] ],
-    ];
-
-    $response = wp_remote_post( 'https://api.anthropic.com/v1/messages', [
-        'method'      => 'POST',
-        'headers'     => [
-            'Content-Type'      => 'application/json',
-            'x-api-key'         => $api_key,
-            'anthropic-version' => '2023-06-01',
-        ],
-        'body'        => json_encode( $payload ),
-        'data_format' => 'body',
-        'timeout'     => 45,
-    ] );
-
-    if ( is_wp_error( $response ) ) return null;
-
-    $code = wp_remote_retrieve_response_code( $response );
-    $body = json_decode( wp_remote_retrieve_body( $response ), true );
-    if ( $code !== 200 ) return null;
-
-    return $body['content'][0]['text'] ?? '';
+    $text = aesoftwares_anthropic_chat( $system_prompt, [ [ 'role' => 'user', 'content' => $user_message ] ], 1024, 45 );
+    return is_wp_error( $text ) ? null : $text;
 }
 
 function aesoftwares_validate_content( $text ) {
@@ -840,79 +725,13 @@ function aesoftwares_handle_summarize( WP_REST_Request $request ) {
 }
 
 
-// ── Shared VPS/Anthropic caller ───────────────────────────────────────────────
+// ── Shared caller for the email drafter and summariser ──────────────────────
 function aesoftwares_call_vps( $system_prompt, $user_message, $response_key ) {
-    $ollama_url   = get_option( 'aesoftwares_ollama_proxy_url' );
-    $ollama_token = get_option( 'aesoftwares_ollama_token' );
-    $ollama_model = get_option( 'aesoftwares_ollama_model', 'gemma3:4b' );
-
-    if ( ! empty( $ollama_url ) ) {
-        $payload = [
-            'model'    => $ollama_model,
-            'stream'   => false,
-            'messages' => [
-                [ 'role' => 'system', 'content' => $system_prompt ],
-                [ 'role' => 'user',   'content' => $user_message  ],
-            ],
-        ];
-
-        $response = wp_remote_post( rtrim( $ollama_url, '/' ) . '/api/chat', [
-            'method'      => 'POST',
-            'headers'     => [
-                'Content-Type'   => 'application/json',
-                'x-ollama-token' => $ollama_token,
-            ],
-            'body'        => json_encode( $payload ),
-            'data_format' => 'body',
-            'timeout'     => 300,
-        ] );
-
-        if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
-            $body   = json_decode( wp_remote_retrieve_body( $response ), true );
-            $result = $body['message']['content'] ?? '';
-            $result = preg_replace( '/<think>[\s\S]*?<\/think>/i', '', $result );
-            $result = trim( $result );
-            if ( $result !== '' ) {
-                return new WP_REST_Response( [ $response_key => $result ], 200 );
-            }
-        }
+    $text = aesoftwares_anthropic_chat( $system_prompt, [ [ 'role' => 'user', 'content' => $user_message ] ], 4096, 60 );
+    if ( is_wp_error( $text ) ) {
+        return $text;
     }
-
-    $api_key = get_option( 'aesoftwares_anthropic_api_key' );
-    if ( empty( $api_key ) ) {
-        return new WP_Error( 'no_backend', 'No AI backend configured.', [ 'status' => 500 ] );
-    }
-
-    $response = wp_remote_post( 'https://api.anthropic.com/v1/messages', [
-        'method'      => 'POST',
-        'headers'     => [
-            'Content-Type'      => 'application/json',
-            'x-api-key'         => $api_key,
-            'anthropic-version' => '2023-06-01',
-        ],
-        'body'        => json_encode( [
-            'model'      => 'claude-haiku-4-5-20251001',
-            'max_tokens' => 4096,
-            'system'     => $system_prompt,
-            'messages'   => [ [ 'role' => 'user', 'content' => $user_message ] ],
-        ] ),
-        'data_format' => 'body',
-        'timeout'     => 60,
-    ] );
-
-    if ( is_wp_error( $response ) ) {
-        return new WP_Error( 'api_error', 'Failed to reach the AI backend.', [ 'status' => 502 ] );
-    }
-
-    $code = wp_remote_retrieve_response_code( $response );
-    $body = json_decode( wp_remote_retrieve_body( $response ), true );
-
-    if ( $code !== 200 ) {
-        $msg = $body['error']['message'] ?? 'AI backend error.';
-        return new WP_Error( 'backend_error', $msg, [ 'status' => 502 ] );
-    }
-
-    return new WP_REST_Response( [ $response_key => $body['content'][0]['text'] ?? '' ], 200 );
+    return new WP_REST_Response( [ $response_key => $text ], 200 );
 }
 
 
@@ -1108,7 +927,7 @@ function aesoftwares_handle_transcribe( WP_REST_Request $request ) {
     $tmp_path   = $files['audio']['tmp_name'];
     $mime       = $files['audio']['type'] ?? 'audio/webm';
     $orig_name  = sanitize_file_name( $files['audio']['name'] ?? 'audio.webm' );
-    $model_name = get_option( 'aesoftwares_ollama_model', 'Systran/faster-whisper-small' );
+    $model_name = 'Systran/faster-whisper-small'; // was read from the old Ollama model setting by mistake
 
     $endpoint = rtrim( $speaches_url, '/' ) . '/v1/audio/transcriptions';
     $headers  = [ 'Authorization: Bearer ' . $speaches_token ];
@@ -1230,88 +1049,16 @@ When sufficient information is gathered across phases 1–8, offer to generate t
 
 Begin by warmly introducing yourself as an Operational Intelligence Consultant with AE Software Solutions and asking for their business name.';
 
-    // ── Primary: Local AI Router (Gemma 4b/12b via OpenClaw, or Ollama direct) ──
-    $router_url   = get_option( 'aesoftwares_ollama_proxy_url' );
-    $router_token = get_option( 'aesoftwares_ollama_token' );
-    $router_model = get_option( 'aesoftwares_ollama_model', 'gemma3:4b' );
-
-    if ( ! empty( $router_url ) ) {
-        $payload = [
-            'model'   => $router_model,
-            'stream'  => false,
-            'options' => [
-                'temperature' => 0.7,
-                'top_p'       => 0.9,
-                'think'       => false,
-                'num_predict' => 1024,   // Gemma 4b cap; router escalates to 12b @ 4096 for complex
-            ],
-            'messages' => array_merge(
-                [ [ 'role' => 'system', 'content' => $system_prompt ] ],
-                $safe_history
-            ),
-        ];
-
-        $headers = [ 'Content-Type' => 'application/json' ];
-        if ( ! empty( $router_token ) ) {
-            $headers['x-ollama-token'] = $router_token;
-        }
-
-        $response = wp_remote_post( rtrim( $router_url, '/' ) . '/api/chat', [
-            'method'      => 'POST',
-            'headers'     => $headers,
-            'body'        => json_encode( $payload ),
-            'data_format' => 'body',
-            'timeout'     => 300,   // 12b fallback can take up to 300s on cold start
-        ] );
-
-        if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
-            $body  = json_decode( wp_remote_retrieve_body( $response ), true );
-            $reply = $body['message']['content'] ?? '';
-            // Strip <think> blocks from any reasoning model output
-            $reply = preg_replace( '/<think>[\s\S]*?<\/think>/i', '', $reply );
-            $reply = trim( $reply );
-            if ( $reply !== '' ) {
-                return new WP_REST_Response( [ 'reply' => $reply ], 200 );
-            }
-        }
+    $reply = aesoftwares_anthropic_chat(
+        $system_prompt,
+        $safe_history ?: [ [ 'role' => 'user', 'content' => 'Begin the assessment.' ] ],
+        1024,
+        120
+    );
+    if ( is_wp_error( $reply ) ) {
+        return $reply;
     }
-
-    // Fallback: Anthropic
-    $api_key = get_option( 'aesoftwares_anthropic_api_key' );
-    if ( empty( $api_key ) ) {
-        return new WP_Error( 'no_backend', 'No AI backend configured. Set the Ollama Proxy URL or Anthropic API key in AE Settings.', [ 'status' => 500 ] );
-    }
-
-    $response = wp_remote_post( 'https://api.anthropic.com/v1/messages', [
-        'method'      => 'POST',
-        'headers'     => [
-            'Content-Type'      => 'application/json',
-            'x-api-key'         => $api_key,
-            'anthropic-version' => '2023-06-01',
-        ],
-        'body'        => json_encode( [
-            'model'      => 'claude-haiku-4-5-20251001',
-            'max_tokens' => 1024,
-            'system'     => $system_prompt,
-            'messages'   => $safe_history ?: [ [ 'role' => 'user', 'content' => 'Begin the assessment.' ] ],
-        ] ),
-        'data_format' => 'body',
-        'timeout'     => 120,
-    ] );
-
-    if ( is_wp_error( $response ) ) {
-        return new WP_Error( 'api_error', 'Failed to reach the AI backend.', [ 'status' => 502 ] );
-    }
-
-    $code = wp_remote_retrieve_response_code( $response );
-    $data = json_decode( wp_remote_retrieve_body( $response ), true );
-
-    if ( $code !== 200 ) {
-        $msg = $data['error']['message'] ?? 'AI backend error.';
-        return new WP_Error( 'backend_error', $msg, [ 'status' => 502 ] );
-    }
-
-    return new WP_REST_Response( [ 'reply' => $data['content'][0]['text'] ?? '' ], 200 );
+    return new WP_REST_Response( [ 'reply' => $reply ], 200 );
 }
 
 // ══════════════════════════════════════════════════════════════════════════════

@@ -1,241 +1,159 @@
 <?php
 /**
- * The template for displaying the front page — v4.2 Matthieu Givelet Animated Engine
+ * Front page — v5 editorial layout.
+ *
+ * Motion is driven by assets/js/ae-motion.js:
+ *   [data-split]  headings rise line by line from a mask
+ *   [data-reveal] blocks fade/rise in when they enter the viewport
+ *   .ae-rule      hairlines draw left to right
+ *   .ae-media     images fade and settle from a slight zoom
  *
  * @package AE_Softwares
  */
 
 get_header();
+
+$ae_img = get_template_directory_uri() . '/assets/img/';
+
+// Selected work: real client sites. (The industry templates still show
+// {{PLACEHOLDER}} text, so they stay on /websites/ as examples, not here.)
+// Screenshots live in assets/img/work/ (captured from the live sites).
+$ae_work = [
+	[
+		'title' => 'Monarch MVC',
+		'type'  => 'Client',
+		'tag'   => 'Health platform',
+		'img'   => $ae_img . 'work/monarch-mvc.jpg',
+		'alt'   => 'Monarch MVC men’s health platform home page',
+		'url'   => home_url( '/work/' ),
+		'desc'  => 'Patient portal and provider dashboard for a clinician-led men’s health practice.',
+	],
+	[
+		'title' => 'Learn English with Evie',
+		'type'  => 'Client',
+		'tag'   => 'Education',
+		'img'   => $ae_img . 'work/learn-english-with-evie.jpg',
+		'alt'   => 'Learn English with Evie lesson booking site',
+		'url'   => home_url( '/work/' ),
+		'desc'  => 'Brand site that turns YouTube and podcast listeners into booked 1-on-1 lessons.',
+	],
+	[
+		'title' => 'Anthony Pioquinto',
+		'type'  => 'Client',
+		'tag'   => 'Personal brand',
+		'img'   => $ae_img . 'work/anthony-pioquinto.jpg',
+		'alt'   => 'Anthony Pioquinto real estate portfolio site',
+		'url'   => home_url( '/work/' ),
+		'desc'  => 'Editorial portfolio for a business development manager in real estate lending.',
+	],
+];
+
+// The image window in the headline cycles through the same screenshots.
+$ae_window = array_column( $ae_work, 'img' );
 ?>
 
-<!-- 1. HERO: OVERSIZED SEAMLESS REVEAL -->
-<section class="hero-container">
-  <div class="hero-main-title">
-    <div class="mask-line"><span>Helping your</span></div>
-    <div class="mask-line" style="transition-delay:0.12s;"><span>business work</span></div>
-    <div class="mask-line" style="transition-delay:0.24s;"><span style="color:var(--accent-highlight);">better.</span></div>
-  </div>
-
-  <div class="hero-description-grid" data-reveal>
-    <div class="hero-meta-col delay-1" data-reveal>
-      [ Focus ]<br>
-      Business Systems &amp; Operations
-      <br>
-      <span style="display:inline-block;padding:2px 8px;border:1px solid var(--border-strong);border-radius:4px;margin-top:8px;color:var(--text);font-weight:500;">
-        Est. 2024 &middot; Small Business Consulting
+<!-- 1. HERO -->
+<section class="v5-hero" aria-labelledby="v5-hero-title">
+  <h1 class="v5-hero__title" id="v5-hero-title">
+    <span class="v5-hero__line" data-split data-split-delay="0">Helping your</span>
+    <span class="v5-hero__line" data-split data-split-delay="0.08">business work</span>
+    <span class="v5-hero__line v5-hero__line--last">
+      <span class="v5-hero__accent" data-split data-split-delay="0.16">better.</span>
+      <span class="v5-window" aria-hidden="true">
+        <?php foreach ( $ae_window as $i => $src ) : ?>
+          <img src="<?php echo esc_url( $src ); ?>" alt="" class="v5-window__img<?php echo 0 === $i ? ' is-active' : ''; ?>" decoding="async" <?php echo 0 === $i ? 'fetchpriority="high"' : 'loading="lazy"'; ?>>
+        <?php endforeach; ?>
       </span>
-    </div>
+    </span>
+  </h1>
 
-    <p class="hero-desc-lead delay-2" data-reveal>
+  <div class="v5-hero__meta ae-rule" data-reveal>
+    <p class="v5-label" data-reveal>[ Focus ]<br>Business systems &amp; websites</p>
+    <p class="v5-hero__lead" data-reveal>
       We partner with small businesses to untangle daily workflows, build clear customer-facing websites, and put practical systems in place that free up your time.
     </p>
-
-    <div class="hero-meta-col delay-3" style="text-align:right;" data-reveal>
-      [ Location ]<br>
-      Chambersburg, PA<br>
-      Serving nationwide
-    </div>
+    <p class="v5-label v5-label--end" data-reveal>[ Based in ]<br>Chambersburg, PA<br>Working with clients nationwide</p>
   </div>
 </section>
 
-<!-- 2. EDITORIAL STATEMENT / PHILOSOPHY -->
-<section class="approach-section" id="approach">
-  <div style="font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);" data-reveal>
-    [ Approach ]
-  </div>
-  
-  <div style="font-size:clamp(1.5rem, 2.8vw, 2.4rem);font-weight:400;line-height:1.3;letter-spacing:-0.03em;" class="delay-1" data-reveal>
-    01 &nbsp; Always looking for <strong>simple, thoughtful solutions</strong> that fit the way your business actually operates and feel good to use. <span style="color:var(--text-secondary);">No unnecessary complexity or bloated software.</span>
-  </div>
+<!-- 2. APPROACH -->
+<section class="v5-approach ae-rule" id="approach">
+  <p class="v5-label" data-reveal>[ Approach ]</p>
 
-  <div style="display:flex;flex-direction:column;gap:16px;" class="delay-2" data-reveal>
-    <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" style="font-size:0.88rem;font-weight:600;text-decoration:none;color:var(--text);" class="statement-aside-link">
-      &rarr; More about us
-    </a>
-    <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" style="font-size:0.88rem;font-weight:600;text-decoration:none;color:var(--text);" class="statement-aside-link">
-      &rarr; Book a discovery
-    </a>
+  <p class="v5-approach__statement" data-split>
+    <span class="v5-approach__num">01</span>
+    We start with how your week really runs &mdash; the calls, the quotes, the follow-ups &mdash; and build the smallest system that takes that work off your plate. <span class="v5-muted">You keep the keys to everything we set up.</span>
+  </p>
+
+  <ul class="v5-approach__links" data-reveal>
+    <li><a class="v5-link" href="<?php echo esc_url( home_url( '/process/' ) ); ?>">&rarr; How we work</a></li>
+    <li><a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">&rarr; Book a discovery call</a></li>
+  </ul>
+</section>
+
+<!-- 3. SELECTED WORK -->
+<section class="v5-work" id="work" aria-labelledby="v5-work-title">
+  <header class="v5-section-head ae-rule">
+    <h2 class="v5-section-title" id="v5-work-title" data-split>Selected work</h2>
+    <a class="v5-link v5-label" href="<?php echo esc_url( home_url( '/work/' ) ); ?>" data-reveal>&rarr; See all work</a>
+  </header>
+
+  <div class="v5-work__grid">
+    <?php foreach ( $ae_work as $i => $item ) : ?>
+      <a class="v5-card<?php echo 0 === $i ? ' v5-card--wide' : ''; ?>" href="<?php echo esc_url( $item['url'] ); ?>" data-reveal>
+        <span class="v5-card__media ae-media">
+          <img src="<?php echo esc_url( $item['img'] ); ?>" alt="<?php echo esc_attr( $item['alt'] ); ?>" loading="lazy" decoding="async" width="1440" height="900">
+        </span>
+        <span class="v5-card__caption">
+          <span class="v5-card__num"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
+          <span class="v5-card__title"><?php echo esc_html( $item['title'] ); ?></span>
+          <span class="v5-card__tag"><?php echo esc_html( $item['type'] . ' · ' . $item['tag'] ); ?></span>
+        </span>
+        <span class="v5-card__desc"><?php echo esc_html( $item['desc'] ); ?></span>
+      </a>
+    <?php endforeach; ?>
   </div>
 </section>
 
-<!-- 3. 2-COLUMN SELECTED SOLUTIONS SHOWCASE (Matthieu Grid with Animated Cards) -->
-<section class="works-section" id="work">
-  <div class="works-header" data-reveal>
-    <h2 style="font-size:clamp(2rem, 4vw, 3.2rem);font-weight:700;letter-spacing:-0.03em;text-transform:uppercase;">
-      Selected Work &amp; Systems
-    </h2>
-    <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" style="font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text);text-decoration:none;">
-      [ See All Work &rarr; ]
-    </a>
-  </div>
+<!-- 4. WHAT WE DO -->
+<section class="v5-services" id="services" aria-labelledby="v5-services-title">
+  <header class="v5-section-head ae-rule">
+    <h2 class="v5-section-title" id="v5-services-title" data-split>What we do</h2>
+    <span class="v5-label" data-reveal>[ Four ways in ]</span>
+  </header>
 
-  <div class="works-grid">
-    <!-- Project 01: Home Services Platform -->
-    <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="work-card delay-1" data-reveal="scale">
-      <div class="work-preview-frame">
-        <div style="width:90%;height:84%;background:#FFFFFF;border:1px solid var(--border-strong);border-radius:6px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,0.06);display:flex;flex-direction:column;">
-          <div style="background:#F2F2EF;padding:8px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;gap:5px;">
-              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
-              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
-              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
-            </div>
-            <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-secondary);letter-spacing:0.04em;">Apex Home Services</span>
-          </div>
-          <div style="flex:1;position:relative;overflow:hidden;background:#F9F9F7;">
-            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/template-previews/home-services.jpg' ); ?>" alt="Home Services Website Project Preview" style="width:100%;height:100%;object-fit:cover;object-position:top;" loading="lazy">
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;">
-        <div style="display:flex;align-items:baseline;gap:12px;">
-          <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">01</span>
-          <h3 style="font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;">Apex Home Services &amp; Dispatch</h3>
-        </div>
-        <span class="work-arrow" style="font-size:1.2rem;">&rarr;</span>
-      </div>
-      <p style="font-size:0.9rem;color:var(--text-secondary);margin-top:6px;padding-left:32px;line-height:1.5;">
-        Local service brand architecture, automated estimate booking, and real-time mobile customer intake.
-      </p>
-    </a>
-
-    <!-- Project 02: Professional Legal Practice -->
-    <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="work-card delay-2" data-reveal="scale">
-      <div class="work-preview-frame" style="background:#EFEFEA;">
-        <div style="width:90%;height:84%;background:#FFFFFF;border:1px solid var(--border-strong);border-radius:6px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,0.06);display:flex;flex-direction:column;">
-          <div style="background:#F2F2EF;padding:8px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;gap:5px;">
-              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
-              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
-              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
-            </div>
-            <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-secondary);letter-spacing:0.04em;">Vanguard Legal Counsel</span>
-          </div>
-          <div style="flex:1;position:relative;overflow:hidden;background:#F9F9F7;">
-            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/template-previews/law-firm.jpg' ); ?>" alt="Law Firm Practice Website Preview" style="width:100%;height:100%;object-fit:cover;object-position:top;" loading="lazy">
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;">
-        <div style="display:flex;align-items:baseline;gap:12px;">
-          <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">02</span>
-          <h3 style="font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;">Vanguard Legal Counsel</h3>
-        </div>
-        <span class="work-arrow" style="font-size:1.2rem;">&rarr;</span>
-      </div>
-      <p style="font-size:0.9rem;color:var(--text-secondary);margin-top:6px;padding-left:32px;line-height:1.5;">
-        Editorial legal platform focused on trust, practice area navigation, and confidential client consultation intake.
-      </p>
-    </a>
-
-    <!-- Project 03: Modern Dental Practice -->
-    <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="work-card delay-1" data-reveal="scale" style="margin-top:20px;">
-      <div class="work-preview-frame">
-        <div style="width:90%;height:84%;background:#FFFFFF;border:1px solid var(--border-strong);border-radius:6px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,0.06);display:flex;flex-direction:column;">
-          <div style="background:#F2F2EF;padding:8px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;gap:5px;">
-              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
-              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
-              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
-            </div>
-            <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-secondary);letter-spacing:0.04em;">Lumina Dental Care</span>
-          </div>
-          <div style="flex:1;position:relative;overflow:hidden;background:#F9F9F7;">
-            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/template-previews/dental-practice.jpg' ); ?>" alt="Dental Clinic Website Preview" style="width:100%;height:100%;object-fit:cover;object-position:top;" loading="lazy">
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;">
-        <div style="display:flex;align-items:baseline;gap:12px;">
-          <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">03</span>
-          <h3 style="font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;">Lumina Dental Studio</h3>
-        </div>
-        <span class="work-arrow" style="font-size:1.2rem;">&rarr;</span>
-      </div>
-      <p style="font-size:0.9rem;color:var(--text-secondary);margin-top:6px;padding-left:32px;line-height:1.5;">
-        Calm, patient-friendly web portal with online appointment scheduling, team bios, and service outlines.
-      </p>
-    </a>
-
-    <!-- Project 04: Real Estate & Property Group -->
-    <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="work-card delay-2" data-reveal="scale" style="margin-top:20px;">
-      <div class="work-preview-frame" style="background:#EAECE8;">
-        <div style="width:90%;height:84%;background:#FFFFFF;border:1px solid var(--border-strong);border-radius:6px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,0.06);display:flex;flex-direction:column;">
-          <div style="background:#F2F2EF;padding:8px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;gap:5px;">
-              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
-              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
-              <span style="width:7px;height:7px;border-radius:50%;background:#D0D0CB;"></span>
-            </div>
-            <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-secondary);letter-spacing:0.04em;">Meridian Real Estate</span>
-          </div>
-          <div style="flex:1;position:relative;overflow:hidden;background:#F9F9F7;">
-            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/template-previews/real-estate-agent.jpg' ); ?>" alt="Real Estate Website Preview" style="width:100%;height:100%;object-fit:cover;object-position:top;" loading="lazy">
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;">
-        <div style="display:flex;align-items:baseline;gap:12px;">
-          <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">04</span>
-          <h3 style="font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;">Meridian Property Group</h3>
-        </div>
-        <span class="work-arrow" style="font-size:1.2rem;">&rarr;</span>
-      </div>
-      <p style="font-size:0.9rem;color:var(--text-secondary);margin-top:6px;padding-left:32px;line-height:1.5;">
-        Property showcase architecture featuring interactive listings, agent profiles, and direct lead capture.
-      </p>
-    </a>
-  </div>
+  <ol class="v5-services__list">
+    <li class="v5-service ae-rule" data-reveal>
+      <span class="v5-service__num">01</span>
+      <h3 class="v5-service__title">Business review</h3>
+      <p class="v5-service__text">We sit with how your team works today, find where hours and leads slip away, and hand you a plain-English plan.</p>
+      <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/services/' ) ); ?>">Details</a>
+    </li>
+    <li class="v5-service ae-rule" data-reveal>
+      <span class="v5-service__num">02</span>
+      <h3 class="v5-service__title">Workflow automation</h3>
+      <p class="v5-service__text">Missed-call text-back, instant lead replies, quote follow-ups and booking reminders that run without anyone remembering to.</p>
+      <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/services/' ) ); ?>">Details</a>
+    </li>
+    <li class="v5-service ae-rule" data-reveal>
+      <span class="v5-service__num">03</span>
+      <h3 class="v5-service__title">Websites</h3>
+      <p class="v5-service__text">Fast, clear sites that explain what you do and turn visitors into calls, bookings and quote requests.</p>
+      <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/websites/' ) ); ?>">Details</a>
+    </li>
+    <li class="v5-service ae-rule" data-reveal>
+      <span class="v5-service__num">04</span>
+      <h3 class="v5-service__title">CRM &amp; systems</h3>
+      <p class="v5-service__text">One place for leads, client history and documents, set up around how your staff already works.</p>
+      <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>">Details</a>
+    </li>
+  </ol>
 </section>
 
-<!-- 4. CORE SERVICES / CAPABILITIES -->
-<section style="padding:80px 40px 120px;max-width:1400px;margin:0 auto;border-top:1px solid var(--border);" id="services">
-  <div class="works-header" data-reveal>
-    <h2 style="font-size:clamp(2rem, 4vw, 3.2rem);font-weight:700;letter-spacing:-0.03em;text-transform:uppercase;">
-      How We Help
-    </h2>
-    <span style="font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);">
-      [ 04 Core Services ]
-    </span>
-  </div>
-
-  <div style="display:flex;flex-direction:column;">
-    <div class="cap-item-row delay-1" data-reveal>
-      <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">01</span>
-      <h3 style="font-size:1.6rem;font-weight:700;letter-spacing:-0.02em;">Business Review &amp; Audit</h3>
-      <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.5;padding-right:20px;">
-        We analyze your daily operations, find bottlenecks slowing down your team, and outline a straightforward plan of action.
-      </p>
-      <span style="text-align:right;font-family:var(--font-mono);font-size:0.8rem;color:var(--text);font-weight:600;">[ Plan ]</span>
-    </div>
-
-    <div class="cap-item-row delay-2" data-reveal>
-      <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">02</span>
-      <h3 style="font-size:1.6rem;font-weight:700;letter-spacing:-0.02em;">Workflow Automation</h3>
-      <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.5;padding-right:20px;">
-        Connect disjointed apps, eliminate manual copy-pasting, and ensure quotes and follow-ups happen automatically.
-      </p>
-      <span style="text-align:right;font-family:var(--font-mono);font-size:0.8rem;color:var(--text);font-weight:600;">[ Streamline ]</span>
-    </div>
-
-    <div class="cap-item-row delay-3" data-reveal>
-      <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">03</span>
-      <h3 style="font-size:1.6rem;font-weight:700;letter-spacing:-0.02em;">Modern Websites</h3>
-      <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.5;padding-right:20px;">
-        Fast, accessible, and clean web design that represents your expertise and converts visitors into conversations.
-      </p>
-      <span style="text-align:right;font-family:var(--font-mono);font-size:0.8rem;color:var(--text);font-weight:600;">[ Build ]</span>
-    </div>
-
-    <div class="cap-item-row delay-4" data-reveal>
-      <span style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-tertiary);">04</span>
-      <h3 style="font-size:1.6rem;font-weight:700;letter-spacing:-0.02em;">CRM &amp; Systems Setup</h3>
-      <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.5;padding-right:20px;">
-        Organize leads, client history, and documents into a simple, reliable hub tailored to your staff.
-      </p>
-      <span style="text-align:right;font-family:var(--font-mono);font-size:0.8rem;color:var(--text);font-weight:600;">[ Support ]</span>
-    </div>
-  </div>
+<!-- 5. CLOSING CTA -->
+<section class="v5-closing ae-rule" aria-labelledby="v5-closing-title">
+  <h2 class="v5-closing__title" id="v5-closing-title" data-split>Have a process that eats your week? Let&rsquo;s take it apart.</h2>
+  <a class="v5-button" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-reveal>Book a discovery call</a>
 </section>
 
 <?php

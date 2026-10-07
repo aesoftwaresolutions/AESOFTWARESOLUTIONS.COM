@@ -16,7 +16,7 @@
                 <span class="work-card__tag">Health Tech Platform</span>
             </div>
             <a href="https://monarchmvc.com" target="_blank" rel="noopener" aria-label="Visit monarchmvc.com">
-                <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fmonarchmvc.com?w=1200" alt="Live screenshot of monarchmvc.com" loading="lazy" style="display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;border-radius:12px;margin-bottom:18px;background:#0f1216;">
+                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/work/monarch-mvc.jpg' ); ?>" alt="Monarch MVC home page" loading="lazy" decoding="async" width="1440" height="900" class="work-card__shot">
             </a>
             <h2 class="work-card__title">Monarch MVC</h2>
             <p class="work-card__desc">A full-stack men's health platform serving 1,000+ active patients across all 50 states. Clinician-led hormone optimisation, advanced blood testing, and personalised treatment — all managed through a custom patient portal and provider dashboard.</p>
@@ -41,6 +41,9 @@
                 <span class="work-card__num">02</span>
                 <span class="work-card__tag">Personal Portfolio</span>
             </div>
+            <a href="https://anthonypioquinto.com" target="_blank" rel="noopener" aria-label="Visit anthonypioquinto.com">
+                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/work/anthony-pioquinto.jpg' ); ?>" alt="Anthony Pioquinto portfolio home page" loading="lazy" decoding="async" width="1440" height="900" class="work-card__shot">
+            </a>
             <h2 class="work-card__title">Anthony Pioquinto</h2>
             <p class="work-card__desc">A high-end personal portfolio and professional presence site for a Business Development Manager at Coastal Lending Group. Dark editorial design with gold accents — showcasing real estate expertise, digital projects, and consulting services.</p>
             <ul class="work-card__outcomes">
@@ -64,7 +67,7 @@
                 <span class="work-card__tag">Creator & Education Brand</span>
             </div>
             <a href="https://learnenglishwithevie.com" target="_blank" rel="noopener" aria-label="Visit learnenglishwithevie.com">
-                <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Flearnenglishwithevie.com?w=1200" alt="Live screenshot of learnenglishwithevie.com" loading="lazy" style="display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;border-radius:12px;margin-bottom:18px;background:#0f1216;">
+                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/work/learn-english-with-evie.jpg' ); ?>" alt="Learn English with Evie home page" loading="lazy" decoding="async" width="1440" height="900" class="work-card__shot">
             </a>
             <h2 class="work-card__title">Learn English with Evie</h2>
             <p class="work-card__desc">A custom-built brand and marketing site for a UK-based English educator — turning YouTube viewers and podcast listeners into paying students. Fast, responsive pages with a conversion-focused journey from free content to memberships and courses.</p>

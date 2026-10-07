@@ -1,6 +1,7 @@
 <?php
 /**
- * The template for displaying the footer — v4.2 with Full Intersection Observer Animation Engine
+ * Site footer — v5 editorial.
+ * Animations (loader, reveals, page transitions) live in assets/js/ae-motion.js.
  *
  * @package AE_Softwares
  */
@@ -8,115 +9,40 @@
 
 </main><!-- .site-main -->
 
-<footer class="site-footer" data-reveal>
-  <div class="footer-col delay-1" data-reveal>
-    <h4>[ Information ]</h4>
-    <div class="footer-big-text">
-      I'm always looking to meet small business owners, collaborate on new systems, and solve real workflow bottlenecks. <a href="mailto:anthony@aesoftwaresolutions.com">Feel free to say hello.</a>
-    </div>
+<footer class="site-footer v5-footer ae-rule">
+  <div class="v5-footer__intro">
+    <p class="v5-label" data-reveal>[ Say hello ]</p>
+    <p class="v5-footer__big" data-split>
+      Got a workflow that needs untangling, or a website that should be pulling its weight? <a class="v5-link" href="mailto:anthony@aesoftwaresolutions.com">Tell us about it.</a>
+    </p>
   </div>
 
-  <div class="footer-col delay-2" data-reveal>
-    <h4>[ Navigation ]</h4>
-    <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;font-size:0.95rem;">
-      <li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" style="color:var(--text);text-decoration:none;">Services & Consulting</a></li>
-      <li><a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" style="color:var(--text);text-decoration:none;">Selected Works</a></li>
-      <li><a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" style="color:var(--text);text-decoration:none;">Custom Websites</a></li>
-      <li><a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" style="color:var(--text);text-decoration:none;">Pricing ($50/mo)</a></li>
-      <li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" style="color:var(--text);text-decoration:none;">About AE Software</a></li>
+  <nav class="v5-footer__col" aria-label="Footer">
+    <p class="v5-label" data-reveal>[ Pages ]</p>
+    <ul data-reveal>
+      <li><a class="v5-link" href="<?php echo esc_url( home_url( '/services/' ) ); ?>">Services</a></li>
+      <li><a class="v5-link" href="<?php echo esc_url( home_url( '/work/' ) ); ?>">Work</a></li>
+      <li><a class="v5-link" href="<?php echo esc_url( home_url( '/websites/' ) ); ?>">Websites</a></li>
+      <li><a class="v5-link" href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>">Pricing</a></li>
+      <li><a class="v5-link" href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a></li>
+      <li><a class="v5-link" href="<?php echo esc_url( home_url( '/free-tools/' ) ); ?>">Free tools</a></li>
+    </ul>
+  </nav>
+
+  <div class="v5-footer__col">
+    <p class="v5-label" data-reveal>[ Contact ]</p>
+    <ul data-reveal>
+      <li><a class="v5-link" href="mailto:anthony@aesoftwaresolutions.com">anthony@aesoftwaresolutions.com</a></li>
+      <li>Chambersburg, PA</li>
+      <li>Mon&ndash;Fri, 9am&ndash;5pm ET</li>
     </ul>
   </div>
 
-  <div class="footer-col delay-3" data-reveal>
-    <h4>[ Direct Contact ]</h4>
-    <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:0.9rem;color:var(--text-secondary);">
-      <li><strong style="color:var(--text);">Email:</strong> <a href="mailto:anthony@aesoftwaresolutions.com" style="color:inherit;">anthony@aesoftwaresolutions.com</a></li>
-      <li><strong style="color:var(--text);">Location:</strong> Chambersburg, PA</li>
-      <li><strong style="color:var(--text);">Hours:</strong> Mon – Fri, 9am – 5pm ET</li>
-    </ul>
-  </div>
-
-  <div class="footer-legal-row" style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;padding-top:40px;margin-top:30px;border-top:1px solid var(--border);font-family:var(--font-mono);font-size:0.75rem;color:var(--text-tertiary);" data-reveal>
-    <div>&copy; <?php echo esc_html( date( 'Y' ) ); ?> AE Software Solutions LLC. All rights reserved.</div>
-    <div>[ Practical systems. Real business outcomes. ]</div>
+  <div class="v5-footer__legal ae-rule">
+    <span>&copy; <?php echo esc_html( date( 'Y' ) ); ?> AE Software Solutions LLC</span>
+    <a class="v5-link" href="#main-content" data-no-transition>Back to top &uarr;</a>
   </div>
 </footer>
-
-<script>
-  // Seamless Counter loader matching Matthieu Givelet's entrance + Global Animation Engine
-  (function() {
-    'use strict';
-
-    // 1. Initial 0% -> 100% Counter Loader
-    var count = 0;
-    var num = document.getElementById('ae-loader-num');
-    var loader = document.getElementById('ae-loader');
-    
-    function triggerEntrance() {
-      document.body.classList.add('loaded');
-      
-      // Auto-reveal elements already visible in the viewport on initial load
-      var heroElements = document.querySelectorAll('.hero-container [data-reveal]');
-      heroElements.forEach(function(el) {
-        el.classList.add('is-revealed');
-      });
-    }
-
-    var skipLoader = document.documentElement.classList.contains('ae-skip-loader');
-
-    if (num && loader && !skipLoader) {
-      var timer = setInterval(function() {
-        count += Math.floor(Math.random() * 16) + 8;
-        if (count >= 100) {
-          count = 100;
-          num.textContent = '100%';
-          clearInterval(timer);
-          setTimeout(function() {
-            loader.style.transform = 'translateY(-100%)';
-            triggerEntrance();
-          }, 200);
-        } else {
-          num.textContent = count + '%';
-        }
-      }, 30);
-    } else {
-      triggerEntrance();
-    }
-
-    // 2. Scroll-triggered header compression
-    var header = document.querySelector('header.site-header');
-    if (header) {
-      window.addEventListener('scroll', function() {
-        header.classList.toggle('aec--scrolled', window.scrollY > 40);
-      }, { passive: true });
-    }
-
-    // 3. High-Performance IntersectionObserver for Sitewide Smooth Scroll Reveals
-    if ('IntersectionObserver' in window) {
-      var observer = new IntersectionObserver(function(entries, obs) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-revealed');
-            obs.unobserve(entry.target);
-          }
-        });
-      }, {
-        root: null,
-        rootMargin: '0px 0px -8% 0px',
-        threshold: 0.12
-      });
-
-      document.querySelectorAll('[data-reveal]').forEach(function(el) {
-        observer.observe(el);
-      });
-    } else {
-      // Fallback for older browsers
-      document.querySelectorAll('[data-reveal]').forEach(function(el) {
-        el.classList.add('is-revealed');
-      });
-    }
-  })();
-</script>
 
 <?php wp_footer(); ?>
 

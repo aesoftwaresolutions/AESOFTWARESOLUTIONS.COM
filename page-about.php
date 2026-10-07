@@ -39,22 +39,32 @@
     </div>
 </section>
 
-<section class="stats-section" aria-label="Company stats">
-    <div class="stats-row">
-        <div class="stat-item">
-            <div class="stat-number" data-target="50" data-suffix="+">50+</div>
-            <div class="stat-label">Assessments delivered</div>
-        </div>
-        <div class="stat-divider" aria-hidden="true"></div>
-        <div class="stat-item">
-            <div class="stat-number" data-target="98" data-suffix="%">98%</div>
-            <div class="stat-label">Client satisfaction</div>
-        </div>
-        <div class="stat-divider" aria-hidden="true"></div>
-        <div class="stat-item">
-            <div class="stat-number" data-target="5" data-suffix="x">5x</div>
-            <div class="stat-label">Avg efficiency gain</div>
-        </div>
+<?php
+// Real client work in place of the old stats row (50+ / 98% / 5x could not be backed up).
+$ae_about_work = [
+    [ 'Monarch MVC', 'Health platform', 'monarch-mvc.jpg', 'Monarch MVC men’s health platform home page' ],
+    [ 'Learn English with Evie', 'Education', 'learn-english-with-evie.jpg', 'Learn English with Evie lesson booking site' ],
+    [ 'Anthony Pioquinto', 'Personal brand', 'anthony-pioquinto.jpg', 'Anthony Pioquinto real estate portfolio site' ],
+];
+?>
+<section class="v5-recent" aria-labelledby="about-recent-title">
+    <header class="v5-section-head ae-rule">
+        <h2 class="v5-section-title" id="about-recent-title" data-split>Recent client work</h2>
+        <a class="v5-link v5-label" href="<?php echo esc_url( home_url( '/work/' ) ); ?>" data-reveal>&rarr; See all work</a>
+    </header>
+    <div class="v5-work__grid v5-work__grid--three">
+        <?php foreach ( $ae_about_work as $i => $w ) : ?>
+            <a class="v5-card" href="<?php echo esc_url( home_url( '/work/' ) ); ?>" data-reveal>
+                <span class="v5-card__media ae-media">
+                    <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/work/' . $w[2] ); ?>" alt="<?php echo esc_attr( $w[3] ); ?>" loading="lazy" decoding="async" width="1440" height="900">
+                </span>
+                <span class="v5-card__caption">
+                    <span class="v5-card__num"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
+                    <span class="v5-card__title"><?php echo esc_html( $w[0] ); ?></span>
+                    <span class="v5-card__tag"><?php echo esc_html( $w[1] ); ?></span>
+                </span>
+            </a>
+        <?php endforeach; ?>
     </div>
 </section>
 
