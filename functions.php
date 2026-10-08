@@ -250,6 +250,14 @@ add_action( 'init', function () {
 }, 99 );
 
 
+// ── No Google ads on our own site ───────────────────────────────────────────
+// Site Kit's AdSense module was injecting auto ads on every page. These Site
+// Kit filters stop the AdSense tag (normal and AMP) while leaving Analytics
+// and Search Console untouched.
+add_filter( 'googlesitekit_adsense_tag_blocked', '__return_true' );
+add_filter( 'googlesitekit_adsense_tag_amp_blocked', '__return_true' );
+
+
 // ── Theme supports ────────────────────────────────────────────────────────
 function aesoftwares_setup() {
     add_theme_support( 'title-tag' );
