@@ -39,7 +39,7 @@
     </ul>
   </div>
 
-  <p class="v5-wordmark" aria-hidden="true"><span>AE</span><span>Software</span></p>
+  <p class="v5-wordmark" aria-hidden="true"><span>AE Software</span><span>Solutions</span></p>
 
   <div class="v5-footer__legal ae-rule">
     <span>&copy; <?php echo esc_html( date( 'Y' ) ); ?> AE Software Solutions LLC</span>

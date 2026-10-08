@@ -399,7 +399,7 @@
     header.className = 'ae-widget-header';
     header.innerHTML = `
       <div class="ae-widget-header-text">
-        <h3>AE Software</h3>
+        <h3>AE Software Solutions</h3>
         <p>Ask Ava anything</p>
       </div>
       <button class="ae-widget-close-btn" title="Close">✕</button>
@@ -456,7 +456,7 @@
     }
 
     function loadInitialGreeting() {
-      const greeting = 'Hi! I\'m Ava from AE Software. What kind of business do you run?';
+      const greeting = 'Hi! I\'m Ava from AE Software Solutions. What kind of business do you run?';
       addMessage('assistant', greeting);
     }
 

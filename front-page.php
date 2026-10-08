@@ -48,9 +48,6 @@ $ae_work = [
 	],
 ];
 
-// The image window in the headline cycles through the same screenshots.
-// Skip the first project (Monarch MVC): it already runs full width in Selected work.
-$ae_window = array_column( array_slice( $ae_work, 1 ), 'img' );
 ?>
 
 <!-- 1. HERO -->
@@ -61,11 +58,6 @@ $ae_window = array_column( array_slice( $ae_work, 1 ), 'img' );
     <span class="v5-hero__line" data-split data-split-delay="0.08">business work</span>
     <span class="v5-hero__line v5-hero__line--last">
       <span class="v5-hero__accent" data-split data-split-delay="0.16">better.</span>
-      <span class="v5-window" aria-hidden="true">
-        <?php foreach ( $ae_window as $i => $src ) : ?>
-          <img src="<?php echo esc_url( $src ); ?>" alt="" class="v5-window__img<?php echo 0 === $i ? ' is-active' : ''; ?>" decoding="async" <?php echo 0 === $i ? 'fetchpriority="high"' : 'loading="lazy"'; ?>>
-        <?php endforeach; ?>
-      </span>
     </span>
   </h1>
 

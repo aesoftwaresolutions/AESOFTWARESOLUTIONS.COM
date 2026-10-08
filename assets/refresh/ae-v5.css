@@ -954,3 +954,17 @@ html:not(.ae-js) .v5-wordmark span { transform: none; }
   .op-score__dial { width: 132px; height: 132px; }
 }
 html.ae-calm .v5-seq__step { opacity: 1; transform: none; }
+
+/* Wordmark: full company name, stacked on two lines */
+.v5-wordmark {
+  flex-direction: column;
+  align-items: stretch;
+  font-size: clamp(3rem, 15.5vw, 15rem);
+  line-height: .86;
+}
+.v5-wordmark span { white-space: nowrap; }
+.v5-wordmark span:last-child { align-self: flex-end; }
+
+/* Header logo: full name on one line */
+.site-header__logo { font-size: .9rem; }
+@media (max-width: 400px) { .site-header__logo { font-size: .82rem; } }
