@@ -1412,6 +1412,14 @@ add_filter( 'wpseo_robots', function ( $robots ) {
     }
     return $robots;
 }, 20 );
+// Newer Yoast versions build robots from an array; cover that path too.
+add_filter( 'wpseo_robots_array', function ( $robots ) {
+    if ( aesoftwares_seo_meta() && is_array( $robots ) ) {
+        $robots['index']  = 'index';
+        $robots['follow'] = 'follow';
+    }
+    return $robots;
+}, 20 );
 
 // Create the Online Presence page once, assigned to its template, so it
 // exists without anyone having to add it in WP Admin.
