@@ -8,6 +8,9 @@
 // ── Aria REST API endpoints (push/status/assets) ─────────────────────────────
 require_once get_template_directory() . '/inc/aria-api.php';
 
+// ── Offer lineup (prices, plans, guarantee) — edit prices in inc/offers.php ──
+require_once get_template_directory() . '/inc/offers.php';
+
 // ══════════════════════════════════════════════════════════════════════════════
 // 1. ENQUEUE SCRIPTS & STYLES
 // ══════════════════════════════════════════════════════════════════════════════
@@ -1285,7 +1288,7 @@ add_action( 'wp_head', function () {
         'url'         => home_url( '/' ),
         'email'       => 'anthony@aesoftwaresolutions.com',
         'image'       => get_template_directory_uri() . '/assets/img/work/monarch-mvc.jpg',
-        'description' => 'Website design, online presence management and business automation for small businesses in Chambersburg, PA and South Central Pennsylvania.',
+        'description' => 'Website design, online presence management and follow-up automation for local service businesses in Chambersburg, PA and South Central Pennsylvania.',
         'address'     => [
             '@type'           => 'PostalAddress',
             'addressLocality' => 'Chambersburg',
@@ -1301,9 +1304,9 @@ add_action( 'wp_head', function () {
             'name'            => 'Services',
             'itemListElement' => [
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Website design', 'url' => home_url( '/websites/' ) ] ],
-                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Online presence management', 'url' => home_url( '/online-presence/' ) ] ],
-                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Workflow automation', 'url' => home_url( '/services/' ) ] ],
-                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'CRM setup', 'url' => home_url( '/business-starter/' ) ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Online presence management', 'url' => home_url( '/online-presence/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 199, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Follow-up automation (Always-On Front Desk)', 'url' => home_url( '/pricing/#front-desk' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 250, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Missed-Lead Audit', 'url' => home_url( '/pricing/#audit' ) ], 'price' => 250, 'priceCurrency' => 'USD' ],
             ],
         ],
     ];
@@ -1318,9 +1321,9 @@ add_action( 'wp_head', function () {
             'provider'    => [ '@id' => home_url( '/#localbusiness' ) ],
             'areaServed'  => aesoftwares_service_area(),
             'offers'      => [
-                [ '@type' => 'Offer', 'name' => 'Online Presence site', 'priceSpecification' => [ '@type' => 'PriceSpecification', 'minPrice' => 1500, 'maxPrice' => 3500, 'priceCurrency' => 'USD' ] ],
-                [ '@type' => 'Offer', 'name' => 'Business Lead Funnel', 'priceSpecification' => [ '@type' => 'PriceSpecification', 'minPrice' => 4500, 'maxPrice' => 7500, 'priceCurrency' => 'USD' ] ],
-                [ '@type' => 'Offer', 'name' => 'Digital Operations Platform', 'priceSpecification' => [ '@type' => 'PriceSpecification', 'minPrice' => 8000, 'maxPrice' => 13000, 'priceCurrency' => 'USD' ] ],
+                [ '@type' => 'Offer', 'name' => 'Starter Site', 'priceSpecification' => [ '@type' => 'PriceSpecification', 'minPrice' => 1500, 'priceCurrency' => 'USD' ] ],
+                [ '@type' => 'Offer', 'name' => 'Lead Funnel Site', 'priceSpecification' => [ '@type' => 'PriceSpecification', 'minPrice' => 4500, 'priceCurrency' => 'USD' ] ],
+                [ '@type' => 'Offer', 'name' => 'Launch Package', 'price' => 1950, 'priceCurrency' => 'USD' ],
             ],
         ], JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
     }
@@ -1347,16 +1350,20 @@ function aesoftwares_seo_meta() {
                 'Online presence management for small businesses: Google Business Profile, review replies, consistent listings and website care. Free presence check. Chambersburg, PA.',
             ],
             'services' => [
-                'Services: Websites, Online Presence & Automation | AE Software Solutions',
-                'Website design, online presence management, workflow automation and CRM setup for small businesses in Chambersburg, PA and beyond.',
+                'Services: Website Design, Google Presence & Follow-Up | AE Software Solutions',
+                'Websites, Google Business Profile and review management, and missed-call follow-up automation for local service businesses in Chambersburg, PA.',
+            ],
+            'pricing' => [
+                'Pricing: Websites from $1,500, Presence Care $199/mo | AE Software Solutions',
+                'Clear prices for small business websites, Google presence management and follow-up automation. Free presence check, $250 audit, 60-day guarantee.',
             ],
             'work' => [
                 'Our Work: Websites & Systems for Small Businesses | AE Software Solutions',
                 'Websites and business systems we have designed and built for real clients, from a men’s health platform to an online English school.',
             ],
             'about' => [
-                'About AE Software Solutions | Web Design & Automation, Chambersburg, PA',
-                'AE Software Solutions is a small, founder-led studio in Chambersburg, PA building websites, online presence and automation for small businesses.',
+                'About AE Software Solutions | Web Design & Online Presence, Chambersburg, PA',
+                'A small, founder-led studio in Chambersburg, PA building websites, Google presence and follow-up automation for local businesses. Fixed prices; you own everything.',
             ],
             'contact' => [
                 'Contact AE Software Solutions | Free Website & Presence Consultation',
@@ -1415,6 +1422,9 @@ add_action( 'wp_head', function () {
 // The pricing page (business-starter) was set to noindex in Yoast, so Google
 // was told not to list it. Allow indexing for the pages above.
 add_filter( 'wpseo_robots', function ( $robots ) {
+    if ( is_page( 'rewriter' ) ) {
+        return 'noindex, follow'; // parked: off-brand for business buyers
+    }
     if ( aesoftwares_seo_meta() ) {
         return 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
     }
@@ -1422,6 +1432,10 @@ add_filter( 'wpseo_robots', function ( $robots ) {
 }, 20 );
 // Newer Yoast versions build robots from an array; cover that path too.
 add_filter( 'wpseo_robots_array', function ( $robots ) {
+    if ( is_page( 'rewriter' ) && is_array( $robots ) ) {
+        $robots['index'] = 'noindex';
+        return $robots;
+    }
     if ( aesoftwares_seo_meta() && is_array( $robots ) ) {
         $robots['index']  = 'index';
         $robots['follow'] = 'follow';
@@ -1431,6 +1445,24 @@ add_filter( 'wpseo_robots_array', function ( $robots ) {
 
 // Create the Online Presence page once, assigned to its template, so it
 // exists without anyone having to add it in WP Admin.
+add_action( 'init', function () {
+    if ( get_option( 'ae_pricing_page_created' ) ) {
+        return;
+    }
+    if ( ! get_page_by_path( 'pricing' ) ) {
+        $id = wp_insert_post( [
+            'post_type'   => 'page',
+            'post_status' => 'publish',
+            'post_title'  => 'Pricing',
+            'post_name'   => 'pricing',
+        ] );
+        if ( $id && ! is_wp_error( $id ) ) {
+            update_post_meta( $id, '_wp_page_template', 'page-pricing.php' );
+        }
+    }
+    update_option( 'ae_pricing_page_created', 1, false );
+}, 31 );
+
 add_action( 'init', function () {
     if ( get_option( 'ae_online_presence_page_created' ) ) {
         return;

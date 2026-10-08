@@ -9,19 +9,9 @@
 <section class="free-tools-section">
 	<div class="free-tools-grid">
 
-		<a href="<?php echo esc_url( home_url( '/rewriter/' ) ); ?>" class="tool-card">
-			<div class="tool-card__header">
-				<span class="tool-card__num">01</span>
-				<span class="tool-card__tag">Content</span>
-			</div>
-			<h2 class="tool-card__title">AI Content Rewriter</h2>
-			<p class="tool-card__desc">Paste any AI-generated or stiff-sounding text and get a natural, human-sounding rewrite — built to clear AI detection tools like CopyLeaks and GPTZero. Standard, academic, and casual modes.</p>
-			<span class="tool-card__cta">Try it free &rarr;</span>
-		</a>
-
 		<a href="<?php echo esc_url( home_url( '/email-drafter/' ) ); ?>" class="tool-card">
 			<div class="tool-card__header">
-				<span class="tool-card__num">02</span>
+				<span class="tool-card__num">01</span>
 				<span class="tool-card__tag">Email</span>
 			</div>
 			<h2 class="tool-card__title">AI Email Drafter</h2>
@@ -31,7 +21,7 @@
 
 		<a href="<?php echo esc_url( home_url( '/summarizer/' ) ); ?>" class="tool-card">
 			<div class="tool-card__header">
-				<span class="tool-card__num">03</span>
+				<span class="tool-card__num">02</span>
 				<span class="tool-card__tag">Research</span>
 			</div>
 			<h2 class="tool-card__title">AI Text Summarizer</h2>
@@ -41,7 +31,7 @@
 
 		<a href="<?php echo esc_url( home_url( '/transcriber/' ) ); ?>" class="tool-card">
 			<div class="tool-card__header">
-				<span class="tool-card__num">04</span>
+				<span class="tool-card__num">03</span>
 				<span class="tool-card__tag">Audio</span>
 			</div>
 			<h2 class="tool-card__title">AI Audio Transcriber</h2>

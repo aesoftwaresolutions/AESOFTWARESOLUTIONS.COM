@@ -24,9 +24,8 @@
       <li><a class="v5-link" href="<?php echo esc_url( home_url( '/work/' ) ); ?>">Work</a></li>
       <li><a class="v5-link" href="<?php echo esc_url( home_url( '/websites/' ) ); ?>">Website design</a></li>
       <li><a class="v5-link" href="<?php echo esc_url( home_url( '/online-presence/' ) ); ?>">Online presence</a></li>
-      <li><a class="v5-link" href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>">Pricing</a></li>
+      <li><a class="v5-link" href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>">Pricing</a></li>
       <li><a class="v5-link" href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a></li>
-      <li><a class="v5-link" href="<?php echo esc_url( home_url( '/free-tools/' ) ); ?>">Free tools</a></li>
     </ul>
   </nav>
 

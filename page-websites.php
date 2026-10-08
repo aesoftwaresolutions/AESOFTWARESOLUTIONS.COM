@@ -650,13 +650,14 @@ get_header(); ?>
         <!-- TIER 1: Portfolio / Online Presence -->
         <div class="web-tier js-fade" style="--delay:0s">
             <div class="web-tier__num">Tier 01</div>
-            <h2 class="web-tier__name">Online Presence</h2>
+            <h2 class="web-tier__name">Starter Site</h2>
             <p class="web-tier__tagline">Your professional home on the internet — built to impress, fast to load, and easy to update.</p>
             <div class="web-tier__includes-label">What's included</div>
             <ul class="web-tier__list">
                 <li>5–8 page custom-designed site</li>
                 <li>Mobile-responsive on all devices</li>
                 <li>Contact form with email delivery</li>
+                <li>Google Business Profile set up &amp; verified</li>
                 <li>Google Analytics setup</li>
                 <li>Basic SEO — titles, meta, sitemap</li>
                 <li>Portfolio or services showcase</li>
@@ -667,16 +668,15 @@ get_header(); ?>
             <div class="web-tier__price">
                 <span class="web-tier__price-from">from</span>
                 <span class="web-tier__price-num">$1,500</span>
-                <span class="web-tier__price-range">– $3,500</span>
             </div>
             <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>?service=website-presence" class="btn btn--ghost web-tier__cta">Get a Quote</a>
         </div>
 
         <!-- TIER 2: Lead Funnel -->
         <div class="web-tier web-tier--featured js-fade" style="--delay:0.1s">
-            <span class="web-tier__badge">Most Popular</span>
+            <span class="web-tier__badge">Recommended</span>
             <div class="web-tier__num">Tier 02</div>
-            <h2 class="web-tier__name">Business Lead Funnel</h2>
+            <h2 class="web-tier__name">Lead Funnel Site</h2>
             <p class="web-tier__tagline">A conversion-engineered site that captures, qualifies, and routes leads automatically — so you wake up to booked appointments.</p>
             <div class="web-tier__includes-label">Everything in Tier 01, plus</div>
             <ul class="web-tier__list">
@@ -693,7 +693,6 @@ get_header(); ?>
             <div class="web-tier__price">
                 <span class="web-tier__price-from">from</span>
                 <span class="web-tier__price-num">$4,500</span>
-                <span class="web-tier__price-range">– $7,500</span>
             </div>
             <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>?service=website-funnel" class="btn btn--primary web-tier__cta">Get a Quote</a>
         </div>
@@ -701,29 +700,28 @@ get_header(); ?>
         <!-- TIER 3: CRM Platform -->
         <div class="web-tier js-fade" style="--delay:0.2s">
             <div class="web-tier__num">Tier 03</div>
-            <h2 class="web-tier__name">Digital Operations Platform</h2>
-            <p class="web-tier__tagline">A full-stack web presence with a custom CRM, AI automation, and everything connected — built for operators who are done duct-taping tools together.</p>
+            <h2 class="web-tier__name">Custom Platform</h2>
+            <p class="web-tier__tagline">Client portals, custom dashboards and integrations with the software you already use. Scoped and priced after a call.</p>
             <div class="web-tier__includes-label">Everything in Tier 02, plus</div>
             <ul class="web-tier__list">
-                <li>Custom CRM portal — contacts, pipeline, deals</li>
-                <li>AI agent for follow-ups, drafts, scheduling</li>
+                <li>Connects to your existing job or booking software</li>
                 <li>Client-facing portal or intake system</li>
-                <li>Workflow automation (n8n or Zapier)</li>
+                <li>Workflow automation between your tools</li>
                 <li>Payment or invoice integration</li>
                 <li>Role-based access for your team</li>
                 <li>Custom reporting dashboard</li>
                 <li>90 days post-launch support + training</li>
             </ul>
-            <div class="web-tier__timeline">Delivered in 3–6 weeks</div>
+            <div class="web-tier__timeline">Timeline set during scoping</div>
             <div class="web-tier__price">
-                <span class="web-tier__price-from">from</span>
-                <span class="web-tier__price-num">$8,000</span>
-                <span class="web-tier__price-range">– $13,000</span>
+                <span class="web-tier__price-num">Quoted</span>
+                <span class="web-tier__price-range">after a scoping call</span>
             </div>
-            <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>?service=website-platform" class="btn btn--ghost web-tier__cta">Get a Quote</a>
+            <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>?service=website-platform" class="btn btn--ghost web-tier__cta">Start a conversation</a>
         </div>
 
     </div>
+    <p class="web-tiers-note js-fade">Keep it working after launch with <a href="<?php echo esc_url( home_url( '/pricing/#presence-care' ) ); ?>">Presence Care</a> &mdash; hosting, updates, Google profile and reviews for $199/month. New business? The <a href="<?php echo esc_url( home_url( '/pricing/#launch' ) ); ?>">Launch Package</a> bundles a Starter Site, Google profile setup and three months of care for $1,950.</p>
 </section>
 
 <!-- PROCESS -->

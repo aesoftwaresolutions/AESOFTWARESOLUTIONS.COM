@@ -131,6 +131,13 @@ $ae_presence_faq = [
 </section>
 
 <!-- How it works -->
+<section class="op-related ae-rule" aria-labelledby="op-price-title">
+	<p class="v5-label" data-reveal>[ Presence Care ]</p>
+	<h2 class="op-related__title" id="op-price-title" data-split>$199 a month. Cancel anytime.</h2>
+	<p class="op-related__text" data-reveal>Everything above, every month, plus website hosting, updates and small edits. Starting fresh? The Launch Package bundles a new site, Google profile setup and three months of Presence Care for $1,950.</p>
+	<a class="v5-link op-related__link" href="<?php echo esc_url( home_url( '/pricing/#monthly' ) ); ?>" data-reveal>See all pricing &rarr;</a>
+</section>
+
 <section class="op-steps ae-rule" aria-labelledby="op-steps-title">
 	<h2 class="v5-section-title" id="op-steps-title" data-split>How it works</h2>
 	<ol class="op-steps__list">

@@ -156,39 +156,33 @@ $ae_work = [
 <section class="v5-services" id="services" aria-labelledby="v5-services-title">
   <header class="v5-section-head ae-rule">
     <h2 class="v5-section-title" id="v5-services-title" data-split>What we do</h2>
-    <span class="v5-label" data-reveal>[ Five ways in ]</span>
+    <a class="v5-link v5-label" href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>" data-reveal>&rarr; See pricing</a>
   </header>
 
   <ol class="v5-services__list">
     <li class="v5-service ae-rule" data-reveal>
       <span class="v5-service__num">01</span>
-      <h3 class="v5-service__title">Business review</h3>
-      <p class="v5-service__text">We sit with how your team works today, find where hours and leads slip away, and hand you a plain-English plan.</p>
-      <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/services/' ) ); ?>">Details</a>
-    </li>
-    <li class="v5-service ae-rule" data-reveal>
-      <span class="v5-service__num">02</span>
-      <h3 class="v5-service__title">Workflow automation</h3>
-      <p class="v5-service__text">Missed-call text-back, instant lead replies, quote follow-ups and booking reminders that run without anyone remembering to.</p>
-      <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/services/' ) ); ?>">Details</a>
-    </li>
-    <li class="v5-service ae-rule" data-reveal>
-      <span class="v5-service__num">03</span>
       <h3 class="v5-service__title">Website design</h3>
-      <p class="v5-service__text">Fast, mobile-first websites that explain what you do and turn visitors into calls, bookings and quote requests.</p>
+      <p class="v5-service__text">Fast, mobile-first websites that explain what you do and turn visitors into calls, bookings and quote requests. From $1,500, Google profile setup included.</p>
       <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/websites/' ) ); ?>">Website design</a>
     </li>
     <li class="v5-service ae-rule" data-reveal>
-      <span class="v5-service__num">04</span>
+      <span class="v5-service__num">02</span>
       <h3 class="v5-service__title">Online presence</h3>
-      <p class="v5-service__text">Google Business Profile, reviews and listings set up properly and looked after every month, so you are the business people find first.</p>
+      <p class="v5-service__text">Google Business Profile, reviews and listings looked after every month so you&rsquo;re the business people find first. Presence Care, $199/month.</p>
       <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/online-presence/' ) ); ?>">Online presence</a>
     </li>
     <li class="v5-service ae-rule" data-reveal>
-      <span class="v5-service__num">05</span>
-      <h3 class="v5-service__title">CRM &amp; systems</h3>
-      <p class="v5-service__text">One place for leads, client history and documents, set up around how your staff already works.</p>
-      <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>">Details</a>
+      <span class="v5-service__num">03</span>
+      <h3 class="v5-service__title">Follow-up automation</h3>
+      <p class="v5-service__text">Missed-call text-back, instant lead replies, booking links and review requests that run while you&rsquo;re on the job. Backed by a 60-day guarantee.</p>
+      <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/pricing/#front-desk' ) ); ?>">Front Desk</a>
+    </li>
+    <li class="v5-service ae-rule" data-reveal>
+      <span class="v5-service__num">04</span>
+      <h3 class="v5-service__title">Missed-Lead Audit</h3>
+      <p class="v5-service__text">Not sure where to start? We find where inquiries slip through and what it costs you. $250, credited in full if you go ahead.</p>
+      <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/pricing/#audit' ) ); ?>">Audit</a>
     </li>
   </ol>
 </section>
