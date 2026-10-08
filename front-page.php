@@ -49,7 +49,8 @@ $ae_work = [
 ];
 
 // The image window in the headline cycles through the same screenshots.
-$ae_window = array_column( $ae_work, 'img' );
+// Skip the first project (Monarch MVC): it already runs full width in Selected work.
+$ae_window = array_column( array_slice( $ae_work, 1 ), 'img' );
 ?>
 
 <!-- 1. HERO -->
