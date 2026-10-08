@@ -419,6 +419,83 @@
   }
 
   /* ──────────────────────────────────────────────────────────────────────
+     9. AUTOMATION SEQUENCE (home) — each step lights up as it crosses the
+        middle of the screen; a progress line fills down the timeline.
+  ────────────────────────────────────────────────────────────────────── */
+  function initSequence() {
+    var log = doc.querySelector('.v5-seq__log');
+    if (!log) return;
+    var steps = Array.prototype.slice.call(log.querySelectorAll('[data-step]'));
+    if (calm) { steps.forEach(function (s) { s.classList.add('is-on'); }); log.style.setProperty('--seq', 1); return; }
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var mid = window.innerHeight * 0.62;
+      var r = log.getBoundingClientRect();
+      var p = Math.min(1, Math.max(0, (mid - r.top) / r.height));
+      log.style.setProperty('--seq', p.toFixed(3));
+      steps.forEach(function (s) {
+        var sr = s.getBoundingClientRect();
+        s.classList.toggle('is-on', sr.top + sr.height * 0.3 < mid);
+      });
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+
+  /* ──────────────────────────────────────────────────────────────────────
+     10. FOOTER WORDMARK — the two words slide in from opposite sides as
+         the footer scrolls into view (driven by scroll position).
+  ────────────────────────────────────────────────────────────────────── */
+  function initWordmark() {
+    var mark = doc.querySelector('.v5-wordmark');
+    if (!mark || calm) { if (mark) mark.style.setProperty('--wm', 1); return; }
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var r = mark.getBoundingClientRect();
+      var p = Math.min(1, Math.max(0, (window.innerHeight - r.top) / (r.height * 0.9)));
+      mark.style.setProperty('--wm', p.toFixed(3));
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+  }
+
+  /* ──────────────────────────────────────────────────────────────────────
+     11. "VIEW" CURSOR — a round label follows the mouse over project cards
+         (mouse/trackpad only; touch screens never see it).
+  ────────────────────────────────────────────────────────────────────── */
+  function initViewCursor() {
+    if (calm || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    var cards = doc.querySelectorAll('.v5-card, .work-card');
+    if (!cards.length) return;
+    var dot = doc.createElement('div');
+    dot.className = 'ae-cursor';
+    dot.setAttribute('aria-hidden', 'true');
+    dot.innerHTML = '<span>View</span>';
+    doc.body.appendChild(dot);
+    var x = 0, y = 0, cx = 0, cy = 0, running = false;
+    function loop() {
+      cx += (x - cx) * 0.22; cy += (y - cy) * 0.22;
+      dot.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0)';
+      if (Math.abs(x - cx) > 0.1 || Math.abs(y - cy) > 0.1) requestAnimationFrame(loop); else running = false;
+    }
+    doc.addEventListener('mousemove', function (e) {
+      x = e.clientX; y = e.clientY;
+      if (!running) { running = true; requestAnimationFrame(loop); }
+    }, { passive: true });
+    cards.forEach(function (c) {
+      c.addEventListener('mouseenter', function (e) { cx = x = e.clientX; cy = y = e.clientY; dot.classList.add('is-on'); });
+      c.addEventListener('mouseleave', function () { dot.classList.remove('is-on'); });
+    });
+  }
+
+  /* ──────────────────────────────────────────────────────────────────────
      INIT
   ────────────────────────────────────────────────────────────────────── */
   function init() {
@@ -432,6 +509,9 @@
     initWindow();
     initProcessConnector();
     initAssessmentBadges();
+    initSequence();
+    initWordmark();
+    initViewCursor();
     html.classList.add('ae-motion-ready');
 
     doc.body.classList.add('loaded'); // legacy hook used by ae-chrome.css

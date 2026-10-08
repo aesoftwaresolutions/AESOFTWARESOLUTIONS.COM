@@ -54,6 +54,7 @@ $ae_window = array_column( $ae_work, 'img' );
 
 <!-- 1. HERO -->
 <section class="v5-hero" aria-labelledby="v5-hero-title">
+  <p class="v5-hero__kicker v5-label" data-reveal>[ Website design, online presence &amp; automation &mdash; Chambersburg, PA ]</p>
   <h1 class="v5-hero__title" id="v5-hero-title">
     <span class="v5-hero__line" data-split data-split-delay="0">Helping your</span>
     <span class="v5-hero__line" data-split data-split-delay="0.08">business work</span>
@@ -115,11 +116,54 @@ $ae_window = array_column( $ae_work, 'img' );
   </div>
 </section>
 
+<!-- 3b. AUTOMATION IN ACTION — steps light up as the section scrolls past (ae-motion.js: initSequence) -->
+<section class="v5-seq" id="in-action" aria-labelledby="v5-seq-title">
+  <div class="v5-seq__intro">
+    <p class="v5-label" data-reveal>[ What it looks like ]</p>
+    <h2 class="v5-section-title" id="v5-seq-title" data-split>A missed call at 6:42&nbsp;pm, handled.</h2>
+    <p class="v5-seq__lead" data-reveal>You&rsquo;re on a job. The phone rings and you can&rsquo;t pick up. Here&rsquo;s what happens next with a system we&rsquo;ve set up.</p>
+    <p class="v5-label v5-seq__note" data-reveal>Example scenario &middot; not a real customer</p>
+  </div>
+
+  <ol class="v5-seq__log" aria-label="Example timeline">
+    <li class="v5-seq__step" data-step>
+      <time>6:42 pm</time>
+      <span class="v5-seq__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" /><path d="M15 3l6 6M21 3l-6 6"/></svg></span>
+      <div><strong>Missed call</strong><span>New number, no voicemail.</span></div>
+    </li>
+    <li class="v5-seq__step" data-step>
+      <time>6:42 pm</time>
+      <span class="v5-seq__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span>
+      <div><strong>Text sent automatically</strong><span>&ldquo;Sorry we missed you &mdash; what can we help with? Reply here and we&rsquo;ll get you a quote.&rdquo;</span></div>
+    </li>
+    <li class="v5-seq__step" data-step>
+      <time>6:49 pm</time>
+      <span class="v5-seq__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 5H4v11h12l4 4z"/></svg></span>
+      <div><strong>Customer replies</strong><span>&ldquo;Water heater is leaking. Can someone come tomorrow?&rdquo;</span></div>
+    </li>
+    <li class="v5-seq__step" data-step>
+      <time>6:49 pm</time>
+      <span class="v5-seq__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg></span>
+      <div><strong>Lead saved to your CRM</strong><span>Name, number, job and urgency, tagged &ldquo;new&rdquo;.</span></div>
+    </li>
+    <li class="v5-seq__step" data-step>
+      <time>6:50 pm</time>
+      <span class="v5-seq__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span>
+      <div><strong>Booking link sent</strong><span>They pick 9:30 am tomorrow. It lands on your calendar.</span></div>
+    </li>
+    <li class="v5-seq__step v5-seq__step--done" data-step>
+      <time>7:00 am</time>
+      <span class="v5-seq__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <div><strong>You start the day with a booked job</strong><span>No call-back tag, no lost lead.</span></div>
+    </li>
+  </ol>
+</section>
+
 <!-- 4. WHAT WE DO -->
 <section class="v5-services" id="services" aria-labelledby="v5-services-title">
   <header class="v5-section-head ae-rule">
     <h2 class="v5-section-title" id="v5-services-title" data-split>What we do</h2>
-    <span class="v5-label" data-reveal>[ Four ways in ]</span>
+    <span class="v5-label" data-reveal>[ Five ways in ]</span>
   </header>
 
   <ol class="v5-services__list">
@@ -137,12 +181,18 @@ $ae_window = array_column( $ae_work, 'img' );
     </li>
     <li class="v5-service ae-rule" data-reveal>
       <span class="v5-service__num">03</span>
-      <h3 class="v5-service__title">Websites</h3>
-      <p class="v5-service__text">Fast, clear sites that explain what you do and turn visitors into calls, bookings and quote requests.</p>
-      <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/websites/' ) ); ?>">Details</a>
+      <h3 class="v5-service__title">Website design</h3>
+      <p class="v5-service__text">Fast, mobile-first websites that explain what you do and turn visitors into calls, bookings and quote requests.</p>
+      <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/websites/' ) ); ?>">Website design</a>
     </li>
     <li class="v5-service ae-rule" data-reveal>
       <span class="v5-service__num">04</span>
+      <h3 class="v5-service__title">Online presence</h3>
+      <p class="v5-service__text">Google Business Profile, reviews and listings set up properly and looked after every month, so you are the business people find first.</p>
+      <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/online-presence/' ) ); ?>">Online presence</a>
+    </li>
+    <li class="v5-service ae-rule" data-reveal>
+      <span class="v5-service__num">05</span>
       <h3 class="v5-service__title">CRM &amp; systems</h3>
       <p class="v5-service__text">One place for leads, client history and documents, set up around how your staff already works.</p>
       <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>">Details</a>

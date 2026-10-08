@@ -133,6 +133,10 @@ function aesoftwares_enqueue_scripts() {
     }
 
     // ── Assessment discovery agent (assessment page only) ─────────────────
+    if ( is_page_template( 'page-online-presence.php' ) ) {
+        wp_enqueue_script( 'ae-presence', $uri . '/assets/js/ae-presence.js', [], filemtime( $js . 'ae-presence.js' ), [ 'in_footer' => true, 'strategy' => 'defer' ] );
+    }
+
     if ( is_page_template( 'page-assessment.php' ) ) {
         wp_enqueue_script(
             'ae-assessment',
@@ -1245,37 +1249,191 @@ add_action( 'wpseo_add_opengraph_images', function ( $image_container ) {
     $image_container->add_image_by_url( 'https://aesoftwaresolutions.com/wp-content/uploads/2025/11/cropped-Let-us-do-the-work-for-you.jpeg' );
 } );
 
-// ── SEO: ProfessionalService schema on the front page. Yoast only emits a
-// generic Organization node; this adds the local-business signals (service
-// area, locality, price range) that Google uses for "near me" queries. ───────
-add_action( 'wp_head', function () {
-    if ( ! is_front_page() ) {
-        return;
+// ══════════════════════════════════════════════════════════════════════════════
+// SEO — local business data, page titles/descriptions, Online Presence page
+// ══════════════════════════════════════════════════════════════════════════════
+
+// Towns we name as the service area (schema + copy). Keep this list honest.
+function aesoftwares_service_area() {
+    $places = [ 'Chambersburg', 'Shippensburg', 'Waynesboro', 'Greencastle', 'Mercersburg', 'Carlisle', 'Gettysburg', 'Hagerstown' ];
+    $out    = [];
+    foreach ( $places as $p ) {
+        $out[] = [ '@type' => 'City', 'name' => $p ];
     }
+    $out[] = [ '@type' => 'AdministrativeArea', 'name' => 'Franklin County, PA' ];
+    $out[] = [ '@type' => 'Country', 'name' => 'United States' ];
+    return $out;
+}
+
+// LocalBusiness on every page (Yoast only emits a generic Organization).
+// Services are listed so Google can match "website design" and "online
+// presence management" searches near Chambersburg to this business.
+add_action( 'wp_head', function () {
     $schema = [
         '@context'    => 'https://schema.org',
         '@type'       => 'ProfessionalService',
+        '@id'         => home_url( '/#localbusiness' ),
         'name'        => 'AE Software Solutions LLC',
         'url'         => home_url( '/' ),
-        'email'       => 'admin@aesoftwaresolutions.com',
-        'image'       => 'https://aesoftwaresolutions.com/wp-content/uploads/2025/11/cropped-Let-us-do-the-work-for-you.jpeg',
-        'description' => 'Custom workflow automation, AI agents, and websites for small businesses — missed-call text-back, instant lead follow-up, and booking automation.',
+        'email'       => 'anthony@aesoftwaresolutions.com',
+        'image'       => get_template_directory_uri() . '/assets/img/work/monarch-mvc.jpg',
+        'description' => 'Website design, online presence management and business automation for small businesses in Chambersburg, PA and South Central Pennsylvania.',
         'address'     => [
             '@type'           => 'PostalAddress',
             'addressLocality' => 'Chambersburg',
             'addressRegion'   => 'PA',
             'addressCountry'  => 'US',
         ],
-        'areaServed'  => [ 'Pennsylvania', 'Maryland', 'Virginia', 'Washington DC' ],
-        'priceRange'  => '$750 - $8,000',
-        'makesOffer'  => [
-            [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Workflow Automation (missed-call text-back, lead follow-up, booking)' ] ],
-            [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Business Websites with Lead Capture' ] ],
-            [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'AI Agents and Custom CRM' ] ],
+        'geo'          => [ '@type' => 'GeoCoordinates', 'latitude' => 39.9376, 'longitude' => -77.6611 ],
+        'areaServed'   => aesoftwares_service_area(),
+        'openingHours' => 'Mo-Fr 09:00-17:00',
+        'priceRange'   => '$$',
+        'hasOfferCatalog' => [
+            '@type'           => 'OfferCatalog',
+            'name'            => 'Services',
+            'itemListElement' => [
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Website design', 'url' => home_url( '/websites/' ) ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Online presence management', 'url' => home_url( '/online-presence/' ) ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Workflow automation', 'url' => home_url( '/services/' ) ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'CRM setup', 'url' => home_url( '/business-starter/' ) ] ],
+            ],
         ],
     ];
+    if ( is_page( 'websites' ) ) {
+        echo '<script type="application/ld+json">' . wp_json_encode( [
+            '@context'    => 'https://schema.org',
+            '@type'       => 'Service',
+            'name'        => 'Website design',
+            'serviceType' => 'Website design and development',
+            'description' => 'Custom, mobile-first websites for small businesses, from five-page sites to lead funnels with booking and CRM built in.',
+            'url'         => home_url( '/websites/' ),
+            'provider'    => [ '@id' => home_url( '/#localbusiness' ) ],
+            'areaServed'  => aesoftwares_service_area(),
+            'offers'      => [
+                [ '@type' => 'Offer', 'name' => 'Online Presence site', 'priceSpecification' => [ '@type' => 'PriceSpecification', 'minPrice' => 1500, 'maxPrice' => 3500, 'priceCurrency' => 'USD' ] ],
+                [ '@type' => 'Offer', 'name' => 'Business Lead Funnel', 'priceSpecification' => [ '@type' => 'PriceSpecification', 'minPrice' => 4500, 'maxPrice' => 7500, 'priceCurrency' => 'USD' ] ],
+                [ '@type' => 'Offer', 'name' => 'Digital Operations Platform', 'priceSpecification' => [ '@type' => 'PriceSpecification', 'minPrice' => 8000, 'maxPrice' => 13000, 'priceCurrency' => 'USD' ] ],
+            ],
+        ], JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
+    }
     echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
 }, 20 );
+
+// Titles and descriptions for the key pages, aimed at the searches we want:
+// "website design Chambersburg PA", "online presence management", etc.
+// These override whatever is typed into Yoast for these pages only.
+function aesoftwares_seo_meta() {
+    static $map = null;
+    if ( null === $map ) {
+        $map = [
+            '__front' => [
+                'Website Design & Online Presence Management | Chambersburg, PA | AE Software',
+                'Website design, Google Business Profile and online presence management, and automation for small businesses in Chambersburg and South Central PA. Book a free call.',
+            ],
+            'websites' => [
+                'Website Design Chambersburg, PA | Small Business Websites | AE Software',
+                'Custom, mobile-first website design for small businesses in Chambersburg, PA. Fixed-price builds from $1,500, delivered in as little as 5 business days. Get a quote.',
+            ],
+            'online-presence' => [
+                'Online Presence Management | Google Business Profile & Reviews | AE Software',
+                'Online presence management for small businesses: Google Business Profile, review replies, consistent listings and website care. Free presence check. Chambersburg, PA.',
+            ],
+            'services' => [
+                'Services: Websites, Online Presence & Automation | AE Software Solutions',
+                'Website design, online presence management, workflow automation and CRM setup for small businesses in Chambersburg, PA and beyond.',
+            ],
+            'work' => [
+                'Our Work: Websites & Systems for Small Businesses | AE Software Solutions',
+                'Websites and business systems we have designed and built for real clients, from a men’s health platform to an online English school.',
+            ],
+            'about' => [
+                'About AE Software Solutions | Web Design & Automation, Chambersburg, PA',
+                'AE Software Solutions is a small, founder-led studio in Chambersburg, PA building websites, online presence and automation for small businesses.',
+            ],
+            'contact' => [
+                'Contact AE Software Solutions | Free Website & Presence Consultation',
+                'Book a free 15-minute call about a new website, your Google presence or automating your follow-ups. Based in Chambersburg, PA; working nationwide.',
+            ],
+            'business-starter' => [
+                'Business Starter Plan: CRM, Invoicing & Compliance Guides from $50/mo',
+                'One $50/month plan for small businesses: aeCRM, invoicing and accounting tools, and business registration and compliance guides for all 50 states.',
+            ],
+        ];
+    }
+    if ( is_front_page() ) {
+        return $map['__front'];
+    }
+    if ( is_page() ) {
+        $slug = get_post_field( 'post_name', get_queried_object_id() );
+        return $map[ $slug ] ?? null;
+    }
+    return null;
+}
+
+add_filter( 'wpseo_title', function ( $title ) {
+    $m = aesoftwares_seo_meta();
+    return $m ? $m[0] : $title;
+}, 20 );
+add_filter( 'wpseo_opengraph_title', function ( $title ) {
+    $m = aesoftwares_seo_meta();
+    return $m ? $m[0] : $title;
+}, 20 );
+add_filter( 'wpseo_metadesc', function ( $desc ) {
+    $m = aesoftwares_seo_meta();
+    return $m ? $m[1] : $desc;
+}, 20 );
+add_filter( 'wpseo_opengraph_desc', function ( $desc ) {
+    $m = aesoftwares_seo_meta();
+    return $m ? $m[1] : $desc;
+}, 20 );
+// Without Yoast, still give WordPress a good <title>.
+add_filter( 'pre_get_document_title', function ( $title ) {
+    if ( defined( 'WPSEO_VERSION' ) ) {
+        return $title;
+    }
+    $m = aesoftwares_seo_meta();
+    return $m ? $m[0] : $title;
+}, 20 );
+add_action( 'wp_head', function () {
+    if ( defined( 'WPSEO_VERSION' ) ) {
+        return;
+    }
+    $m = aesoftwares_seo_meta();
+    if ( $m ) {
+        echo '<meta name="description" content="' . esc_attr( $m[1] ) . '">' . "\n";
+    }
+}, 2 );
+
+// The pricing page (business-starter) was set to noindex in Yoast, so Google
+// was told not to list it. Allow indexing for the pages above.
+add_filter( 'wpseo_robots', function ( $robots ) {
+    if ( aesoftwares_seo_meta() ) {
+        return 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+    }
+    return $robots;
+}, 20 );
+
+// Create the Online Presence page once, assigned to its template, so it
+// exists without anyone having to add it in WP Admin.
+add_action( 'init', function () {
+    if ( get_option( 'ae_online_presence_page_created' ) ) {
+        return;
+    }
+    $existing = get_page_by_path( 'online-presence' );
+    if ( ! $existing ) {
+        $id = wp_insert_post( [
+            'post_type'    => 'page',
+            'post_status'  => 'publish',
+            'post_title'   => 'Online Presence Management',
+            'post_name'    => 'online-presence',
+            'post_content' => '',
+        ] );
+        if ( $id && ! is_wp_error( $id ) ) {
+            update_post_meta( $id, '_wp_page_template', 'page-online-presence.php' );
+        }
+    }
+    update_option( 'ae_online_presence_page_created', 1, false );
+}, 30 );
 
 // ── Route all WP mail through Zoho SMTP so it passes SPF/DKIM ────────────────
 add_action( 'phpmailer_init', function ( $phpmailer ) {

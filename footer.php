@@ -22,7 +22,8 @@
     <ul data-reveal>
       <li><a class="v5-link" href="<?php echo esc_url( home_url( '/services/' ) ); ?>">Services</a></li>
       <li><a class="v5-link" href="<?php echo esc_url( home_url( '/work/' ) ); ?>">Work</a></li>
-      <li><a class="v5-link" href="<?php echo esc_url( home_url( '/websites/' ) ); ?>">Websites</a></li>
+      <li><a class="v5-link" href="<?php echo esc_url( home_url( '/websites/' ) ); ?>">Website design</a></li>
+      <li><a class="v5-link" href="<?php echo esc_url( home_url( '/online-presence/' ) ); ?>">Online presence</a></li>
       <li><a class="v5-link" href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>">Pricing</a></li>
       <li><a class="v5-link" href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a></li>
       <li><a class="v5-link" href="<?php echo esc_url( home_url( '/free-tools/' ) ); ?>">Free tools</a></li>
@@ -37,6 +38,8 @@
       <li>Mon&ndash;Fri, 9am&ndash;5pm ET</li>
     </ul>
   </div>
+
+  <p class="v5-wordmark" aria-hidden="true"><span>AE</span><span>Software</span></p>
 
   <div class="v5-footer__legal ae-rule">
     <span>&copy; <?php echo esc_html( date( 'Y' ) ); ?> AE Software Solutions LLC</span>

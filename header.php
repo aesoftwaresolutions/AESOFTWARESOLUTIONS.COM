@@ -78,6 +78,7 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
       <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="site-header__nav-link">Services<sup>04</sup></a>
       <a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="site-header__nav-link">Work<sup>07</sup></a>
       <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="site-header__nav-link">Websites</a>
+      <a href="<?php echo esc_url( home_url( '/online-presence/' ) ); ?>" class="site-header__nav-link">Presence</a>
       <a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="site-header__nav-link">Pricing</a>
       <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="site-header__nav-link">About</a>
     </nav>
@@ -99,6 +100,7 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
       <li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="mobile-nav-overlay__link">Services</a></li>
       <li><a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="mobile-nav-overlay__link">Work</a></li>
       <li><a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="mobile-nav-overlay__link">Websites</a></li>
+      <li><a href="<?php echo esc_url( home_url( '/online-presence/' ) ); ?>" class="mobile-nav-overlay__link">Online presence</a></li>
       <li><a href="<?php echo esc_url( home_url( '/business-starter/' ) ); ?>" class="mobile-nav-overlay__link">Pricing</a></li>
       <li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="mobile-nav-overlay__link">About</a></li>
     </ul>
