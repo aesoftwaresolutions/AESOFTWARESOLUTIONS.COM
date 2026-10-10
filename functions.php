@@ -1304,8 +1304,8 @@ add_action( 'wp_head', function () {
             'name'            => 'Services',
             'itemListElement' => [
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Website design', 'url' => home_url( '/websites/' ) ] ],
-                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Online presence management', 'url' => home_url( '/online-presence/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 199, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
-                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Follow-up automation (Always-On Front Desk)', 'url' => home_url( '/pricing/#front-desk' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 250, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Online presence management', 'url' => home_url( '/online-presence/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 49, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Follow-up automation (Always-On Front Desk)', 'url' => home_url( '/pricing/#front-desk-always-on' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 250, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Missed-Lead Audit', 'url' => home_url( '/pricing/#audit' ) ], 'price' => 250, 'priceCurrency' => 'USD' ],
             ],
         ],
@@ -1321,9 +1321,9 @@ add_action( 'wp_head', function () {
             'provider'    => [ '@id' => home_url( '/#localbusiness' ) ],
             'areaServed'  => aesoftwares_service_area(),
             'offers'      => [
-                [ '@type' => 'Offer', 'name' => 'Starter Site', 'priceSpecification' => [ '@type' => 'PriceSpecification', 'minPrice' => 1500, 'priceCurrency' => 'USD' ] ],
+                [ '@type' => 'Offer', 'name' => 'Starter Site', 'priceSpecification' => [ '@type' => 'PriceSpecification', 'minPrice' => 495, 'priceCurrency' => 'USD' ] ],
                 [ '@type' => 'Offer', 'name' => 'Lead Funnel Site', 'priceSpecification' => [ '@type' => 'PriceSpecification', 'minPrice' => 4500, 'priceCurrency' => 'USD' ] ],
-                [ '@type' => 'Offer', 'name' => 'Launch Package', 'price' => 1950, 'priceCurrency' => 'USD' ],
+                [ '@type' => 'Offer', 'name' => 'Launch Package', 'price' => 595, 'priceCurrency' => 'USD' ],
             ],
         ], JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
     }
@@ -1343,7 +1343,7 @@ function aesoftwares_seo_meta() {
             ],
             'websites' => [
                 'Website Design Chambersburg, PA | AE Software Solutions',
-                'Custom, mobile-first website design for small businesses in Chambersburg, PA. Fixed-price builds from $1,500, delivered in as little as 5 business days. Get a quote.',
+                'Custom, mobile first website design for small businesses in Chambersburg, PA. Fixed price builds from $495, delivered in as little as 5 business days. Get a quote.',
             ],
             'online-presence' => [
                 'Online Presence Management & Google Reviews | AE Software Solutions',
@@ -1354,7 +1354,7 @@ function aesoftwares_seo_meta() {
                 'Websites, Google Business Profile and review management, and missed-call follow-up automation for local service businesses in Chambersburg, PA.',
             ],
             'pricing' => [
-                'Pricing: Websites from $1,500, Presence Care $199/mo | AE Software Solutions',
+                'Pricing: Websites from $495, Online Presence $49/mo | AE Software Solutions',
                 'Clear prices for small business websites, Google presence management and follow-up automation. Free presence check, $250 audit, 60-day guarantee.',
             ],
             'work' => [
