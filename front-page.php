@@ -163,13 +163,13 @@ $ae_work = [
     <li class="v5-service ae-rule" data-reveal>
       <span class="v5-service__num">01</span>
       <h3 class="v5-service__title">Website design</h3>
-      <p class="v5-service__text">Fast, mobile-first websites that explain what you do and turn visitors into calls, bookings and quote requests. From $1,500, Google profile setup included.</p>
+      <p class="v5-service__text">Fast, mobile-first websites that explain what you do and turn visitors into calls, bookings and quote requests. From $495, Google profile setup included.</p>
       <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/websites/' ) ); ?>">Website design</a>
     </li>
     <li class="v5-service ae-rule" data-reveal>
       <span class="v5-service__num">02</span>
       <h3 class="v5-service__title">Online presence</h3>
-      <p class="v5-service__text">Google Business Profile, reviews and listings looked after every month so you&rsquo;re the business people find first. Presence Care, $199/month.</p>
+      <p class="v5-service__text">Google Business Profile, reviews and listings looked after every month so you&rsquo;re the business people find first. Online Presence Management, $49/month.</p>
       <a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/online-presence/' ) ); ?>">Online presence</a>
     </li>
     <li class="v5-service ae-rule" data-reveal>

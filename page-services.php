@@ -47,7 +47,7 @@ $price = function ( $group, $id ) use ( $o ) {
 			<h3 class="v5-service__title">Online presence</h3>
 			<div class="v5-service__text">
 				<p>Your Google Business Profile, reviews and listings looked after every month: weekly posts, a reply to every review, details that match everywhere, and a one-page report.</p>
-				<p class="svc-meta">Presence Care <?php echo esc_html( $price( 'monthly', 'presence-care' ) ); ?> &middot; cancel anytime</p>
+				<p class="svc-meta">Online Presence Management <?php echo esc_html( $price( 'monthly', 'online-presence' ) ); ?> &middot; cancel anytime</p>
 			</div>
 			<a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/online-presence/' ) ); ?>">Online presence</a>
 		</li>
@@ -56,7 +56,7 @@ $price = function ( $group, $id ) use ( $o ) {
 			<h3 class="v5-service__title">Follow-up automation</h3>
 			<div class="v5-service__text">
 				<p>Missed-call text-back, instant replies to web and Facebook inquiries, booking links and review requests. It connects to the tools you already use rather than replacing them.</p>
-				<p class="svc-meta">Always-On Front Desk <?php echo esc_html( $price( 'monthly', 'front-desk' ) ); ?> &middot; 60-day guarantee</p>
+				<p class="svc-meta">Front Desk <?php echo esc_html( $price( 'monthly', 'front-desk' ) ); ?> &middot; Always-On Front Desk <?php echo esc_html( $price( 'monthly', 'front-desk-always-on' ) ); ?> &middot; 60-day guarantee</p>
 			</div>
 			<a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/pricing/#front-desk' ) ); ?>">Front Desk</a>
 		</li>

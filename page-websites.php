@@ -721,7 +721,7 @@ get_header(); ?>
         </div>
 
     </div>
-    <p class="web-tiers-note js-fade">Keep it working after launch with <a href="<?php echo esc_url( home_url( '/pricing/#presence-care' ) ); ?>">Presence Care</a> &mdash; hosting, updates, Google profile and reviews for $199/month. New business? The <a href="<?php echo esc_url( home_url( '/pricing/#launch' ) ); ?>">Launch Package</a> bundles a Starter Site, Google profile setup and three months of care for $1,950.</p>
+    <p class="web-tiers-note js-fade">Keep it working after launch with <a href="<?php echo esc_url( home_url( '/pricing/#online-presence' ) ); ?>">Online Presence Management</a> &mdash; Google profile, reviews and listings looked after for $49/month. New business? The <a href="<?php echo esc_url( home_url( '/pricing/#launch' ) ); ?>">Launch Package</a> bundles a Starter Site, Google profile setup and three months of care for $595.</p>
 </section>
 
 <!-- PROCESS -->
