@@ -57,7 +57,9 @@
   function splitWords(el) {
     var walker = doc.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
     var nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
+    while (walker.nextNode()) {
+      if (!walker.currentNode.parentNode.closest('.ae-w')) nodes.push(walker.currentNode);
+    }
 
     nodes.forEach(function (node) {
       var parts = node.nodeValue.split(/(\s+)/);
@@ -107,6 +109,12 @@
     targets.forEach(function (el) {
       // Don't split a heading that sits inside another split element.
       if (el.parentElement && el.parentElement.closest('.ae-split')) return;
+      // ...or one whose lines are already split on their own ([data-split]
+      // children). Splitting twice nests two masks and clips descenders.
+      if (el.querySelector('.ae-split, [data-split]')) {
+        el.classList.add('ae-split-skip');
+        return;
+      }
       if (!canSplit(el)) {
         el.classList.add('ae-split-skip');
         return;
@@ -495,6 +503,66 @@
     });
   }
 
+
+  /* ──────────────────────────────────────────────────────────────────────
+     12. HOME TOPICS — each row opens its panel; one open at a time. While
+         panels above it close, the clicked row is held still on screen so
+         the page doesn't jump. /#work, /#pricing etc. open that topic.
+  ────────────────────────────────────────────────────────────────────── */
+  function initTopics() {
+    var topics = Array.prototype.slice.call(doc.querySelectorAll('[data-topic]'));
+    if (!topics.length) return;
+
+    function set(t, open) {
+      t.classList.toggle('is-open', open);
+      t.querySelector('.v5-topic__btn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    // Keep `anchor` at the same screen position while layout animates.
+    function hold(anchor, ms) {
+      var top = anchor.getBoundingClientRect().top;
+      var end = performance.now() + ms;
+      // Chrome's own scroll anchoring would correct too and double the move.
+      html.style.overflowAnchor = 'none';
+      (function step() {
+        var now = anchor.getBoundingClientRect().top;
+        if (Math.abs(now - top) > 0.5) window.scrollTo({ top: window.scrollY + now - top, behavior: 'instant' });
+        window.dispatchEvent(new Event('resize')); // sequence/wordmark re-measure
+        if (performance.now() < end) requestAnimationFrame(step);
+        else html.style.overflowAnchor = '';
+      })();
+    }
+
+    function open(t) {
+      topics.forEach(function (o) { if (o !== t) set(o, false); });
+      set(t, true);
+    }
+
+    topics.forEach(function (t) {
+      var btn = t.querySelector('.v5-topic__btn');
+      btn.addEventListener('click', function () {
+        var isOpen = t.classList.contains('is-open');
+        hold(btn, calm ? 50 : 900);
+        if (isOpen) set(t, false); else open(t);
+      });
+    });
+
+    function fromHash() {
+      var id = (location.hash || '').slice(1);
+      if (!id) return;
+      var target = doc.getElementById(id);
+      var t = target && target.closest('[data-topic]');
+      if (!t) return;
+      open(t);
+      setTimeout(function () {
+        var y = t.getBoundingClientRect().top + window.scrollY - 96;
+        window.scrollTo({ top: y, behavior: calm ? 'auto' : 'smooth' });
+      }, 60);
+    }
+    window.addEventListener('hashchange', fromHash);
+    fromHash();
+  }
+
   /* ──────────────────────────────────────────────────────────────────────
      INIT
   ────────────────────────────────────────────────────────────────────── */
@@ -512,6 +580,7 @@
     initSequence();
     initWordmark();
     initViewCursor();
+    initTopics();
     html.classList.add('ae-motion-ready');
 
     doc.body.classList.add('loaded'); // legacy hook used by ae-chrome.css

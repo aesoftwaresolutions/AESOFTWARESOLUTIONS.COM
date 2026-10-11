@@ -97,7 +97,7 @@ get_header();
 @media(max-width:640px){.solid-mkt section{padding:52px 0}}
 </style>
 
-<main id="primary" class="solid-mkt">
+<div id="primary" class="solid-mkt">
 
 	<section class="hero">
 		<div class="container">
@@ -216,7 +216,7 @@ get_header();
 		</div>
 	</section>
 
-</main>
+</div>
 
 <?php
 get_footer();

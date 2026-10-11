@@ -69,6 +69,12 @@ After deploying, open **WP Admin > AE Settings** and set the Anthropic API key (
 
 ## Changelog
 
+### 2026-10-11 — Home page topics
+
+- Home page: after the hero, Approach, Selected work, See it in action, What we do and Pricing are now a numbered list of topics. Each one opens its panel on click (one at a time); `/#work`, `/#pricing` etc. open that topic. Content stays in the HTML for search engines. Prices come from `inc/offers.php`.
+- Hero headline: fixed descenders (g, p, y) being clipped on the first line. Headings were being split into word masks twice; now split once, with more room below each mask.
+- Merged `feat/solid-accounting-marketing` (Solid accounting page template, inactive until a page uses it).
+
 ### 2026-10-07 — v5 editorial pass
 
 - Removed the retired Ollama/Gemma router: AE Settings fields, stored options and all code paths. Free tools and the assessment use the Anthropic API key only.
