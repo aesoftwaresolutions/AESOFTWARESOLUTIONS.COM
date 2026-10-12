@@ -1495,3 +1495,24 @@ add_action( 'phpmailer_init', function ( $phpmailer ) {
     $phpmailer->From       = 'admin@aesoftwaresolutions.com';
     $phpmailer->FromName   = 'AE Software Solutions';
 } );
+
+// ── Auto-create the Guides sales page (one-time) ─────────────────────────────
+add_action( 'init', function () {
+    if ( get_option( 'ae_guides_page_created' ) ) {
+        return;
+    }
+    $existing = get_page_by_path( 'guides' );
+    if ( ! $existing ) {
+        $id = wp_insert_post( [
+            'post_type'    => 'page',
+            'post_status'  => 'publish',
+            'post_title'   => 'Guides',
+            'post_name'    => 'guides',
+            'post_content' => '',
+        ] );
+        if ( $id && ! is_wp_error( $id ) ) {
+            update_post_meta( $id, '_wp_page_template', 'page-guides.php' );
+        }
+    }
+    update_option( 'ae_guides_page_created', 1, false );
+}, 30 );
