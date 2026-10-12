@@ -80,6 +80,7 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
       <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="site-header__nav-link">Websites</a>
       <a href="<?php echo esc_url( home_url( '/online-presence/' ) ); ?>" class="site-header__nav-link">Presence</a>
       <a href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>" class="site-header__nav-link">Pricing</a>
+      <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="site-header__nav-link">Guides</a>
       <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="site-header__nav-link">About</a>
     </nav>
 
@@ -102,6 +103,7 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
       <li><a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="mobile-nav-overlay__link">Websites</a></li>
       <li><a href="<?php echo esc_url( home_url( '/online-presence/' ) ); ?>" class="mobile-nav-overlay__link">Online presence</a></li>
       <li><a href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>" class="mobile-nav-overlay__link">Pricing</a></li>
+      <li><a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="mobile-nav-overlay__link">Guides</a></li>
       <li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="mobile-nav-overlay__link">About</a></li>
     </ul>
     <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn mobile-nav-overlay__cta">Get in touch</a>
