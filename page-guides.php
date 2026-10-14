@@ -2,7 +2,7 @@
 /**
  * Template Name: Guides
  *
- * Two PDF guides for contractors, sold through Stripe payment links.
+ * Four PDF guides for contractors, sold through Stripe payment links.
  *
  * @package AE_Softwares
  */
@@ -23,6 +23,20 @@ $guides = array(
 		'words' => '3,500 words',
 		'pitch' => 'A 3,500-word guide for contractors: measure how much revenue leaks through missed calls, with a do-it-yourself method and the fixes ranked.',
 		'url'   => 'https://buy.stripe.com/28E14n0fK7ds1Or2SJabK06',
+	),
+	array(
+		'id'    => 'speed-to-lead-playbook',
+		'name'  => 'Speed-to-Lead Playbook',
+		'words' => '4,100 words',
+		'pitch' => 'A 4,100-word guide for contractors: why the first business to answer wins the job, and the systems to respond in minutes.',
+		'url'   => 'https://buy.stripe.com/dRmbJ12nS69o3WzbpfabK07',
+	),
+	array(
+		'id'    => 'google-business-profile-playbook',
+		'name'  => 'Google Business Profile Playbook',
+		'words' => '3,500 words',
+		'pitch' => 'A 3,500-word guide for contractors: own the local map pack. Setup, categories, posts, reviews, and a 30-day routine.',
+		'url'   => 'https://buy.stripe.com/3cIfZh3rWfJY2SvdxnabK08',
 	),
 );
 
@@ -47,7 +61,7 @@ $faqs = array(
 <section class="page-hero pricing-hero">
 	<p class="page-hero__eyebrow">Guides</p>
 	<h1 class="page-hero__headline">Win more of the jobs you already quote.</h1>
-	<p class="page-hero__subtitle">Two short PDF guides for contractors. One shows you how to close more estimates. The other shows you what missed calls cost you each month. $47 each, one time.</p>
+	<p class="page-hero__subtitle">Four short PDF guides for contractors. They cover how to close more estimates, what missed calls cost you each month, how to answer new leads in minutes, and how to show up on the Google map. $47 each, one time.</p>
 </section>
 
 <section class="ae-pricing ae-guides" id="guides" aria-labelledby="gd-title">
