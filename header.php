@@ -71,7 +71,6 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
   <div class="site-header__inner">
     <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__logo" rel="home">
       AE Software Solutions
-      <span class="sub">Pennsylvania [US]</span>
     </a>
 
     <nav class="site-header__nav" aria-label="Main">
