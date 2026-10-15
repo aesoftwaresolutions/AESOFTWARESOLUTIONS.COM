@@ -2,7 +2,7 @@
 /**
  * Template Name: Guides
  *
- * Four PDF guides for contractors, sold through Stripe payment links.
+ * Five PDF guides for contractors, sold through Stripe payment links.
  *
  * @package AE_Softwares
  */
@@ -38,6 +38,13 @@ $guides = array(
 		'pitch' => 'A 3,500-word guide for contractors: own the local map pack. Setup, categories, posts, reviews, and a 30-day routine.',
 		'url'   => 'https://buy.stripe.com/3cIfZh3rWfJY2SvdxnabK08',
 	),
+	array(
+		'id'    => 'review-generation-system',
+		'name'  => 'Review Generation System',
+		'words' => '4,600 words',
+		'pitch' => 'A 4,600-word guide: get a steady flow of 5-star reviews without begging. Benchmarks, ask timing, response scripts, and a 90-day checklist.',
+		'url'   => 'https://buy.stripe.com/bJeaEX5A47ds0Kn2SJabK09',
+	),
 );
 
 $faqs = array(
@@ -61,7 +68,7 @@ $faqs = array(
 <section class="page-hero pricing-hero">
 	<p class="page-hero__eyebrow">Guides</p>
 	<h1 class="page-hero__headline">Win more of the jobs you already quote.</h1>
-	<p class="page-hero__subtitle">Four short PDF guides for contractors. They cover how to close more estimates, what missed calls cost you each month, how to answer new leads in minutes, and how to show up on the Google map. $47 each, one time.</p>
+	<p class="page-hero__subtitle">Five short PDF guides for contractors. They cover how to close more estimates, what missed calls cost you each month, how to answer new leads in minutes, how to show up on the Google map, and how to earn more 5-star reviews. $47 each, one time.</p>
 </section>
 
 <section class="ae-pricing ae-guides" id="guides" aria-labelledby="gd-title">
