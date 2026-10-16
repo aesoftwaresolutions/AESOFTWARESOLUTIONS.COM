@@ -11,6 +11,9 @@ require_once get_template_directory() . '/inc/aria-api.php';
 // ── Offer lineup (prices, plans, guarantee) — edit prices in inc/offers.php ──
 require_once get_template_directory() . '/inc/offers.php';
 
+// ── Guides page newsletter signup (admin-ajax: ae_guides_signup) ─────────────
+require_once get_template_directory() . '/inc/guides-newsletter.php';
+
 // ══════════════════════════════════════════════════════════════════════════════
 // 1. ENQUEUE SCRIPTS & STYLES
 // ══════════════════════════════════════════════════════════════════════════════
