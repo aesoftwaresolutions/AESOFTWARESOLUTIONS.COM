@@ -1505,3 +1505,32 @@ add_action( 'init', function () {
     }
     update_option( 'ae_guides_page_created', 1, false );
 }, 30 );
+
+// ── De-localize Yoast schema ─────────────────────────────────────────────────
+// Some pages carry "Chambersburg PA" in Yoast post-meta (not in this repo).
+// Rewrite only name/description strings in the JSON-LD graph that mention it.
+function aesoftwares_delocalize_text( $text ) {
+    $city = 'Chambersburg(?:,?\s+(?:PA|Pennsylvania))?';
+    $text = preg_replace( '/\bin\s+' . $city . '\b/i', 'nationwide', $text );
+    $text = preg_replace( '/\s*\b' . $city . '\b/i', '', $text );
+    return preg_replace( '/\s{2,}/', ' ', $text );
+}
+
+function aesoftwares_delocalize_schema( $node ) {
+    if ( ! is_array( $node ) ) {
+        return $node;
+    }
+    foreach ( $node as $key => $value ) {
+        if ( is_array( $value ) ) {
+            $node[ $key ] = aesoftwares_delocalize_schema( $value );
+        } elseif ( is_string( $value ) && in_array( $key, [ 'name', 'description' ], true )
+            && stripos( $value, 'Chambersburg' ) !== false ) {
+            $node[ $key ] = aesoftwares_delocalize_text( $value );
+        }
+    }
+    return $node;
+}
+
+add_filter( 'wpseo_schema_graph', function ( $graph ) {
+    return aesoftwares_delocalize_schema( $graph );
+}, 99 );
