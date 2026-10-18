@@ -1278,6 +1278,7 @@ html.ae-calm .v5-topic__btn:hover .v5-topic__title { transform: none; }
 
 /* Graphics v2: hero art + section divider */
 .v5-hero { position: relative; isolation: isolate; overflow: clip; }
+.ae-hero-motion { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; display: block; }
 .ae-hero-art { position: absolute; inset: 0 0 auto auto; width: min(100%, 1400px); height: auto; z-index: -1; opacity: .9; pointer-events: none; }
 .ae-divider { display: block; width: 100%; max-width: 1400px; height: 40px; margin: clamp(32px,6vw,72px) auto; object-fit: fill; }
 @media (max-width: 720px) { .ae-hero-art { opacity: .45; width: 160%; right: -30%; } }

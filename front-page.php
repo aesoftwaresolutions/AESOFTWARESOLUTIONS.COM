@@ -96,6 +96,7 @@ $ae_topic_close = function () {
 
 <!-- 1. HERO -->
 <section class="v5-hero" aria-labelledby="v5-hero-title">
+  <canvas class="ae-hero-motion" data-concept="lines" aria-hidden="true"></canvas>
   <img class="ae-hero-art" src="<?php echo esc_url( $ae_img . 'graphics/ae-hero-v2.svg' ); ?>" alt="" aria-hidden="true" width="1600" height="900" decoding="async">
   <p class="v5-hero__kicker v5-label" data-reveal>[ Website design, online presence &amp; automation ]</p>
   <h1 class="v5-hero__title" id="v5-hero-title">
