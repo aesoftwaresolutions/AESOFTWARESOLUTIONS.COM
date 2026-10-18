@@ -1267,16 +1267,9 @@ add_action( 'wpseo_add_opengraph_images', function ( $image_container ) {
 // SEO — local business data, page titles/descriptions, Online Presence page
 // ══════════════════════════════════════════════════════════════════════════════
 
-// Towns we name as the service area (schema + copy). Keep this list honest.
+// Service area for schema. Nationwide; the business address is kept private.
 function aesoftwares_service_area() {
-    $places = [ 'Chambersburg', 'Shippensburg', 'Waynesboro', 'Greencastle', 'Mercersburg', 'Carlisle', 'Gettysburg', 'Hagerstown' ];
-    $out    = [];
-    foreach ( $places as $p ) {
-        $out[] = [ '@type' => 'City', 'name' => $p ];
-    }
-    $out[] = [ '@type' => 'AdministrativeArea', 'name' => 'Franklin County, PA' ];
-    $out[] = [ '@type' => 'Country', 'name' => 'United States' ];
-    return $out;
+    return [ [ '@type' => 'Country', 'name' => 'United States' ] ];
 }
 
 // LocalBusiness on every page (Yoast only emits a generic Organization).
@@ -1291,14 +1284,7 @@ add_action( 'wp_head', function () {
         'url'         => home_url( '/' ),
         'email'       => 'anthony@aesoftwaresolutions.com',
         'image'       => get_template_directory_uri() . '/assets/img/work/monarch-mvc.jpg',
-        'description' => 'Website design, online presence management and follow-up automation for local service businesses in Chambersburg, PA and South Central Pennsylvania.',
-        'address'     => [
-            '@type'           => 'PostalAddress',
-            'addressLocality' => 'Chambersburg',
-            'addressRegion'   => 'PA',
-            'addressCountry'  => 'US',
-        ],
-        'geo'          => [ '@type' => 'GeoCoordinates', 'latitude' => 39.9376, 'longitude' => -77.6611 ],
+        'description' => 'Website design, online presence management and follow-up automation for small businesses across the United States.',
         'areaServed'   => aesoftwares_service_area(),
         'openingHours' => 'Mo-Fr 09:00-17:00',
         'priceRange'   => '$$',
@@ -1342,7 +1328,7 @@ function aesoftwares_seo_meta() {
         $map = [
             '__front' => [
                 'Website Design & Online Presence Management | AE Software Solutions',
-                'Website design, Google Business Profile and online presence management, and automation for small businesses in Chambersburg and South Central PA. Book a free call.',
+                'Website design, Google Business Profile and online presence management, and automation for small businesses nationwide. Book a free call.',
             ],
             'websites' => [
                 'Website Design Chambersburg, PA | AE Software Solutions',

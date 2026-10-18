@@ -2,7 +2,7 @@
 
 <div class="page-hero about-page-hero">
     <div class="page-hero__eyebrow">About</div>
-    <h1 class="page-hero__headline">A small studio for <em>local</em> businesses.</h1>
+    <h1 class="page-hero__headline">A small studio for <em>small</em> businesses.</h1>
     <p class="page-hero__subtitle">AE Software Solutions builds websites, looks after Google presence and sets up follow-up automation for small businesses that would rather be doing the work than chasing leads.</p>
 </div>
 
