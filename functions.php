@@ -1331,16 +1331,16 @@ function aesoftwares_seo_meta() {
                 'Website design, Google Business Profile and online presence management, and automation for small businesses nationwide. Book a free call.',
             ],
             'websites' => [
-                'Website Design Chambersburg, PA | AE Software Solutions',
-                'Custom, mobile first website design for small businesses in Chambersburg, PA. Fixed price builds from $495, delivered in as little as 5 business days. Get a quote.',
+                'Website Design for Small Businesses | AE Software Solutions',
+                'Custom, mobile first website design for small businesses nationwide. Fixed price builds from $495, delivered in as little as 5 business days. Get a quote.',
             ],
             'online-presence' => [
                 'Online Presence Management & Google Reviews | AE Software Solutions',
-                'Online presence management for small businesses: Google Business Profile, review replies, consistent listings and website care. Free presence check. Chambersburg, PA.',
+                'Online presence management for small businesses nationwide: Google Business Profile, review replies, consistent listings and website care. Free check.',
             ],
             'services' => [
                 'Services: Website Design, Google Presence & Follow-Up | AE Software Solutions',
-                'Websites, Google Business Profile and review management, and missed-call follow-up automation for local service businesses in Chambersburg, PA.',
+                'Websites, Google Business Profile and review management, and missed-call follow-up automation for small service businesses nationwide.',
             ],
             'pricing' => [
                 'Pricing: Websites from $495, Online Presence $49/mo | AE Software Solutions',
@@ -1351,12 +1351,12 @@ function aesoftwares_seo_meta() {
                 'Websites and business systems we have designed and built for real clients, from a men’s health platform to an online English school.',
             ],
             'about' => [
-                'About AE Software Solutions | Web Design & Online Presence, Chambersburg, PA',
-                'A small, founder-led studio in Chambersburg, PA building websites, Google presence and follow-up automation for local businesses. Fixed prices; you own everything.',
+                'About AE Software Solutions | Web Design & Online Presence for Small Business',
+                'A small, founder-led studio building websites, Google presence and follow-up automation for small businesses nationwide. Fixed prices; you own everything.',
             ],
             'contact' => [
                 'Contact AE Software Solutions | Free Website & Presence Consultation',
-                'Book a free 15-minute call about a new website, your Google presence or automating your follow-ups. Based in Chambersburg, PA; working nationwide.',
+                'Book a free 15-minute call about a new website, your Google presence or automating your follow-ups. Working with small businesses nationwide.',
             ],
             'business-starter' => [
                 'Business Starter Plan: CRM, Invoicing & Compliance Guides from $50/mo',
