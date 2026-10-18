@@ -54,6 +54,11 @@ function aesoftwares_enqueue_scripts() {
     wp_enqueue_script( 'ae-widget',       $uri . '/assets/js/ae-widget.js',       [], filemtime( $js . 'ae-widget.js' ),       [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_add_inline_script( 'ae-widget', 'window.AE_WIDGET_URL = "https://admin.aesoftwaresolutions.com";', 'before' );
 
+    // Hero background motion (front page only).
+    if ( is_front_page() ) {
+        wp_enqueue_script( 'ae-hero-motion', $uri . '/assets/js/ae-hero-motion.js', [], filemtime( $js . 'ae-hero-motion.js' ), [ 'in_footer' => true, 'strategy' => 'defer' ] );
+    }
+
     // ── Free tool JS (one script per tool page) ──────────────────────────
     if ( is_page_template( 'page-rewriter.php' ) ) {
         wp_enqueue_script(
@@ -240,7 +245,7 @@ add_filter( 'wp_resource_hints', function ( $urls, $relation ) {
 // changes, purge LiteSpeed once (no-op if the plugin isn't active).
 add_action( 'init', function () {
     $dir   = get_template_directory();
-    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js' ];
+    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js', '/assets/js/ae-hero-motion.js' ];
     $sig   = '';
     foreach ( $files as $f ) {
         $sig .= file_exists( $dir . $f ) ? filemtime( $dir . $f ) : '0';
