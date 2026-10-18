@@ -97,7 +97,7 @@ $ae_topic_close = function () {
 <!-- 1. HERO -->
 <section class="v5-hero" aria-labelledby="v5-hero-title">
   <img class="ae-hero-art" src="<?php echo esc_url( $ae_img . 'graphics/ae-hero-v2.svg' ); ?>" alt="" aria-hidden="true" width="1600" height="900" decoding="async">
-  <p class="v5-hero__kicker v5-label" data-reveal>[ Website design, online presence &amp; automation &mdash; Chambersburg, PA ]</p>
+  <p class="v5-hero__kicker v5-label" data-reveal>[ Website design, online presence &amp; automation ]</p>
   <h1 class="v5-hero__title" id="v5-hero-title">
     <span class="v5-hero__line" data-split data-split-delay="0">Helping your</span>
     <span class="v5-hero__line" data-split data-split-delay="0.08">business work</span>
@@ -111,7 +111,7 @@ $ae_topic_close = function () {
     <p class="v5-hero__lead" data-reveal>
       We partner with small businesses to untangle daily workflows, build clear customer-facing websites, and put practical systems in place that free up your time.
     </p>
-    <p class="v5-label v5-label--end" data-reveal>[ Based in ]<br>Chambersburg, PA<br>Working with clients nationwide</p>
+    <p class="v5-label v5-label--end" data-reveal>Working with clients nationwide</p>
   </div>
 </section>
 

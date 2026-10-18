@@ -1,7 +1,7 @@
 /**
  * AE Chrome v3.0 — site-wide chrome behavior.
  * 1. Compresses the sticky header after 40px of scroll.
- * 2. Renders a live local-time row in the footer (Chambersburg, PA / ET).
+ * 2. Renders a live local-time row in the footer (ET).
  * No visual hooks reused from existing JS; degrades invisibly.
  */
 ( function () {
@@ -45,12 +45,12 @@
       if ( fmt ) {
         var tick = function () {
           clock.textContent =
-            'CHAMBERSBURG, PA · ' + fmt.format( new Date() ).toUpperCase() + ' ET';
+            fmt.format( new Date() ).toUpperCase() + ' ET';
         };
         tick();
         setInterval( tick, 1000 );
       } else {
-        clock.textContent = 'CHAMBERSBURG, PA · EASTERN TIME';
+        clock.textContent = 'EASTERN TIME';
       }
     }
   } );

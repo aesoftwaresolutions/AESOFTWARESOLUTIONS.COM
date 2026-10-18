@@ -33,7 +33,6 @@
     <p class="v5-label" data-reveal>[ Contact ]</p>
     <ul data-reveal>
       <li><a class="v5-link" href="mailto:anthony@aesoftwaresolutions.com">anthony@aesoftwaresolutions.com</a></li>
-      <li>Chambersburg, PA</li>
       <li>Mon&ndash;Fri, 9am&ndash;5pm ET</li>
     </ul>
   </div>

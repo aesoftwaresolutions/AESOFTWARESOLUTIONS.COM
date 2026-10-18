@@ -40,7 +40,7 @@ function aesoftwares_offer_card( $item, $extra_class = '' ) {
 <section class="page-hero pricing-hero">
 	<p class="page-hero__eyebrow">Pricing</p>
 	<h1 class="page-hero__headline">Clear prices. No surprises.</h1>
-	<p class="page-hero__subtitle">Websites, Google presence and follow up automation for small businesses in Chambersburg, PA and beyond. Start free, build once, and add monthly care when you want it.</p>
+	<p class="page-hero__subtitle">Websites, Google presence and follow up automation for small businesses everywhere. Start free, build once, and add monthly care when you want it.</p>
 </section>
 
 <!-- Steps of the ladder, as a strip -->

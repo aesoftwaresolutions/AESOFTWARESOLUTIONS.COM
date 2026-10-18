@@ -30,7 +30,7 @@ $ae_presence_faq = [
 	],
 	[
 		'q' => 'Which areas do you work with?',
-		'a' => 'We are based in Chambersburg, PA and work with businesses across Franklin County, South Central Pennsylvania and nearby Maryland, and remotely with clients anywhere in the US.',
+		'a' => 'We work with businesses across the US, remotely and in person where it makes sense.',
 	],
 ];
 ?>
@@ -38,7 +38,7 @@ $ae_presence_faq = [
 <section class="page-hero op-hero">
 	<p class="page-hero__eyebrow">Online presence management</p>
 	<h1 class="page-hero__headline">Be the business they find first.</h1>
-	<p class="page-hero__subtitle">We set up and look after everything people see before they call you &mdash; your Google Business Profile, reviews, listings and website &mdash; for small businesses in Chambersburg, PA and beyond.</p>
+	<p class="page-hero__subtitle">We set up and look after everything people see before they call you &mdash; your Google Business Profile, reviews, listings and website &mdash; for small businesses everywhere.</p>
 	<div class="op-hero__actions" data-reveal>
 		<a class="v5-button" href="#presence-check">Run the free presence check</a>
 		<a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Talk to us &rarr;</a>

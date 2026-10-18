@@ -107,7 +107,7 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
     </ul>
     <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn mobile-nav-overlay__cta">Get in touch</a>
   </nav>
-  <p class="mobile-nav-overlay__footer">anthony@aesoftwaresolutions.com &middot; Chambersburg, PA</p>
+  <p class="mobile-nav-overlay__footer">anthony@aesoftwaresolutions.com</p>
 </div>
 
 <main class="site-main" id="main-content">

@@ -460,7 +460,7 @@ get_header(); ?>
 
 <!-- HERO -->
 <div class="page-hero web-hero">
-    <div class="page-hero__eyebrow">Website design &middot; Chambersburg, PA</div>
+    <div class="page-hero__eyebrow">Website design</div>
     <h1 class="page-hero__headline">A website that<br><em>works harder</em><br>than a business card.</h1>
     <p class="page-hero__subtitle" data-reveal-text>Every site we build has one job: convert a visitor into a lead, a client, or a customer. Portfolio to full CRM platform — three tiers, one team.</p>
 </div>
