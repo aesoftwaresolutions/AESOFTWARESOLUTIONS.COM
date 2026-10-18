@@ -96,6 +96,7 @@ $ae_topic_close = function () {
 
 <!-- 1. HERO -->
 <section class="v5-hero" aria-labelledby="v5-hero-title">
+  <img class="ae-hero-art" src="<?php echo esc_url( $ae_img . 'graphics/ae-hero-v2.svg' ); ?>" alt="" aria-hidden="true" width="1600" height="900" decoding="async">
   <p class="v5-hero__kicker v5-label" data-reveal>[ Website design, online presence &amp; automation &mdash; Chambersburg, PA ]</p>
   <h1 class="v5-hero__title" id="v5-hero-title">
     <span class="v5-hero__line" data-split data-split-delay="0">Helping your</span>
@@ -113,6 +114,8 @@ $ae_topic_close = function () {
     <p class="v5-label v5-label--end" data-reveal>[ Based in ]<br>Chambersburg, PA<br>Working with clients nationwide</p>
   </div>
 </section>
+
+<img class="ae-divider" src="<?php echo esc_url( $ae_img . 'graphics/ae-divider.svg' ); ?>" alt="" aria-hidden="true" width="1600" height="40" loading="lazy" decoding="async">
 
 <!-- 2. TOPICS — pick one to open it -->
 <section class="v5-topics" id="topics" aria-labelledby="v5-topics-title">
