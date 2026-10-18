@@ -17,9 +17,9 @@
 /* ── Global token tweaks ──────────────────────────────────────────────────
    #999994 on the off-white background was 2.7:1, under the 4.5:1 minimum. */
 :root {
-  --text-tertiary: #6E6E6A;
-  --text-muted: #666663; /* legacy grey #888884 was 3.3:1 on the paper background */
-  --btn-hover-bg: #000000;
+  --text-tertiary: var(--ink-60);
+  --text-muted: var(--ink-70); /* legacy grey #888884 was 3.3:1 on the paper background */
+  --btn-hover-bg: var(--ink);
 }
 
 /* style.css also forces dark-world tokens onto these containers even though
@@ -33,17 +33,14 @@
 .process-timeline,
 .contact-layout,
 .product-section:not(.product-section--alt) {
-  --text: #121212;
-  --text-muted: #666663;
-  --border: rgba(18, 18, 18, 0.08);
+  --text: var(--ink);
+  --text-muted: var(--ink-70);
 }
 
 /* Browser mock-ups on the home work cards are light inside a dark card. */
 .work-card .work-preview-frame {
-  --text: #121212;
-  --text-secondary: #666663;
-  --border: rgba(18, 18, 18, 0.08);
-  --border-strong: rgba(18, 18, 18, 0.18);
+  --text: var(--ink);
+  --text-secondary: var(--ink-70);
 }
 
 /* ── 2. Legacy hard-coded light text → tokens ─────────────────────────── */
@@ -89,7 +86,7 @@
 .contact-form input,
 .contact-form select,
 .contact-form textarea {
-  background: var(--surface, #FFFFFF);
+  background: var(--surface);
   color: var(--text);
   border: 1px solid var(--border-strong);
   font-size: 16px; /* stops iOS Safari zooming in on focus */
@@ -129,7 +126,7 @@ body .report-request-btn {
    main.js and ae-animations.js still add .scrolled, which style.css turned
    into a black bar with white links — and the CTA stayed black on black. */
 .site-header.scrolled {
-  background-color: rgba(247, 247, 245, 0.92);
+  background-color: rgb(var(--paper-rgb) / .92);
   border-bottom: 1px solid var(--border);
 }
 .site-header.scrolled .site-header__logo,

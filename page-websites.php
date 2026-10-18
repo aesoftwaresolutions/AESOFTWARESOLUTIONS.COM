@@ -90,12 +90,12 @@ add_action( 'wp_head', function () { ?>
     transform: translateY(-4px);
 }
 .web-scroll-card__browser {
-    background: #111;
+    background: var(--surface-subtle);
     padding: 8px 12px;
     display: flex;
     align-items: center;
     gap: 6px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid var(--border);
 }
 .web-scroll-card__dot {
     width: 8px; height: 8px;
@@ -106,7 +106,7 @@ add_action( 'wp_head', function () { ?>
 .web-scroll-card__dot--g { background: #28c840; }
 .web-scroll-card__url {
     flex: 1;
-    background: rgba(255,255,255,0.06);
+    background: rgb(var(--ink-rgb) / .06);
     border-radius: 4px;
     height: 16px;
     margin-left: 4px;
@@ -196,7 +196,7 @@ add_action( 'wp_head', function () { ?>
 .web-tier:hover { border-color: var(--accent); transform: translateY(-2px); }
 .web-tier--featured {
     border-color: var(--accent);
-    background: linear-gradient(160deg, rgba(201,169,110,0.06) 0%, var(--bg-surface) 60%);
+    background: linear-gradient(160deg, rgb(var(--gold-rgb) / .06) 0%, var(--bg-surface) 60%);
 }
 .web-tier__badge {
     position: absolute;
@@ -389,7 +389,7 @@ add_action( 'wp_head', function () { ?>
 .web-why-card:hover { border-color: var(--accent); }
 .web-why-card__icon {
     width: 40px; height: 40px;
-    background: rgba(201,169,110,0.1);
+    background: rgb(var(--gold-rgb) / .1);
     border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
     color: var(--accent);

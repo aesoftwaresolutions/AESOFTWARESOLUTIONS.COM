@@ -99,13 +99,13 @@
                     if (!r.ok) throw new Error('HTTP ' + r.status);
                     form.reset();
                     statusEl.hidden = false;
-                    statusEl.style.color = '#7fbf7f';
+                    statusEl.style.color = 'var(--forest)';
                     statusEl.textContent = "Message sent — you'll hear from Anthony within 24 hours.";
                     submitBtn.textContent = 'Sent ✓';
                 }).catch(function () {
                     // Endpoint unreachable — fall back to a pre-filled email
                     statusEl.hidden = false;
-                    statusEl.style.color = '#e0b33a';
+                    statusEl.style.color = 'var(--gold-ink)';
                     statusEl.textContent = 'Direct send failed — opening your email app instead.';
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Send message →';

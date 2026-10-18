@@ -14,15 +14,15 @@ assessmentTemplate.innerHTML = `
         display: flex;
         flex-direction: column;
         height: 100%;
-        background: #111111;
-        border: 1px solid rgba(255,255,255,0.08);
+        background: var(--bg, #F7F7F5);
+        border: 1px solid var(--border, rgba(18, 18, 18, 0.10));
         border-radius: 4px;
         overflow: hidden;
     }
 
     .chat-header {
         padding: 1.25rem 1.5rem;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
+        border-bottom: 1px solid var(--border, rgba(18, 18, 18, 0.10));
         display: flex;
         align-items: center;
         gap: 0.75rem;
@@ -33,7 +33,7 @@ assessmentTemplate.innerHTML = `
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: #C9A96E;
+        background: var(--gold, #C9A96E);
         flex-shrink: 0;
     }
 
@@ -50,14 +50,14 @@ assessmentTemplate.innerHTML = `
         font-size: 0.8rem;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: #888884;
+        color: var(--text-secondary, #5E5E5A);
         font-weight: 500;
     }
 
     .chat-header__status {
         margin-left: auto;
         font-size: 0.72rem;
-        color: #888884;
+        color: var(--text-tertiary, #6E6E6A);
         letter-spacing: 0.08em;
         text-transform: uppercase;
     }
@@ -75,7 +75,7 @@ assessmentTemplate.innerHTML = `
     .chat-messages::-webkit-scrollbar { width: 4px; }
     .chat-messages::-webkit-scrollbar-track { background: transparent; }
     .chat-messages::-webkit-scrollbar-thumb {
-        background: rgba(255,255,255,0.1);
+        background: var(--border-strong, rgba(18, 18, 18, 0.22));
         border-radius: 2px;
     }
 
@@ -83,7 +83,7 @@ assessmentTemplate.innerHTML = `
         max-width: 78%;
         line-height: 1.6;
         font-size: 0.9375rem;
-        color: #EDEDE9;
+        color: var(--text, #121212);
     }
 
     .msg--bot {
@@ -92,16 +92,16 @@ assessmentTemplate.innerHTML = `
 
     .msg--user {
         align-self: flex-end;
-        background: rgba(201,169,110,0.12);
-        border: 1px solid rgba(201,169,110,0.2);
+        background: var(--forest-tint, rgba(42, 69, 53, 0.08));
+        border: 1px solid rgb(var(--forest-rgb, 42 69 53) / .2);
         padding: 0.75rem 1rem;
         border-radius: 4px 4px 0 4px;
-        color: #EDEDE9;
+        color: var(--text, #121212);
     }
 
     .msg--bot .msg-inner {
-        background: #141414;
-        border: 1px solid rgba(255,255,255,0.08);
+        background: var(--surface, #FFFFFF);
+        border: 1px solid var(--border, rgba(18, 18, 18, 0.10));
         padding: 0.875rem 1rem;
         border-radius: 0 4px 4px 4px;
     }
@@ -115,8 +115,8 @@ assessmentTemplate.innerHTML = `
         align-items: center;
         gap: 0.4rem;
         padding: 0.875rem 1rem;
-        background: #141414;
-        border: 1px solid rgba(255,255,255,0.08);
+        background: var(--surface, #FFFFFF);
+        border: 1px solid var(--border, rgba(18, 18, 18, 0.10));
         border-radius: 0 4px 4px 4px;
     }
 
@@ -124,7 +124,7 @@ assessmentTemplate.innerHTML = `
         width: 6px;
         height: 6px;
         border-radius: 50%;
-        background: #888884;
+        background: var(--text-tertiary, #6E6E6A);
         animation: typingBounce 1.4s ease-in-out infinite;
     }
 
@@ -138,9 +138,9 @@ assessmentTemplate.innerHTML = `
 
     .chat-input-wrap {
         padding: 1rem 1.5rem;
-        border-top: 1px solid rgba(255,255,255,0.08);
+        border-top: 1px solid var(--border, rgba(18, 18, 18, 0.10));
         flex-shrink: 0;
-        background: #111111;
+        background: var(--surface, #FFFFFF);
     }
 
     .chat-input-row {
@@ -151,11 +151,11 @@ assessmentTemplate.innerHTML = `
 
     .chat-input {
         flex: 1;
-        background: #141414;
-        border: 1px solid rgba(255,255,255,0.1);
+        background: var(--bg, #F7F7F5);
+        border: 1px solid var(--border-strong, rgba(18, 18, 18, 0.22));
         border-radius: 4px;
         padding: 0.75rem 1rem;
-        color: #EDEDE9;
+        color: var(--text, #121212);
         font-size: 0.9375rem;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         line-height: 1.5;
@@ -168,14 +168,14 @@ assessmentTemplate.innerHTML = `
 
     .chat-input:focus {
         outline: none;
-        border-color: rgba(201,169,110,0.4);
+        border-color: var(--forest, #2A4535);
     }
 
-    .chat-input::placeholder { color: #888884; }
+    .chat-input::placeholder { color: var(--text-tertiary, #6E6E6A); }
 
     .chat-send {
-        background: #C9A96E;
-        color: #080808;
+        background: var(--forest, #2A4535);
+        color: var(--paper, #F7F7F5);
         border: none;
         border-radius: 4px;
         width: 48px;
@@ -189,12 +189,12 @@ assessmentTemplate.innerHTML = `
         font-size: 1.1rem;
     }
 
-    .chat-send:hover:not(:disabled) { background: #a8853d; }
+    .chat-send:hover:not(:disabled) { background: var(--forest-900, #1D3225); }
     .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
 
     .chat-error {
         font-size: 0.8rem;
-        color: #e07070;
+        color: var(--error, #8A2B1F);
         margin-top: 0.5rem;
     }
 </style>

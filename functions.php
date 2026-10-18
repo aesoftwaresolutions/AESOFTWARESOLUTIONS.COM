@@ -115,20 +115,6 @@ function aesoftwares_enqueue_scripts() {
         ] );
     }
 
-    // ── Aria dashboard (console page only) ───────────────────────────────
-    if ( is_page_template( 'page-console.php' ) ) {
-        wp_enqueue_script(
-            'ae-aria',
-            $uri . '/assets/js/ae-aria.js',
-            [],
-            filemtime( $js . 'ae-aria.js' ),
-            [ 'in_footer' => true, 'strategy' => 'defer' ]
-        );
-        wp_localize_script( 'ae-aria', 'ae_aria_settings', [
-            'status_url' => get_rest_url( null, 'aesoftwares/v1/aria/status' ),
-        ] );
-    }
-
     // ── Marketplace scraper (private admin tool) ──────────────────────────
     if ( is_page_template( 'page-marketplace.php' ) ) {
         wp_enqueue_script(
@@ -169,47 +155,24 @@ function aesoftwares_enqueue_scripts() {
         );
     }
 
-    // ── Aria Marketplace (public) ─────────────────────────────────────────
-    if ( is_page_template( 'page-aria-marketplace.php' ) ) {
-        wp_enqueue_script(
-            'ae-aria-marketplace',
-            $uri . '/assets/js/ae-aria-marketplace.js',
-            [],
-            filemtime( $js . 'ae-aria-marketplace.js' ),
-            [ 'in_footer' => true, 'strategy' => 'defer' ]
-        );
-        wp_localize_script( 'ae-aria-marketplace', 'ae_aria_settings', [
-            'products_url' => get_rest_url( null, 'aesoftwares/v1/aria/products' ),
-            'contact_url'  => home_url( '/contact/' ),
-        ] );
-    }
-
-    // ── Aria Console (admin) ──────────────────────────────────────────────
-    if ( is_page_template( 'page-aria-console.php' ) ) {
-        wp_enqueue_script(
-            'ae-aria-console',
-            $uri . '/assets/js/ae-aria-console.js',
-            [],
-            filemtime( $js . 'ae-aria-console.js' ),
-            [ 'in_footer' => true, 'strategy' => 'defer' ]
-        );
-        wp_localize_script( 'ae-aria-console', 'ae_aria_console', [
-            'status_url'   => get_rest_url( null, 'aesoftwares/v1/aria/status' ),
-            'tasks_url'    => get_rest_url( null, 'aesoftwares/v1/aria/tasks' ),
-            'control_url'  => get_rest_url( null, 'aesoftwares/v1/aria/control' ),
-            'messages_url' => get_rest_url( null, 'aesoftwares/v1/aria/messages' ),
-            'products_url' => get_rest_url( null, 'aesoftwares/v1/aria/products' ),
-            'nonce'        => wp_create_nonce( 'wp_rest' ),
-            'ws_url'       => 'ws://100.102.97.98:7478',
-        ] );
-    }
-
     // The GSAP + ScrollTrigger + Lenis "cinematic" stack was removed: the v4
     // front page has none of the elements it animated, so it only added ~150KB
     // of script, console warnings, and scroll-jacking on desktop. Reveals are
     // handled by the IntersectionObserver in footer.php and ae-chrome.css.
 }
 add_action( 'wp_enqueue_scripts', 'aesoftwares_enqueue_scripts' );
+
+
+// ── Retired Aria pages → homepage ──────────────────────────────────────────
+// The Aria console, store and marketplace pages were removed. Their old URLs
+// 301 to the homepage. Priority 1 runs before WordPress's canonical redirect.
+add_action( 'template_redirect', function () {
+    $path = trim( (string) wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '', PHP_URL_PATH ), '/' );
+    if ( in_array( $path, [ 'aria-console', 'aria-store', 'aria-marketplace' ], true ) ) {
+        wp_safe_redirect( home_url( '/' ), 301 );
+        exit;
+    }
+}, 1 );
 
 
 // ── Strip WordPress bloat from the front page ─────────────────────────────

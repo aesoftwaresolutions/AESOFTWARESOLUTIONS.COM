@@ -4,31 +4,60 @@
 
    Palette   paper #F7F7F5 · surface #FFFFFF · ink #121212
              secondary #5E5E5A · rule rgba(18,18,18,.12) · accent #2A4535
+             (all defined once in :root below; the rest of the site reads them)
    Type      Plus Jakarta Sans (everything), Space Grotesk (small labels)
    Motion    ease-out  cubic-bezier(.18,.66,.18,1) for reveals
              ease-in-out cubic-bezier(.76,0,.24,1) for panels
    ============================================================ */
 
 :root {
-  --bg: #F7F7F5;
+  /* ── Brand palette ─────────────────────────────────────────────────────
+     Every color on the site comes from this block. Gold is for rules, dots
+     and decoration; gold TEXT on paper must use --gold-ink or --forest. */
+  --gold: #C9A96E;
+  --gold-600: #B8944F;
+  --gold-300: #DFC08A;
+  --gold-ink: #7A5F20;             /* gold-colored text on paper, 5.6:1 */
+  --forest: #2A4535;
+  --forest-900: #1D3225;
+  --forest-tint: rgba(42, 69, 53, 0.08);
+  --paper: #F7F7F5;
+  --paper-2: #EFEFEC;
   --surface: #FFFFFF;
-  --surface-subtle: #EFEFEC;
-  --text: #121212;
-  --text-secondary: #5E5E5A;
-  --text-tertiary: #6E6E6A;
-  --text-muted: #5E5E5A;
-  --rule: rgba(18, 18, 18, 0.12);
-  --border: rgba(18, 18, 18, 0.10);
-  --border-strong: rgba(18, 18, 18, 0.22);
-  --border-hover: rgba(18, 18, 18, 0.32);
-  --accent: #121212;
-  --accent-dark: #000000;
-  --accent-highlight: #2A4535;
-  --btn-hover-bg: #2A4535;
+  --ink: #121212;
+  --ink-70: #5E5E5A;               /* secondary text, 6.1:1 */
+  --ink-60: #6E6E6A;               /* tertiary text, 4.8:1: the lightest allowed for text */
+  --error: #8A2B1F;
+  --error-tint: rgba(138, 43, 31, 0.08);
+  --error-line: rgba(138, 43, 31, 0.25);
+  --warning-tint: rgba(201, 169, 110, 0.15);
+
+  /* Channel triplets, for alpha variants: rgb(var(--ink-rgb) / .12) */
+  --gold-rgb: 201 169 110;
+  --forest-rgb: 42 69 53;
+  --paper-rgb: 247 247 245;
+  --ink-rgb: 18 18 18;
+  --error-rgb: 138 43 31;
+
+  /* ── Semantic aliases (what the templates read) ───────────────────── */
+  --bg: var(--paper);
+  --surface-subtle: var(--paper-2);
+  --text: var(--ink);
+  --text-secondary: var(--ink-70);
+  --text-tertiary: var(--ink-60);
+  --text-muted: var(--ink-70);
+  --rule: rgb(var(--ink-rgb) / .12);
+  --border: rgb(var(--ink-rgb) / .10);
+  --border-strong: rgb(var(--ink-rgb) / .22);
+  --border-hover: rgb(var(--ink-rgb) / .32);
+  --accent: var(--ink);
+  --accent-dark: var(--ink);
+  --accent-highlight: var(--forest);
+  --btn-hover-bg: var(--forest);
 
   /* legacy dark-theme surface tokens → light */
-  --bg-surface: #F7F7F5;
-  --bg-card: #FFFFFF;
+  --bg-surface: var(--paper);
+  --bg-card: var(--surface);
 
   --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-sans: var(--font-main);
@@ -632,9 +661,8 @@ html.ae-calm .mobile-nav-overlay__link { transform: none; transition: none; }
 /* ── Leftover hard-coded dark-theme colours (tool + software pages) ───── */
 .transcriber-section { background: var(--bg) !important; }
 .product-section, .product-section--alt {
-  --text: #121212;
-  --text-muted: #5E5E5A;
-  --border: rgba(18, 18, 18, 0.10);
+  --text: var(--ink);
+  --text-muted: var(--ink-70);
   color: var(--text);
 }
 .software-cta__eyebrow, .software-cta__sub,
@@ -643,7 +671,7 @@ html.ae-calm .mobile-nav-overlay__link { transform: none; transition: none; }
   color: var(--text-secondary) !important;
 }
 .software-cta__title { color: var(--text) !important; }
-.starter-pricing-note { color: #333331 !important; }
+.starter-pricing-note { color: var(--text) !important; }
 
 /* Page hero: everything on one left edge (style.css centred each child) */
 .page-hero > * { margin-left: 0 !important; margin-right: 0 !important; text-align: left !important; }

@@ -37,7 +37,7 @@ add_action( 'wp_head', function () { ?>
 	align-items: center;
 	gap: 0.75rem;
 	padding: 0.75rem 1.25rem;
-	border-top: 1px solid #2a2a2a;
+	border-top: 1px solid var(--border);
 }
 .tts-voice-label {
 	font-size: 0.8rem;
@@ -49,7 +49,7 @@ add_action( 'wp_head', function () { ?>
 	flex: 1;
 	font-size: 0.85rem;
 	padding: 0.4rem 0.6rem;
-	border: 1px solid #333;
+	border: 1px solid var(--border-strong);
 	border-radius: 6px;
 	background: var(--bg-surface);
 	color: var(--text);

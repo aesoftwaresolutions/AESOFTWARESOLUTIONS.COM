@@ -2,7 +2,7 @@
 /**
  * Template Name: Guides
  *
- * Eight free PDF guides for contractors, served from wp-content/uploads/guides/.
+ * Six free PDF guides for contractors, served from wp-content/uploads/guides/.
  * The guides stay hidden behind a newsletter signup popup. Signups post to
  * admin-ajax.php (action ae_guides_signup), handled in inc/guides-newsletter.php.
  *
@@ -56,20 +56,6 @@ $guides = array(
 		'pitch' => 'How contractors can raise prices and still close: find your true cost, set a real margin, present options customers understand, and know when to walk away. Includes a 30 day plan.',
 		'file'  => 'pricing-without-fear.pdf',
 	),
-	array(
-		'id'    => 'website-conversion-basics-for-trades',
-		'name'  => 'Website Conversion Basics for Trades',
-		'pages' => '16 pages',
-		'pitch' => 'Turn your contractor website from a brochure into an estimate machine. Layout, trust signals, short forms, speed, local SEO, and a 30 day plan.',
-		'file'  => 'website-conversion-basics-for-trades.pdf',
-	),
-	array(
-		'id'    => 'the-follow-up-system',
-		'name'  => 'The Follow-Up System',
-		'pages' => '22 pages',
-		'pitch' => 'Stop letting quiet estimates die. Follow up cadence, scripts for every touch, the breakup email, and a one page tracker.',
-		'file'  => 'the-follow-up-system.pdf',
-	),
 );
 
 $faqs = array(
@@ -81,9 +67,9 @@ $faqs = array(
 ?>
 
 <style>
-	.ae-guides .ae-offer__price { color: #C9A96E; }
+	.ae-guides .ae-offer__price { color: var(--gold-ink); }
 	.ae-guides .ae-offer__name { font-family: Georgia, 'Times New Roman', serif; }
-	.ae-guides .ae-offer { border-top: 2px solid #C9A96E; }
+	.ae-guides .ae-offer { border-top: 2px solid var(--gold); }
 	.ae-guides__meta { margin: 0 0 12px; }
 	.ae-guides__faq { max-width: 1040px; }
 	.ae-guides__faq dt { margin-top: 28px; font-family: Georgia, 'Times New Roman', serif; font-size: 1.25rem; }
@@ -103,13 +89,13 @@ $faqs = array(
 		justify-content: center;
 		padding: 20px;
 		overflow-y: auto;
-		background: rgba(18, 18, 18, 0.88);
+		background: rgb(var(--ink-rgb) / .88);
 		opacity: 0;
 		transition: opacity .45s ease;
 	}
 	@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
 		.ae-gate {
-			background: rgba(18, 18, 18, 0.45);
+			background: rgb(var(--ink-rgb) / .45);
 			-webkit-backdrop-filter: blur(10px);
 			backdrop-filter: blur(10px);
 		}
@@ -121,15 +107,15 @@ $faqs = array(
 		max-width: 480px;
 		margin: auto;
 		padding: 32px 28px 28px;
-		background: #F7F7F5;
-		color: #121212;
-		border-top: 3px solid #C9A96E;
+		background: var(--paper);
+		color: var(--ink);
+		border-top: 3px solid var(--gold);
 		border-radius: 10px;
-		box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+		box-shadow: 0 24px 64px rgb(var(--ink-rgb) / .35);
 	}
-	.ae-gate__eyebrow { margin: 0 0 8px; font-size: .8rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #2A4535; }
-	.ae-gate__title { margin: 0 0 14px; font-family: Georgia, 'Times New Roman', serif; font-size: 1.75rem; font-weight: 400; line-height: 1.2; color: #121212; opacity: 1 !important; }
-	.ae-gate__copy { margin: 0 0 20px; line-height: 1.6; color: #121212; }
+	.ae-gate__eyebrow { margin: 0 0 8px; font-size: .8rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--forest); }
+	.ae-gate__title { margin: 0 0 14px; font-family: Georgia, 'Times New Roman', serif; font-size: 1.75rem; font-weight: 400; line-height: 1.2; color: var(--ink); opacity: 1 !important; }
+	.ae-gate__copy { margin: 0 0 20px; line-height: 1.6; color: var(--ink); }
 	.ae-gate__field { display: block; margin: 0 0 14px; }
 	.ae-gate__label { display: block; margin: 0 0 6px; font-size: .9rem; font-weight: 600; }
 	.ae-gate__input {
@@ -139,31 +125,31 @@ $faqs = array(
 		padding: .8rem .9rem;
 		font: inherit;
 		font-size: 1rem;
-		color: #121212;
-		background: #FFFFFF;
-		border: 1px solid rgba(18, 18, 18, 0.32);
+		color: var(--ink);
+		background: var(--surface);
+		border: 1px solid var(--border-hover);
 		border-radius: 8px;
 	}
-	.ae-gate__input:focus { outline: 2px solid #2A4535; outline-offset: 1px; border-color: #2A4535; }
+	.ae-gate__input:focus { outline: 2px solid var(--forest); outline-offset: 1px; border-color: var(--forest); }
 	.ae-gate__trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
-	.ae-gate__error { min-height: 1.4em; margin: 0 0 12px; font-size: .95rem; line-height: 1.4; color: #8A2B1F; }
+	.ae-gate__error { min-height: 1.4em; margin: 0 0 12px; font-size: .95rem; line-height: 1.4; color: var(--error); }
 	.ae-gate__submit {
 		width: 100%;
 		cursor: pointer;
-		background: #2A4535;
-		border-color: #2A4535;
-		color: #F7F7F5;
+		background: var(--forest);
+		border-color: var(--forest);
+		color: var(--paper);
 	}
-	.ae-gate__submit:hover, .ae-gate__submit:focus-visible { background: #1D3225; border-color: #1D3225; }
+	.ae-gate__submit:hover, .ae-gate__submit:focus-visible { background: var(--forest-900); border-color: var(--forest-900); }
 	.ae-gate__submit[disabled] { opacity: .7; cursor: default; }
-	.ae-gate__fine { margin: 14px 0 0; font-size: .85rem; line-height: 1.5; color: #5E5E5A; }
+	.ae-gate__fine { margin: 14px 0 0; font-size: .85rem; line-height: 1.5; color: var(--ink-70); }
 	@media (prefers-reduced-motion: reduce) { .ae-gate { transition: none; } }
 </style>
 
 <section class="page-hero pricing-hero">
 	<p class="page-hero__eyebrow">Free guides</p>
 	<h1 class="page-hero__headline">Win more of the jobs you already quote.</h1>
-	<p class="page-hero__subtitle">Eight short PDF guides for contractors, free when you join my monthly newsletter. They cover how to close more estimates, what missed calls cost you each month, how to answer new leads in minutes, how to show up on the Google map, how to earn more 5 star reviews, how to raise your prices and still close, how to turn your website into an estimate machine, and how to follow up so quiet estimates do not die.</p>
+	<p class="page-hero__subtitle">Six short PDF guides for contractors, free when you join my monthly newsletter. They cover how to close more estimates, what missed calls cost you each month, how to answer new leads in minutes, how to show up on the Google map, how to earn more 5 star reviews, and how to raise your prices and still close.</p>
 	<noscript><p class="ae-guides__nojs">The signup form needs JavaScript. Turn it on and reload this page to join the newsletter and get the guides.</p></noscript>
 </section>
 
@@ -205,8 +191,8 @@ $faqs = array(
 	data-nonce="<?php echo esc_attr( wp_create_nonce( 'ae_guides_signup' ) ); ?>">
 	<div class="ae-gate__card">
 		<p class="ae-gate__eyebrow">Free guides</p>
-		<h2 class="ae-gate__title" id="ae-gate-title">Join my monthly newsletter and get all eight guides.</h2>
-		<p class="ae-gate__copy" id="ae-gate-copy">I send one newsletter a month. It covers what is happening at AE Software Solutions, current world events that affect small businesses and contractors, and how AE can help. The eight guides are free when you join.</p>
+		<h2 class="ae-gate__title" id="ae-gate-title">Join my monthly newsletter and get all six guides.</h2>
+		<p class="ae-gate__copy" id="ae-gate-copy">I send one newsletter a month. It covers what is happening at AE Software Solutions, current world events that affect small businesses and contractors, and how AE can help. The six guides are free when you join.</p>
 		<form class="ae-gate__form" id="ae-gate-form" novalidate>
 			<label class="ae-gate__field">
 				<span class="ae-gate__label">Name</span>

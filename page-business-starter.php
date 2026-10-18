@@ -48,7 +48,7 @@ add_action( 'wp_head', function () { ?>
 .starter-feature-card__icon {
 	width: 44px;
 	height: 44px;
-	background: rgba(201,169,110,0.1);
+	background: rgb(var(--gold-rgb) / .1);
 	border-radius: 10px;
 	display: flex;
 	align-items: center;
@@ -119,7 +119,7 @@ add_action( 'wp_head', function () { ?>
 	content: '';
 	position: absolute;
 	inset: 0;
-	background: radial-gradient(ellipse at top center, rgba(201,169,110,0.06) 0%, transparent 70%);
+	background: radial-gradient(ellipse at top center, rgb(var(--gold-rgb) / .06) 0%, transparent 70%);
 	pointer-events: none;
 }
 .starter-pricing-card__badge {

@@ -62,10 +62,10 @@
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        background-color: #C9A96E;
+        background-color: var(--forest, #2A4535);
         border: none;
         cursor: pointer;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 12px rgb(var(--ink-rgb, 18 18 18) / .15);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -74,18 +74,18 @@
 
       .ae-widget-button:hover {
         transform: scale(1.1);
-        box-shadow: 0 6px 16px rgba(201, 169, 110, 0.4);
+        box-shadow: 0 6px 16px rgb(var(--forest-rgb, 42 69 53) / .35);
       }
 
       .ae-widget-button:active {
         transform: scale(0.95);
       }
 
-      /* Chat bubble SVG icon (white) */
+      /* Chat bubble SVG icon (paper on forest) */
       .ae-widget-button svg {
         width: 28px;
         height: 28px;
-        stroke: #0f0f0f;
+        stroke: var(--paper, #F7F7F5);
         stroke-width: 2;
         fill: none;
       }
@@ -100,9 +100,10 @@
         right: 0;
         width: 380px;
         height: 520px;
-        background-color: #0f0f0f;
+        background-color: var(--surface, #FFFFFF);
+        border: 1px solid var(--border-strong, rgba(18, 18, 18, 0.22));
         border-radius: 12px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 8px 24px rgb(var(--ink-rgb, 18 18 18) / .16);
         display: flex;
         flex-direction: column;
         visibility: hidden;
@@ -141,8 +142,8 @@
       /* ──────────────────────────────────────────────────────────────────────── */
 
       .ae-widget-header {
-        background-color: #0f0f0f;
-        border-bottom: 1px solid #1e1e1e;
+        background-color: var(--surface, #FFFFFF);
+        border-bottom: 1px solid var(--border, rgba(18, 18, 18, 0.10));
         padding: 16px;
         display: flex;
         justify-content: space-between;
@@ -151,16 +152,16 @@
       }
 
       .ae-widget-header-text h3 {
-        font-family: "DM Serif Display", serif;
+        font-family: var(--font-main, "Plus Jakarta Sans", sans-serif);
+        font-weight: 600;
         font-size: 18px;
-        font-weight: 400;
-        color: #C9A96E;
+        color: var(--forest, #2A4535);
         margin: 0 0 4px 0;
       }
 
       .ae-widget-header-text p {
         font-size: 12px;
-        color: #888;
+        color: var(--text-secondary, #5E5E5A);
         margin: 0;
       }
 
@@ -174,13 +175,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #666;
+        color: var(--text-tertiary, #6E6E6A);
         font-size: 18px;
         transition: color 0.2s ease;
       }
 
       .ae-widget-close-btn:hover {
-        color: #ccc;
+        color: var(--text, #121212);
       }
 
       /* ──────────────────────────────────────────────────────────────────────── */
@@ -190,7 +191,7 @@
       .ae-widget-messages {
         flex: 1;
         overflow-y: auto;
-        background-color: #1a1a1a;
+        background-color: var(--bg, #F7F7F5);
         padding: 16px;
         display: flex;
         flex-direction: column;
@@ -203,16 +204,16 @@
       }
 
       .ae-widget-messages::-webkit-scrollbar-track {
-        background: #1a1a1a;
+        background: var(--bg, #F7F7F5);
       }
 
       .ae-widget-messages::-webkit-scrollbar-thumb {
-        background: #333;
+        background: var(--border-strong, rgba(18, 18, 18, 0.22));
         border-radius: 3px;
       }
 
       .ae-widget-messages::-webkit-scrollbar-thumb:hover {
-        background: #444;
+        background: var(--border-hover, rgba(18, 18, 18, 0.32));
       }
 
       /* ──────────────────────────────────────────────────────────────────────── */
@@ -242,13 +243,14 @@
       }
 
       .ae-widget-message.user .ae-widget-message-bubble {
-        background-color: #C9A96E;
-        color: #0f0f0f;
+        background-color: var(--forest, #2A4535);
+        color: var(--paper, #F7F7F5);
       }
 
       .ae-widget-message.assistant .ae-widget-message-bubble {
-        background-color: #1e1e1e;
-        color: #edede9;
+        background-color: var(--surface, #FFFFFF);
+        border: 1px solid var(--border, rgba(18, 18, 18, 0.10));
+        color: var(--text, #121212);
       }
 
       /* ──────────────────────────────────────────────────────────────────────── */
@@ -259,7 +261,8 @@
         display: flex;
         gap: 4px;
         padding: 10px 14px;
-        background-color: #1e1e1e;
+        background-color: var(--surface, #FFFFFF);
+        border: 1px solid var(--border, rgba(18, 18, 18, 0.10));
         border-radius: 8px;
         width: fit-content;
       }
@@ -268,7 +271,7 @@
         width: 6px;
         height: 6px;
         border-radius: 50%;
-        background-color: #666;
+        background-color: var(--text-tertiary, #6E6E6A);
         animation: ae-widget-bounce 1.4s infinite;
       }
 
@@ -315,19 +318,19 @@
       /* ──────────────────────────────────────────────────────────────────────── */
 
       .ae-widget-input-area {
-        border-top: 1px solid #1e1e1e;
+        border-top: 1px solid var(--border, rgba(18, 18, 18, 0.10));
         padding: 12px;
         display: flex;
         gap: 8px;
-        background-color: #0f0f0f;
+        background-color: var(--surface, #FFFFFF);
         flex-shrink: 0;
       }
 
       .ae-widget-input {
         flex: 1;
-        background-color: #1e1e1e;
-        border: none;
-        color: #edede9;
+        background-color: var(--bg, #F7F7F5);
+        border: 1px solid var(--border-strong, rgba(18, 18, 18, 0.22));
+        color: var(--text, #121212);
         padding: 10px 12px;
         border-radius: 6px;
         font-size: 16px; /* 16px minimum: iOS Safari zooms the page on smaller inputs */
@@ -337,17 +340,18 @@
       }
 
       .ae-widget-input:focus {
-        background-color: #252525;
+        background-color: var(--surface, #FFFFFF);
+        border-color: var(--forest, #2A4535);
       }
 
       .ae-widget-input::placeholder {
-        color: #666;
+        color: var(--text-tertiary, #6E6E6A);
       }
 
       .ae-widget-send-btn {
-        background-color: #C9A96E;
+        background-color: var(--forest, #2A4535);
         border: none;
-        color: #0f0f0f;
+        color: var(--paper, #F7F7F5);
         cursor: pointer;
         padding: 10px 16px;
         border-radius: 6px;

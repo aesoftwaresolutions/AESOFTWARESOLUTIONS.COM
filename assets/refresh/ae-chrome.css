@@ -6,16 +6,7 @@
 
 
 :root {
-  --bg: #F7F7F5;
-  --surface: #FFFFFF;
-  --surface-subtle: #EEEEEC;
-  --text: #121212;
-  --text-secondary: #666663;
-  --text-tertiary: #999994;
-  --border: rgba(18, 18, 18, 0.08);
-  --border-strong: rgba(18, 18, 18, 0.18);
-  --accent: #1A1A18;
-  --accent-highlight: #2A4535;
+  /* Color tokens live in ae-v5.css (:root), which loads last. */
   --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'Space Grotesk', monospace, sans-serif;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -110,7 +101,7 @@ header.site-header {
   width: 100%;
   z-index: 1000;
   padding: 24px 40px;
-  background: rgba(247, 247, 245, 0.88);
+  background: rgb(var(--paper-rgb) / .88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
@@ -303,7 +294,7 @@ header.site-header {
 
 .work-card:hover .work-preview-frame {
   transform: translateY(-8px);
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 24px 48px rgb(var(--ink-rgb) / .08);
   border-color: var(--border-strong);
 }
 
@@ -334,7 +325,7 @@ header.site-header {
 
 .cap-item-row:hover {
   padding-left: 12px;
-  background-color: rgba(0, 0, 0, 0.015);
+  background-color: rgb(var(--ink-rgb) / .015);
 }
 
 /* ============================================================
