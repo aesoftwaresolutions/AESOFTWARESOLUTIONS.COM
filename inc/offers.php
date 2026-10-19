@@ -17,6 +17,7 @@ function aesoftwares_offers() {
 		'start' => [
 			[
 				'id'      => 'presence-check',
+				'icon'    => 'presence',
 				'name'    => 'Presence check',
 				'price'   => 'Free',
 				'cadence' => '15-minute call',
@@ -26,6 +27,7 @@ function aesoftwares_offers() {
 			],
 			[
 				'id'      => 'audit',
+				'icon'    => 'audit',
 				'name'    => 'Missed-Lead Audit',
 				'price'   => '$250',
 				'amount'  => 250,
@@ -46,6 +48,7 @@ function aesoftwares_offers() {
 		'websites' => [
 			[
 				'id'      => 'starter-site',
+				'icon'    => 'websites',
 				'name'    => 'Starter Site',
 				'price'   => 'from $495',
 				'amount'  => 495,
@@ -63,6 +66,7 @@ function aesoftwares_offers() {
 			],
 			[
 				'id'       => 'lead-funnel',
+				'icon'    => 'websites',
 				'name'     => 'Lead Funnel Site',
 				'price'    => 'from $4,500',
 				'amount'   => 4500,
@@ -81,6 +85,7 @@ function aesoftwares_offers() {
 			],
 			[
 				'id'      => 'custom',
+				'icon'    => 'websites',
 				'name'    => 'Custom Platform',
 				'price'   => 'Quoted',
 				'cadence' => 'after a scoping call',
@@ -99,6 +104,7 @@ function aesoftwares_offers() {
 		'monthly' => [
 			[
 				'id'      => 'online-presence',
+				'icon'    => 'presence',
 				'name'    => 'Online Presence Management',
 				'price'   => '$49',
 				'amount'  => 49,
@@ -114,6 +120,7 @@ function aesoftwares_offers() {
 			],
 			[
 				'id'       => 'front-desk',
+				'icon'    => 'front-desk',
 				'name'     => 'Front Desk',
 				'price'    => '$99',
 				'amount'   => 99,
@@ -130,6 +137,7 @@ function aesoftwares_offers() {
 			],
 			[
 				'id'        => 'front-desk-always-on',
+				'icon'    => 'front-desk',
 				'name'      => 'Always-On Front Desk',
 				'price'     => '$250',
 				'amount'    => 250,

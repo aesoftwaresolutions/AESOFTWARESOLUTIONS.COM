@@ -18,6 +18,9 @@ function aesoftwares_offer_card( $item, $extra_class = '' ) {
 	?>
 	<article class="ae-offer<?php echo $featured ? ' ae-offer--featured' : ''; ?> <?php echo esc_attr( $extra_class ); ?>" id="<?php echo esc_attr( $item['id'] ); ?>" data-reveal>
 		<?php if ( $featured ) : ?><span class="ae-offer__flag">Recommended</span><?php endif; ?>
+		<?php if ( ! empty( $item['icon'] ) ) : ?>
+			<img class="ae-offer__icon" src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/graphics/ae-icon-' . $item['icon'] . '.svg' ); ?>" width="48" height="48" alt="" loading="lazy" decoding="async" style="display:block;width:48px;height:48px;margin:0 0 14px;">
+		<?php endif; ?>
 		<h3 class="ae-offer__name"><?php echo esc_html( $item['name'] ); ?></h3>
 		<p class="ae-offer__price">
 			<?php if ( ! empty( $item['was'] ) ) : ?><s><?php echo esc_html( $item['was'] ); ?></s><?php endif; ?>
