@@ -2,7 +2,7 @@
 /**
  * Template Name: Guides
  *
- * Six free PDF guides for contractors, served from wp-content/uploads/guides/.
+ * Nine free PDF guides for contractors, served from wp-content/uploads/guides/.
  * The guides stay hidden behind a newsletter signup popup. Signups post to
  * admin-ajax.php (action ae_guides_signup), handled in inc/guides-newsletter.php.
  *
@@ -55,6 +55,27 @@ $guides = array(
 		'pages' => '19 pages',
 		'pitch' => 'How contractors can raise prices and still close: find your true cost, set a real margin, present options customers understand, and know when to walk away. Includes a 30 day plan.',
 		'file'  => 'pricing-without-fear.pdf',
+	),
+	array(
+		'id'    => 'speed-to-lead-mortgage-lenders',
+		'name'  => 'Speed-to-Lead for Mortgage Lenders',
+		'pages' => '19 pages',
+		'pitch' => 'How loan officers and mortgage brokers can answer purchase leads in minutes and win the deals they already paid for. Covers the five minute playbook, routing and after hours coverage for small teams, a call then text cadence, and a 10 minute self audit.',
+		'file'  => 'speed-to-lead-for-mortgage-lenders.pdf',
+	),
+	array(
+		'id'    => 'website-conversion-basics-for-trades',
+		'name'  => 'Website Conversion Basics for Trades',
+		'pages' => '16 pages',
+		'pitch' => 'Turn your contractor website from a brochure into an estimate machine. Layout, trust signals, short forms, speed, local SEO, and a 30 day plan.',
+		'file'  => 'website-conversion-basics-for-trades.pdf',
+	),
+	array(
+		'id'    => 'the-follow-up-system',
+		'name'  => 'The Follow-Up System',
+		'pages' => '22 pages',
+		'pitch' => 'Stop letting quiet estimates die. Follow up cadence, scripts for every touch, the breakup email, and a one page tracker.',
+		'file'  => 'the-follow-up-system.pdf',
 	),
 );
 
@@ -149,7 +170,7 @@ $faqs = array(
 <section class="page-hero pricing-hero">
 	<p class="page-hero__eyebrow">Free guides</p>
 	<h1 class="page-hero__headline">Win more of the jobs you already quote.</h1>
-	<p class="page-hero__subtitle">Six short PDF guides for contractors, free when you join my monthly newsletter. They cover how to close more estimates, what missed calls cost you each month, how to answer new leads in minutes, how to show up on the Google map, how to earn more 5 star reviews, and how to raise your prices and still close.</p>
+	<p class="page-hero__subtitle">Nine short PDF guides, free when you join my monthly newsletter. They cover how to close more estimates, what missed calls cost you each month, how to answer new leads in minutes, how to show up on the Google map, how to earn more 5 star reviews, how to raise your prices and still close, how mortgage lenders can answer purchase leads in minutes, how to turn your website into an estimate machine, and how to follow up until estimates close.</p>
 	<noscript><p class="ae-guides__nojs">The signup form needs JavaScript. Turn it on and reload this page to join the newsletter and get the guides.</p></noscript>
 </section>
 
