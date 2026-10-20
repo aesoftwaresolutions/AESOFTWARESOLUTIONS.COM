@@ -123,9 +123,10 @@ $ae_social_faq = [
 			<span class="v5-service__num">01</span>
 			<h3 class="v5-service__title">Social Front Desk</h3>
 			<div class="v5-service__text">
-				<p><strong>$199 a month.</strong> Posting handled for you with light planning. A good start if you only need to show up consistently.</p>
+				<p><strong>$199 a month plus a one time $75 setup.</strong> Posting handled for you with light planning. A good start if you only need to show up consistently.</p>
 				<p>First 3 clients: $149 a month for 3 months.</p>
 			</div>
+			<a class="v5-link v5-service__more" href="https://buy.stripe.com/7sYbJ1d2w2XcakXfFvabK0h">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">02</span>
@@ -139,17 +140,17 @@ $ae_social_faq = [
 			<span class="v5-service__num">03</span>
 			<h3 class="v5-service__title">Social Management Growth</h3>
 			<div class="v5-service__text">
-				<p><strong>$1,299 a month.</strong> Up to 6 platforms, 20 to 24 posts, 8 short form videos, 2 email campaigns, priority turnaround, monthly report and call.</p>
+				<p><strong>$1,299 a month plus a one time $495 setup.</strong> Up to 6 platforms, 20 to 24 posts, 8 short form videos, 2 email campaigns, priority turnaround, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://buy.stripe.com/cNi00j1jO9lA2Sv50RabK0c">Start now</a>
+			<a class="v5-link v5-service__more" href="https://buy.stripe.com/3cIfZh3rWcxMakXalbabK0i">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">04</span>
 			<h3 class="v5-service__title">Social Management Scale</h3>
 			<div class="v5-service__text">
-				<p><strong>$1,999 a month.</strong> Up to 8 platforms including TikTok and YouTube, 28 to 32 posts, 12 short form videos, daily engagement checks, 2 email campaigns, monthly report and call.</p>
+				<p><strong>$1,999 a month plus a one time $750 setup.</strong> Up to 8 platforms including TikTok and YouTube, 28 to 32 posts, 12 short form videos, daily engagement checks, 2 email campaigns, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://buy.stripe.com/aFa28rgeI55k9gT0KBabK0d">Start now</a>
+			<a class="v5-link v5-service__more" href="https://buy.stripe.com/8x2fZhaUoapEdx9gJzabK0j">Start now</a>
 		</li>
 	</ol>
 </section>
@@ -165,25 +166,25 @@ $ae_social_faq = [
 			<span class="v5-service__num">01</span>
 			<h3 class="v5-service__title">Creator Launch</h3>
 			<div class="v5-service__text">
-				<p><strong>$499 a month.</strong> 3 platforms, 12 short form videos a month cross posted, captions and hashtags written for each platform, posting handled, monthly growth report.</p>
+				<p><strong>$499 a month plus a one time $195 setup.</strong> 3 platforms, 12 short form videos a month cross posted, captions and hashtags written for each platform, posting handled, monthly growth report.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://buy.stripe.com/6oUaEXfaE8hwbp1fFvabK0e">Start now</a>
+			<a class="v5-link v5-service__more" href="https://buy.stripe.com/eVq28r4w0gO2gJlctjabK0k">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">02</span>
 			<h3 class="v5-service__title">Creator Growth</h3>
 			<div class="v5-service__text">
-				<p><strong>$899 a month.</strong> Up to 5 platforms, 20 short form videos, comment handling on business days, profile and link page polish, monthly report and call.</p>
+				<p><strong>$899 a month plus a one time $345 setup.</strong> Up to 5 platforms, 20 short form videos, comment handling on business days, profile and link page polish, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://buy.stripe.com/eVq6oH0fK1T81OrgJzabK0f">Start now</a>
+			<a class="v5-link v5-service__more" href="https://buy.stripe.com/6oUaEX5A48hwct578ZabK0l">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">03</span>
 			<h3 class="v5-service__title">Creator Authority</h3>
 			<div class="v5-service__text">
-				<p><strong>$1,999 a month.</strong> Up to 6 platforms, 30 short form videos, daily engagement checks, sponsor inquiries flagged with drafted replies you approve, 1 email or newsletter a month, monthly report and call.</p>
+				<p><strong>$1,999 a month plus a one time $750 setup.</strong> Up to 6 platforms, 30 short form videos, daily engagement checks, sponsor inquiries flagged with drafted replies you approve, 1 email or newsletter a month, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://buy.stripe.com/4gM9AT1jO8hw8cPctjabK0g">Start now</a>
+			<a class="v5-link v5-service__more" href="https://buy.stripe.com/7sY28r9QkdBQ2Sv2SJabK0m">Start now</a>
 		</li>
 	</ol>
 </section>
@@ -201,7 +202,7 @@ $ae_social_faq = [
 	<h2 class="v5-section-title" id="sm-steps-title" data-split>How it works</h2>
 	<ol class="op-steps__list">
 		<li data-reveal><span class="v5-label">[ 01 ]</span><h3>Discovery call</h3><p>A free 30 minute call about your goals, offers and platforms.</p></li>
-		<li data-reveal><span class="v5-label">[ 02 ]</span><h3>Setup</h3><p>Access granted by you, brand assets gathered, and a short voice interview so the content sounds like you.</p></li>
+		<li data-reveal><span class="v5-label">[ 02 ]</span><h3>Setup</h3><p>Access granted by you, brand assets gathered, and a short voice interview so the content sounds like you. We create your Meta, Claude and Canva accounts in your business name and connect your socials.</p></li>
 		<li data-reveal><span class="v5-label">[ 03 ]</span><h3>Calendar approval</h3><p>You approve the next month&rsquo;s calendar within 3 business days. Nothing unapproved goes out.</p></li>
 		<li data-reveal><span class="v5-label">[ 04 ]</span><h3>Run and report</h3><p>We post, reply and handle the community, then report results every month.</p></li>
 	</ol>
