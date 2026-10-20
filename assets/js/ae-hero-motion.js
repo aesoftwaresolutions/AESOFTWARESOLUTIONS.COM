@@ -6,7 +6,7 @@
  *   data-concept="lines"  Concept 1 · Settling lines — a faint field of gold lines that
  *                         wander on the left and settle into parallel order on the right.
  *   data-concept="rings"  Concept 2 · Quiet pulse — slow rings breathing out from the
- *                         hero's ring/dot, over a barely-there gold/forest wash.
+ *                         hero's ring/dot, over a barely-there gold wash.
  *
  * Behaviour: honours prefers-reduced-motion (draws one static frame, live-updates if the
  * setting changes), pauses when offscreen or when the tab is hidden, caps at ~30 fps and
@@ -15,7 +15,7 @@
  */
 (function () {
   'use strict';
-  var GOLD = '201,169,110', FOREST = '42,69,53';
+  var GOLD = '201,169,110';
   var RING = { x: 1210 / 1600, y: 450 / 900 };           // ring/dot centre in ae-hero-v2.svg
   var mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
 
@@ -69,10 +69,10 @@
       g.addColorStop(0, 'rgba(' + GOLD + ',' + (0.10 + 0.06 * b).toFixed(3) + ')');
       g.addColorStop(1, 'rgba(' + GOLD + ',0)');
       ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
-      // wash 2: forest tint drifting slowly low-left, the only cool note
+      // wash 2: gold tint drifting slowly low-left
       var dx = Math.sin(t * 0.05) * w * 0.05, dy = Math.cos(t * 0.04) * h * 0.04;
       g = ctx.createRadialGradient(w * 0.18 + dx, h * 0.85 + dy, 0, w * 0.18 + dx, h * 0.85 + dy, R * 0.9);
-      g.addColorStop(0, 'rgba(' + FOREST + ',0.035)'); g.addColorStop(1, 'rgba(' + FOREST + ',0)');
+      g.addColorStop(0, 'rgba(' + GOLD + ',0.035)'); g.addColorStop(1, 'rgba(' + GOLD + ',0)');
       ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
       // three rings expanding from the dot, staggered, fading as they grow
       var period = 12, maxR = 430 * unit * 1.35;

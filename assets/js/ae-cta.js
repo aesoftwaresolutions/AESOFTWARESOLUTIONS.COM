@@ -10,7 +10,7 @@
   var tpl = document.createElement('template');
   tpl.innerHTML = '' +
     '<style>' +
-    ':host{display:block;--ink:#121212;--paper:#F7F7F5;--muted:#5E5E5A;--accent:#2A4535;--rule:rgba(18,18,18,.12);--ease:cubic-bezier(.18,.66,.18,1)}' +
+    ':host{display:block;--ink:#121212;--paper:#F7F7F5;--muted:#5E5E5A;--accent:#7A5F20;--rule:rgba(18,18,18,.12);--ease:cubic-bezier(.18,.66,.18,1)}' +
     '.cta{max-width:1400px;margin:0 auto;padding:72px clamp(20px,4vw,40px) 140px;position:relative;font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,sans-serif;color:var(--ink)}' +
     '.rule{position:absolute;top:0;left:clamp(20px,4vw,40px);right:clamp(20px,4vw,40px);height:1px;background:var(--rule);transform:scaleX(0);transform-origin:left;transition:transform 1.6s var(--ease)}' +
     '.label{font-family:"Space Grotesk",ui-monospace,monospace;font-size:.8rem;color:var(--muted);margin:0 0 20px}' +

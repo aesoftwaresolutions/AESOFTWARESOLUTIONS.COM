@@ -62,7 +62,7 @@
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        background-color: var(--forest, #2A4535);
+        background-color: var(--gold, #C9A96E);
         border: none;
         cursor: pointer;
         box-shadow: 0 4px 12px rgb(var(--ink-rgb, 18 18 18) / .15);
@@ -74,18 +74,18 @@
 
       .ae-widget-button:hover {
         transform: scale(1.1);
-        box-shadow: 0 6px 16px rgb(var(--forest-rgb, 42 69 53) / .35);
+        box-shadow: 0 6px 16px rgb(var(--gold-rgb, 201 169 110) / .35);
       }
 
       .ae-widget-button:active {
         transform: scale(0.95);
       }
 
-      /* Chat bubble SVG icon (paper on forest) */
+      /* Chat bubble SVG icon (ink on gold) */
       .ae-widget-button svg {
         width: 28px;
         height: 28px;
-        stroke: var(--paper, #F7F7F5);
+        stroke: var(--ink, #121212);
         stroke-width: 2;
         fill: none;
       }
@@ -155,7 +155,7 @@
         font-family: var(--font-main, "Plus Jakarta Sans", sans-serif);
         font-weight: 600;
         font-size: 18px;
-        color: var(--forest, #2A4535);
+        color: var(--gold-ink, #7A5F20);
         margin: 0 0 4px 0;
       }
 
@@ -243,8 +243,8 @@
       }
 
       .ae-widget-message.user .ae-widget-message-bubble {
-        background-color: var(--forest, #2A4535);
-        color: var(--paper, #F7F7F5);
+        background-color: var(--gold, #C9A96E);
+        color: var(--ink, #121212);
       }
 
       .ae-widget-message.assistant .ae-widget-message-bubble {
@@ -341,7 +341,7 @@
 
       .ae-widget-input:focus {
         background-color: var(--surface, #FFFFFF);
-        border-color: var(--forest, #2A4535);
+        border-color: var(--gold, #C9A96E);
       }
 
       .ae-widget-input::placeholder {
@@ -349,9 +349,9 @@
       }
 
       .ae-widget-send-btn {
-        background-color: var(--forest, #2A4535);
+        background-color: var(--gold, #C9A96E);
         border: none;
-        color: var(--paper, #F7F7F5);
+        color: var(--ink, #121212);
         cursor: pointer;
         padding: 10px 16px;
         border-radius: 6px;
