@@ -1306,6 +1306,10 @@ function aesoftwares_seo_meta() {
                 'Online Presence Management & Google Reviews | AE Software Solutions',
                 'Online presence management for small businesses nationwide: Google Business Profile, review replies, consistent listings and website care. Free check.',
             ],
+            'social-management' => [
+                'Social Media Management | AE Software Solutions',
+                'Social media managed for you: content, short form video, posting, replies and a monthly report. Business plans from $199/mo, creator plans from $499/mo.',
+            ],
             'services' => [
                 'Services: Website Design, Google Presence & Follow-Up | AE Software Solutions',
                 'Websites, Google Business Profile and review management, and missed-call follow-up automation for small service businesses nationwide.',
@@ -1438,6 +1442,28 @@ add_action( 'init', function () {
         }
     }
     update_option( 'ae_online_presence_page_created', 1, false );
+}, 30 );
+
+// Create the Social Media Management page once, assigned to its template, so
+// it exists without anyone having to add it in WP Admin.
+add_action( 'init', function () {
+    if ( get_option( 'ae_social_management_page_created' ) ) {
+        return;
+    }
+    $existing = get_page_by_path( 'social-management' );
+    if ( ! $existing ) {
+        $id = wp_insert_post( [
+            'post_type'    => 'page',
+            'post_status'  => 'publish',
+            'post_title'   => 'Social Media Management',
+            'post_name'    => 'social-management',
+            'post_content' => '',
+        ] );
+        if ( $id && ! is_wp_error( $id ) ) {
+            update_post_meta( $id, '_wp_page_template', 'page-social-management.php' );
+        }
+    }
+    update_option( 'ae_social_management_page_created', 1, false );
 }, 30 );
 
 // ── Route all WP mail through Zoho SMTP so it passes SPF/DKIM ────────────────
