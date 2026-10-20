@@ -141,7 +141,7 @@ $ae_social_faq = [
 			<div class="v5-service__text">
 				<p><strong>$1,299 a month.</strong> Up to 6 platforms, 20 to 24 posts, 8 short form videos, 2 email campaigns, priority turnaround, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Talk to us</a>
+			<a class="v5-link v5-service__more" href="https://buy.stripe.com/cNi00j1jO9lA2Sv50RabK0c">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">04</span>
@@ -149,7 +149,7 @@ $ae_social_faq = [
 			<div class="v5-service__text">
 				<p><strong>$1,999 a month.</strong> Up to 8 platforms including TikTok and YouTube, 28 to 32 posts, 12 short form videos, daily engagement checks, 2 email campaigns, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Talk to us</a>
+			<a class="v5-link v5-service__more" href="https://buy.stripe.com/aFa28rgeI55k9gT0KBabK0d">Start now</a>
 		</li>
 	</ol>
 </section>
@@ -167,7 +167,7 @@ $ae_social_faq = [
 			<div class="v5-service__text">
 				<p><strong>$499 a month.</strong> 3 platforms, 12 short form videos a month cross posted, captions and hashtags written for each platform, posting handled, monthly growth report.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Talk to us</a>
+			<a class="v5-link v5-service__more" href="https://buy.stripe.com/6oUaEXfaE8hwbp1fFvabK0e">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">02</span>
@@ -175,7 +175,7 @@ $ae_social_faq = [
 			<div class="v5-service__text">
 				<p><strong>$899 a month.</strong> Up to 5 platforms, 20 short form videos, comment handling on business days, profile and link page polish, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Talk to us</a>
+			<a class="v5-link v5-service__more" href="https://buy.stripe.com/eVq6oH0fK1T81OrgJzabK0f">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">03</span>
@@ -183,7 +183,7 @@ $ae_social_faq = [
 			<div class="v5-service__text">
 				<p><strong>$1,999 a month.</strong> Up to 6 platforms, 30 short form videos, daily engagement checks, sponsor inquiries flagged with drafted replies you approve, 1 email or newsletter a month, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Talk to us</a>
+			<a class="v5-link v5-service__more" href="https://buy.stripe.com/4gM9AT1jO8hw8cPctjabK0g">Start now</a>
 		</li>
 	</ol>
 </section>
