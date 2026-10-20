@@ -1326,3 +1326,9 @@ html.ae-calm .v5-topic__btn:hover .v5-topic__title { transform: none; }
 .ae-divider { display: block; width: 100%; max-width: 1400px; height: 40px; margin: clamp(32px,6vw,72px) auto; object-fit: fill; }
 @media (max-width: 720px) { .ae-hero-art { opacity: .45; width: 160%; right: -30%; } }
 .ae-svc-icon { width: 56px; height: 56px; display: block; margin-bottom: 20px; }
+
+/* Footer social links */
+.v5-social { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: .95rem; }
+.v5-social__link { display: inline-flex; align-items: center; gap: .55em; color: var(--text); text-decoration: none; }
+.v5-social__link svg { width: 18px; height: 18px; flex: none; }
+.v5-social__link:hover, .v5-social__link:focus-visible { color: var(--gold-ink); }
