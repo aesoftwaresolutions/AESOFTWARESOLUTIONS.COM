@@ -1310,7 +1310,7 @@ function aesoftwares_seo_meta() {
                 'Social Media Management | AE Software Solutions',
                 'Social media managed for you: content, short form video, posting, replies and a monthly report. Business plans from $199/mo, creator plans from $499/mo.',
             ],
-            'checkout' => [
+            'get-started' => [
                 'Checkout | AE Software Solutions',
                 'Pick a social media management plan and check out securely in minutes. Business plans from $199 a month, creator plans from $499 a month. Discount codes accepted at checkout.',
             ],
@@ -1470,26 +1470,27 @@ add_action( 'init', function () {
     update_option( 'ae_social_management_page_created', 1, false );
 }, 30 );
 
-// Create the Checkout page once, assigned to its template, so it exists
-// without anyone having to add it in WP Admin.
+// Create the Checkout page once, at the get-started slug because WooCommerce
+// owns /checkout/. Assigned to its template so it exists without anyone
+// having to add it in WP Admin.
 add_action( 'init', function () {
-    if ( get_option( 'ae_checkout_page_created' ) ) {
+    if ( get_option( 'ae_get_started_page_created' ) ) {
         return;
     }
-    $existing = get_page_by_path( 'checkout' );
+    $existing = get_page_by_path( 'get-started' );
     if ( ! $existing ) {
         $id = wp_insert_post( [
             'post_type'    => 'page',
             'post_status'  => 'publish',
             'post_title'   => 'Checkout',
-            'post_name'    => 'checkout',
+            'post_name'    => 'get-started',
             'post_content' => '',
         ] );
         if ( $id && ! is_wp_error( $id ) ) {
             update_post_meta( $id, '_wp_page_template', 'page-checkout.php' );
         }
     }
-    update_option( 'ae_checkout_page_created', 1, false );
+    update_option( 'ae_get_started_page_created', 1, false );
 }, 30 );
 
 // ── Route all WP mail through Zoho SMTP so it passes SPF/DKIM ────────────────
