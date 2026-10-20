@@ -2,7 +2,7 @@
 /**
  * Template Name: Guides
  *
- * Nine free PDF guides for contractors, served from wp-content/uploads/guides/.
+ * Ten free PDF guides for contractors, served from wp-content/uploads/guides/.
  * The guides stay hidden behind a newsletter signup popup. Signups post to
  * admin-ajax.php (action ae_guides_signup), handled in inc/guides-newsletter.php.
  *
@@ -76,6 +76,13 @@ $guides = array(
 		'pages' => '22 pages',
 		'pitch' => 'Stop letting quiet estimates die. Follow up cadence, scripts for every touch, the breakup email, and a one page tracker.',
 		'file'  => 'the-follow-up-system.pdf',
+	),
+	array(
+		'id'    => 'realtors-closing-playbook',
+		'name'  => "The Realtor's Closing Playbook",
+		'pages' => '20 pages',
+		'pitch' => 'How to turn more showings into signed listings. The calls that matter, objection scripts that keep buyers calm, and a follow up cadence that carries a showing all the way to the closing table.',
+		'file'  => 'the-realtors-closing-playbook.pdf',
 	),
 );
 
