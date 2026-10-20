@@ -44,5 +44,5 @@
     <path d="M1210 170v-34M1210 730v34M930 450h-34M1490 450h34" stroke-opacity="0.6"/>
   </g>
   <circle cx="1210" cy="450" r="9" fill="#C9A96E"/>
-  <circle cx="1210" cy="450" r="22" stroke="#2A4535" stroke-width="1.2" stroke-opacity="0.55"/>
+  <circle cx="1210" cy="450" r="22" stroke="#C9A96E" stroke-width="1.2" stroke-opacity="0.55"/>
 </svg>
