@@ -180,7 +180,7 @@ echo wp_json_encode(
 				'@type'       => 'WebPage',
 				'name'        => 'Checkout',
 				'description' => 'Pick a social media management plan and check out securely through Stripe.',
-				'url'         => home_url( '/checkout/' ),
+				'url'         => home_url( '/get-started/' ),
 			],
 			[
 				'@type'      => 'FAQPage',
