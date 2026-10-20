@@ -253,7 +253,19 @@ $ae_topic_close = function () {
   <?php $ae_topic_close(); ?>
 </section>
 
-<!-- 5. CLOSING CTA -->
+<!-- 5. HOSTING WE RECOMMEND -->
+<section class="v5-hosting ae-rule" aria-labelledby="v5-hosting-title">
+  <header class="v5-section-head">
+    <h2 class="v5-section-title" id="v5-hosting-title" data-split>Hosting we recommend</h2>
+  </header>
+  <p class="v5-muted">Every site we build runs on Hostinger, including this one. The plans are fast, the pricing is fair, and support actually answers. If you are setting up hosting for a site we are building together, start here.</p>
+  <p class="v5-hosting__badgewrap" data-reveal>
+    <a href="https://www.hostinger.com?REFERRALCODE=1WGANTHONVUP" rel="sponsored noopener" target="_blank"><img class="v5-hosting__badge" src="<?php echo esc_url( $ae_img . 'brand/hostinger-partner-badge.png' ); ?>" alt="Hostinger Partner" width="640" height="240" loading="lazy"></a>
+  </p>
+  <p class="v5-hosting__code">Use code 1WGANTHONVUP at checkout for 20% off your first purchase.</p>
+</section>
+
+<!-- 6. CLOSING CTA -->
 <section class="v5-closing ae-rule" aria-labelledby="v5-closing-title">
   <h2 class="v5-closing__title" id="v5-closing-title" data-split>Have a process that eats your week? Let&rsquo;s take it apart.</h2>
   <a class="v5-button" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-reveal>Book a discovery call</a>

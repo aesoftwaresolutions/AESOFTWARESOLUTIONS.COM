@@ -401,6 +401,21 @@ html.ae-calm .v5-window, html:not(.ae-js) .v5-window { width: 1.3em; transition:
 .v5-service__text { color: var(--text-secondary); line-height: 1.55; max-width: 52ch; }
 .v5-service__more { justify-self: end; font-weight: 600; font-size: .9rem; }
 
+/* ── Home: hosting ──────────────────────────────────────────────────── */
+.v5-hosting {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 72px var(--gutter);
+  background-position: var(--gutter) 0;
+  text-align: center;
+}
+.v5-hosting.is-revealed { background-size: calc(100% - 2 * var(--gutter)) 1px; }
+.v5-hosting .v5-section-head { justify-content: center; }
+.v5-hosting .v5-muted { max-width: 60ch; margin: 0 auto; }
+.v5-hosting__badgewrap { margin: 32px 0 20px; }
+.v5-hosting__badge { display: inline-block; max-width: 320px; width: 100%; height: auto; }
+.v5-hosting__code { font-weight: 600; color: var(--text); }
+
 /* ── Home: closing ──────────────────────────────────────────────────── */
 .v5-closing {
   max-width: 1400px;
