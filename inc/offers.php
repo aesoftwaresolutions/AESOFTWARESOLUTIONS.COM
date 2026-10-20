@@ -103,6 +103,20 @@ function aesoftwares_offers() {
 		// ── Monthly ─────────────────────────────────────────────────────────
 		'monthly' => [
 			[
+				'id'      => 'ai-setup-guides',
+				'name'    => 'AI Setup Guides Subscription',
+				'price'   => '$19',
+				'amount'  => 19,
+				'cadence' => 'per month · cancel anytime',
+				'pitch'   => 'Step by step guides that show you how to set up AI tools for your business, kept current as the tools change.',
+				'points'  => [
+					'Every guide in the library, current edition',
+					'Guides refreshed as the tools change',
+					'New guides included while you subscribe',
+				],
+				'cta'     => [ 'Subscribe', 'https://buy.stripe.com/5kQ5kDbYs7dsfFheBrabK0a' ],
+			],
+			[
 				'id'      => 'online-presence',
 				'icon'    => 'presence',
 				'name'    => 'Online Presence Management',
