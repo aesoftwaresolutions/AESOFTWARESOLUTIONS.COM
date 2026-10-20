@@ -69,6 +69,15 @@ $price = function ( $group, $id ) use ( $o ) {
 			</div>
 			<a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/pricing/#audit' ) ); ?>">Audit</a>
 		</li>
+		<li class="v5-service ae-rule" data-reveal>
+			<span class="v5-service__num">05</span>
+			<h3 class="v5-service__title">Social media management</h3>
+			<div class="v5-service__text">
+				<p>Content, short form video, posting and replies handled for you across your platforms, with a monthly report on what it brought in. Plans for businesses and for creators.</p>
+				<p class="svc-meta">Social Management <?php echo esc_html( $price( 'monthly', 'social-management' ) ); ?> &middot; Creator plans from $499/mo</p>
+			</div>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/social-management/' ) ); ?>">Social media management</a>
+		</li>
 	</ol>
 </section>
 
