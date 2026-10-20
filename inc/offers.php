@@ -167,6 +167,22 @@ function aesoftwares_offers() {
 				'guarantee' => true,
 				'cta'       => [ 'Start now', 'https://buy.stripe.com/6oUeVd9QkapEct52SJabK01' ],
 			],
+			[
+				'id'      => 'social-management',
+				'name'    => 'Social Management',
+				'price'   => '$799',
+				'amount'  => 799,
+				'cadence' => 'per month · plus one time $300 setup',
+				'pitch'   => 'Your social media, outreach and email handled for you, with a monthly report on the leads it brings in.',
+				'points'  => [
+					'Monthly content strategy and calendar, approved by you',
+					'Posts written, designed and scheduled across your platforms',
+					'Community outreach and replies handled for you',
+					'One email campaign a month to your list',
+					'Monthly report and review call',
+				],
+				'cta'     => [ 'Start now', 'https://buy.stripe.com/7sY14n9QkapE2Sv2SJabK0b' ],
+			],
 		],
 
 		// ── Bundle ──────────────────────────────────────────────────────────
