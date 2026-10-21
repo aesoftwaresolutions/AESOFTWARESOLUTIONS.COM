@@ -92,8 +92,8 @@ assessmentTemplate.innerHTML = `
 
     .msg--user {
         align-self: flex-end;
-        background: var(--forest-tint, rgba(42, 69, 53, 0.08));
-        border: 1px solid rgb(var(--forest-rgb, 42 69 53) / .2);
+        background: rgb(var(--gold-rgb, 201 169 110) / .12);
+        border: 1px solid rgb(var(--gold-rgb, 201 169 110) / .35);
         padding: 0.75rem 1rem;
         border-radius: 4px 4px 0 4px;
         color: var(--text, #121212);
@@ -168,14 +168,14 @@ assessmentTemplate.innerHTML = `
 
     .chat-input:focus {
         outline: none;
-        border-color: var(--forest, #2A4535);
+        border-color: var(--gold, #C9A96E);
     }
 
     .chat-input::placeholder { color: var(--text-tertiary, #6E6E6A); }
 
     .chat-send {
-        background: var(--forest, #2A4535);
-        color: var(--paper, #F7F7F5);
+        background: var(--gold, #C9A96E);
+        color: var(--ink, #121212);
         border: none;
         border-radius: 4px;
         width: 48px;
@@ -189,7 +189,7 @@ assessmentTemplate.innerHTML = `
         font-size: 1.1rem;
     }
 
-    .chat-send:hover:not(:disabled) { background: var(--forest-900, #1D3225); }
+    .chat-send:hover:not(:disabled) { background: var(--gold-ink, #7A5F20); color: var(--paper, #F7F7F5); }
     .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
 
     .chat-error {

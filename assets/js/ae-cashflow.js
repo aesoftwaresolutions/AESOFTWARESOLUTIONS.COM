@@ -106,15 +106,15 @@
       border-radius: 5px; font-family: inherit; outline: none;
       width: 100%;
     }
-    .add-form input:focus, .add-form select:focus { border-color: var(--forest, #2A4535); }
+    .add-form input:focus, .add-form select:focus { border-color: var(--gold, #C9A96E); }
     .date-row { display: flex; gap: 0.5rem; align-items: center; }
     .date-row label { font-size: 0.7rem; color: var(--text-secondary, #5E5E5A); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
     .add-btn {
-      background: var(--forest, #2A4535); color: var(--paper, #F7F7F5); border: 0; padding: 0.7rem;
+      background: var(--gold, #C9A96E); color: var(--ink, #121212); border: 0; padding: 0.7rem;
       border-radius: 5px; font-weight: 600; font-size: 0.85rem; cursor: pointer;
       letter-spacing: 0.04em; transition: background 0.2s; font-family: inherit;
     }
-    .add-btn:hover { background: var(--forest-900, #1D3225); }
+    .add-btn:hover { background: var(--gold-ink, #7A5F20); color: var(--paper, #F7F7F5); }
     .add-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     /* ── Forecast horizon ────────────────────────────────────────────────── */
@@ -127,7 +127,7 @@
       color: var(--text, #121212); padding: 0.5rem 0.75rem; border-radius: 5px;
       font-size: 0.85rem; font-family: inherit; outline: none;
     }
-    .horizon-row input[type=date]:focus { border-color: var(--forest, #2A4535); }
+    .horizon-row input[type=date]:focus { border-color: var(--gold, #C9A96E); }
 
     /* ── Insight cards ───────────────────────────────────────────────────── */
     .insights { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }

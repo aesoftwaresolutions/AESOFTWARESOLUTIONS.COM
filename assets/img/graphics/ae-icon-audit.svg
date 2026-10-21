@@ -7,6 +7,6 @@
   <g stroke="#C9A96E" stroke-width="2" stroke-opacity=".55">
     <path d="M18 30a10 10 0 0 1 9-9" stroke-dasharray="1 5"/>
   </g>
-  <path d="M27 20v7l5 3" stroke="#2A4535" stroke-width="2"/>
+  <path d="M27 20v7l5 3" stroke="#C9A96E" stroke-width="2"/>
   <circle cx="27" cy="27" r="1.6" fill="#C9A96E" stroke="none"/>
 </svg>

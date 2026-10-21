@@ -4,5 +4,5 @@
     <path d="M10 12h44a2 2 0 0 1 2 2v22a2 2 0 0 1-2 2H30l-9 8v-8h-11a2 2 0 0 1-2-2V14a2 2 0 0 1 2-2z"/>
     <path d="M8 55h48" stroke-opacity=".55"/>
   </g>
-  <path d="M20 25v-0.01M26 21v8M32 18v14M38 21v8M44 25v-0.01" stroke="#2A4535" stroke-width="2.4"/>
+  <path d="M20 25v-0.01M26 21v8M32 18v14M38 21v8M44 25v-0.01" stroke="#C9A96E" stroke-width="2.4"/>
 </svg>
