@@ -3,8 +3,8 @@
   // CONFIGURATION
   // ══════════════════════════════════════════════════════════════════════════════
 
-  const BASE_URL = window.AE_WIDGET_URL || 'https://aesoftwaresolutions.com';
-  const CHAT_ENDPOINT = `${BASE_URL}/api/widget/chat`;
+    // Replies are generated on device by the algorithmic responder below.
+    // The hosted chat backend this widget used to call (Aria) was retired.
 
   // ══════════════════════════════════════════════════════════════════════════════
   // STATE MANAGEMENT
@@ -62,7 +62,7 @@
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        background-color: var(--gold, #C9A96E);
+        background-color: #C9A96E;
         border: none;
         cursor: pointer;
         box-shadow: 0 4px 12px rgb(var(--ink-rgb, 18 18 18) / .15);
@@ -85,7 +85,7 @@
       .ae-widget-button svg {
         width: 28px;
         height: 28px;
-        stroke: var(--ink, #121212);
+        stroke: #121212;
         stroke-width: 2;
         fill: none;
       }
@@ -243,7 +243,7 @@
       }
 
       .ae-widget-message.user .ae-widget-message-bubble {
-        background-color: var(--gold, #C9A96E);
+        background-color: #C9A96E;
         color: var(--ink, #121212);
       }
 
@@ -349,7 +349,7 @@
       }
 
       .ae-widget-send-btn {
-        background-color: var(--gold, #C9A96E);
+        background-color: #C9A96E;
         border: none;
         color: var(--ink, #121212);
         cursor: pointer;
@@ -503,7 +503,70 @@
       element.remove();
     }
 
-    async function sendMessage() {
+    // ────────────────────────────────────────────────────────────────────────────
+    // ALGORITHMIC RESPONDER (on device, no backend)
+    // The hosted chat backend this widget used to call was retired. Replies
+    // are matched locally from the visitor's words. Keep every price and
+    // service below in step with the approved AE lineup; invent nothing.
+    // ────────────────────────────────────────────────────────────────────────────
+
+    function algorithmicReply(rawText) {
+      const text = ' ' + rawText.toLowerCase().replace(/\s+/g, ' ').trim() + ' ';
+      const has = (...words) => words.some(w => text.includes(w));
+
+      if (text.length < 34 && /( hi | hello | hey | good morning | good afternoon | yo )/.test(text)) {
+        return 'Hello! Great to meet you. I can walk you through our services and pricing, or point you to the free guides. What kind of business do you run?';
+      }
+      if (has('thank', 'thanks', 'thx')) {
+        return 'Anytime. If you want a next step, the free discovery call is the easiest one. Anthony replies personally to every inquiry within 24 hours.';
+      }
+      if (has('bye', 'goodbye', 'see you')) {
+        return 'Thanks for stopping by. When you are ready, the Contact page on this site is the fastest way to reach Anthony.';
+      }
+      if (has('are you a bot', 'are you ai', 'are you a robot', 'real person', 'are you human')) {
+        return 'I am the site assistant here at AE. I answer the common questions instantly, and anything beyond me goes straight to Anthony at anthony@aesoftwaresolutions.com.';
+      }
+      if (has('human', 'real person', 'email', 'phone number', 'contact', 'reach anthony', 'talk to anthony')) {
+        return 'You can reach Anthony directly at anthony@aesoftwaresolutions.com. He replies personally within 24 hours. The Contact page on this site works too.';
+      }
+      if (has('price', 'pricing', 'cost', 'how much', 'charge', 'fee', 'expensive', 'cheap')) {
+        return 'Here is the short version. Websites start at $495. Online Presence Management is $49 a month. Front Desk is $99 a month, and Always On Front Desk is $250 a month. A Missed Lead Audit is a one time $250. Social plans start at $199 a month. The best first step is a free discovery call, where Anthony confirms exact pricing for your situation.';
+      }
+      if (has('front desk', 'missed call', 'miss calls', 'missing calls', 'answering', 'receptionist', 'voicemail', 'after hours', 'answer the phone', 'answer my phone')) {
+        return 'That is exactly what Front Desk is for. When you cannot get to the phone, your leads still get answered and followed up, for $99 a month. Always On Front Desk at $250 a month covers you around the clock. The Missed Lead Audit at $250 shows you first how many calls you are losing today.';
+      }
+      if (has('website', 'web site', 'new site', 'redesign', 'my site', 'web design')) {
+        return 'We build websites that turn visitors into calls. Sites start at $495, and everything we build is yours outright. The free discovery call is the best way to scope yours. Want the full pricing rundown as well?';
+      }
+      if (has('social', 'facebook', 'instagram', 'linkedin', 'posting', 'content calendar')) {
+        return 'We run social pages end to end: content, posting, and replies. Social Front Desk is $199 a month, and full Social Management is $799 a month. Anthony can walk you through which one fits on a free discovery call.';
+      }
+      if (has('google', 'reviews', 'presence', 'listing', 'found online', 'search results', 'seo')) {
+        return 'Online Presence Management is $49 a month. We keep your Google Business Profile, listings, and reviews in shape so customers find you first. A good first look is the free assessment on this site.';
+      }
+      if (has('audit', 'assessment', 'evaluate')) {
+        return 'Two good starting points. The free Operational Assessment maps where your business is losing time and leads. The Missed Lead Audit, at $250, digs into your missed calls specifically. Either way you keep the findings, whether you hire us or not.';
+      }
+      if (has('guide', 'guides', 'ebook', 'pdf', 'booklet')) {
+        return 'Our contractor guides are free on the Guides page of this site, all ten of them. We also offer a set of guides on setting up AI tools for your business at $19 a month, with new guides added as the tools change.';
+      }
+      if (has('discovery call', 'schedule', 'appointment', 'meeting', 'sign me up', 'sign up', 'get started', 'book a')) {
+        return 'The discovery call is free and takes about 25 minutes. Head to the Contact page on this site to pick a time, or email anthony@aesoftwaresolutions.com and Anthony will set it up with you.';
+      }
+      if (has('how long', 'timeline', 'deadline', 'when can', 'turnaround')) {
+        return 'Timing depends on the scope, so I do not want to guess wrong. Anthony confirms a timeline on the free discovery call before any work starts.';
+      }
+      if (has('who are you', 'what is ae', 'about ae', 'your company', 'what do you do')) {
+        return 'AE Software Solutions helps small businesses stop losing leads. We build websites, answer and follow up with your leads, manage your online presence and social pages, and set up practical automation. Our rule is intelligence before automation: map first, then build.';
+      }
+      const trades = ['contractor', 'plumber', 'plumbing', 'hvac', 'electrician', 'electrical', 'roofer', 'roofing', 'landscap', 'mortgage', 'lender', 'loan officer', 'insurance', 'salon', 'dentist', 'dental', 'realtor', 'real estate', 'restaurant', 'lawyer', 'attorney', 'cleaning', 'painter', 'painting', 'remodel', 'construction', 'auto repair', 'mechanic'];
+      if (trades.some(t => text.includes(t)) || has('i run a', 'i own a', 'we run a', 'we own a', 'my business')) {
+        return 'Good business to be in. Most owners I talk to in your line of work lose jobs the same way: a call comes in while the crew is on a job and nobody gets back to it in time. Our Front Desk and the Missed Lead Audit were built for exactly that. Want the pricing rundown, or the audit details first?';
+      }
+      return 'I can help with our services, pricing, the free guides, or booking a free discovery call. For anything specific to your business, email anthony@aesoftwaresolutions.com and Anthony replies personally within 24 hours.';
+    }
+
+    function sendMessage() {
       const text = input.value.trim();
       if (!text || isWaiting) return;
 
@@ -514,50 +577,18 @@
       sendBtn.disabled = true;
       isWaiting = true;
 
-      // Show typing indicator
+      // Show typing indicator, then answer locally
       const typingEl = showTypingIndicator();
+      const delay = 700 + Math.min(text.length * 12, 600);
 
-      try {
-        const response = await fetch(CHAT_ENDPOINT, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            message: text,
-            session_id: sessionId,
-            visitor_id: visitorId,
-          }),
-        });
-
+      setTimeout(() => {
         removeTypingIndicator(typingEl);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        // Update session ID for future messages
-        if (data.session_id) {
-          sessionId = data.session_id;
-          sessionStorage.setItem('ae_widget_session_id', sessionId);
-        }
-
-        // Add assistant response
-        addMessage('assistant', data.reply);
-
-        // Note: lead_captured is handled silently (no visible UI change)
-      } catch (error) {
-        removeTypingIndicator(typingEl);
-        console.error('Widget error:', error);
-        addMessage('assistant', 'Sorry, I had an issue. Could you try again?');
-      } finally {
+        addMessage('assistant', algorithmicReply(text));
         input.disabled = false;
         sendBtn.disabled = false;
         isWaiting = false;
         input.focus();
-      }
+      }, delay);
     }
 
     // Button click

@@ -52,7 +52,6 @@ function aesoftwares_enqueue_scripts() {
     // live chat), and ae-testimonials showed invented clients and stock photos.
     wp_enqueue_script( 'ae-cta',          $uri . '/assets/js/ae-cta.js',          [], filemtime( $js . 'ae-cta.js' ),          [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'ae-widget',       $uri . '/assets/js/ae-widget.js',       [], filemtime( $js . 'ae-widget.js' ),       [ 'in_footer' => true, 'strategy' => 'defer' ] );
-    wp_add_inline_script( 'ae-widget', 'window.AE_WIDGET_URL = "https://admin.aesoftwaresolutions.com";', 'before' );
 
     // Hero background motion (front page only).
     if ( is_front_page() ) {
