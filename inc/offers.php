@@ -139,12 +139,12 @@ function aesoftwares_offers() {
 				'price'    => '$99',
 				'amount'   => 99,
 				'cadence'  => 'per month · cancel anytime',
-				'pitch'    => 'Every call, text and message answered while you work. No lead goes cold.',
+				'pitch'    => 'Your calls answered while you work. No lead goes cold.',
 				'points'   => [
-					'Text back on missed calls',
-					'Instant reply to web and Facebook inquiries',
-					'Leads saved to a simple CRM',
-					'Booking link sent automatically',
+						'AI answers your calls in your business name',
+						'Text back on missed calls',
+						'Call summary and recording for every call',
+						'Booking link sent automatically',
 				],
 				'featured' => true,
 				'cta'      => [ 'Start now', 'https://buy.stripe.com/eVqaEX0fKfJY0KndxnabK04' ],
@@ -156,13 +156,13 @@ function aesoftwares_offers() {
 				'price'     => '$250',
 				'amount'    => 250,
 				'cadence'   => 'per month · plus one time setup, quoted after the audit',
-				'pitch'     => 'Missed calls and after hours inquiries answered in seconds, day or night.',
+				'pitch'     => 'Missed calls answered in seconds, day or night.',
 				'points'    => [
-					'Text back on missed calls',
-					'Instant reply to web and Facebook inquiries',
-					'Leads saved to a simple CRM',
-					'Booking link sent automatically',
-					'Review requests after every job',
+						'AI answers your calls in your business name, day or night',
+						'Text back on missed calls',
+						'Call summary and recording for every call',
+						'Booking link sent automatically',
+						'Review requests after every job',
 				],
 				'guarantee' => true,
 				'cta'       => [ 'Start now', 'https://buy.stripe.com/6oUeVd9QkapEct52SJabK01' ],
@@ -199,7 +199,8 @@ function aesoftwares_offers() {
 		],
 
 		// ── Promises ────────────────────────────────────────────────────────
-		'guarantee' => 'If Always-On Front Desk does not capture at least one lead you would otherwise have missed within 60 days of launch, we refund every monthly payment.',
-		'terms'     => 'Website builds: 50% to start, 50% at launch. Monthly plans bill from launch day and are month to month. You own your website, domain and data.',
+		'guarantee' => 'If Always-On Front Desk does not capture at least one qualifying lead within 60 days of go live, we refund your first two monthly payments. Conditions apply.',
+		'terms'     => 'Website builds: 50% to start, 50% at launch. Monthly plans are billed at signup and are month to month. You own your website, domain and data.',
 	];
 }
+
