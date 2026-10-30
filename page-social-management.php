@@ -124,7 +124,7 @@ $ae_social_faq = [
 			<h3 class="v5-service__title">Social Front Desk</h3>
 			<div class="v5-service__text">
 				<p><strong>$199 a month plus a one time $75 setup.</strong> Posting handled for you with light planning. A good start if you only need to show up consistently.</p>
-				<p>First 3 clients: $149 a month for 3 months.</p>
+				<p>First 3 clients: $149 a month for 3 months. Use code FOUNDING149 at checkout.</p>
 			</div>
 			<a class="v5-link v5-service__more" href="https://buy.stripe.com/7sYbJ1d2w2XcakXfFvabK0h">Start now</a>
 		</li>
