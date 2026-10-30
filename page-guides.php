@@ -182,6 +182,11 @@ $faqs = array(
 	<noscript><p class="ae-guides__nojs">The signup form needs JavaScript. Turn it on and reload this page to join the newsletter and get the guides.</p></noscript>
 </section>
 
+<div class="ae-pref-source" style="text-align:center;padding:24px 16px;background:var(--paper);border-bottom:2px solid var(--gold);">
+	<script async src="https://news.google.com/swg/js/v1/publisher.js"></script>
+	<div google-add-preferred-source-btn></div>
+</div>
+
 <section class="ae-pricing ae-guides ae-guides-gated" id="guides" aria-labelledby="gd-title">
 	<header class="v5-section-head ae-rule">
 		<h2 class="v5-section-title" id="gd-title" data-split>The guides</h2>
