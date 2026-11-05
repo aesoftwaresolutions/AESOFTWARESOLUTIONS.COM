@@ -49,6 +49,9 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
   .mask-line span{transform:none!important}
 </style></noscript>
 <?php wp_head(); ?>
+<link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-favicon-32.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-favicon-32.png' ) ); ?>">
+<link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-favicon-16.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-favicon-16.png' ) ); ?>">
+<link rel="apple-touch-icon" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-apple-touch-icon.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-apple-touch-icon.png' ) ); ?>">
 <link rel="stylesheet" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/refresh/ae-chrome.css?v=<?php echo esc_attr( $ae_asset_ver( '/assets/refresh/ae-chrome.css' ) ); ?>">
 <link rel="stylesheet" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/refresh/ae-fixes.css?v=<?php echo esc_attr( $ae_asset_ver( '/assets/refresh/ae-fixes.css' ) ); ?>">
 <link rel="stylesheet" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/refresh/ae-v5.css?v=<?php echo esc_attr( $ae_asset_ver( '/assets/refresh/ae-v5.css' ) ); ?>">
@@ -70,6 +73,7 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
 <header class="site-header">
   <div class="site-header__inner">
     <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__logo" rel="home">
+      <img src="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-logo-mark.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-logo-mark.png' ) ); ?>" alt="" width="30" height="30" class="site-header__logo-mark" aria-hidden="true">
       AE Software Solutions
     </a>
 
