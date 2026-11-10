@@ -32,7 +32,7 @@
     '  <h2 id="cta-title">Tell us what slows you down. We&rsquo;ll map the fix.</h2>' +
     '  <div class="actions">' +
     '    <a class="btn" href="/contact/">Book a discovery call</a>' +
-    '    <span class="note">Free 15-minute call &middot; reply within one business day</span>' +
+    '    <span class="note">Free 30 minute discovery call &middot; reply within 24 hours</span>' +
     '  </div>' +
     '  <p class="mail">Or write to <a href="mailto:anthony@aesoftwaresolutions.com">anthony@aesoftwaresolutions.com</a></p>' +
     '</section>';
