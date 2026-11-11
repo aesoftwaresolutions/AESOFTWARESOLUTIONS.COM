@@ -5,6 +5,7 @@
  * Ten free PDF guides for contractors, served from wp-content/uploads/guides/.
  * The guides stay hidden behind a newsletter signup popup. Signups post to
  * admin-ajax.php (action ae_guides_signup), handled in inc/guides-newsletter.php.
+ * Styles for the popup, cards and FAQ live in assets/refresh/ae-v5.css.
  *
  * @package AE_Softwares
  */
@@ -94,87 +95,6 @@ $faqs = array(
 );
 ?>
 
-<style>
-	.ae-guides .ae-offer__price { color: var(--gold-ink); }
-	.ae-guides .ae-offer__name { font-family: Georgia, 'Times New Roman', serif; }
-	.ae-guides .ae-offer { border-top: 2px solid var(--gold); }
-	.ae-guides__meta { margin: 0 0 12px; }
-	.ae-guides__faq { max-width: 1040px; }
-	.ae-guides__faq dt { margin-top: 28px; font-family: Georgia, 'Times New Roman', serif; font-size: 1.25rem; }
-	.ae-guides__faq dd { margin: 8px 0 0; line-height: 1.6; }
-	.ae-guides__nojs { max-width: 720px; margin: 24px auto 0; padding: 0 20px; line-height: 1.6; }
-
-	/* Gate: the guides section stays hidden until the visitor has joined. */
-	html:not(.ae-guides-unlocked) .ae-guides-gated { display: none; }
-	html.ae-gate-lock { overflow: hidden; }
-
-	.ae-gate {
-		position: fixed;
-		inset: 0;
-		z-index: 100000;
-		display: none;
-		align-items: center;
-		justify-content: center;
-		padding: 20px;
-		overflow-y: auto;
-		background: rgb(var(--ink-rgb) / .88);
-		opacity: 0;
-		transition: opacity .45s ease;
-	}
-	@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-		.ae-gate {
-			background: rgb(var(--ink-rgb) / .45);
-			-webkit-backdrop-filter: blur(10px);
-			backdrop-filter: blur(10px);
-		}
-	}
-	.ae-gate.is-open { display: flex; }
-	.ae-gate.is-visible { opacity: 1; }
-	.ae-gate__card {
-		width: 100%;
-		max-width: 480px;
-		margin: auto;
-		padding: 32px 28px 28px;
-		background: var(--paper);
-		color: var(--ink);
-		border-top: 3px solid var(--gold);
-		border-radius: 10px;
-		box-shadow: 0 24px 64px rgb(var(--ink-rgb) / .35);
-	}
-	.ae-gate__eyebrow { margin: 0 0 8px; font-size: .8rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--gold-ink); }
-	.ae-gate__title { margin: 0 0 14px; font-family: Georgia, 'Times New Roman', serif; font-size: 1.75rem; font-weight: 400; line-height: 1.2; color: var(--ink); opacity: 1 !important; }
-	.ae-gate__copy { margin: 0 0 20px; line-height: 1.6; color: var(--ink); }
-	.ae-gate__field { display: block; margin: 0 0 14px; }
-	.ae-gate__label { display: block; margin: 0 0 6px; font-size: .9rem; font-weight: 600; }
-	.ae-gate__input {
-		display: block;
-		width: 100%;
-		box-sizing: border-box;
-		padding: .8rem .9rem;
-		font: inherit;
-		font-size: 1rem;
-		color: var(--ink);
-		background: var(--surface);
-		border: 1px solid var(--border-hover);
-		border-radius: 8px;
-	}
-	.ae-gate__input:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: var(--gold); }
-	.ae-gate__trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
-	.ae-gate__error { min-height: 1.4em; margin: 0 0 12px; font-size: .95rem; line-height: 1.4; color: var(--error); }
-	.ae-gate__submit {
-		width: 100%;
-		cursor: pointer;
-		background: var(--gold);
-		border-color: var(--gold);
-		color: var(--ink);
-	}
-	.ae-gate__submit:hover, .ae-gate__submit:focus-visible { background: var(--gold-ink); border-color: var(--gold-ink);
-    color: var(--paper); }
-	.ae-gate__submit[disabled] { opacity: .7; cursor: default; }
-	.ae-gate__fine { margin: 14px 0 0; font-size: .85rem; line-height: 1.5; color: var(--ink-70); }
-	@media (prefers-reduced-motion: reduce) { .ae-gate { transition: none; } }
-</style>
-
 <section class="page-hero pricing-hero">
 	<p class="page-hero__eyebrow">Free guides</p>
 	<h1 class="page-hero__headline">Win more of the jobs you already quote.</h1>
@@ -182,15 +102,15 @@ $faqs = array(
 	<noscript><p class="ae-guides__nojs">The signup form needs JavaScript. Turn it on and reload this page to join the newsletter and get the guides.</p></noscript>
 </section>
 
-<div class="ae-pref-source" style="text-align:center;padding:24px 16px;background:var(--paper);border-bottom:2px solid var(--gold);">
+<div class="ae-pref-source">
 	<script async src="https://news.google.com/swg/js/v1/publisher.js"></script>
 	<div google-add-preferred-source-btn></div>
 </div>
 
 <section class="ae-pricing ae-guides ae-guides-gated" id="guides" aria-labelledby="gd-title">
-	<header class="v5-section-head ae-rule">
-		<h2 class="v5-section-title" id="gd-title" data-split>The guides</h2>
-		<span class="v5-label" data-reveal>[ Free with the newsletter ]</span>
+	<header class="v5-section-head">
+		<p class="v5-label" data-reveal>Free with the newsletter</p>
+		<h2 class="v5-section-title" id="gd-title" data-reveal>The guides</h2>
 	</header>
 	<div class="ae-offers ae-offers--two">
 		<?php foreach ( $guides as $g ) : ?>
@@ -206,17 +126,19 @@ $faqs = array(
 	<p class="ae-guarantee" data-reveal><strong>You are on the list.</strong> Pick any guide and download it. My newsletter arrives once a month.</p>
 </section>
 
-<section class="ae-pricing ae-guides" id="faq" aria-labelledby="gd-faq">
-	<header class="v5-section-head ae-rule">
-		<h2 class="v5-section-title" id="gd-faq" data-split>Questions</h2>
-		<span class="v5-label" data-reveal>[ Plain answers ]</span>
+<section class="ae-pricing ae-guides ae-alt" id="faq" aria-labelledby="gd-faq">
+	<header class="v5-section-head">
+		<p class="v5-label" data-reveal>Plain answers</p>
+		<h2 class="v5-section-title" id="gd-faq" data-reveal>Questions</h2>
 	</header>
-	<dl class="ae-guides__faq" data-reveal>
+	<div class="ae-faq" data-reveal>
 		<?php foreach ( $faqs as $f ) : ?>
-			<dt><?php echo esc_html( $f[0] ); ?></dt>
-			<dd><?php echo esc_html( $f[1] ); ?></dd>
+			<details class="ae-faq__item">
+				<summary><?php echo esc_html( $f[0] ); ?></summary>
+				<p><?php echo esc_html( $f[1] ); ?></p>
+			</details>
 		<?php endforeach; ?>
-	</dl>
+	</div>
 </section>
 
 <!-- Signup popup. Not dismissible: no close button, no click outside, no Escape. -->

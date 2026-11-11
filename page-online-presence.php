@@ -49,7 +49,7 @@ $ae_presence_faq = [
 <section class="op-check ae-rule" id="presence-check" aria-labelledby="op-check-title">
 	<header class="v5-section-head">
 		<h2 class="v5-section-title" id="op-check-title" data-split>Quick presence check</h2>
-		<span class="v5-label" data-reveal>[ Two minutes, nothing to sign up for ]</span>
+		<span class="v5-label" data-reveal>Two minutes, nothing to sign up for</span>
 	</header>
 
 	<div class="op-check__grid">
@@ -84,10 +84,10 @@ $ae_presence_faq = [
 				</svg>
 				<span class="op-score__num" id="op-score-num">0</span>
 			</div>
-			<p class="v5-label">[ Your presence score ]</p>
+			<p class="v5-label">Your presence score</p>
 			<p class="op-score__verdict" id="op-score-verdict">Start ticking &mdash; your score updates as you go.</p>
 			<div class="op-score__gaps" id="op-score-gaps" hidden>
-				<p class="v5-label">[ Biggest gaps ]</p>
+				<p class="v5-label">Biggest gaps</p>
 				<ul id="op-score-gap-list"></ul>
 			</div>
 			<a class="v5-button op-score__cta" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Get these fixed</a>
@@ -99,7 +99,7 @@ $ae_presence_faq = [
 <section class="v5-services" aria-labelledby="op-included-title">
 	<header class="v5-section-head ae-rule">
 		<h2 class="v5-section-title" id="op-included-title" data-split>What we look after</h2>
-		<span class="v5-label" data-reveal>[ Every month ]</span>
+		<span class="v5-label" data-reveal>Every month</span>
 	</header>
 	<ol class="v5-services__list">
 		<li class="v5-service ae-rule" data-reveal>
@@ -132,7 +132,7 @@ $ae_presence_faq = [
 
 <!-- How it works -->
 <section class="op-related ae-rule" aria-labelledby="op-price-title">
-	<p class="v5-label" data-reveal>[ Presence Care ]</p>
+	<p class="v5-label" data-reveal>Presence Care</p>
 	<h2 class="op-related__title" id="op-price-title" data-split>$199 a month. Cancel anytime.</h2>
 	<p class="op-related__text" data-reveal>Everything above, every month, plus website hosting, updates and small edits. Starting fresh? The Launch Package bundles a new site, Google profile setup and three months of Presence Care for $1,950.</p>
 	<a class="v5-link op-related__link" href="<?php echo esc_url( home_url( '/pricing/#monthly' ) ); ?>" data-reveal>See all pricing &rarr;</a>
@@ -141,15 +141,15 @@ $ae_presence_faq = [
 <section class="op-steps ae-rule" aria-labelledby="op-steps-title">
 	<h2 class="v5-section-title" id="op-steps-title" data-split>How it works</h2>
 	<ol class="op-steps__list">
-		<li data-reveal><span class="v5-label">[ 01 ]</span><h3>Presence check</h3><p>A free 15-minute call. We look at what a customer sees when they search for you and list what to fix first.</p></li>
-		<li data-reveal><span class="v5-label">[ 02 ]</span><h3>Clean-up</h3><p>We fix the profile, listings and website basics in the first two weeks, so the foundation is right.</p></li>
-		<li data-reveal><span class="v5-label">[ 03 ]</span><h3>Ongoing care</h3><p>Posts, review replies and listing upkeep every month, with a report so you can see what changed.</p></li>
+		<li data-reveal><span class="v5-label">01</span><h3>Presence check</h3><p>A free 15-minute call. We look at what a customer sees when they search for you and list what to fix first.</p></li>
+		<li data-reveal><span class="v5-label">02</span><h3>Clean-up</h3><p>We fix the profile, listings and website basics in the first two weeks, so the foundation is right.</p></li>
+		<li data-reveal><span class="v5-label">03</span><h3>Ongoing care</h3><p>Posts, review replies and listing upkeep every month, with a report so you can see what changed.</p></li>
 	</ol>
 </section>
 
 <!-- Related: website creation -->
 <section class="op-related ae-rule" aria-labelledby="op-related-title">
-	<p class="v5-label" data-reveal>[ Need a new site too? ]</p>
+	<p class="v5-label" data-reveal>Need a new site too?</p>
 	<h2 class="op-related__title" id="op-related-title" data-split>Your website is the centre of your presence.</h2>
 	<p class="op-related__text" data-reveal>We design and build fast, mobile-first websites for small businesses, from a simple five-page site to a lead funnel with booking and follow-up built in.</p>
 	<a class="v5-link op-related__link" href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" data-reveal>See website design &amp; pricing &rarr;</a>

@@ -53,8 +53,8 @@ $ae_social_faq = [
 <section class="op-steps ae-rule" aria-labelledby="sm-who-title">
 	<h2 class="v5-section-title" id="sm-who-title" data-split>Who it is for</h2>
 	<ol class="op-steps__list">
-		<li data-reveal><span class="v5-label">[ For businesses ]</span><h3>Owners who want leads, not likes</h3><p>You run a service business or a firm and you do not have time to post, reply and keep up. We run it for you and trace what comes in. You give about 30 minutes a month to approvals.</p></li>
-		<li data-reveal><span class="v5-label">[ For influencers and creators ]</span><h3>Creators who want consistency</h3><p>We keep you posting on a steady schedule, turn one video into posts for every platform where it fits, and build a profile that sponsors can take seriously.</p></li>
+		<li data-reveal><span class="v5-label">For businesses</span><h3>Owners who want leads, not likes</h3><p>You run a service business or a firm and you do not have time to post, reply and keep up. We run it for you and trace what comes in. You give about 30 minutes a month to approvals.</p></li>
+		<li data-reveal><span class="v5-label">For influencers and creators</span><h3>Creators who want consistency</h3><p>We keep you posting on a steady schedule, turn one video into posts for every platform where it fits, and build a profile that sponsors can take seriously.</p></li>
 	</ol>
 </section>
 
@@ -62,7 +62,7 @@ $ae_social_faq = [
 <section class="v5-services" aria-labelledby="sm-included-title">
 	<header class="v5-section-head ae-rule">
 		<h2 class="v5-section-title" id="sm-included-title" data-split>What we do every month</h2>
-		<span class="v5-label" data-reveal>[ Included in management plans ]</span>
+		<span class="v5-label" data-reveal>Included in management plans</span>
 	</header>
 	<ol class="v5-services__list">
 		<li class="v5-service ae-rule" data-reveal>
@@ -105,7 +105,7 @@ $ae_social_faq = [
 
 <!-- Platforms -->
 <section class="op-related ae-rule" aria-labelledby="sm-platforms-title">
-	<p class="v5-label" data-reveal>[ Platforms we run ]</p>
+	<p class="v5-label" data-reveal>Platforms we run</p>
 	<h2 class="op-related__title" id="sm-platforms-title" data-split>Facebook, Instagram, TikTok, YouTube and more.</h2>
 	<p class="op-related__text" data-reveal>Facebook &middot; Instagram &middot; TikTok &middot; YouTube &middot; LinkedIn &middot; X &middot; Threads &middot; Bluesky &middot; Nextdoor &middot; Google Business Profile</p>
 	<p class="op-related__text" data-reveal>Facebook, Instagram, LinkedIn, Threads and Bluesky post automatically on a schedule. TikTok, X and YouTube are posted by hand for now. We will always tell you which is which.</p>
@@ -116,7 +116,7 @@ $ae_social_faq = [
 <section class="v5-services" id="plans" aria-labelledby="sm-business-title">
 	<header class="v5-section-head ae-rule">
 		<h2 class="v5-section-title" id="sm-business-title" data-split>Plans for businesses</h2>
-		<span class="v5-label" data-reveal>[ Monthly ]</span>
+		<span class="v5-label" data-reveal>Monthly</span>
 	</header>
 	<ol class="v5-services__list">
 		<li class="v5-service ae-rule" data-reveal>
@@ -159,7 +159,7 @@ $ae_social_faq = [
 <section class="v5-services" aria-labelledby="sm-creator-title">
 	<header class="v5-section-head ae-rule">
 		<h2 class="v5-section-title" id="sm-creator-title" data-split>Plans for creators</h2>
-		<span class="v5-label" data-reveal>[ Influencers and creators ]</span>
+		<span class="v5-label" data-reveal>Influencers and creators</span>
 	</header>
 	<ol class="v5-services__list">
 		<li class="v5-service ae-rule" data-reveal>
@@ -191,7 +191,7 @@ $ae_social_faq = [
 
 <!-- Add ons -->
 <section class="op-related ae-rule" aria-labelledby="sm-addons-title">
-	<p class="v5-label" data-reveal>[ Add ons ]</p>
+	<p class="v5-label" data-reveal>Add ons</p>
 	<h2 class="op-related__title" id="sm-addons-title" data-split>Add what you need, when you need it.</h2>
 	<p class="op-related__text" data-reveal>Extra platform $99 a month each &middot; Extra email campaign $150 each &middot; Pack of 4 short videos $199 &middot; Long form YouTube video edit $150 each &middot; Content day planning session $250 &middot; Profile setup or cleanup $150 per platform.</p>
 	<p class="op-related__text" data-reveal>We do not manage paid advertising.</p>
@@ -201,16 +201,16 @@ $ae_social_faq = [
 <section class="op-steps ae-rule" aria-labelledby="sm-steps-title">
 	<h2 class="v5-section-title" id="sm-steps-title" data-split>How it works</h2>
 	<ol class="op-steps__list">
-		<li data-reveal><span class="v5-label">[ 01 ]</span><h3>Discovery call</h3><p>A free 30 minute call about your goals, offers and platforms.</p></li>
-		<li data-reveal><span class="v5-label">[ 02 ]</span><h3>Setup</h3><p>Access granted by you, brand assets gathered, and a short voice interview so the content sounds like you. We create your Meta, Claude and Canva accounts in your business name and connect your socials.</p></li>
-		<li data-reveal><span class="v5-label">[ 03 ]</span><h3>Calendar approval</h3><p>You approve the next month&rsquo;s calendar within 3 business days. Nothing unapproved goes out.</p></li>
-		<li data-reveal><span class="v5-label">[ 04 ]</span><h3>Run and report</h3><p>We post, reply and handle the community, then report results every month.</p></li>
+		<li data-reveal><span class="v5-label">01</span><h3>Discovery call</h3><p>A free 30 minute call about your goals, offers and platforms.</p></li>
+		<li data-reveal><span class="v5-label">02</span><h3>Setup</h3><p>Access granted by you, brand assets gathered, and a short voice interview so the content sounds like you. We create your Meta, Claude and Canva accounts in your business name and connect your socials.</p></li>
+		<li data-reveal><span class="v5-label">03</span><h3>Calendar approval</h3><p>You approve the next month&rsquo;s calendar within 3 business days. Nothing unapproved goes out.</p></li>
+		<li data-reveal><span class="v5-label">04</span><h3>Run and report</h3><p>We post, reply and handle the community, then report results every month.</p></li>
 	</ol>
 </section>
 
 <!-- Terms -->
 <section class="op-related ae-rule" aria-labelledby="sm-terms-title">
-	<p class="v5-label" data-reveal>[ Terms ]</p>
+	<p class="v5-label" data-reveal>Terms</p>
 	<h2 class="op-related__title" id="sm-terms-title" data-split>Terms in plain English</h2>
 	<p class="op-related__text" data-reveal>Management plans run a 3 month minimum, then month to month with 30 days notice to cancel. You own your accounts, content and lists. We never buy followers or engagement, and we never promise follower counts or sales. Paid ad spend and email platform fees are yours.</p>
 </section>
