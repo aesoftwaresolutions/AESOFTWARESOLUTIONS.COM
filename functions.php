@@ -23,13 +23,17 @@ function aesoftwares_enqueue_scripts() {
     $uri  = get_template_directory_uri();
     $path = get_template_directory();
 
-    // One type family sitewide (v5): Plus Jakarta Sans, with Space Grotesk for
-    // small bracketed labels. Inter and DM Serif Display were dropped.
+    // One type family sitewide: Plus Jakarta Sans, self hosted (weights 400, 500,
+    // 600, 700 in assets/fonts/, declared in assets/refresh/ae-fonts.css with
+    // font-display: swap). No third party font request. Space Grotesk, Inter and
+    // DM Serif Display are gone. The handle stays 'ae-fonts' so style.css still
+    // loads after it.
+    $fonts_css = $path . '/assets/refresh/ae-fonts.css';
     wp_enqueue_style(
         'ae-fonts',
-        'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Space+Grotesk:wght@400;500&display=swap',
+        $uri . '/assets/refresh/ae-fonts.css',
         [],
-        null
+        file_exists( $fonts_css ) ? filemtime( $fonts_css ) : '6.0.0'
     );
 
     // Main stylesheet — filemtime() version for automatic cache busting
@@ -38,7 +42,7 @@ function aesoftwares_enqueue_scripts() {
     // ── Web component JS (all pages) ──────────────────────────────────────
     $js = $path . '/assets/js/';
 
-    // ── Motion engine (all pages): loader, reveals, page transitions, menu ─
+    // ── Motion (all pages): reveal, header hairline, mobile menu, home topics ─
     wp_enqueue_script(
         'ae-motion',
         $uri . '/assets/js/ae-motion.js',
@@ -53,10 +57,8 @@ function aesoftwares_enqueue_scripts() {
     wp_enqueue_script( 'ae-cta',          $uri . '/assets/js/ae-cta.js',          [], filemtime( $js . 'ae-cta.js' ),          [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'ae-widget',       $uri . '/assets/js/ae-widget.js',       [], filemtime( $js . 'ae-widget.js' ),       [ 'in_footer' => true, 'strategy' => 'defer' ] );
 
-    // Hero background motion (front page only).
-    if ( is_front_page() ) {
-        wp_enqueue_script( 'ae-hero-motion', $uri . '/assets/js/ae-hero-motion.js', [], filemtime( $js . 'ae-hero-motion.js' ), [ 'in_footer' => true, 'strategy' => 'defer' ] );
-    }
+    // The hero background canvas (ae-hero-motion.js) was retired in the v6
+    // redesign: the home hero is plain text and never waits on a script.
 
     // ── Free tool JS (one script per tool page) ──────────────────────────
     if ( is_page_template( 'page-rewriter.php' ) ) {
@@ -191,14 +193,8 @@ add_action( 'init', function () {
 } );
 
 
-// ── Preconnect to Google Fonts so the type arrives before the first reveal ──
-add_filter( 'wp_resource_hints', function ( $urls, $relation ) {
-    if ( 'preconnect' === $relation ) {
-        $urls[] = 'https://fonts.googleapis.com';
-        $urls[] = [ 'href' => 'https://fonts.gstatic.com', 'crossorigin' ];
-    }
-    return $urls;
-}, 10, 2 );
+// Fonts are self hosted now (see ae-fonts.css), so the old preconnect hints to
+// Google Fonts were removed. header.php preloads the 400 and 700 files.
 
 
 // ── Purge the page cache after a theme deploy ───────────────────────────────
@@ -207,7 +203,7 @@ add_filter( 'wp_resource_hints', function ( $urls, $relation ) {
 // changes, purge LiteSpeed once (no-op if the plugin isn't active).
 add_action( 'init', function () {
     $dir   = get_template_directory();
-    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js', '/assets/js/ae-hero-motion.js' ];
+    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js', '/assets/js/ae-cta.js', '/assets/refresh/ae-fonts.css' ];
     $sig   = '';
     foreach ( $files as $f ) {
         $sig .= file_exists( $dir . $f ) ? filemtime( $dir . $f ) : '0';
