@@ -2,7 +2,7 @@
 /**
  * Template Name: Services
  *
- * What I do, for local service businesses: websites, Google presence and
+ * What we do, for local service businesses: websites, Google presence and
  * follow up automation. Prices come from inc/offers.php. Work and Online
  * presence are reached from here (and from the footer), not from the nav.
  *
@@ -24,12 +24,12 @@ $price = function ( $group, $id ) use ( $o ) {
 <section class="page-hero services-page-hero">
 	<p class="page-hero__eyebrow">Services</p>
 	<h1 class="page-hero__headline">Get found, look trustworthy, never miss a lead.</h1>
-	<p class="page-hero__subtitle">I help local service businesses with three things: a website that brings in calls, a Google presence people trust, and follow up that happens even when you&rsquo;re on a job.</p>
+	<p class="page-hero__subtitle">We help local service businesses with three things: a website that brings in calls, a Google presence people trust, and follow up that happens even when you&rsquo;re on a job.</p>
 </section>
 
 <section class="v5-services" aria-labelledby="svc-what">
 	<header class="v5-section-head">
-		<h2 class="v5-section-title" id="svc-what" data-reveal>What I do</h2>
+		<h2 class="v5-section-title" id="svc-what" data-reveal>What we do</h2>
 		<a class="v5-link v5-label" href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>" data-reveal>&rarr; All prices</a>
 	</header>
 
@@ -71,7 +71,7 @@ $price = function ( $group, $id ) use ( $o ) {
 			<span class="v5-service__num">04</span>
 			<h3 class="v5-service__title">Missed-Lead Audit</h3>
 			<div class="v5-service__text">
-				<p>Not sure where to start? I map every way a customer can reach you, find the ones that go unanswered, and put a dollar figure on it. Credited in full if you go ahead.</p>
+				<p>Not sure where to start? We map every way a customer can reach you, find the ones that go unanswered, and put a dollar figure on it. Credited in full if you go ahead.</p>
 			</div>
 			<div class="v5-service__side">
 				<p class="svc-meta"><?php echo esc_html( $o['start'][1]['price'] ); ?> one time</p>
@@ -108,7 +108,7 @@ $price = function ( $group, $id ) use ( $o ) {
 </section>
 
 <section class="op-related ae-alt" aria-labelledby="svc-promise">
-	<p class="v5-label" data-reveal>How I work</p>
+	<p class="v5-label" data-reveal>How we work</p>
 	<h2 class="op-related__title v5-section-title" id="svc-promise" data-reveal>Fixed prices, plain English, and you own everything.</h2>
 	<p class="op-related__text" data-reveal>Every project has a written scope and a fixed price before work starts. Your website, domain, accounts and data stay in your name, so nothing switches off if you ever leave. <?php echo esc_html( $o['guarantee'] ); ?></p>
 	<a class="v5-link op-related__link" href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>" data-reveal>See pricing &rarr;</a>

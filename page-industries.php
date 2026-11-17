@@ -2,8 +2,8 @@
 
 <div class="page-hero industries-page-hero">
     <div class="page-hero__eyebrow">Industries</div>
-    <h1 class="page-hero__headline">Paperwork heavy<br><em>industries</em><br>are where I start.</h1>
-    <p class="page-hero__subtitle" data-reveal-text>I built my assessment method with regulated sectors in mind, where bad automation doesn't just waste money, it can create liability. Everything here is general information, not legal advice.</p>
+    <h1 class="page-hero__headline">Paperwork heavy<br><em>industries</em><br>are where we start.</h1>
+    <p class="page-hero__subtitle" data-reveal-text>We built our assessment method with regulated sectors in mind, where bad automation doesn't just waste money, it can create liability. Everything here is general information, not legal advice.</p>
 </div>
 
 <!-- MORTGAGE -->
@@ -15,7 +15,7 @@
         </div>
         <div class="industry-section__body">
             <div class="industry-section__pain js-fade" style="--delay:0s">
-                <h3>Common bottlenecks I find</h3>
+                <h3>Common bottlenecks we find</h3>
                 <ul>
                     <li>Manual disclosure tracking across multiple loan officers with no audit trail</li>
                     <li>Separate spreadsheets for loan data collection, reconciled by hand at year end</li>
@@ -25,7 +25,7 @@
                 </ul>
             </div>
             <div class="industry-section__solutions js-fade" style="--delay:0.15s">
-                <h3>What I build for you</h3>
+                <h3>What we build for you</h3>
                 <ul>
                     <li>Automated disclosure delivery with timestamped records</li>
                     <li>A data pipeline that gathers and checks your loan data as it comes in</li>
@@ -35,7 +35,7 @@
                 </ul>
             </div>
         </div>
-        <a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="btn btn--primary">Assess My Mortgage Operation</a>
+        <a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="btn btn--primary">Assess Your Mortgage Operation</a>
     </div>
 </section>
 
@@ -48,7 +48,7 @@
         </div>
         <div class="industry-section__body">
             <div class="industry-section__pain js-fade" style="--delay:0s">
-                <h3>Common bottlenecks I find</h3>
+                <h3>Common bottlenecks we find</h3>
                 <ul>
                     <li>Policy renewals tracked in spreadsheets, agents manually calling at 60 day mark</li>
                     <li>Claims intake entirely by phone and email, no structured data capture</li>
@@ -58,7 +58,7 @@
                 </ul>
             </div>
             <div class="industry-section__solutions js-fade" style="--delay:0.15s">
-                <h3>What I build for you</h3>
+                <h3>What we build for you</h3>
                 <ul>
                     <li>Policy renewal automation with tiered outreach sequences</li>
                     <li>Structured claims intake portal with automatic classification and routing</li>
@@ -68,7 +68,7 @@
                 </ul>
             </div>
         </div>
-        <a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="btn btn--primary">Assess My Insurance Operation</a>
+        <a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="btn btn--primary">Assess Your Insurance Operation</a>
     </div>
 </section>
 
@@ -81,7 +81,7 @@
         </div>
         <div class="industry-section__body">
             <div class="industry-section__pain js-fade" style="--delay:0s">
-                <h3>Common bottlenecks I find</h3>
+                <h3>Common bottlenecks we find</h3>
                 <ul>
                     <li>Patient intake forms completed on paper, then manually entered into the EHR</li>
                     <li>Insurance eligibility checked individually by phone before each appointment</li>
@@ -91,7 +91,7 @@
                 </ul>
             </div>
             <div class="industry-section__solutions js-fade" style="--delay:0.15s">
-                <h3>What I build for you</h3>
+                <h3>What we build for you</h3>
                 <ul>
                     <li>Digital intake that connects to your EHR so nothing is typed twice</li>
                     <li>Automated eligibility verification triggered by appointment scheduling</li>
@@ -101,7 +101,7 @@
                 </ul>
             </div>
         </div>
-        <a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="btn btn--primary">Assess My Healthcare Operation</a>
+        <a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="btn btn--primary">Assess Your Healthcare Operation</a>
     </div>
 </section>
 
@@ -114,7 +114,7 @@
         </div>
         <div class="industry-section__body">
             <div class="industry-section__pain js-fade" style="--delay:0s">
-                <h3>Common bottlenecks I find</h3>
+                <h3>Common bottlenecks we find</h3>
                 <ul>
                     <li>Permit applications submitted late because no one owns the tracking process</li>
                     <li>Lien waivers collected manually via email, missing documents delay final payment</li>
@@ -124,7 +124,7 @@
                 </ul>
             </div>
             <div class="industry-section__solutions js-fade" style="--delay:0.15s">
-                <h3>What I build for you</h3>
+                <h3>What we build for you</h3>
                 <ul>
                     <li>Permit tracker with jurisdiction specific checklists and automated status follow up</li>
                     <li>Lien waiver collection workflow that blocks final invoice until all documents are in</li>
@@ -134,7 +134,7 @@
                 </ul>
             </div>
         </div>
-        <a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="btn btn--primary">Assess My Construction Operation</a>
+        <a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="btn btn--primary">Assess Your Construction Operation</a>
     </div>
 </section>
 
@@ -144,7 +144,7 @@
         <span class="section-eyebrow">Not sure where to start?</span>
         <h2 class="section-title">Start with<br>the assessment.</h2>
     </div>
-    <p style="color:var(--text-muted);max-width:540px;margin:0 auto 2rem;">My AI guided discovery interview is free. It takes about 15 to 30 minutes and gives you an operational report with risks, automation opportunities, and a prioritized roadmap.</p>
+    <p style="color:var(--text-muted);max-width:540px;margin:0 auto 2rem;">Our AI guided discovery interview is free. It takes about 15 to 30 minutes and gives you an operational report with risks, automation opportunities, and a prioritized roadmap.</p>
     <a href="<?php echo esc_url( home_url( '/assessment/' ) ); ?>" class="btn btn--primary">Start Your Free Assessment</a>
 </section>
 

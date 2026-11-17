@@ -19,17 +19,17 @@ $ae_testimonials = [];
 
 <section class="page-hero about-page-hero">
     <p class="page-hero__eyebrow">About</p>
-    <h1 class="page-hero__headline">I build for <em>small</em> businesses.</h1>
-    <p class="page-hero__subtitle">I&rsquo;m Anthony. I build websites, look after Google presence and set up follow up automation for small businesses that would rather be doing the work than chasing leads.</p>
+    <h1 class="page-hero__headline">Anthony builds for <em>small</em> businesses.</h1>
+    <p class="page-hero__subtitle">Anthony Pioquinto builds websites, looks after Google presence and sets up follow up automation for small businesses that would rather be doing the work than chasing leads.</p>
 </section>
 
-<section class="ae-about-story" aria-label="My story">
+<section class="ae-about-story" aria-label="Anthony&rsquo;s story">
     <div class="ae-about-story__text">
         <blockquote class="ae-pullquote" data-reveal>Most small businesses don&rsquo;t need more software. They need the calls they&rsquo;re already getting to turn into booked work.</blockquote>
         <div class="ae-about-body" data-reveal>
             <p>That&rsquo;s the whole focus. A website that makes it obvious what you do and how to reach you. A Google profile with current hours, recent photos and replies to every review. And a system that answers when you can&rsquo;t: a text back after a missed call, a booking link, a reminder to follow up on a quote.</p>
-            <p>I lead every project myself, start to finish. You talk to the person building your system, not an account manager, and you get a fixed price in writing before any work starts.</p>
-            <p>I keep the tools simple and connect to what you already use. If you have booking or job software that works, I build around it instead of asking you to switch.</p>
+            <p>Anthony leads every project himself, start to finish. You talk to the person building your system, not an account manager, and you get a fixed price in writing before any work starts.</p>
+            <p>Anthony keeps the tools simple and connects to what you already use. If you have booking or job software that works, he builds around it instead of asking you to switch.</p>
         </div>
     </div>
     <figure class="ae-about-photo">
@@ -40,7 +40,7 @@ $ae_testimonials = [];
 
 <section class="ae-promises ae-alt" aria-labelledby="about-promises">
     <header class="v5-section-head">
-        <p class="v5-label" data-reveal>How I work</p>
+        <p class="v5-label" data-reveal>How Anthony works</p>
         <h2 class="v5-section-title" id="about-promises" data-reveal>Three promises.</h2>
     </header>
     <div class="values-grid">
@@ -56,8 +56,8 @@ $ae_testimonials = [];
         </div>
         <div class="value-card ae-card" data-reveal>
             <span class="value-card__num">03</span>
-            <h3 class="value-card__title">I stand behind it</h3>
-            <p class="value-card__text">If my Always-On Front Desk doesn&rsquo;t catch a lead you would have missed within 60 days, I refund your first two monthly payments. Conditions apply. If I don&rsquo;t think I can help, I&rsquo;ll say so on the first call.</p>
+            <h3 class="value-card__title">We stand behind it</h3>
+            <p class="value-card__text">If our Always-On Front Desk doesn&rsquo;t catch a lead you would have missed within 60 days, we refund your first two monthly payments. Conditions apply. If we don&rsquo;t think we can help, we&rsquo;ll say so on the first call.</p>
         </div>
     </div>
 </section>
@@ -67,7 +67,7 @@ $ae_testimonials = [];
 $ae_about_work = [
     [ 'Monarch MVC', 'Health platform', 'monarch-mvc.jpg', 'Monarch MVC men’s health platform home page' ],
     [ 'Learn English with Evie', 'Education', 'learn-english-with-evie.jpg', 'Learn English with Evie lesson booking site' ],
-    [ 'Anthony Pioquinto', 'My own site', 'anthony-pioquinto.jpg', 'Anthony Pioquinto real estate portfolio site' ],
+    [ 'Anthony Pioquinto', 'Anthony&rsquo;s own site', 'anthony-pioquinto.jpg', 'Anthony Pioquinto real estate portfolio site' ],
 ];
 ?>
 <section class="v5-recent" aria-labelledby="about-recent-title">

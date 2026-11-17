@@ -415,7 +415,7 @@ html.ae-motion-failed [data-reveal], html.ae-motion-failed .js-fade {
 .ae-media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
 
 /* ══════════════════════════════════════════════════════════════════════
-   HEADER: sticky, 72px, dark glass. A hairline fades in after 8px of scroll.
+   HEADER: sticky, 72px. Transparent at the top, dark frosted glass after 8px of scroll.
    ══════════════════════════════════════════════════════════════════════ */
 header.site-header {
   position: fixed;
@@ -426,22 +426,29 @@ header.site-header {
   height: var(--header-h);
   z-index: 1000;
   padding: 0 var(--gutter);
-  /* Dark frosted glass: translucent near black, backdrop blur, hairline, soft top highlight.
-     Fallback first: near opaque dark where backdrop blur is not supported. */
-  background: rgba(10, 10, 11, .94);
+  /* At the top of the page the header is fully transparent with no blur and no hairline.
+     Once the page scrolls past 8px (ae-motion.js adds .aec--scrolled) it becomes dark
+     frosted glass with a hairline. */
+  background: transparent;
   border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, .10);
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  transition: background-color .25s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease), -webkit-backdrop-filter .25s var(--ease), backdrop-filter .25s var(--ease);
+}
+/* Scrolled, fallback first: near opaque dark where backdrop blur is not supported. */
+header.site-header.aec--scrolled {
+  background: rgba(10, 10, 11, .94);
+  border-bottom-color: rgba(255, 255, 255, .10);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
-  transition: border-color .25s var(--ease);
+  padding: 0 var(--gutter);
 }
 @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-  header.site-header {
+  header.site-header.aec--scrolled {
     background: rgba(10, 10, 11, .55);
     -webkit-backdrop-filter: saturate(140%) blur(16px);
     backdrop-filter: saturate(140%) blur(16px);
   }
 }
-header.site-header.aec--scrolled { border-bottom-color: var(--rule); padding: 0 var(--gutter); }
 .site-header__inner {
   max-width: var(--wrap);
   height: 100%;
@@ -506,13 +513,17 @@ header.site-header .site-header__cta.btn {
   font-weight: 600;
   letter-spacing: 0;
   border-radius: var(--radius-btn);
-  background-color: var(--ink);
+  /* Glass, the same recipe as the nav pill: translucent white, blur, hairline, soft top highlight. */
+  background-color: rgba(255, 255, 255, .14);
   background-image: linear-gradient(var(--gold), var(--gold));
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 0% 2px;
-  color: var(--paper);
-  border: 1px solid var(--ink);
+  color: var(--ink);
+  border: 1px solid rgba(255, 255, 255, .16);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .12);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  backdrop-filter: saturate(140%) blur(14px);
 }
 header.site-header .site-header__cta.btn:hover { background-size: 100% 2px; background-color: var(--ink); color: var(--paper); }
 
@@ -1641,3 +1652,11 @@ footer.site-footer.v5-footer { background: rgba(10, 10, 11, .72); -webkit-backdr
 }
 .v5-proof li { padding: 18px 20px; border-radius: var(--radius); }
 .v5-prices__row { border-radius: var(--radius); }
+/* Let the animated background show through hero and section wrappers. */
+.page-hero, .rewriter-section, .rewriter-how, .transcriber-section, .free-tools-section, .work-section,
+.product-section, .product-section--alt, .industry-section, .industry-section--alt, .web-tiers-section,
+.web-scroll-section, .web-process-section, .web-industries-strip, .web-cta-strip, .starter-features-section,
+.starter-pricing-section, .starter-states-section, .starter-faq-section, .faq-section, .software-cta,
+.assessment-page, .assessment-hero, .assessment-trust-bar, .free-tools-note, .work-cta-bar, .inner-section-pad {
+  background: transparent !important;
+}

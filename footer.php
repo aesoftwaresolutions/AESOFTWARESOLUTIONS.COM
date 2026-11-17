@@ -14,7 +14,7 @@
     <div class="v5-footer__brand">
       <p class="v5-label">Say hello</p>
       <p class="v5-footer__big">
-        Got a workflow that needs untangling, or a website that should be pulling its weight? <a class="v5-link" href="mailto:anthony@aesoftwaresolutions.com">Tell me about it.</a>
+        Got a workflow that needs untangling, or a website that should be pulling its weight? <a class="v5-link" href="mailto:anthony@aesoftwaresolutions.com">Tell us about it.</a>
       </p>
     </div>
 

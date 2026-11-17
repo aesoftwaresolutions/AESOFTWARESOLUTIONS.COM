@@ -3,7 +3,7 @@
 <div class="page-hero work-page-hero">
     <div class="page-hero__eyebrow">Work</div>
     <h1 class="page-hero__headline">Recent<br><em>websites.</em></h1>
-    <p class="page-hero__subtitle" data-reveal-text>A selection of websites I have designed and built, plus examples of the automations and tools I set up for small businesses.</p>
+    <p class="page-hero__subtitle" data-reveal-text>A selection of websites we have designed and built, plus examples of the automations and tools we set up for small businesses.</p>
 </div>
 
 <section class="work-section">
@@ -38,13 +38,13 @@
         <article class="work-card js-fade" style="--delay:0.08s">
             <div class="work-card__header">
                 <span class="work-card__num">02</span>
-                <span class="work-card__tag">My own site</span>
+                <span class="work-card__tag">Anthony&rsquo;s own site</span>
             </div>
             <a href="https://anthonypioquinto.com" target="_blank" rel="noopener" aria-label="Visit anthonypioquinto.com">
                 <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/work/anthony-pioquinto.jpg' ); ?>" alt="Anthony Pioquinto portfolio home page" loading="lazy" decoding="async" width="1440" height="900" class="work-card__shot">
             </a>
             <h2 class="work-card__title">Anthony Pioquinto</h2>
-            <p class="work-card__desc">My own portfolio site, not a client project. Dark editorial design, built to show my real estate lending work, digital projects, and consulting services.</p>
+            <p class="work-card__desc">Anthony&rsquo;s own portfolio site, not a client project. Dark editorial design, built to show his real estate lending work, digital projects, and consulting services.</p>
             <ul class="work-card__outcomes">
                 <li>Editorial dark theme design with custom typography</li>
                 <li>Services and projects showcase sections</li>
@@ -166,7 +166,7 @@
 
 <section class="work-cta-bar">
     <div class="work-cta-bar__inner">
-        <p class="work-cta-bar__text">Have a project in mind? Tell me about it.</p>
+        <p class="work-cta-bar__text">Have a project in mind? Tell us about it.</p>
         <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn--primary">Start a conversation &rarr;</a>
     </div>
 </section>

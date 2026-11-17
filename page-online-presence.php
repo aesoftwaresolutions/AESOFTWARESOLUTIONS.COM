@@ -14,23 +14,23 @@ get_header();
 $ae_presence_faq = [
 	[
 		'q' => 'What is online presence management?',
-		'a' => 'It is the ongoing work of keeping your business easy to find and trustworthy online: your Google Business Profile, your reviews, your listings on maps and directories, your social profiles, and your website. I set each one up properly, keep the details matching everywhere, and look after them every month.',
+		'a' => 'It is the ongoing work of keeping your business easy to find and trustworthy online: your Google Business Profile, your reviews, your listings on maps and directories, your social profiles, and your website. We set each one up properly, keep the details matching everywhere, and look after them every month.',
 	],
 	[
-		'q' => 'Do I need a new website to start?',
-		'a' => 'No. I can manage your presence around the site you already have. If the site is holding you back, I will tell you during the free presence check and quote a rebuild separately.',
+		'q' => 'Is a new website needed to start?',
+		'a' => 'No. We can manage your presence around the site you already have. If the site is holding you back, we will tell you during the free presence check and quote a rebuild separately.',
 	],
 	[
-		'q' => 'How long until I see results on Google?',
-		'a' => 'It depends on your market and on how much is already in place. Ranking higher in local results builds over time as reviews, posts and consistent listings add up. I will not promise a ranking, but I will show you what changed in the monthly report.',
+		'q' => 'How long until results show on Google?',
+		'a' => 'It depends on your market and on how much is already in place. Ranking higher in local results builds over time as reviews, posts and consistent listings add up. We will not promise a ranking, but we will show you what changed in the monthly report.',
 	],
 	[
-		'q' => 'Will you reply to reviews for me?',
-		'a' => 'Yes. I draft replies to every new review in your voice. You can approve them first or let me post them directly.',
+		'q' => 'Will you reply to reviews for the business?',
+		'a' => 'Yes. We draft replies to every new review in your voice. You can approve them first or let us post them directly.',
 	],
 	[
 		'q' => 'Which areas do you work with?',
-		'a' => 'I work with businesses across the US, remotely and in person where it makes sense.',
+		'a' => 'We work with businesses across the US, remotely and in person where it makes sense.',
 	],
 ];
 ?>
@@ -38,10 +38,10 @@ $ae_presence_faq = [
 <section class="page-hero op-hero">
 	<p class="page-hero__eyebrow">Online presence management</p>
 	<h1 class="page-hero__headline">Be the business they find first.</h1>
-	<p class="page-hero__subtitle">I set up and look after everything people see before they call you: your Google Business Profile, reviews, listings and website, for small businesses everywhere.</p>
+	<p class="page-hero__subtitle">We set up and look after everything people see before they call you: your Google Business Profile, reviews, listings and website, for small businesses everywhere.</p>
 	<div class="op-hero__actions" data-reveal>
 		<a class="v5-button" href="#presence-check">Run the free presence check</a>
-		<a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Talk to me &rarr;</a>
+		<a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Talk to us &rarr;</a>
 	</div>
 </section>
 
@@ -98,7 +98,7 @@ $ae_presence_faq = [
 <!-- What's included -->
 <section class="v5-services" aria-labelledby="op-included-title">
 	<header class="v5-section-head ae-rule">
-		<h2 class="v5-section-title" id="op-included-title" data-split>What I look after</h2>
+		<h2 class="v5-section-title" id="op-included-title" data-split>What we look after</h2>
 		<span class="v5-label" data-reveal>Every month</span>
 	</header>
 	<ol class="v5-services__list">
@@ -125,7 +125,7 @@ $ae_presence_faq = [
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">05</span>
 			<h3 class="v5-service__title">A plain monthly report</h3>
-			<p class="v5-service__text">How many people found you, called, asked for directions or visited the site, and what I changed. One page, no jargon.</p>
+			<p class="v5-service__text">How many people found you, called, asked for directions or visited the site, and what we changed. One page, no jargon.</p>
 		</li>
 	</ol>
 </section>
@@ -142,7 +142,7 @@ $ae_presence_faq = [
 	<h2 class="v5-section-title" id="op-steps-title" data-split>How it works</h2>
 	<ol class="op-steps__list">
 		<li data-reveal><span class="v5-label">01</span><h3>Presence check</h3><p>A free 15-minute call. We look at what a customer sees when they search for you and list what to fix first.</p></li>
-		<li data-reveal><span class="v5-label">02</span><h3>Cleanup</h3><p>I fix the profile, listings and website basics first, so the foundation is right.</p></li>
+		<li data-reveal><span class="v5-label">02</span><h3>Cleanup</h3><p>We fix the profile, listings and website basics first, so the foundation is right.</p></li>
 		<li data-reveal><span class="v5-label">03</span><h3>Ongoing care</h3><p>Posts, review replies and listing upkeep every month, with a report so you can see what changed.</p></li>
 	</ol>
 </section>
@@ -151,7 +151,7 @@ $ae_presence_faq = [
 <section class="op-related ae-rule" aria-labelledby="op-related-title">
 	<p class="v5-label" data-reveal>Need a new site too?</p>
 	<h2 class="op-related__title" id="op-related-title" data-split>Your website is the centre of your presence.</h2>
-	<p class="op-related__text" data-reveal>I design and build fast, mobile first websites for small businesses, from a simple five page site to a lead funnel with booking and follow up built in.</p>
+	<p class="op-related__text" data-reveal>We design and build fast, mobile first websites for small businesses, from a simple five page site to a lead funnel with booking and follow up built in.</p>
 	<a class="v5-link op-related__link" href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" data-reveal>See website design &amp; pricing &rarr;</a>
 </section>
 

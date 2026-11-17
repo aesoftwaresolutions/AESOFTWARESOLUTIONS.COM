@@ -88,17 +88,17 @@ $guides = array(
 );
 
 $faqs = array(
-	array( 'What am I signing up for?', 'My monthly newsletter. Each issue covers business updates from AE Software Solutions, current world events that affect small businesses and contractors, and how AE can help. If you want off the list, email me at anthony@aesoftwaresolutions.com and I will take you off.' ),
-	array( 'Is it really free?', 'Yes. The guides cost nothing when you join the newsletter. I ask for your name, company and email, and nothing else.' ),
+	array( 'What is the signup for?', 'Our monthly newsletter. Each issue covers business updates from AE Software Solutions, current world events that affect small businesses and contractors, and how AE can help. If you want off the list, email us at anthony@aesoftwaresolutions.com and we will take you off.' ),
+	array( 'Is it really free?', 'Yes. The guides cost nothing when you join the newsletter. We ask for your name, company and email, and nothing else.' ),
 	array( 'Who are these for?', 'Contractors and home service owners: roofers, HVAC, plumbers, electricians, remodelers and similar trades. If you quote jobs and answer a phone, the guides apply to you.' ),
-	array( 'Why give them away?', 'The guides are how I introduce my work to contractors. If one helps you, great. If you want help putting any of it in place, you can reach me at anthony@aesoftwaresolutions.com.' ),
+	array( 'Why give them away?', 'The guides are how we introduce our work to contractors. If one helps you, great. If you want help putting any of it in place, you can reach us at anthony@aesoftwaresolutions.com.' ),
 );
 ?>
 
 <section class="page-hero pricing-hero">
 	<p class="page-hero__eyebrow">Free guides</p>
 	<h1 class="page-hero__headline">Win more of the jobs you already quote.</h1>
-	<p class="page-hero__subtitle">Ten short PDF guides, free when you join my monthly newsletter. They cover how to close more estimates, what missed calls cost you each month, how to answer new leads in minutes, how to show up on the Google map, how to earn more 5 star reviews, how to raise your prices and still close, how mortgage lenders can answer purchase leads in minutes, how to turn your website into an estimate machine, how to follow up until estimates close, and how realtors turn showings into signed listings.</p>
+	<p class="page-hero__subtitle">Ten short PDF guides, free when you join our monthly newsletter. They cover how to close more estimates, what missed calls cost you each month, how to answer new leads in minutes, how to show up on the Google map, how to earn more 5 star reviews, how to raise your prices and still close, how mortgage lenders can answer purchase leads in minutes, how to turn your website into an estimate machine, how to follow up until estimates close, and how realtors turn showings into signed listings.</p>
 	<noscript><p class="ae-guides__nojs">The signup form needs JavaScript. Turn it on and reload this page to join the newsletter and get the guides.</p></noscript>
 </section>
 
@@ -123,7 +123,7 @@ $faqs = array(
 			</article>
 		<?php endforeach; ?>
 	</div>
-	<p class="ae-guarantee" data-reveal><strong>You are on the list.</strong> Pick any guide and download it. My newsletter arrives once a month.</p>
+	<p class="ae-guarantee" data-reveal><strong>You are on the list.</strong> Pick any guide and download it. Our newsletter arrives once a month.</p>
 </section>
 
 <section class="ae-pricing ae-guides ae-alt" id="faq" aria-labelledby="gd-faq">
@@ -147,8 +147,8 @@ $faqs = array(
 	data-nonce="<?php echo esc_attr( wp_create_nonce( 'ae_guides_signup' ) ); ?>">
 	<div class="ae-gate__card">
 		<p class="ae-gate__eyebrow">Free guides</p>
-		<h2 class="ae-gate__title" id="ae-gate-title">Join my monthly newsletter and get all six guides.</h2>
-		<p class="ae-gate__copy" id="ae-gate-copy">I send one newsletter a month. It covers what is happening at AE Software Solutions, current world events that affect small businesses and contractors, and how AE can help. The six guides are free when you join.</p>
+		<h2 class="ae-gate__title" id="ae-gate-title">Join our monthly newsletter and get all six guides.</h2>
+		<p class="ae-gate__copy" id="ae-gate-copy">We send one newsletter a month. It covers what is happening at AE Software Solutions, current world events that affect small businesses and contractors, and how AE can help. The six guides are free when you join.</p>
 		<form class="ae-gate__form" id="ae-gate-form" novalidate>
 			<label class="ae-gate__field">
 				<span class="ae-gate__label">Name</span>
@@ -167,7 +167,7 @@ $faqs = array(
 			</div>
 			<p class="ae-gate__error" id="ae-gate-error" role="alert"></p>
 			<button class="v5-button ae-gate__submit" type="submit">Join and get the guides</button>
-			<p class="ae-gate__fine">If you want off the list, email me at anthony@aesoftwaresolutions.com and I will take you off.</p>
+			<p class="ae-gate__fine">If you want off the list, email us at anthony@aesoftwaresolutions.com and we will take you off.</p>
 		</form>
 	</div>
 </div>
@@ -278,7 +278,7 @@ $faqs = array(
 			if (res && res.success) { unlock(); return; }
 			showError((res && res.message) || 'Something went wrong. Please try again.');
 		}).catch(function () {
-			showError('I could not reach the server. Check your connection and try again.');
+			showError('We could not reach the server. Check your connection and try again.');
 		}).then(function () {
 			busy = false;
 			button.disabled = false;

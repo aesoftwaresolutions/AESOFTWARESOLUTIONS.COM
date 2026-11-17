@@ -52,10 +52,10 @@ function aesoftwares_enqueue_scripts() {
     );
 
     // ae-greetings, ae-products, ae-testimonials and ae-assistant were removed:
-    // nothing on the current pages uses them (the floating ae-widget is the
-    // live chat), and ae-testimonials showed invented clients and stock photos.
+    // nothing on the current pages uses them, and ae-testimonials showed
+    // invented clients and stock photos. The floating ae-widget chat was
+    // removed Nov 17 per Anthony, so it is no longer enqueued.
     wp_enqueue_script( 'ae-cta',          $uri . '/assets/js/ae-cta.js',          [], filemtime( $js . 'ae-cta.js' ),          [ 'in_footer' => true, 'strategy' => 'defer' ] );
-    wp_enqueue_script( 'ae-widget',       $uri . '/assets/js/ae-widget.js',       [], filemtime( $js . 'ae-widget.js' ),       [ 'in_footer' => true, 'strategy' => 'defer' ] );
 
     // The hero background canvas (ae-hero-motion.js) was retired in the v6
     // redesign: the home hero is plain text and never waits on a script.
@@ -1319,15 +1319,15 @@ function aesoftwares_seo_meta() {
             ],
             'work' => [
                 'Recent Websites for Small Businesses | AE Software Solutions',
-                'Websites I have designed and built, from a men’s health platform to an online English school.',
+                'Websites we have designed and built, from a men’s health platform to an online English school.',
             ],
             'about' => [
                 'About AE Software Solutions | Web Design & Online Presence for Small Business',
-                'I build websites, Google presence and follow up automation for small businesses nationwide. Fixed prices, and you own everything.',
+                'Anthony builds websites, Google presence and follow up automation for small businesses nationwide. Fixed prices, and you own everything.',
             ],
             'contact' => [
                 'Contact AE Software Solutions | Free Website & Presence Consultation',
-                'Book a free discovery call about a new website, your Google presence or automating your follow ups. I work with small businesses nationwide.',
+                'Book a free discovery call about a new website, your Google presence or automating your follow ups. We work with small businesses nationwide.',
             ],
             'business-starter' => [
                 'Business Starter Plan: CRM, Invoicing & Registration Guides from $50/mo',

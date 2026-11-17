@@ -3,7 +3,7 @@
 <div class="page-hero free-tools-hero">
 	<div class="page-hero__eyebrow">Free tools</div>
 	<h1 class="page-hero__headline">Free AI tools,<br><em>no signup.</em></h1>
-	<p class="page-hero__subtitle">Simple AI tools I built for everyday writing and listening work. Try them here for free.</p>
+	<p class="page-hero__subtitle">Simple AI tools we built for everyday writing and listening work. Try them here for free.</p>
 </div>
 
 <section class="free-tools-section">
@@ -46,11 +46,11 @@
 	<div class="free-tools-note__inner">
 		<div class="free-tools-note__block">
 			<h3>Why are these free?</h3>
-			<p>I built these tools to show what is possible with AI, and they are free to use. Please do not paste confidential or sensitive information into them.</p>
+			<p>We built these tools to show what is possible with AI, and they are free to use. Please do not paste confidential or sensitive information into them.</p>
 		</div>
 		<div class="free-tools-note__block">
 			<h3>Want this for your business?</h3>
-			<p>I can build something like these for your business, branded and connected to your systems. <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Get in touch</a> to talk about what I can build.</p>
+			<p>We can build something like these for your business, branded and connected to your systems. <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Get in touch</a> to talk about what we can build.</p>
 		</div>
 	</div>
 </section>
