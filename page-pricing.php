@@ -47,7 +47,7 @@ function aesoftwares_pricing_cta_row() {
 	?>
 	<p class="ae-cta-row" data-reveal>
 		<span>Not sure which one fits?</span>
-		<a class="v5-textlink" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Tell me about the project &rarr;</a>
+		<a class="v5-textlink" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Tell us about the project &rarr;</a>
 	</p>
 	<?php
 }
@@ -100,7 +100,7 @@ function aesoftwares_pricing_cta_row() {
 	<div class="ae-offers ae-offers--two">
 		<?php foreach ( $o['monthly'] as $item ) { aesoftwares_offer_card( $item ); } ?>
 	</div>
-	<p class="ae-guarantee" data-reveal><strong>My guarantee.</strong> <?php echo esc_html( $o['guarantee'] ); ?></p>
+	<p class="ae-guarantee" data-reveal><strong>Our guarantee.</strong> <?php echo esc_html( $o['guarantee'] ); ?></p>
 	<?php aesoftwares_pricing_cta_row(); ?>
 </section>
 

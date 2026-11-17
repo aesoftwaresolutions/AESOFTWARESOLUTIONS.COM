@@ -460,7 +460,7 @@
     }
 
     function loadInitialGreeting() {
-      const greeting = 'Hi! I\'m Ava from AE Software Solutions. What kind of business do you run?';
+      const greeting = 'Hi! This is Ava from AE Software Solutions. What kind of business do you run?';
       addMessage('assistant', greeting);
     }
 
@@ -515,7 +515,7 @@
       const has = (...words) => words.some(w => text.includes(w));
 
       if (text.length < 34 && /( hi | hello | hey | good morning | good afternoon | yo )/.test(text)) {
-        return 'Hello! Great to meet you. I can walk you through our services and pricing, or point you to the free guides. What kind of business do you run?';
+        return 'Hello! Great to meet you. We can walk you through our services and pricing, or point you to the free guides. What kind of business do you run?';
       }
       if (has('thank', 'thanks', 'thx')) {
         return 'Anytime. If you want a next step, the free discovery call is the easiest one. Anthony replies personally to every inquiry within 24 hours.';
@@ -524,7 +524,7 @@
         return 'Thanks for stopping by. When you are ready, the Contact page on this site is the fastest way to reach Anthony.';
       }
       if (has('are you a bot', 'are you ai', 'are you a robot', 'real person', 'are you human')) {
-        return 'I am the site assistant here at AE. I answer the common questions instantly, and anything beyond me goes straight to Anthony at anthony@aesoftwaresolutions.com.';
+        return 'This is the site assistant here at AE. It answers the common questions instantly, and anything beyond it goes straight to Anthony at anthony@aesoftwaresolutions.com.';
       }
       if (has('human', 'real person', 'email', 'phone number', 'contact', 'reach anthony', 'talk to anthony')) {
         return 'You can reach Anthony directly at anthony@aesoftwaresolutions.com. He replies personally within 24 hours. The Contact page on this site works too.';
@@ -554,16 +554,16 @@
         return 'The discovery call is free and takes about 25 minutes. Head to the Contact page on this site to pick a time, or email anthony@aesoftwaresolutions.com and Anthony will set it up with you.';
       }
       if (has('how long', 'timeline', 'deadline', 'when can', 'turnaround')) {
-        return 'Timing depends on the scope, so I do not want to guess wrong. Anthony confirms a timeline on the free discovery call before any work starts.';
+        return 'Timing depends on the scope, so we do not want to guess wrong. Anthony confirms a timeline on the free discovery call before any work starts.';
       }
       if (has('who are you', 'what is ae', 'about ae', 'your company', 'what do you do')) {
         return 'AE Software Solutions helps small businesses stop losing leads. We build websites, answer and follow up with your leads, manage your online presence and social pages, and set up practical automation. Our rule is intelligence before automation: map first, then build.';
       }
       const trades = ['contractor', 'plumber', 'plumbing', 'hvac', 'electrician', 'electrical', 'roofer', 'roofing', 'landscap', 'mortgage', 'lender', 'loan officer', 'insurance', 'salon', 'dentist', 'dental', 'realtor', 'real estate', 'restaurant', 'lawyer', 'attorney', 'cleaning', 'painter', 'painting', 'remodel', 'construction', 'auto repair', 'mechanic'];
       if (trades.some(t => text.includes(t)) || has('i run a', 'i own a', 'we run a', 'we own a', 'my business')) {
-        return 'Good business to be in. Most owners I talk to in your line of work lose jobs the same way: a call comes in while the crew is on a job and nobody gets back to it in time. Our Front Desk and the Missed Lead Audit were built for exactly that. Want the pricing rundown, or the audit details first?';
+        return 'Good business to be in. Most owners we talk to in your line of work lose jobs the same way: a call comes in while the crew is on a job and nobody gets back to it in time. Our Front Desk and the Missed Lead Audit were built for exactly that. Want the pricing rundown, or the audit details first?';
       }
-      return 'I can help with our services, pricing, the free guides, or booking a free discovery call. For anything specific to your business, email anthony@aesoftwaresolutions.com and Anthony replies personally within 24 hours.';
+      return 'We can help with our services, pricing, the free guides, or booking a free discovery call. For anything specific to your business, email anthony@aesoftwaresolutions.com and Anthony replies personally within 24 hours.';
     }
 
     function sendMessage() {

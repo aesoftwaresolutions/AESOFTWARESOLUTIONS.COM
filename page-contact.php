@@ -2,7 +2,7 @@
 /**
  * Template Name: Contact
  *
- * Approved copy (2026-11-10): H1 "Tell me about the project.", a 24 hour reply
+ * Approved copy (2026-11-10): H1 "Tell us about the project.", a 24 hour reply
  * promise, a free 30 minute discovery call, checklists for services, budget and
  * timeline, and a short message box. Form field names, the honeypot and the
  * lead endpoint are unchanged from the previous version.
@@ -36,8 +36,8 @@ $ae_timelines = [
 
 <section class="page-hero contact-page-hero">
     <p class="page-hero__eyebrow">Get in touch</p>
-    <h1 class="page-hero__headline">Tell me about the project.</h1>
-    <p class="page-hero__subtitle">I read every message myself and reply within 24 hours. The first call is a free 30 minute discovery call.</p>
+    <h1 class="page-hero__headline">Tell us about the project.</h1>
+    <p class="page-hero__subtitle">We read every message ourselves and reply within 24 hours. The first call is a free 30 minute discovery call.</p>
 </section>
 
 <section class="ae-contact" aria-label="Contact form">
@@ -105,12 +105,12 @@ $ae_timelines = [
 
             <div class="form-field">
                 <label for="contact-message">A few words about the project</label>
-                <textarea id="contact-message" name="message" rows="4" placeholder="What you do, what is not working, anything I should know." required></textarea>
+                <textarea id="contact-message" name="message" rows="4" placeholder="What you do, what is not working, anything we should know." required></textarea>
             </div>
 
             <div>
                 <button type="submit" class="v5-button" id="contact-submit">Send message</button>
-                <p class="contact-form__note" style="margin-top:12px">I reply within 24 hours. Your information is never shared.</p>
+                <p class="contact-form__note" style="margin-top:12px">We reply within 24 hours. Your information is never shared.</p>
                 <p class="contact-form__status" id="contact-form-status" role="status" aria-live="polite" hidden></p>
             </div>
 
@@ -189,17 +189,17 @@ $ae_timelines = [
                 }).then(function (r) {
                     if (!r.ok) throw new Error('HTTP ' + r.status);
                     // Success replaces the form with a plain confirmation in the same box.
-                    box.innerHTML = '<div class="contact-done" role="status"><h2 class="contact-done__title">Message sent.</h2><p>I read every message myself. You will hear from me within 24 hours.</p></div>';
+                    box.innerHTML = '<div class="contact-done" role="status"><h2 class="contact-done__title">Message sent.</h2><p>We read every message ourselves. You will hear from us within 24 hours.</p></div>';
                     box.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }).catch(function () {
-                    // The post failed: say so plainly, keep what they typed, let them retry or email me.
+                    // The post failed: say so plainly, keep what they typed, let them retry or email us.
                     busy = false;
                     submitBtn.disabled = false;
                     submitBtn.removeAttribute('aria-busy');
                     submitBtn.textContent = idleLabel;
                     statusEl.hidden = false;
                     statusEl.setAttribute('data-state', 'error');
-                    statusEl.textContent = 'Your message did not go through. Check your connection and try again, or email me at ';
+                    statusEl.textContent = 'Your message did not go through. Check your connection and try again, or email us at ';
                     var mail = document.createElement('a');
                     mail.href = 'mailto:anthony@aesoftwaresolutions.com';
                     mail.textContent = 'anthony@aesoftwaresolutions.com';
@@ -214,16 +214,16 @@ $ae_timelines = [
     <aside class="ae-contact__aside" data-reveal>
 
         <div class="contact-sidebar__info">
-            <p class="contact-sidebar__label">Email me directly</p>
+            <p class="contact-sidebar__label">Email us directly</p>
             <a href="mailto:anthony@aesoftwaresolutions.com" class="contact-sidebar__email">anthony@aesoftwaresolutions.com</a>
         </div>
 
         <div class="contact-sidebar__info">
             <p class="contact-sidebar__label">What happens next</p>
             <ol class="contact-sidebar__next">
-                <li>I read your message myself.</li>
-                <li>I reply within 24 hours.</li>
-                <li>You and I set up a free 30 minute discovery call.</li>
+                <li>We read your message ourselves.</li>
+                <li>We reply within 24 hours.</li>
+                <li>You and we set up a free 30 minute discovery call.</li>
             </ol>
         </div>
 

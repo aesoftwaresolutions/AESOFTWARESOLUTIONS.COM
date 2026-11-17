@@ -382,16 +382,16 @@ get_header(); ?>
 		<p class="starter-faq-a">The Business Starter Package includes full access to aeCRM, accounting and invoicing tools, and compliance &amp; registration guides for all 50 U.S. states.</p>
 	</div>
 	<div class="starter-faq-item js-fade" style="--delay:0.08s">
-		<p class="starter-faq-q">Do I need to sign a long term contract?</p>
+		<p class="starter-faq-q">Is a long term contract required?</p>
 		<p class="starter-faq-a">No. The Business Starter Package is billed month to month. You can cancel anytime, with no minimum commitment.</p>
 	</div>
 	<div class="starter-faq-item js-fade" style="--delay:0.16s">
 		<p class="starter-faq-q">Are the compliance guides kept up to date?</p>
-		<p class="starter-faq-a">I update the guides as I learn of changes, but state rules change, so check the state's own website before you file.</p>
+		<p class="starter-faq-a">We update the guides as we learn of changes, but state rules change, so check the state's own website before you file.</p>
 	</div>
 	<div class="starter-faq-item js-fade" style="--delay:0.24s">
-		<p class="starter-faq-q">Can I upgrade to a full automation or consulting engagement?</p>
-		<p class="starter-faq-a">Yes. The Starter Package is a foundation. If you later want websites, follow up automation, or a custom build, contact me and I will put together a proposal.</p>
+		<p class="starter-faq-q">Can the plan upgrade to a full automation or consulting engagement?</p>
+		<p class="starter-faq-a">Yes. The Starter Package is a foundation. If you later want websites, follow up automation, or a custom build, contact us and we will put together a proposal.</p>
 	</div>
 	<div class="starter-faq-item js-fade" style="--delay:0.32s">
 		<p class="starter-faq-q">Is support included?</p>

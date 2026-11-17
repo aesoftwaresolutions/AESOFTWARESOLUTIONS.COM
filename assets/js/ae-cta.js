@@ -29,10 +29,10 @@
     '</style>' +
     '<section class="cta" aria-labelledby="cta-title">' +
     '  <p class="label">Next step</p>' +
-    '  <h2 id="cta-title">Tell me what slows you down. I&rsquo;ll map the fix.</h2>' +
+    '  <h2 id="cta-title">Tell us what slows you down. We&rsquo;ll map the fix.</h2>' +
     '  <div class="actions">' +
     '    <a class="btn" href="/contact/">Book a discovery call</a>' +
-    '    <span class="note">Free 30 minute discovery call &middot; I reply within 24 hours</span>' +
+    '    <span class="note">Free 30 minute discovery call &middot; We reply within 24 hours</span>' +
     '  </div>' +
     '  <p class="mail">Or write to <a href="mailto:anthony@aesoftwaresolutions.com">anthony@aesoftwaresolutions.com</a></p>' +
     '</section>';

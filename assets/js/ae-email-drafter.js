@@ -67,7 +67,7 @@
 		}
 
 		// Try an example: fills the input so the panels are not empty on first visit.
-		var EXAMPLE = 'Following up on last week\'s proposal for the website project. I would like to schedule a short call this week to answer any questions and talk about next steps. I am flexible on time.';
+		var EXAMPLE = 'Following up on last week\'s proposal for the website project. We would like to schedule a short call this week to answer any questions and talk about next steps. We are flexible on time.';
 		var exampleBtn = document.createElement('button');
 		exampleBtn.type = 'button';
 		exampleBtn.id = 'rewriter-example';

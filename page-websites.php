@@ -462,7 +462,7 @@ get_header(); ?>
 <div class="page-hero web-hero">
     <div class="page-hero__eyebrow">Website design</div>
     <h1 class="page-hero__headline">A website that<br><em>works harder</em><br>than a business card.</h1>
-    <p class="page-hero__subtitle" data-reveal-text>Every site I build has one job: turn a visitor into a lead, a client, or a customer. From a simple site to a custom platform, three tiers, one person.</p>
+    <p class="page-hero__subtitle" data-reveal-text>Every site we build has one job: turn a visitor into a lead, a client, or a customer. From a simple site to a custom platform, three tiers, one person.</p>
 </div>
 
 <!-- TEMPLATE SCROLL -->
@@ -470,7 +470,7 @@ get_header(); ?>
     <div class="web-scroll-section__header js-fade">
         <span class="eyebrow">Example templates</span>
         <h2>Example designs<br>for your industry</h2>
-        <p>These are example templates I made to show what a site for your industry can look like. They are not client sites.</p>
+        <p>These are example templates we made to show what a site for your industry can look like. They are not client sites.</p>
     </div>
     <div class="web-scroll-track-wrap">
         <div class="web-scroll-track">
@@ -643,7 +643,7 @@ get_header(); ?>
     <div class="web-tiers-section__header js-fade">
         <span class="eyebrow">Choose your tier</span>
         <h2>Built for where<br>your business is now</h2>
-        <p>I match the build to what you actually need. No bloated platforms, no templates you can't edit. Every project is designed, built, and handed off with full ownership to you.</p>
+        <p>We match the build to what you actually need. No bloated platforms, no templates you can't edit. Every project is designed, built, and handed off with full ownership to you.</p>
     </div>
 
     <div class="web-tier-grid">
@@ -727,13 +727,13 @@ get_header(); ?>
         <div class="web-process-header js-fade">
             <span class="eyebrow">How it works</span>
             <h2>From brief to live<br>in a straight line.</h2>
-            <p>No bloated discovery phases or endless revision loops. I move fast, communicate clearly, and ship sites that are ready to work on day one.</p>
+            <p>No bloated discovery phases or endless revision loops. We move fast, communicate clearly, and ship sites that are ready to work on day one.</p>
         </div>
         <div class="web-process-steps">
             <div class="web-process-step js-fade" style="--delay:0s">
                 <div class="web-process-step__num">01 Discovery</div>
                 <h3 class="web-process-step__title">One focused call</h3>
-                <p class="web-process-step__desc">I learn your business, your customers, and your goal for the site. You answer questions and I take notes. No homework required.</p>
+                <p class="web-process-step__desc">We learn your business, your customers, and your goal for the site. You answer questions and we take notes. No homework required.</p>
             </div>
             <div class="web-process-step js-fade" style="--delay:0.1s">
                 <div class="web-process-step__num">02 Design</div>
@@ -743,12 +743,12 @@ get_header(); ?>
             <div class="web-process-step js-fade" style="--delay:0.2s">
                 <div class="web-process-step__num">03 Build</div>
                 <h3 class="web-process-step__title">Fast, clean, ready to launch</h3>
-                <p class="web-process-step__desc">I build to the timeline we agree on. You see a live staging link before handoff. Nothing ships that hasn't been tested on mobile and desktop.</p>
+                <p class="web-process-step__desc">We build to the timeline we agree on. You see a live staging link before handoff. Nothing ships that hasn't been tested on mobile and desktop.</p>
             </div>
             <div class="web-process-step js-fade" style="--delay:0.3s">
                 <div class="web-process-step__num">04 Launch</div>
                 <h3 class="web-process-step__title">Full handoff, full ownership</h3>
-                <p class="web-process-step__desc">I deploy, configure DNS, connect your analytics, and walk you through the site. You own everything: code, domain, credentials.</p>
+                <p class="web-process-step__desc">We deploy, configure DNS, connect your analytics, and walk you through the site. You own everything: code, domain, credentials.</p>
             </div>
         </div>
     </div>
@@ -758,7 +758,7 @@ get_header(); ?>
 <section class="web-why-section">
     <div class="web-why-header js-fade">
         <span class="eyebrow">Why AE</span>
-        <h2>I build sites like<br>an operator, not a designer.</h2>
+        <h2>We build sites like<br>an operator, not a designer.</h2>
     </div>
     <div class="web-why-grid">
         <div class="web-why-card js-fade" style="--delay:0s">
@@ -769,12 +769,12 @@ get_header(); ?>
         <div class="web-why-card js-fade" style="--delay:0.1s">
             <div class="web-why-card__icon" aria-hidden="true">🔗</div>
             <h3>Built to integrate</h3>
-            <p>I wire your site into your actual workflow: CRM, calendar, email, payment processor. Not a disconnected brochure that creates more manual work.</p>
+            <p>We wire your site into your actual workflow: CRM, calendar, email, payment processor. Not a disconnected brochure that creates more manual work.</p>
         </div>
         <div class="web-why-card js-fade" style="--delay:0.2s">
             <div class="web-why-card__icon" aria-hidden="true">🤖</div>
             <h3>AI where it makes sense</h3>
-            <p>I add AI intake, follow up sequences, and chat agents where they save you real time, not as a buzzword feature that complicates the experience.</p>
+            <p>We add AI intake, follow up sequences, and chat agents where they save you real time, not as a buzzword feature that complicates the experience.</p>
         </div>
         <div class="web-why-card js-fade" style="--delay:0.3s">
             <div class="web-why-card__icon" aria-hidden="true">🏠</div>
@@ -838,10 +838,10 @@ get_header(); ?>
 <!-- CTA -->
 <section class="web-cta-strip">
     <h2 class="js-fade">Ready for a site<br>that <em>brings in calls</em>?</h2>
-    <p class="js-fade" style="--delay:0.1s">Tell me what you need and I will reply within 24 hours with next steps. No pressure, no bait and switch pricing.</p>
+    <p class="js-fade" style="--delay:0.1s">Tell us what you need and we will reply within 24 hours with next steps. No pressure, no bait and switch pricing.</p>
     <div class="btn-row js-fade" style="--delay:0.2s">
         <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>?service=website" class="btn btn--primary">Get a Quote</a>
-        <a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="btn btn--ghost">See my work</a>
+        <a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="btn btn--ghost">See our work</a>
     </div>
 </section>
 

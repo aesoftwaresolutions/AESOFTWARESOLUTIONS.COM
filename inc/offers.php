@@ -21,7 +21,7 @@ function aesoftwares_offers() {
 				'name'    => 'Presence check',
 				'price'   => 'Free',
 				'cadence' => '15 minute call',
-				'pitch'   => 'I look at what a customer sees when they search for you and tell you the three things to fix first.',
+				'pitch'   => 'We look at what a customer sees when they search for you and tell you the three things to fix first.',
 				'points'  => [ 'Google, Maps and website reviewed live', 'No obligation, no sales script' ],
 				'cta'     => [ 'Run the check', home_url( '/online-presence/#presence-check' ) ],
 			],
@@ -37,7 +37,7 @@ function aesoftwares_offers() {
 					'Every way a customer can reach you, mapped',
 					'Which ones go unanswered after hours',
 					'What it is costing you, in your own numbers',
-					'Written report with what I found',
+					'Written report with what we found',
 					'Full $250 credited if you go ahead',
 					'Add on: AI Tools Assessment, $999 one time, offered only with the Missed-Lead Audit',
 				],
@@ -122,7 +122,7 @@ function aesoftwares_offers() {
 				'price'   => '$199',
 				'amount'  => 199,
 				'cadence' => 'per month · cancel anytime',
-				'pitch'   => 'I keep your Google Business Profile active and accurate, every month.',
+				'pitch'   => 'We keep your Google Business Profile active and accurate, every month.',
 				'points'  => [
 					'Weekly Google Business Profile posts',
 					'A drafted reply to every new review',
@@ -228,7 +228,7 @@ function aesoftwares_offers() {
 				'price'   => '$1,990',
 				'amount'  => 1990,
 				'cadence' => 'per year',
-				'pitch'   => 'Prefer to pay once for the year instead of monthly? Ask me which plan it applies to.',
+				'pitch'   => 'Prefer to pay once for the year instead of monthly? Ask us which plan it applies to.',
 				'points'  => [],
 				'cta'     => [ 'Ask about annual prepay', $contact ],
 			],
@@ -247,7 +247,7 @@ function aesoftwares_offers() {
 		],
 
 		// Promises
-		'guarantee' => 'If Always-On Front Desk does not capture at least one qualifying lead within 60 days of go live, I refund your first two monthly payments. Conditions apply.',
+		'guarantee' => 'If Always-On Front Desk does not capture at least one qualifying lead within 60 days of go live, we refund your first two monthly payments. Conditions apply.',
 		'terms'     => 'Website builds: 50% to start, 50% at launch. Monthly plans are billed at signup and are month to month. You own your website, domain and data.',
 	];
 }

@@ -3,8 +3,8 @@
 <!-- HERO -->
 <div class="page-hero software-page-hero">
     <div class="page-hero__eyebrow">Paid Software</div>
-    <h1 class="page-hero__headline">Tools I built<br>for businesses that<br><em>think operationally.</em></h1>
-    <p class="page-hero__subtitle" data-reveal-text>Software products I built from the same operational thinking I use with clients, made into self serve tools.</p>
+    <h1 class="page-hero__headline">Tools we built<br>for businesses that<br><em>think operationally.</em></h1>
+    <p class="page-hero__subtitle" data-reveal-text>Software products we built from the same operational thinking we use with clients, made into self serve tools.</p>
 </div>
 
 <!-- PRODUCT 01: aeCRM -->
@@ -235,7 +235,7 @@
     <div class="software-cta__inner js-fade" style="--delay:0s">
         <span class="software-cta__eyebrow">Need something different?</span>
         <h2 class="software-cta__title">Custom builds<br>on the same foundation.</h2>
-        <p class="software-cta__sub">If you have a recurring operational problem worth turning into a tool, tell me about it and I will tell you if I can build it.</p>
+        <p class="software-cta__sub">If you have a recurring operational problem worth turning into a tool, tell us about it and we will tell you if we can build it.</p>
         <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn--primary">Start a conversation &rarr;</a>
     </div>
 </section>
