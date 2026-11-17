@@ -3,7 +3,7 @@
 <div class="page-hero rewriter-hero">
 	<div class="page-hero__eyebrow">Free Tool</div>
 	<h1 class="page-hero__headline">AI Content<br><em>Rewriter</em></h1>
-	<p class="page-hero__subtitle">Paste any text and get a rewritten version that reads naturally — built to pass AI detection tools like CopyLeaks.</p>
+	<p class="page-hero__subtitle">Paste any text and get a rewritten version that reads more naturally. Pick a mode, then edit the result to make it yours.</p>
 </div>
 
 <section class="rewriter-section">
@@ -28,7 +28,7 @@
 				<textarea
 					id="rewriter-input"
 					class="rewriter-textarea"
-					placeholder="Paste your AI-generated or existing text here…"
+					placeholder="Paste your text here, or use Try an example."
 					rows="14"
 					spellcheck="false"
 				></textarea>
@@ -68,7 +68,7 @@
 			<div class="rewriter-score-panel__header">
 				<div class="rewriter-score-panel__overall">
 					<span class="rewriter-score-panel__label">Human Score</span>
-					<span id="rewriter-score-value" class="rewriter-score-panel__value">—</span>
+					<span id="rewriter-score-value" class="rewriter-score-panel__value">0</span>
 					<span class="rewriter-score-panel__max">/100</span>
 				</div>
 				<span id="rewriter-score-verdict" class="rewriter-score-panel__verdict"></span>
@@ -83,22 +83,22 @@
 <section class="rewriter-how">
 	<div class="rewriter-how__inner">
 		<span class="section-eyebrow">How it works</span>
-		<h2 class="section-title">Built to sound human.</h2>
+		<h2 class="section-title">Clearer, more natural writing.</h2>
 		<div class="rewriter-how__grid">
 			<div class="rewriter-how__card">
 				<div class="rewriter-how__num">01</div>
 				<h3 class="rewriter-how__title">Natural phrasing</h3>
-				<p class="rewriter-how__desc">Contractions, hedging language, and varied vocabulary replace the overly polished patterns AI detectors flag.</p>
+				<p class="rewriter-how__desc">Contractions, hedging language, and varied vocabulary replace overly polished phrasing.</p>
 			</div>
 			<div class="rewriter-how__card">
 				<div class="rewriter-how__num">02</div>
 				<h3 class="rewriter-how__title">Sentence variation</h3>
-				<p class="rewriter-how__desc">Short punchy sentences mixed with longer flowing ones break the uniform rhythm that gives AI writing away.</p>
+				<p class="rewriter-how__desc">Short sentences mixed with longer ones break up a uniform rhythm.</p>
 			</div>
 			<div class="rewriter-how__card">
 				<div class="rewriter-how__num">03</div>
-				<h3 class="rewriter-how__title">Passes detection</h3>
-				<p class="rewriter-how__desc">Engineered specifically to clear tools like CopyLeaks, GPTZero, and Originality.ai while keeping your original meaning intact.</p>
+				<h3 class="rewriter-how__title">Optional score check</h3>
+				<p class="rewriter-how__desc">Run the optional score check to see how human the rewrite reads. It is an estimate from an AI model, not a result from any outside detector, and not a guarantee.</p>
 			</div>
 		</div>
 	</div>

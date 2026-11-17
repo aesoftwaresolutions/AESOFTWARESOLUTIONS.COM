@@ -124,6 +124,7 @@ $ae_timelines = [
             var statusEl = document.getElementById('contact-form-status');
             var submitBtn = document.getElementById('contact-submit');
             var idleLabel = submitBtn.textContent;
+            var busy = false; // double submit guard: true from the first valid click until the request ends
 
             function clearErrors() {
                 form.querySelectorAll('[data-invalid]').forEach(function (el) { el.removeAttribute('data-invalid'); });
@@ -147,6 +148,7 @@ $ae_timelines = [
 
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
+                if (busy) return;
                 if (document.getElementById('contact-hp').value) return; // bot
                 clearErrors();
 
@@ -169,7 +171,9 @@ $ae_timelines = [
                             ' | Budget: ' + budget +
                             ' | Timeline: ' + timeline +
                             '\n\n' + message;
+                busy = true;
                 submitBtn.disabled = true;
+                submitBtn.setAttribute('aria-busy', 'true');
                 submitBtn.textContent = 'Sending';
 
                 fetch('https://admin.aesoftwaresolutions.com/api/business/webhook/inbound-lead', {
@@ -188,15 +192,19 @@ $ae_timelines = [
                     box.innerHTML = '<div class="contact-done" role="status"><h2 class="contact-done__title">Message sent.</h2><p>I read every message myself. You will hear from me within 24 hours.</p></div>';
                     box.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }).catch(function () {
-                    // Endpoint unreachable: fall back to a pre-filled email
+                    // The post failed: say so plainly, keep what they typed, let them retry or email me.
+                    busy = false;
+                    submitBtn.disabled = false;
+                    submitBtn.removeAttribute('aria-busy');
+                    submitBtn.textContent = idleLabel;
                     statusEl.hidden = false;
                     statusEl.setAttribute('data-state', 'error');
-                    statusEl.textContent = 'Direct send failed. Opening your email app instead.';
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = idleLabel;
-                    var body = encodeURIComponent(notes + '\n\n' + name + ', ' + email);
-                    window.location.href = 'mailto:anthony@aesoftwaresolutions.com?subject=' +
-                        encodeURIComponent('Project inquiry from ' + (name || 'website')) + '&body=' + body;
+                    statusEl.textContent = 'Your message did not go through. Check your connection and try again, or email me at ';
+                    var mail = document.createElement('a');
+                    mail.href = 'mailto:anthony@aesoftwaresolutions.com';
+                    mail.textContent = 'anthony@aesoftwaresolutions.com';
+                    statusEl.appendChild(mail);
+                    statusEl.appendChild(document.createTextNode('.'));
                 });
             });
         })();
@@ -215,7 +223,7 @@ $ae_timelines = [
             <ol class="contact-sidebar__next">
                 <li>I read your message myself.</li>
                 <li>I reply within 24 hours.</li>
-                <li>We set up a free 30 minute discovery call.</li>
+                <li>You and I set up a free 30 minute discovery call.</li>
             </ol>
         </div>
 

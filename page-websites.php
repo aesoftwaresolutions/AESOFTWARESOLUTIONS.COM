@@ -1,13 +1,13 @@
 <?php
 /**
  * Template Name: Website Creation
- * Website design & build service — portfolio to full CRM platforms, $1,500–$13,000.
+ * Website design and build service, from a simple site to a custom platform.
  *
  * @package AE_Softwares
  */
 add_action( 'wp_head', function () { ?>
 <style>
-/* ── Website Creation page ────────────────────────────────────────────────── */
+/* Website Creation page */
 
 /* HERO */
 .web-hero { text-align: center; }
@@ -27,7 +27,7 @@ add_action( 'wp_head', function () { ?>
 }
 .web-scroll-section__header .eyebrow {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -151,7 +151,7 @@ add_action( 'wp_head', function () { ?>
 }
 .web-tiers-section__header .eyebrow {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -310,7 +310,7 @@ add_action( 'wp_head', function () { ?>
 }
 .web-process-header { margin-bottom: 3.5rem; }
 .web-process-header .eyebrow {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -359,7 +359,7 @@ add_action( 'wp_head', function () { ?>
 }
 .web-why-header { margin-bottom: 3rem; }
 .web-why-header .eyebrow {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -462,14 +462,15 @@ get_header(); ?>
 <div class="page-hero web-hero">
     <div class="page-hero__eyebrow">Website design</div>
     <h1 class="page-hero__headline">A website that<br><em>works harder</em><br>than a business card.</h1>
-    <p class="page-hero__subtitle" data-reveal-text>Every site we build has one job: convert a visitor into a lead, a client, or a customer. Portfolio to full CRM platform — three tiers, one team.</p>
+    <p class="page-hero__subtitle" data-reveal-text>Every site I build has one job: turn a visitor into a lead, a client, or a customer. From a simple site to a custom platform, three tiers, one person.</p>
 </div>
 
 <!-- TEMPLATE SCROLL -->
 <section class="web-scroll-section">
     <div class="web-scroll-section__header js-fade">
         <span class="eyebrow">Example templates</span>
-        <h2>Sites we've designed<br>for your industry</h2>
+        <h2>Example designs<br>for your industry</h2>
+        <p>These are example templates I made to show what a site for your industry can look like. They are not client sites.</p>
     </div>
     <div class="web-scroll-track-wrap">
         <div class="web-scroll-track">
@@ -483,7 +484,7 @@ get_header(); ?>
                 <img class="web-scroll-card__preview" src="<?php echo get_template_directory_uri(); ?>/assets/img/template-previews/real-estate-agent.jpg" alt="Real Estate Agent website template" loading="lazy">
                 <div class="web-scroll-card__label">
                     <span class="web-scroll-card__label-name">Real Estate Agent</span>
-                    <span class="web-scroll-card__label-type">Lead Funnel</span>
+                    <span class="web-scroll-card__label-type">Example: Lead Funnel</span>
                 </div>
             </div>
             <div class="web-scroll-card">
@@ -496,7 +497,7 @@ get_header(); ?>
                 <img class="web-scroll-card__preview" src="<?php echo get_template_directory_uri(); ?>/assets/img/template-previews/home-services.jpg" alt="Home Services website template" loading="lazy">
                 <div class="web-scroll-card__label">
                     <span class="web-scroll-card__label-name">Home Services</span>
-                    <span class="web-scroll-card__label-type">Lead Funnel</span>
+                    <span class="web-scroll-card__label-type">Example: Lead Funnel</span>
                 </div>
             </div>
             <div class="web-scroll-card">
@@ -509,7 +510,7 @@ get_header(); ?>
                 <img class="web-scroll-card__preview" src="<?php echo get_template_directory_uri(); ?>/assets/img/template-previews/mortgage-broker.jpg" alt="Mortgage Broker website template" loading="lazy">
                 <div class="web-scroll-card__label">
                     <span class="web-scroll-card__label-name">Mortgage Broker</span>
-                    <span class="web-scroll-card__label-type">Lead Funnel</span>
+                    <span class="web-scroll-card__label-type">Example: Lead Funnel</span>
                 </div>
             </div>
             <div class="web-scroll-card">
@@ -522,7 +523,7 @@ get_header(); ?>
                 <img class="web-scroll-card__preview" src="<?php echo get_template_directory_uri(); ?>/assets/img/template-previews/law-firm.jpg" alt="Law Firm website template" loading="lazy">
                 <div class="web-scroll-card__label">
                     <span class="web-scroll-card__label-name">Law Firm</span>
-                    <span class="web-scroll-card__label-type">Intake Funnel</span>
+                    <span class="web-scroll-card__label-type">Example: Intake Funnel</span>
                 </div>
             </div>
             <div class="web-scroll-card">
@@ -535,7 +536,7 @@ get_header(); ?>
                 <img class="web-scroll-card__preview" src="<?php echo get_template_directory_uri(); ?>/assets/img/template-previews/dental-practice.jpg" alt="Dental Practice website template" loading="lazy">
                 <div class="web-scroll-card__label">
                     <span class="web-scroll-card__label-name">Dental Practice</span>
-                    <span class="web-scroll-card__label-type">Lead Funnel</span>
+                    <span class="web-scroll-card__label-type">Example: Lead Funnel</span>
                 </div>
             </div>
             <div class="web-scroll-card">
@@ -548,7 +549,7 @@ get_header(); ?>
                 <img class="web-scroll-card__preview" src="<?php echo get_template_directory_uri(); ?>/assets/img/template-previews/restaurant.jpg" alt="Restaurant website template" loading="lazy">
                 <div class="web-scroll-card__label">
                     <span class="web-scroll-card__label-name">Restaurant</span>
-                    <span class="web-scroll-card__label-type">Reservation Funnel</span>
+                    <span class="web-scroll-card__label-type">Example: Reservation Funnel</span>
                 </div>
             </div>
 
@@ -564,7 +565,7 @@ get_header(); ?>
                 <img class="web-scroll-card__preview" src="<?php echo get_template_directory_uri(); ?>/assets/img/template-previews/real-estate-agent.jpg" alt="Real Estate Agent website template" loading="lazy">
                 <div class="web-scroll-card__label">
                     <span class="web-scroll-card__label-name">Real Estate Agent</span>
-                    <span class="web-scroll-card__label-type">Lead Funnel</span>
+                    <span class="web-scroll-card__label-type">Example: Lead Funnel</span>
                 </div>
             </div>
             <div class="web-scroll-card">
@@ -577,7 +578,7 @@ get_header(); ?>
                 <img class="web-scroll-card__preview" src="<?php echo get_template_directory_uri(); ?>/assets/img/template-previews/home-services.jpg" alt="Home Services website template" loading="lazy">
                 <div class="web-scroll-card__label">
                     <span class="web-scroll-card__label-name">Home Services</span>
-                    <span class="web-scroll-card__label-type">Lead Funnel</span>
+                    <span class="web-scroll-card__label-type">Example: Lead Funnel</span>
                 </div>
             </div>
             <div class="web-scroll-card">
@@ -590,7 +591,7 @@ get_header(); ?>
                 <img class="web-scroll-card__preview" src="<?php echo get_template_directory_uri(); ?>/assets/img/template-previews/mortgage-broker.jpg" alt="Mortgage Broker website template" loading="lazy">
                 <div class="web-scroll-card__label">
                     <span class="web-scroll-card__label-name">Mortgage Broker</span>
-                    <span class="web-scroll-card__label-type">Lead Funnel</span>
+                    <span class="web-scroll-card__label-type">Example: Lead Funnel</span>
                 </div>
             </div>
             <div class="web-scroll-card">
@@ -603,7 +604,7 @@ get_header(); ?>
                 <img class="web-scroll-card__preview" src="<?php echo get_template_directory_uri(); ?>/assets/img/template-previews/law-firm.jpg" alt="Law Firm website template" loading="lazy">
                 <div class="web-scroll-card__label">
                     <span class="web-scroll-card__label-name">Law Firm</span>
-                    <span class="web-scroll-card__label-type">Intake Funnel</span>
+                    <span class="web-scroll-card__label-type">Example: Intake Funnel</span>
                 </div>
             </div>
             <div class="web-scroll-card">
@@ -616,7 +617,7 @@ get_header(); ?>
                 <img class="web-scroll-card__preview" src="<?php echo get_template_directory_uri(); ?>/assets/img/template-previews/dental-practice.jpg" alt="Dental Practice website template" loading="lazy">
                 <div class="web-scroll-card__label">
                     <span class="web-scroll-card__label-name">Dental Practice</span>
-                    <span class="web-scroll-card__label-type">Lead Funnel</span>
+                    <span class="web-scroll-card__label-type">Example: Lead Funnel</span>
                 </div>
             </div>
             <div class="web-scroll-card">
@@ -629,7 +630,7 @@ get_header(); ?>
                 <img class="web-scroll-card__preview" src="<?php echo get_template_directory_uri(); ?>/assets/img/template-previews/restaurant.jpg" alt="Restaurant website template" loading="lazy">
                 <div class="web-scroll-card__label">
                     <span class="web-scroll-card__label-name">Restaurant</span>
-                    <span class="web-scroll-card__label-type">Reservation Funnel</span>
+                    <span class="web-scroll-card__label-type">Example: Reservation Funnel</span>
                 </div>
             </div>
 
@@ -642,7 +643,7 @@ get_header(); ?>
     <div class="web-tiers-section__header js-fade">
         <span class="eyebrow">Choose your tier</span>
         <h2>Built for where<br>your business is now</h2>
-        <p>We match the build to your actual needs — no bloated platforms, no templates you can't edit. Every project is designed, built, and handed off with full ownership to you.</p>
+        <p>I match the build to what you actually need. No bloated platforms, no templates you can't edit. Every project is designed, built, and handed off with full ownership to you.</p>
     </div>
 
     <div class="web-tier-grid">
@@ -651,23 +652,21 @@ get_header(); ?>
         <div class="web-tier js-fade" style="--delay:0s">
             <div class="web-tier__num">Tier 01</div>
             <h2 class="web-tier__name">Starter Site</h2>
-            <p class="web-tier__tagline">Your professional home on the internet — built to impress, fast to load, and easy to update.</p>
+            <p class="web-tier__tagline">Your professional home on the internet. Built to look good, fast to load, and easy to update.</p>
             <div class="web-tier__includes-label">What's included</div>
             <ul class="web-tier__list">
-                <li>5–8 page custom-designed site</li>
-                <li>Mobile-responsive on all devices</li>
+                <li>5 to 8 page custom designed site</li>
+                <li>Mobile friendly on all devices</li>
                 <li>Contact form with email delivery</li>
                 <li>Google Business Profile set up &amp; verified</li>
                 <li>Google Analytics setup</li>
-                <li>Basic SEO — titles, meta, sitemap</li>
+                <li>Basic SEO: titles, meta, sitemap</li>
                 <li>Portfolio or services showcase</li>
                 <li>Social profile links</li>
-                <li>30 days post-launch support</li>
             </ul>
-            <div class="web-tier__timeline">Delivered in 5–10 business days</div>
             <div class="web-tier__price">
                 <span class="web-tier__price-from">from</span>
-                <span class="web-tier__price-num">$1,500</span>
+                <span class="web-tier__price-num">$495</span>
             </div>
             <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>?service=website-presence" class="btn btn--ghost web-tier__cta">Get a Quote</a>
         </div>
@@ -677,19 +676,17 @@ get_header(); ?>
             <span class="web-tier__badge">Recommended</span>
             <div class="web-tier__num">Tier 02</div>
             <h2 class="web-tier__name">Lead Funnel Site</h2>
-            <p class="web-tier__tagline">A conversion-engineered site that captures, qualifies, and routes leads automatically — so you wake up to booked appointments.</p>
+            <p class="web-tier__tagline">A site built to capture leads, qualify them, and send them to you automatically.</p>
             <div class="web-tier__includes-label">Everything in Tier 01, plus</div>
             <ul class="web-tier__list">
-                <li>Conversion-focused copywriting</li>
+                <li>Copywriting focused on calls and bookings</li>
                 <li>Lead capture forms with CRM routing</li>
-                <li>Automated email/SMS follow-up sequence</li>
+                <li>Automated email and text follow up</li>
                 <li>Appointment booking integration</li>
                 <li>Chat widget or AI intake flow</li>
                 <li>Heatmap &amp; session recording setup</li>
-                <li>A/B-ready landing page structure</li>
-                <li>60 days post-launch support</li>
+                <li>Landing page structure ready for testing</li>
             </ul>
-            <div class="web-tier__timeline">Delivered in 10–18 business days</div>
             <div class="web-tier__price">
                 <span class="web-tier__price-from">from</span>
                 <span class="web-tier__price-num">$4,500</span>
@@ -705,12 +702,12 @@ get_header(); ?>
             <div class="web-tier__includes-label">Everything in Tier 02, plus</div>
             <ul class="web-tier__list">
                 <li>Connects to your existing job or booking software</li>
-                <li>Client-facing portal or intake system</li>
+                <li>Client facing portal or intake system</li>
                 <li>Workflow automation between your tools</li>
                 <li>Payment or invoice integration</li>
-                <li>Role-based access for your team</li>
+                <li>Role based access for your team</li>
                 <li>Custom reporting dashboard</li>
-                <li>90 days post-launch support + training</li>
+                <li>Support and training agreed in the scope</li>
             </ul>
             <div class="web-tier__timeline">Timeline set during scoping</div>
             <div class="web-tier__price">
@@ -721,7 +718,7 @@ get_header(); ?>
         </div>
 
     </div>
-    <p class="web-tiers-note js-fade">Keep it working after launch with <a href="<?php echo esc_url( home_url( '/pricing/#online-presence' ) ); ?>">Online Presence Management</a> &mdash; Google profile, reviews and listings looked after for $49/month. New business? The <a href="<?php echo esc_url( home_url( '/pricing/#launch' ) ); ?>">Launch Package</a> bundles a Starter Site, Google profile setup and three months of care for $595.</p>
+    <p class="web-tiers-note js-fade">Keep it working after launch with <a href="<?php echo esc_url( home_url( '/pricing/#online-presence' ) ); ?>">Online Presence Management</a>: Google profile, reviews and listings looked after for $199 a month. New business? The <a href="<?php echo esc_url( home_url( '/pricing/#launch' ) ); ?>">Launch Package</a> bundles a Starter Site, Google profile setup and three months of care for $595.</p>
 </section>
 
 <!-- PROCESS -->
@@ -730,28 +727,28 @@ get_header(); ?>
         <div class="web-process-header js-fade">
             <span class="eyebrow">How it works</span>
             <h2>From brief to live<br>in a straight line.</h2>
-            <p>No bloated discovery phases or endless revision loops. We move fast, communicate clearly, and ship sites that are ready to work on day one.</p>
+            <p>No bloated discovery phases or endless revision loops. I move fast, communicate clearly, and ship sites that are ready to work on day one.</p>
         </div>
         <div class="web-process-steps">
             <div class="web-process-step js-fade" style="--delay:0s">
-                <div class="web-process-step__num">01 — Discovery</div>
+                <div class="web-process-step__num">01 Discovery</div>
                 <h3 class="web-process-step__title">One focused call</h3>
-                <p class="web-process-step__desc">We learn your business, your customers, and your goal for the site. You answer questions; we take notes. No homework required.</p>
+                <p class="web-process-step__desc">I learn your business, your customers, and your goal for the site. You answer questions and I take notes. No homework required.</p>
             </div>
             <div class="web-process-step js-fade" style="--delay:0.1s">
-                <div class="web-process-step__num">02 — Design</div>
-                <h3 class="web-process-step__title">High-fidelity mockup first</h3>
+                <div class="web-process-step__num">02 Design</div>
+                <h3 class="web-process-step__title">High fidelity mockup first</h3>
                 <p class="web-process-step__desc">You see the full design before a single line of code is written. One round of revisions included. Approval locks the build.</p>
             </div>
             <div class="web-process-step js-fade" style="--delay:0.2s">
-                <div class="web-process-step__num">03 — Build</div>
-                <h3 class="web-process-step__title">Fast, clean, production-ready</h3>
-                <p class="web-process-step__desc">We build to your timeline. You see a live staging link before handoff. Nothing ships that hasn't been tested on mobile and desktop.</p>
+                <div class="web-process-step__num">03 Build</div>
+                <h3 class="web-process-step__title">Fast, clean, ready to launch</h3>
+                <p class="web-process-step__desc">I build to the timeline we agree on. You see a live staging link before handoff. Nothing ships that hasn't been tested on mobile and desktop.</p>
             </div>
             <div class="web-process-step js-fade" style="--delay:0.3s">
-                <div class="web-process-step__num">04 — Launch</div>
+                <div class="web-process-step__num">04 Launch</div>
                 <h3 class="web-process-step__title">Full handoff, full ownership</h3>
-                <p class="web-process-step__desc">We deploy, configure DNS, connect your analytics, and walk you through the site. You own everything — code, domain, credentials.</p>
+                <p class="web-process-step__desc">I deploy, configure DNS, connect your analytics, and walk you through the site. You own everything: code, domain, credentials.</p>
             </div>
         </div>
     </div>
@@ -761,36 +758,36 @@ get_header(); ?>
 <section class="web-why-section">
     <div class="web-why-header js-fade">
         <span class="eyebrow">Why AE</span>
-        <h2>We build sites like<br>operators, not designers.</h2>
+        <h2>I build sites like<br>an operator, not a designer.</h2>
     </div>
     <div class="web-why-grid">
         <div class="web-why-card js-fade" style="--delay:0s">
-            <div class="web-why-card__icon">⚡</div>
-            <h3>Conversion-first architecture</h3>
-            <p>Every layout decision, headline, and call-to-action is informed by what gets visitors to take the next step — not what looks good in a portfolio screenshot.</p>
+            <div class="web-why-card__icon" aria-hidden="true">⚡</div>
+            <h3>Built around the next step</h3>
+            <p>Every layout decision, headline, and call to action is informed by what gets visitors to take the next step, not what looks good in a portfolio screenshot.</p>
         </div>
         <div class="web-why-card js-fade" style="--delay:0.1s">
-            <div class="web-why-card__icon">🔗</div>
+            <div class="web-why-card__icon" aria-hidden="true">🔗</div>
             <h3>Built to integrate</h3>
-            <p>We wire your site into your actual workflow — CRM, calendar, email, payment processor. Not a disconnected brochure that creates more manual work.</p>
+            <p>I wire your site into your actual workflow: CRM, calendar, email, payment processor. Not a disconnected brochure that creates more manual work.</p>
         </div>
         <div class="web-why-card js-fade" style="--delay:0.2s">
-            <div class="web-why-card__icon">🤖</div>
+            <div class="web-why-card__icon" aria-hidden="true">🤖</div>
             <h3>AI where it makes sense</h3>
-            <p>We add AI intake, follow-up sequences, and chat agents where they save you real time — not as a buzzword feature that complicates the UX.</p>
+            <p>I add AI intake, follow up sequences, and chat agents where they save you real time, not as a buzzword feature that complicates the experience.</p>
         </div>
         <div class="web-why-card js-fade" style="--delay:0.3s">
-            <div class="web-why-card__icon">🏠</div>
+            <div class="web-why-card__icon" aria-hidden="true">🏠</div>
             <h3>You own it completely</h3>
-            <p>No proprietary builders that lock you in. You get the code, the hosting setup, and the credentials. If you ever want to move, you can — no ransom.</p>
+            <p>No proprietary builders that lock you in. You get the code, the hosting setup, and the credentials. If you ever want to move, you can.</p>
         </div>
         <div class="web-why-card js-fade" style="--delay:0.4s">
-            <div class="web-why-card__icon">📊</div>
-            <h3>Measurable from day one</h3>
-            <p>Analytics, lead tracking, and conversion events are configured at launch — not an afterthought. You'll know exactly what's working within the first 30 days.</p>
+            <div class="web-why-card__icon" aria-hidden="true">📊</div>
+            <h3>Measurable from the start</h3>
+            <p>Analytics, lead tracking, and conversion events are configured at launch, not as an afterthought, so you can see what is working.</p>
         </div>
         <div class="web-why-card js-fade" style="--delay:0.5s">
-            <div class="web-why-card__icon">🛡</div>
+            <div class="web-why-card__icon" aria-hidden="true">🛡</div>
             <h3>One team, start to finish</h3>
             <p>You work with one person who understands your business, not a rotating cast of designers, developers, and project managers who've never met each other.</p>
         </div>
@@ -800,7 +797,7 @@ get_header(); ?>
 <!-- INDUSTRIES -->
 <section class="web-industries-strip">
     <div class="web-industries-strip-inner">
-        <h2 class="js-fade">Industries we've built for</h2>
+        <h2 class="js-fade">Industries these example designs cover</h2>
         <div class="web-industries-grid">
             <div class="web-industry-chip js-fade" style="--delay:0s">
                 <strong>Real Estate Agents</strong>
@@ -812,7 +809,7 @@ get_header(); ?>
             </div>
             <div class="web-industry-chip js-fade" style="--delay:0.1s">
                 <strong>Mortgage Brokers</strong>
-                Rate tools, application intake, compliance-ready copy
+                Rate tools, application intake, plain copy
             </div>
             <div class="web-industry-chip js-fade" style="--delay:0.15s">
                 <strong>Insurance Agents</strong>
@@ -824,7 +821,7 @@ get_header(); ?>
             </div>
             <div class="web-industry-chip js-fade" style="--delay:0.25s">
                 <strong>Healthcare &amp; Wellness</strong>
-                Provider bios, scheduling, HIPAA-aware forms
+                Provider bios, scheduling, intake forms
             </div>
             <div class="web-industry-chip js-fade" style="--delay:0.3s">
                 <strong>Consultants &amp; Coaches</strong>
@@ -840,11 +837,11 @@ get_header(); ?>
 
 <!-- CTA -->
 <section class="web-cta-strip">
-    <h2 class="js-fade">Ready to build something<br>that <em>actually converts</em>?</h2>
-    <p class="js-fade" style="--delay:0.1s">Tell us what you need and we'll put together a scope and quote within 24 hours. No pressure, no bait-and-switch pricing.</p>
+    <h2 class="js-fade">Ready for a site<br>that <em>brings in calls</em>?</h2>
+    <p class="js-fade" style="--delay:0.1s">Tell me what you need and I will reply within 24 hours with next steps. No pressure, no bait and switch pricing.</p>
     <div class="btn-row js-fade" style="--delay:0.2s">
         <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>?service=website" class="btn btn--primary">Get a Quote</a>
-        <a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="btn btn--ghost">See Our Work</a>
+        <a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="btn btn--ghost">See my work</a>
     </div>
 </section>
 

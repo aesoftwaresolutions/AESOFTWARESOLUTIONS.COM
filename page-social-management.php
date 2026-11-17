@@ -14,15 +14,15 @@ get_header();
 $ae_social_faq = [
 	[
 		'q' => 'Do I keep ownership of my accounts?',
-		'a' => 'Yes. Your accounts, followers, content and lists are yours. We work through access you grant, and we remove that access if you leave.',
+		'a' => 'Yes. Your accounts, followers, content and lists are yours. I work through access you grant, and I remove that access if you leave.',
 	],
 	[
 		'q' => 'Which platforms should I run?',
-		'a' => 'The ones your customers or audience actually use. Most clients run three to five. We recommend a set on the discovery call, and we drop anything that does not work.',
+		'a' => 'The ones your customers or audience actually use. Most clients run three to five. I recommend a set on the discovery call, and I drop anything that does not work.',
 	],
 	[
 		'q' => 'Who makes the videos?',
-		'a' => 'We write the scripts. You can film on your phone and we edit, or we render branded videos with captions and a voice you approve. One video is reshaped for every platform in your plan.',
+		'a' => 'I write the scripts. You can film on your phone and I edit, or I render branded videos with captions and a voice you approve. One video is reshaped for every platform in your plan.',
 	],
 	[
 		'q' => 'How much of my time does this take?',
@@ -34,7 +34,7 @@ $ae_social_faq = [
 	],
 	[
 		'q' => 'What happens if I cancel?',
-		'a' => 'After the minimum term, 30 days notice ends the plan. We hand over your files, calendars and templates, and we remove our access.',
+		'a' => 'After the minimum term, 30 days notice ends the plan. I hand over your files, calendars and templates, and I remove my access.',
 	],
 ];
 ?>
@@ -42,7 +42,7 @@ $ae_social_faq = [
 <section class="page-hero op-hero">
 	<p class="page-hero__eyebrow">Social media management</p>
 	<h1 class="page-hero__headline">Your social media, handled properly.</h1>
-	<p class="page-hero__subtitle">We plan, write, design, post and reply for businesses that want leads and creators who want to grow, with a monthly report that shows what it brought in.</p>
+	<p class="page-hero__subtitle">I plan, write, design, post and reply for businesses that want leads and creators who want to grow, with a monthly report that shows what it brought in.</p>
 	<div class="op-hero__actions" data-reveal>
 		<a class="v5-button" href="#plans">See the plans</a>
 		<a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Book a free discovery call</a>
@@ -53,15 +53,15 @@ $ae_social_faq = [
 <section class="op-steps ae-rule" aria-labelledby="sm-who-title">
 	<h2 class="v5-section-title" id="sm-who-title" data-split>Who it is for</h2>
 	<ol class="op-steps__list">
-		<li data-reveal><span class="v5-label">For businesses</span><h3>Owners who want leads, not likes</h3><p>You run a service business or a firm and you do not have time to post, reply and keep up. We run it for you and trace what comes in. You give about 30 minutes a month to approvals.</p></li>
-		<li data-reveal><span class="v5-label">For influencers and creators</span><h3>Creators who want consistency</h3><p>We keep you posting on a steady schedule, turn one video into posts for every platform where it fits, and build a profile that sponsors can take seriously.</p></li>
+		<li data-reveal><span class="v5-label">For businesses</span><h3>Owners who want leads, not likes</h3><p>You run a service business or a firm and you do not have time to post, reply and keep up. I run it for you and trace what comes in. You give about 30 minutes a month to approvals.</p></li>
+		<li data-reveal><span class="v5-label">For influencers and creators</span><h3>Creators who want consistency</h3><p>I keep you posting on a steady schedule, turn one video into posts for every platform where it fits, and build a profile that sponsors can take seriously.</p></li>
 	</ol>
 </section>
 
-<!-- What we do every month -->
+<!-- What I do every month -->
 <section class="v5-services" aria-labelledby="sm-included-title">
 	<header class="v5-section-head ae-rule">
-		<h2 class="v5-section-title" id="sm-included-title" data-split>What we do every month</h2>
+		<h2 class="v5-section-title" id="sm-included-title" data-split>What I do every month</h2>
 		<span class="v5-label" data-reveal>Included in management plans</span>
 	</header>
 	<ol class="v5-services__list">
@@ -78,7 +78,7 @@ $ae_social_faq = [
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">03</span>
 			<h3 class="v5-service__title">Short form video</h3>
-			<p class="v5-service__text">We write the scripts. You film and we edit, or we render branded video with captions. One video is reshaped for TikTok, Reels, Shorts and Threads.</p>
+			<p class="v5-service__text">I write the scripts. You film and I edit, or I render branded video with captions. One video is reshaped for TikTok, Reels, Shorts and Threads.</p>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">04</span>
@@ -105,11 +105,11 @@ $ae_social_faq = [
 
 <!-- Platforms -->
 <section class="op-related ae-rule" aria-labelledby="sm-platforms-title">
-	<p class="v5-label" data-reveal>Platforms we run</p>
+	<p class="v5-label" data-reveal>Platforms I run</p>
 	<h2 class="op-related__title" id="sm-platforms-title" data-split>Facebook, Instagram, TikTok, YouTube and more.</h2>
 	<p class="op-related__text" data-reveal>Facebook &middot; Instagram &middot; TikTok &middot; YouTube &middot; LinkedIn &middot; X &middot; Threads &middot; Bluesky &middot; Nextdoor &middot; Google Business Profile</p>
-	<p class="op-related__text" data-reveal>Facebook, Instagram, LinkedIn, Threads and Bluesky post automatically on a schedule. TikTok, X and YouTube are posted by hand for now. We will always tell you which is which.</p>
-	<p class="op-related__text" data-reveal>You own every account. We work through access you grant, and we remove our access if you leave.</p>
+	<p class="op-related__text" data-reveal>Facebook, Instagram, LinkedIn, Threads and Bluesky post automatically on a schedule. TikTok, X and YouTube are posted by hand for now. I will always tell you which is which.</p>
+	<p class="op-related__text" data-reveal>You own every account. I work through access you grant, and I remove my access if you leave.</p>
 </section>
 
 <!-- Plans for businesses -->
@@ -124,7 +124,8 @@ $ae_social_faq = [
 			<h3 class="v5-service__title">Social Front Desk</h3>
 			<div class="v5-service__text">
 				<p><strong>$199 a month plus a one time $75 setup.</strong> Posting handled for you with light planning. A good start if you only need to show up consistently.</p>
-				<p>First 3 clients: $149 a month for 3 months. Use code FOUNDING149 at checkout.</p>
+				<p>First 3 clients: $149 a month for 3 months, then $199 a month. Use code FOUNDING149 at checkout.</p>
+				<p>Want Google Business Profile management too? Total Presence is $229 a month and covers both. <a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Ask me about it</a>.</p>
 			</div>
 			<a class="v5-link v5-service__more" href="https://buy.stripe.com/7sYbJ1d2w2XcakXfFvabK0h">Start now</a>
 		</li>
@@ -194,7 +195,7 @@ $ae_social_faq = [
 	<p class="v5-label" data-reveal>Add ons</p>
 	<h2 class="op-related__title" id="sm-addons-title" data-split>Add what you need, when you need it.</h2>
 	<p class="op-related__text" data-reveal>Extra platform $99 a month each &middot; Extra email campaign $150 each &middot; Pack of 4 short videos $199 &middot; Long form YouTube video edit $150 each &middot; Content day planning session $250 &middot; Profile setup or cleanup $150 per platform.</p>
-	<p class="op-related__text" data-reveal>We do not manage paid advertising.</p>
+	<p class="op-related__text" data-reveal>I do not manage paid advertising.</p>
 </section>
 
 <!-- How it works -->
@@ -202,9 +203,9 @@ $ae_social_faq = [
 	<h2 class="v5-section-title" id="sm-steps-title" data-split>How it works</h2>
 	<ol class="op-steps__list">
 		<li data-reveal><span class="v5-label">01</span><h3>Discovery call</h3><p>A free 30 minute call about your goals, offers and platforms.</p></li>
-		<li data-reveal><span class="v5-label">02</span><h3>Setup</h3><p>Access granted by you, brand assets gathered, and a short voice interview so the content sounds like you. We create your Meta, Claude and Canva accounts in your business name and connect your socials.</p></li>
+		<li data-reveal><span class="v5-label">02</span><h3>Setup</h3><p>Access granted by you, brand assets gathered, and a short voice interview so the content sounds like you. I create your Meta, Claude and Canva accounts in your business name and connect your socials.</p></li>
 		<li data-reveal><span class="v5-label">03</span><h3>Calendar approval</h3><p>You approve the next month&rsquo;s calendar within 3 business days. Nothing unapproved goes out.</p></li>
-		<li data-reveal><span class="v5-label">04</span><h3>Run and report</h3><p>We post, reply and handle the community, then report results every month.</p></li>
+		<li data-reveal><span class="v5-label">04</span><h3>Run and report</h3><p>I post, reply and handle the community, then report results every month.</p></li>
 	</ol>
 </section>
 
@@ -212,7 +213,7 @@ $ae_social_faq = [
 <section class="op-related ae-rule" aria-labelledby="sm-terms-title">
 	<p class="v5-label" data-reveal>Terms</p>
 	<h2 class="op-related__title" id="sm-terms-title" data-split>Terms in plain English</h2>
-	<p class="op-related__text" data-reveal>Management plans run a 3 month minimum, then month to month with 30 days notice to cancel. You own your accounts, content and lists. We never buy followers or engagement, and we never promise follower counts or sales. Paid ad spend and email platform fees are yours.</p>
+	<p class="op-related__text" data-reveal>Management plans run a 3 month minimum, then month to month with 30 days notice to cancel. You own your accounts, content and lists. I never buy followers or engagement, and I never promise follower counts or sales. Paid ad spend and email platform fees are yours.</p>
 </section>
 
 <!-- FAQ -->

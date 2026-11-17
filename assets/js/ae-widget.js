@@ -530,7 +530,7 @@
         return 'You can reach Anthony directly at anthony@aesoftwaresolutions.com. He replies personally within 24 hours. The Contact page on this site works too.';
       }
       if (has('price', 'pricing', 'cost', 'how much', 'charge', 'fee', 'expensive', 'cheap')) {
-        return 'Here is the short version. Websites start at $495. Online Presence Management is $49 a month. Front Desk is $99 a month, and Always On Front Desk is $250 a month. A Missed Lead Audit is a one time $250. Social plans start at $199 a month. The best first step is a free discovery call, where Anthony confirms exact pricing for your situation.';
+        return 'Here is the short version. Websites start at $495. Online Presence Management is $199 a month. Front Desk is $99 a month, and Always On Front Desk is $250 a month. A Missed Lead Audit is a one time $250. Social plans start at $199 a month. The best first step is a free discovery call, where Anthony confirms exact pricing for your situation.';
       }
       if (has('front desk', 'missed call', 'miss calls', 'missing calls', 'answering', 'receptionist', 'voicemail', 'after hours', 'answer the phone', 'answer my phone')) {
         return 'That is exactly what Front Desk is for. When you cannot get to the phone, your leads still get answered and followed up, for $99 a month. Always On Front Desk at $250 a month covers you around the clock. The Missed Lead Audit at $250 shows you first how many calls you are losing today.';
@@ -542,7 +542,7 @@
         return 'We run social pages end to end: content, posting, and replies. Social Front Desk is $199 a month, and full Social Management is $799 a month. Anthony can walk you through which one fits on a free discovery call.';
       }
       if (has('google', 'reviews', 'presence', 'listing', 'found online', 'search results', 'seo')) {
-        return 'Online Presence Management is $49 a month. We keep your Google Business Profile, listings, and reviews in shape so customers find you first. A good first look is the free assessment on this site.';
+        return 'Online Presence Management is $199 a month. We keep your Google Business Profile, listings, and reviews in shape so customers find you first. A good first look is the free assessment on this site.';
       }
       if (has('audit', 'assessment', 'evaluate')) {
         return 'Two good starting points. The free Operational Assessment maps where your business is losing time and leads. The Missed Lead Audit, at $250, digs into your missed calls specifically. Either way you keep the findings, whether you hire us or not.';

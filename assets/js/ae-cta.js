@@ -11,10 +11,10 @@
   var tpl = document.createElement('template');
   tpl.innerHTML = '' +
     '<style>' +
-    ':host{display:block;--ink:#121212;--paper:#FFFFFF;--muted:#5E5E5A;--gold:#C9A96E;--rule:rgba(18,18,18,.12);--ease:cubic-bezier(.18,.66,.18,1)}' +
+    ':host{display:block;--ink:#FFFFFF;--paper:#0B0B0D;--muted:rgba(255,255,255,.78);--gold:#C9A96E;--rule:rgba(255,255,255,.16);--ease:cubic-bezier(.18,.66,.18,1)}' +
     '.cta{box-sizing:border-box;max-width:1200px;margin:0 auto;padding:96px clamp(20px,4vw,40px);border-top:1px solid var(--rule);font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,sans-serif;color:var(--ink);opacity:0;transform:translateY(12px);transition:opacity .4s var(--ease),transform .4s var(--ease)}' +
     '.cta.in{opacity:1;transform:none}' +
-    '.label{font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 16px}' +
+    '.label{font-size:.875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 16px}' +
     'h2{font-size:clamp(2rem,4.6vw,3.5rem);font-weight:600;line-height:1.1;letter-spacing:-.025em;margin:0 0 32px;max-width:18ch}' +
     '.actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px}' +
     'a.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:6px;background:var(--ink) linear-gradient(var(--gold),var(--gold)) no-repeat 0 100%/0 2px;color:var(--paper);border:1px solid var(--ink);font-weight:600;font-size:.95rem;text-decoration:none;transition:background-size .25s var(--ease),transform .2s var(--ease)}' +
@@ -29,10 +29,10 @@
     '</style>' +
     '<section class="cta" aria-labelledby="cta-title">' +
     '  <p class="label">Next step</p>' +
-    '  <h2 id="cta-title">Tell us what slows you down. We&rsquo;ll map the fix.</h2>' +
+    '  <h2 id="cta-title">Tell me what slows you down. I&rsquo;ll map the fix.</h2>' +
     '  <div class="actions">' +
     '    <a class="btn" href="/contact/">Book a discovery call</a>' +
-    '    <span class="note">Free 30 minute discovery call &middot; reply within 24 hours</span>' +
+    '    <span class="note">Free 30 minute discovery call &middot; I reply within 24 hours</span>' +
     '  </div>' +
     '  <p class="mail">Or write to <a href="mailto:anthony@aesoftwaresolutions.com">anthony@aesoftwaresolutions.com</a></p>' +
     '</section>';

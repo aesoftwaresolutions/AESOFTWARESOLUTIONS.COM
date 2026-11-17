@@ -4,7 +4,7 @@
 /* Inject TTS-section styles before the closing </head> */
 add_action( 'wp_head', function () { ?>
 <style>
-/* ── TTS section ──────────────────────────────────────────────────── */
+/* TTS section */
 .transcriber-section--tts { padding-top: 0; }
 .transcriber-output__placeholder { color: var(--text-muted); font-style: italic; }
 .transcriber-file-name { color: var(--accent); }
@@ -82,7 +82,7 @@ get_header(); ?>
 <div class="page-hero transcriber-hero">
 	<div class="page-hero__eyebrow"><a href="<?php echo esc_url( home_url( '/free-tools/' ) ); ?>" class="hero-back-link">&larr; Free Tools</a></div>
 	<h1 class="page-hero__headline">AI Audio<br><em>Transcriber</em></h1>
-	<p class="page-hero__subtitle">Transcribe audio to text or convert text to speech &mdash; both powered by AI running on-site, nothing sent to third parties.</p>
+	<p class="page-hero__subtitle">Transcribe audio to text, or turn text into speech. Please do not use confidential recordings or text.</p>
 </div>
 
 <section class="transcriber-section">
@@ -108,8 +108,8 @@ get_header(); ?>
 				<div class="transcriber-upload-area">
 					<label for="transcriber-file-input" class="transcriber-upload-label">
 						<span class="transcriber-upload-label__icon">&uarr;</span>
-						<span class="transcriber-upload-label__text">Upload audio / video file</span>
-						<span class="transcriber-upload-label__hint">MP3, M4A, WAV, WebM, MP4 &mdash; max 25 MB</span>
+						<span class="transcriber-upload-label__text">Upload an audio or video file</span>
+						<span class="transcriber-upload-label__hint">MP3, M4A, WAV, WebM, MP4, max 25 MB</span>
 					</label>
 					<input
 						type="file"
@@ -137,7 +137,7 @@ get_header(); ?>
 					id="transcriber-output"
 					class="transcriber-output"
 					aria-live="polite"
-				><span class="transcriber-output__placeholder">Your transcript will appear here.</span></div>
+				><span class="transcriber-output__placeholder">Your transcript will appear here. Record a short clip or upload a file to start.</span></div>
 				<div id="transcriber-loader" class="rewriter-loader" hidden>
 					<div class="rewriter-loader__spinner"></div>
 					<span>Transcribing&hellip;</span>
@@ -172,20 +172,20 @@ get_header(); ?>
 				<textarea
 					id="tts-input"
 					class="rewriter-textarea"
-					placeholder="Type or paste the text you want spoken&hellip;"
+					placeholder="Type or paste the text you want spoken, or use Try an example."
 					rows="10"
 					spellcheck="false"
 				></textarea>
 				<div class="tts-voice-row">
 					<label for="tts-voice" class="tts-voice-label">Voice</label>
 					<select id="tts-voice" class="tts-voice-select">
-						<option value="af_bella">Bella &mdash; US Female</option>
-						<option value="af_sarah">Sarah &mdash; US Female</option>
-						<option value="af_sky">Sky &mdash; US Female</option>
-						<option value="am_adam">Adam &mdash; US Male</option>
-						<option value="am_michael">Michael &mdash; US Male</option>
-						<option value="bf_emma">Emma &mdash; UK Female</option>
-						<option value="bm_george">George &mdash; UK Male</option>
+						<option value="af_bella">Bella, US Female</option>
+						<option value="af_sarah">Sarah, US Female</option>
+						<option value="af_sky">Sky, US Female</option>
+						<option value="am_adam">Adam, US Male</option>
+						<option value="am_michael">Michael, US Male</option>
+						<option value="bf_emma">Emma, UK Female</option>
+						<option value="bm_george">George, UK Male</option>
 					</select>
 				</div>
 				<div class="transcriber-panel__footer">
@@ -222,12 +222,12 @@ get_header(); ?>
 <section class="rewriter-how transcriber-how">
 	<div class="rewriter-how__inner">
 		<span class="section-eyebrow">How it works</span>
-		<h2 class="section-title">Local. Fast. Private.</h2>
+		<h2 class="section-title">Record or upload.</h2>
 		<div class="rewriter-how__grid">
 			<div class="rewriter-how__card">
 				<div class="rewriter-how__num">01</div>
-				<h3 class="rewriter-how__title">On-site Whisper</h3>
-				<p class="rewriter-how__desc">Audio is transcribed by OpenAI Whisper running on our own server &mdash; nothing is sent to third-party APIs.</p>
+				<h3 class="rewriter-how__title">Speech to text</h3>
+				<p class="rewriter-how__desc">Audio is transcribed with an AI speech model. Check the transcript before you rely on it.</p>
 			</div>
 			<div class="rewriter-how__card">
 				<div class="rewriter-how__num">02</div>
@@ -237,7 +237,7 @@ get_header(); ?>
 			<div class="rewriter-how__card">
 				<div class="rewriter-how__num">03</div>
 				<h3 class="rewriter-how__title">Copy &amp; use</h3>
-				<p class="rewriter-how__desc">The transcript lands in plain text, ready to paste anywhere &mdash; into the rewriter, a document, or your CMS.</p>
+				<p class="rewriter-how__desc">The transcript lands in plain text, ready to paste into the rewriter, a document, or your website.</p>
 			</div>
 		</div>
 	</div>

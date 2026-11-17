@@ -3,7 +3,7 @@
 <div class="page-hero rewriter-hero">
 	<div class="page-hero__eyebrow"><a href="<?php echo esc_url( home_url( '/free-tools/' ) ); ?>" class="hero-back-link">&larr; Free Tools</a></div>
 	<h1 class="page-hero__headline">AI Text<br><em>Summarizer</em></h1>
-	<p class="page-hero__subtitle">Paste any article, report, or document — get a clean summary in the length that suits you, with key takeaways pulled out automatically.</p>
+	<p class="page-hero__subtitle">Paste any article, report, or document and get a clean summary in the length that suits you.</p>
 </div>
 
 <section class="rewriter-section">
@@ -28,7 +28,7 @@
 				<textarea
 					id="rewriter-input"
 					class="rewriter-textarea"
-					placeholder="Paste your article, report, research paper, or any long-form content here…"
+					placeholder="Paste your article, report, or any long text here, or use Try an example."
 					rows="14"
 					spellcheck="false"
 				></textarea>
@@ -74,17 +74,17 @@
 			<div class="rewriter-how__card">
 				<div class="rewriter-how__num">01</div>
 				<h3 class="rewriter-how__title">Brief (bullets)</h3>
-				<p class="rewriter-how__desc">3–5 bullet points covering the most important information. Perfect for quick scanning or sharing a headline overview with your team.</p>
+				<p class="rewriter-how__desc">3 to 5 bullet points covering the most important information. Perfect for quick scanning or sharing a headline overview with your team.</p>
 			</div>
 			<div class="rewriter-how__card">
 				<div class="rewriter-how__num">02</div>
 				<h3 class="rewriter-how__title">Standard</h3>
-				<p class="rewriter-how__desc">A single concise paragraph that captures the core argument or narrative — useful for executive summaries, briefing notes, or research triage.</p>
+				<p class="rewriter-how__desc">A single concise paragraph that captures the core argument or narrative, useful for executive summaries, briefing notes, or research triage.</p>
 			</div>
 			<div class="rewriter-how__card">
 				<div class="rewriter-how__num">03</div>
 				<h3 class="rewriter-how__title">Detailed</h3>
-				<p class="rewriter-how__desc">A structured breakdown with key points, supporting details, and main conclusions — ideal for long reports, academic papers, or complex documents.</p>
+				<p class="rewriter-how__desc">A structured breakdown with key points, supporting details, and main conclusions, ideal for long reports, academic papers, or complex documents.</p>
 			</div>
 		</div>
 	</div>

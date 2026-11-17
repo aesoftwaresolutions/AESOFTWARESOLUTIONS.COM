@@ -20,8 +20,12 @@
 
 		if (!inputEl || !outputEl || !submitBtn) return;
 
-		loader.style.display  = 'none';
-		errorEl.style.display = 'none';
+		loader.hidden = true; loader.style.display = 'none';
+		errorEl.hidden = true; errorEl.style.display = 'none';
+
+		var FAIL_MSG = 'That request did not go through. Check your connection and try again.';
+		var submitLabel = submitBtn.querySelector('.rewriter-btn__text');
+		var idleLabel = submitLabel ? submitLabel.textContent : '';
 
 		function countWords(str) {
 			var t = str.trim();
@@ -30,19 +34,52 @@
 
 		function showError(msg) {
 			errorEl.textContent = msg;
-			errorEl.style.display = 'block';
+			errorEl.hidden = false; errorEl.style.display = 'block';
 		}
 
 		function hideError() {
-			errorEl.style.display = 'none';
+			errorEl.hidden = true; errorEl.style.display = 'none';
 			errorEl.textContent = '';
 		}
 
 		function setLoading(on) {
-			loader.style.display = on ? 'flex' : 'none';
+			loader.hidden = !on; loader.style.display = on ? 'flex' : 'none';
 			submitBtn.disabled = on;
 			submitBtn.classList.toggle('is-loading', on);
+			submitBtn.setAttribute('aria-busy', on ? 'true' : 'false');
+			if (submitLabel) submitLabel.textContent = on ? 'Working' : idleLabel;
 		}
+
+		// Plain failure message with a retry button. Technical detail goes to the console only.
+		function showFailure(err, again) {
+			if (window.console && err) console.error('Tool request failed:', err);
+			errorEl.textContent = FAIL_MSG + ' ';
+			errorEl.hidden = false; errorEl.style.display = 'block';
+			var retry = document.createElement('button');
+			retry.type = 'button';
+			retry.className = 'rewriter-btn rewriter-btn--ghost rewriter-retry';
+			retry.textContent = 'Try again';
+			retry.addEventListener('click', function () {
+				hideError();
+				(again || function () { submitBtn.click(); })();
+			});
+			errorEl.appendChild(retry);
+		}
+
+		// Try an example: fills the input so the panels are not empty on first visit.
+		var EXAMPLE = 'Following up on last week\'s proposal for the website project. I would like to schedule a short call this week to answer any questions and talk about next steps. I am flexible on time.';
+		var exampleBtn = document.createElement('button');
+		exampleBtn.type = 'button';
+		exampleBtn.id = 'rewriter-example';
+		exampleBtn.className = 'rewriter-btn rewriter-btn--ghost';
+		exampleBtn.textContent = 'Try an example';
+		exampleBtn.addEventListener('click', function () {
+			inputEl.value = EXAMPLE;
+			inputCount.textContent = countWords(EXAMPLE);
+			hideError();
+			inputEl.focus();
+		});
+		if (clearBtn && clearBtn.parentNode) clearBtn.parentNode.insertBefore(exampleBtn, clearBtn);
 
 		inputEl.addEventListener('input', function () {
 			inputCount.textContent = countWords(inputEl.value);
@@ -84,6 +121,7 @@
 		});
 
 		submitBtn.addEventListener('click', function () {
+			if (submitBtn.disabled) return; // double click guard
 			var text = inputEl.value.trim();
 			if (!text) {
 				showError('Please describe what you need to say.');
@@ -133,10 +171,7 @@
 				})
 				.catch(function (err) {
 					clearTimeout(timeoutId);
-					var msg = err.name === 'AbortError'
-						? 'Request timed out. Please try again.'
-						: (err.message || 'Something went wrong. Please try again.');
-					showError(msg);
+					showFailure(err);
 				})
 				.finally(function () { setLoading(false); });
 		});

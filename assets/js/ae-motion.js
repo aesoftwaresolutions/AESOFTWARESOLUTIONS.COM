@@ -10,6 +10,7 @@
  *  5. Sequence      the 6:42 pm timeline lights up as it scrolls past
  *  6. Jump bar      the active pricing step is marked while you scroll
  *  7. Legacy hooks  process connector and assessment badges (older pages)
+ *  8. Nav pill      black pill glides between the nav links, rests on the current section
  *
  * Reduced motion: content is shown at once (html.ae-calm).
  * html.ae-js is set in <head>; if this file never runs, html.ae-motion-failed
@@ -218,6 +219,147 @@
     if (hero) hero.classList.add('badges-ready');
   }
 
+  /* 8. NAV PILL: a black pill glides to the hovered or focused link, follows
+        clicks, and rests on the current section (or the current page).
+        Works on the desktop nav and on the mobile menu list. */
+  function initNavPill() {
+    var groups = [
+      { box: doc.querySelector('.site-header__nav'), sel: '.site-header__nav-link', px: 14, py: -5 },
+      { box: doc.querySelector('.mobile-nav-overlay__links'), sel: '.mobile-nav-overlay__link', px: 14, py: -6 }
+    ].filter(function (g) { return g.box; });
+    if (!groups.length) return;
+
+    function slugOf(a) {
+      var parts = (a.pathname || '').split('/').filter(Boolean);
+      return parts.length ? parts[parts.length - 1] : '';
+    }
+
+    var sectionSlug = null; // set by scroll, null means "use the page"
+
+    groups.forEach(function (g) {
+      g.links = Array.prototype.slice.call(g.box.querySelectorAll(g.sel));
+      if (!g.links.length) return;
+      g.pill = doc.createElement('span');
+      g.pill.className = 'ae-navpill is-still';
+      g.pill.setAttribute('aria-hidden', 'true');
+      g.box.insertBefore(g.pill, g.box.firstChild);
+      g.page = g.links.filter(function (a) { return a.hasAttribute('aria-current'); })[0] || null;
+      g.hover = null;
+      g.rest = g.page;
+      g.shown = null;
+    });
+    groups = groups.filter(function (g) { return g.pill; });
+    if (!groups.length) return;
+    html.classList.add('ae-navpill-on');
+
+    function place(g, still) {
+      var target = g.hover || g.rest;
+      var box = g.box;
+      // Hidden (mobile menu closed, or nav hidden under 960px): nothing to measure.
+      if (!target || !box.offsetWidth || !target.offsetWidth) {
+        g.pill.classList.remove('is-on');
+        g.links.forEach(function (a) { a.classList.remove('is-lit'); });
+        g.shown = null;
+        return;
+      }
+      // First show: jump to place, then glide from there on.
+      var jump = still || !g.shown;
+      if (jump) g.pill.classList.add('is-still');
+      g.pill.style.setProperty('--px', (target.offsetLeft - g.px) + 'px');
+      g.pill.style.setProperty('--py', (target.offsetTop - g.py) + 'px');
+      g.pill.style.setProperty('--pw', (target.offsetWidth + g.px * 2) + 'px');
+      g.pill.style.setProperty('--ph', (target.offsetHeight + g.py * 2) + 'px');
+      g.pill.classList.add('is-on');
+      g.links.forEach(function (a) { a.classList.toggle('is-lit', a === target); });
+      g.shown = target;
+      if (jump) {
+        void g.pill.offsetWidth; // commit the jump before transitions come back
+        g.pill.classList.remove('is-still');
+      }
+    }
+    function placeAll(still) { groups.forEach(function (g) { place(g, still); }); }
+
+    function pointerKind(e) { return e.pointerType === 'mouse' || e.pointerType === 'pen' || !e.pointerType; }
+
+    groups.forEach(function (g) {
+      g.links.forEach(function (a) {
+        a.addEventListener('pointerover', function (e) {
+          if (!pointerKind(e)) return;
+          g.hover = a; place(g);
+        });
+        a.addEventListener('focus', function () {
+          var vis = true;
+          try { vis = a.matches(':focus-visible'); } catch (err) {}
+          if (vis) { g.hover = a; place(g); }
+        });
+        a.addEventListener('blur', function () {
+          if (g.hover === a) { g.hover = null; place(g); }
+        });
+        a.addEventListener('click', function () {
+          g.rest = a; g.hover = null; place(g);
+        });
+      });
+      g.box.addEventListener('pointerleave', function () {
+        if (g.hover && g.hover !== doc.activeElement) { g.hover = null; place(g); }
+        else if (g.hover && !g.hover.matches(':focus-visible')) { g.hover = null; place(g); }
+      });
+    });
+
+    // Rest on the section in view. Only the home topics (#services, #pricing...)
+    // and anything marked data-nav-section count, so other pages keep their page link.
+    var slugs = {};
+    groups[0].links.forEach(function (a) { slugs[slugOf(a)] = true; });
+    var sections = Array.prototype.slice.call(
+      doc.querySelectorAll('[data-nav-section], details[data-topic]')
+    ).map(function (el) {
+      return { el: el, slug: el.getAttribute('data-nav-section') || el.id };
+    }).filter(function (s) { return s.slug && slugs[s.slug]; });
+
+    function updateSection() {
+      if (!sections.length) return;
+      var line = (parseFloat(getComputedStyle(html).getPropertyValue('--header-h')) || 72) + 24;
+      var found = null;
+      sections.forEach(function (s) {
+        var r = s.el.getBoundingClientRect();
+        if (r.top <= line && r.bottom > line) found = s.slug;
+      });
+      if (found === sectionSlug) return;
+      sectionSlug = found;
+      groups.forEach(function (g) {
+        var match = null;
+        if (found) g.links.forEach(function (a) { if (slugOf(a) === found) match = a; });
+        g.rest = match || g.page;
+        place(g);
+      });
+    }
+    if (sections.length) {
+      onScroll(updateSection);
+      doc.addEventListener('toggle', updateSection, true);
+    }
+
+    // Reposition on resize, font load, wrap, and when the mobile menu opens.
+    var queued = false;
+    function relayout() {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; placeAll(true); updateSection(); });
+    }
+    window.addEventListener('resize', relayout);
+    window.addEventListener('orientationchange', relayout);
+    window.addEventListener('load', relayout);
+    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(relayout);
+    if ('ResizeObserver' in window) {
+      var ro = new ResizeObserver(relayout);
+      groups.forEach(function (g) { ro.observe(g.box); });
+    }
+    var overlayEl = doc.getElementById('mobile-nav');
+    if (overlayEl && 'MutationObserver' in window) {
+      new MutationObserver(relayout).observe(overlayEl, { attributes: true, attributeFilter: ['class'] });
+    }
+    placeAll(true);
+    updateSection();
+  }
+
   function init() {
     initAutoFade();
     initReveals();
@@ -227,6 +369,7 @@
     initSequence();
     initJumpBar();
     initLegacy();
+    initNavPill();
     html.classList.add('ae-motion-ready');
     doc.body.classList.add('loaded'); // hook some older rules still read
   }

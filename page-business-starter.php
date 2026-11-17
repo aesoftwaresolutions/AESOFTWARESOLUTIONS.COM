@@ -1,13 +1,13 @@
 <?php
 /**
  * Template Name: Business Starter
- * The Business Starter Package page — $50/month subscription.
+ * The Business Starter Package page: $50/month subscription.
  *
  * @package AE_Softwares
  */
 add_action( 'wp_head', function () { ?>
 <style>
-/* ── Business Starter page ─────────────────────────────────────────────── */
+/* Business Starter page */
 .starter-hero { text-align: center; }
 .starter-price-badge {
 	display: inline-flex;
@@ -232,7 +232,7 @@ get_header(); ?>
 <div class="page-hero starter-hero">
 	<div class="page-hero__eyebrow">Business Starter Package</div>
 	<h1 class="page-hero__headline">The essential stack<br><em>for every</em><br>growing business.</h1>
-	<p class="page-hero__subtitle">One subscription. CRM, accounting, and compliance guides for any U.S. state — everything you need to run your business with confidence. Starting at just <strong style="color:var(--accent)">$50/month</strong>.</p>
+	<p class="page-hero__subtitle">One subscription. A CRM, invoicing, and business registration guides for every U.S. state. Starting at <strong style="color:var(--accent)">$50/month</strong>.</p>
 	<a href="#pricing" class="btn btn--primary" style="margin-top:2rem;display:inline-block;">Get started for $50/mo</a>
 </div>
 
@@ -255,11 +255,11 @@ get_header(); ?>
 				</svg>
 			</div>
 			<h3 class="starter-feature-card__title">aeCRM</h3>
-			<p class="starter-feature-card__desc">Manage your leads, clients, and follow-ups in one clean dashboard. Built for small teams that need clarity without complexity.</p>
+			<p class="starter-feature-card__desc">Manage your leads, clients, and follow ups in one clean dashboard. Built for small teams that need clarity without complexity.</p>
 			<ul class="starter-feature-card__list">
 				<li>Contact &amp; lead management</li>
 				<li>Pipeline tracking</li>
-				<li>Follow-up reminders &amp; notes</li>
+				<li>Follow up reminders &amp; notes</li>
 				<li>Client communication log</li>
 				<li>Task &amp; activity management</li>
 			</ul>
@@ -276,13 +276,13 @@ get_header(); ?>
 				</svg>
 			</div>
 			<h3 class="starter-feature-card__title">Accounting &amp; Invoicing</h3>
-			<p class="starter-feature-card__desc">Track income, expenses, and send professional invoices — without paying for a bloated enterprise accounting suite you'll never fully use.</p>
+			<p class="starter-feature-card__desc">Track income, expenses, and send professional invoices without paying for a bloated accounting suite you'll never fully use.</p>
 			<ul class="starter-feature-card__list">
 				<li>Income &amp; expense tracking</li>
 				<li>Professional invoice generation</li>
 				<li>Payment status tracking</li>
 				<li>Basic financial reports &amp; P&amp;L</li>
-				<li>Tax-ready expense categories</li>
+				<li>Expense categories</li>
 			</ul>
 		</div>
 
@@ -295,10 +295,10 @@ get_header(); ?>
 				</svg>
 			</div>
 			<h3 class="starter-feature-card__title">Compliance &amp; Registration Guides</h3>
-			<p class="starter-feature-card__desc">State-specific guides covering how to register your business, maintain compliance, and meet annual requirements — no attorney required for the basics.</p>
+			<p class="starter-feature-card__desc">State specific guides covering how to register your business and what annual requirements to look for. General information only, not legal advice. Check with your own counsel.</p>
 			<ul class="starter-feature-card__list">
-				<li>Business registration guides — all 50 states</li>
-				<li>LLC, S-Corp, and sole proprietor guidance</li>
+				<li>Business registration guides for all 50 states</li>
+				<li>LLC, S Corp, and sole proprietor guidance</li>
 				<li>Annual report &amp; renewal reminders</li>
 				<li>Registered agent requirements by state</li>
 				<li>EIN registration walkthrough</li>
@@ -320,7 +320,7 @@ get_header(); ?>
 			<ul class="starter-pricing-card__includes">
 				<li>
 					<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-					aeCRM — full access, unlimited contacts
+					aeCRM, full access
 				</li>
 				<li>
 					<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -328,7 +328,7 @@ get_header(); ?>
 				</li>
 				<li>
 					<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-					Compliance guides — all 50 U.S. states
+					Compliance guides for all 50 U.S. states
 				</li>
 				<li>
 					<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -339,8 +339,8 @@ get_header(); ?>
 					Email support &amp; onboarding walkthrough
 				</li>
 			</ul>
-			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>?plan=starter" class="btn btn--primary" style="width:100%;text-align:center;display:block;">Start Today — $50/mo</a>
-			<p class="starter-pricing-note">No long-term commitment. Cancel anytime. Billed monthly.</p>
+			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>?plan=starter" class="btn btn--primary" style="width:100%;text-align:center;display:block;">Start today for $50/mo</a>
+			<p class="starter-pricing-note">No long term commitment. Cancel anytime. Billed monthly.</p>
 		</div>
 	</div>
 </section>
@@ -350,7 +350,7 @@ get_header(); ?>
 	<div class="starter-states-intro">
 		<span class="section-eyebrow">Coverage</span>
 		<h2 class="section-title">Guides for<br>every U.S. state.</h2>
-		<p style="font-size:1rem;color:var(--text-muted);line-height:1.75;margin-top:1rem;">Whether you're registering an LLC in Texas or renewing your annual report in Delaware, our guides walk you through the exact steps — with state-specific forms, fees, and timelines.</p>
+		<p style="font-size:1rem;color:var(--text-muted);line-height:1.75;margin-top:1rem;">Whether you're registering an LLC in Texas or renewing your annual report in Delaware, the guides walk you through the steps for your state. General information only, not legal advice.</p>
 	</div>
 	<div class="starter-states-grid js-fade" style="--delay:0s">
 		<?php
@@ -379,23 +379,23 @@ get_header(); ?>
 	</div>
 	<div class="starter-faq-item js-fade" style="--delay:0s">
 		<p class="starter-faq-q">What's included in the $50/month plan?</p>
-		<p class="starter-faq-a">The Business Starter Package includes full access to aeCRM (unlimited contacts), accounting and invoicing tools, and compliance &amp; registration guides for all 50 U.S. states. Everything is included — there are no add-on fees.</p>
+		<p class="starter-faq-a">The Business Starter Package includes full access to aeCRM, accounting and invoicing tools, and compliance &amp; registration guides for all 50 U.S. states.</p>
 	</div>
 	<div class="starter-faq-item js-fade" style="--delay:0.08s">
-		<p class="starter-faq-q">Do I need to sign a long-term contract?</p>
-		<p class="starter-faq-a">No. The Business Starter Package is billed month-to-month. You can cancel anytime — no penalties, no minimum commitment.</p>
+		<p class="starter-faq-q">Do I need to sign a long term contract?</p>
+		<p class="starter-faq-a">No. The Business Starter Package is billed month to month. You can cancel anytime, with no minimum commitment.</p>
 	</div>
 	<div class="starter-faq-item js-fade" style="--delay:0.16s">
 		<p class="starter-faq-q">Are the compliance guides kept up to date?</p>
-		<p class="starter-faq-a">Yes. We actively monitor state-level changes in business registration requirements, annual report deadlines, and compliance rules — and update the guides accordingly. Subscribers receive notifications when guides for their state are updated.</p>
+		<p class="starter-faq-a">I update the guides as I learn of changes, but state rules change, so check the state's own website before you file.</p>
 	</div>
 	<div class="starter-faq-item js-fade" style="--delay:0.24s">
 		<p class="starter-faq-q">Can I upgrade to a full automation or consulting engagement?</p>
-		<p class="starter-faq-a">Absolutely. The Starter Package is designed as the foundation. Many of our clients begin here and later upgrade to our Process Intelligence or Intelligent Deployment tiers as their operations scale. Just contact us and we'll build a custom proposal.</p>
+		<p class="starter-faq-a">Yes. The Starter Package is a foundation. If you later want websites, follow up automation, or a custom build, contact me and I will put together a proposal.</p>
 	</div>
 	<div class="starter-faq-item js-fade" style="--delay:0.32s">
 		<p class="starter-faq-q">Is support included?</p>
-		<p class="starter-faq-a">Yes — email support and an onboarding walkthrough are included with every plan. For priority support and dedicated account management, ask us about our higher-tier plans.</p>
+		<p class="starter-faq-a">Yes. Email support and an onboarding walkthrough are included with every plan.</p>
 	</div>
 </section>
 

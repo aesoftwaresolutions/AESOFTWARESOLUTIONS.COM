@@ -1247,7 +1247,7 @@ add_action( 'wp_head', function () {
         'url'         => home_url( '/' ),
         'email'       => 'anthony@aesoftwaresolutions.com',
         'image'       => get_template_directory_uri() . '/assets/img/work/monarch-mvc.jpg',
-        'description' => 'Website design, online presence management and follow-up automation for small businesses across the United States.',
+        'description' => 'Website design, online presence management and follow up automation for small businesses across the United States.',
         'areaServed'   => aesoftwares_service_area(),
         'openingHours' => 'Mo-Fr 09:00-17:00',
         'priceRange'   => '$$',
@@ -1256,8 +1256,8 @@ add_action( 'wp_head', function () {
             'name'            => 'Services',
             'itemListElement' => [
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Website design', 'url' => home_url( '/websites/' ) ] ],
-                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Online presence management', 'url' => home_url( '/online-presence/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 49, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
-                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Follow-up automation (Always-On Front Desk)', 'url' => home_url( '/pricing/#front-desk-always-on' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 250, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Online presence management', 'url' => home_url( '/online-presence/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 199, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Follow up automation (Always-On Front Desk)', 'url' => home_url( '/pricing/#front-desk-always-on' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 250, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Missed-Lead Audit', 'url' => home_url( '/pricing/#audit' ) ], 'price' => 250, 'priceCurrency' => 'USD' ],
             ],
         ],
@@ -1268,7 +1268,7 @@ add_action( 'wp_head', function () {
             '@type'       => 'Service',
             'name'        => 'Website design',
             'serviceType' => 'Website design and development',
-            'description' => 'Custom, mobile-first websites for small businesses, from five-page sites to lead funnels with booking and CRM built in.',
+            'description' => 'Custom, mobile first websites for small businesses, from five page sites to lead funnels with booking and CRM built in.',
             'url'         => home_url( '/websites/' ),
             'provider'    => [ '@id' => home_url( '/#localbusiness' ) ],
             'areaServed'  => aesoftwares_service_area(),
@@ -1295,7 +1295,7 @@ function aesoftwares_seo_meta() {
             ],
             'websites' => [
                 'Website Design for Small Businesses | AE Software Solutions',
-                'Custom, mobile first website design for small businesses nationwide. Fixed price builds from $495, delivered in as little as 5 business days. Get a quote.',
+                'Custom, mobile first website design for small businesses nationwide. Fixed price builds from $495. Get a quote.',
             ],
             'online-presence' => [
                 'Online Presence Management & Google Reviews | AE Software Solutions',
@@ -1306,31 +1306,31 @@ function aesoftwares_seo_meta() {
                 'Social media managed for you: content, short form video, posting, replies and a monthly report. Business plans from $199/mo, creator plans from $499/mo.',
             ],
             'get-started' => [
-                'Checkout | AE Software Solutions',
-                'Pick a social media management plan and check out securely in minutes. Business plans from $199 a month, creator plans from $499 a month. Discount codes accepted at checkout.',
+                'Choose a Social Media Plan | AE Software Solutions',
+                'Pick a social media management plan and pay securely. Business plans from $199 a month, creator plans from $499 a month. Discount codes accepted at checkout.',
             ],
             'services' => [
-                'Services: Website Design, Google Presence & Follow-Up | AE Software Solutions',
-                'Websites, Google Business Profile and review management, and missed-call follow-up automation for small service businesses nationwide.',
+                'Services: Website Design, Google Presence & Follow Up | AE Software Solutions',
+                'Websites, Google Business Profile and review management, and missed call follow up automation for small service businesses nationwide.',
             ],
             'pricing' => [
-                'Pricing: Websites from $495, Online Presence $49/mo | AE Software Solutions',
-                'Clear prices for small business websites, Google presence management and follow-up automation. Free presence check, $250 audit, 60-day guarantee.',
+                'Pricing: Websites from $495, Online Presence $199/mo | AE Software Solutions',
+                'Clear prices for small business websites, Google presence management and follow up automation. Free presence check, $250 audit, 60 day guarantee.',
             ],
             'work' => [
-                'Our Work: Websites & Systems for Small Businesses | AE Software Solutions',
-                'Websites and business systems we have designed and built for real clients, from a men’s health platform to an online English school.',
+                'Recent Websites for Small Businesses | AE Software Solutions',
+                'Websites I have designed and built, from a men’s health platform to an online English school.',
             ],
             'about' => [
                 'About AE Software Solutions | Web Design & Online Presence for Small Business',
-                'A small, founder-led studio building websites, Google presence and follow-up automation for small businesses nationwide. Fixed prices; you own everything.',
+                'I build websites, Google presence and follow up automation for small businesses nationwide. Fixed prices, and you own everything.',
             ],
             'contact' => [
                 'Contact AE Software Solutions | Free Website & Presence Consultation',
-                'Book a free 15-minute call about a new website, your Google presence or automating your follow-ups. Working with small businesses nationwide.',
+                'Book a free discovery call about a new website, your Google presence or automating your follow ups. I work with small businesses nationwide.',
             ],
             'business-starter' => [
-                'Business Starter Plan: CRM, Invoicing & Compliance Guides from $50/mo',
+                'Business Starter Plan: CRM, Invoicing & Registration Guides from $50/mo',
                 'One $50/month plan for small businesses: aeCRM, invoicing and accounting tools, and business registration and compliance guides for all 50 states.',
             ],
         ];
@@ -1465,7 +1465,7 @@ add_action( 'init', function () {
     update_option( 'ae_social_management_page_created', 1, false );
 }, 30 );
 
-// Create the Checkout page once, at the get-started slug because WooCommerce
+// Create the plan picker page once, at the get-started slug because WooCommerce
 // owns /checkout/. Assigned to its template so it exists without anyone
 // having to add it in WP Admin.
 add_action( 'init', function () {
@@ -1477,7 +1477,7 @@ add_action( 'init', function () {
         $id = wp_insert_post( [
             'post_type'    => 'page',
             'post_status'  => 'publish',
-            'post_title'   => 'Checkout',
+            'post_title'   => 'Choose a Social Media Plan',
             'post_name'    => 'get-started',
             'post_content' => '',
         ] );

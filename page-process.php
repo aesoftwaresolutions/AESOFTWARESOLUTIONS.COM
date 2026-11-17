@@ -1,9 +1,9 @@
 <?php /* Template Name: Process */ get_header(); ?>
 
 <div class="page-hero process-page-hero">
-    <div class="page-hero__eyebrow">How we work</div>
+    <div class="page-hero__eyebrow">How I work</div>
     <h1 class="page-hero__headline">From first call<br><em>to live product.</em></h1>
-    <p class="page-hero__subtitle">A clear, structured process designed to de-risk your project and give you full visibility at every stage.</p>
+    <p class="page-hero__subtitle">A clear, structured process that keeps risk low and gives you full visibility at every stage. Timing is typical, not a promise.</p>
 </div>
 
 <section class="inner-section-pad">
@@ -16,7 +16,7 @@
             </div>
             <div class="process-phase__right">
                 <h3 class="process-phase__title">Discovery</h3>
-                <p class="process-phase__text">We learn everything about your business: goals, existing tools, data sources, and the specific problem we're solving. No assumptions, no cookie-cutter blueprints.</p>
+                <p class="process-phase__text">I learn everything about your business: goals, existing tools, data sources, and the specific problem I’m solving. No assumptions, no cookie cutter blueprints.</p>
                 <div class="process-phase__deliverable">Scoping document &amp; project brief</div>
             </div>
         </div>
@@ -24,11 +24,11 @@
         <div class="process-phase">
             <div class="process-phase__left">
                 <div class="process-phase__num">2</div>
-                <div class="process-phase__duration">Week 1–2</div>
+                <div class="process-phase__duration">Week 1 to 2</div>
             </div>
             <div class="process-phase__right">
                 <h3 class="process-phase__title">Strategy</h3>
-                <p class="process-phase__text">We define the technical approach, select the right AI models and integrations, and calculate your projected ROI. You get a clear picture before a dollar is spent on development.</p>
+                <p class="process-phase__text">I define the technical approach, select the right AI models and integrations, and calculate your projected ROI. You get a clear picture before a dollar is spent on development.</p>
                 <div class="process-phase__deliverable">Technical architecture &amp; ROI estimate</div>
             </div>
         </div>
@@ -36,11 +36,11 @@
         <div class="process-phase">
             <div class="process-phase__left">
                 <div class="process-phase__num">3</div>
-                <div class="process-phase__duration">Week 2–3</div>
+                <div class="process-phase__duration">Week 2 to 3</div>
             </div>
             <div class="process-phase__right">
                 <h3 class="process-phase__title">Design</h3>
-                <p class="process-phase__text">Wireframes, user flows, and a functional prototype — all before a line of production code is written. This is where we catch misalignments cheaply.</p>
+                <p class="process-phase__text">Wireframes, user flows, and a functional prototype, all before a line of production code is written. This is where I catch misalignments cheaply.</p>
                 <div class="process-phase__deliverable">Clickable prototype &amp; design system</div>
             </div>
         </div>
@@ -48,11 +48,11 @@
         <div class="process-phase">
             <div class="process-phase__left">
                 <div class="process-phase__num">4</div>
-                <div class="process-phase__duration">Weeks 3–8</div>
+                <div class="process-phase__duration">Weeks 3 to 8</div>
             </div>
             <div class="process-phase__right">
                 <h3 class="process-phase__title">Build</h3>
-                <p class="process-phase__text">Agile sprints with weekly demo calls. You see real progress every step of the way on a live staging environment — never flying blind on timeline or quality.</p>
+                <p class="process-phase__text">Agile sprints with weekly demo calls. You see real progress every step of the way on a live staging environment, never flying blind on timeline or quality.</p>
                 <div class="process-phase__deliverable">Tested, staged application</div>
             </div>
         </div>
@@ -60,12 +60,12 @@
         <div class="process-phase">
             <div class="process-phase__left">
                 <div class="process-phase__num">5</div>
-                <div class="process-phase__duration">Week 8–9</div>
+                <div class="process-phase__duration">Week 8 to 9</div>
             </div>
             <div class="process-phase__right">
                 <h3 class="process-phase__title">QA &amp; Handoff</h3>
-                <p class="process-phase__text">Load testing, edge-case coverage, documentation, and a recorded walkthrough so your team can operate it independently from day one.</p>
-                <div class="process-phase__deliverable">Fully documented, production-ready build</div>
+                <p class="process-phase__text">Load testing, edge case coverage, documentation, and a recorded walkthrough so your team can operate it independently from day one.</p>
+                <div class="process-phase__deliverable">Fully documented, production ready build</div>
             </div>
         </div>
 
@@ -76,8 +76,8 @@
             </div>
             <div class="process-phase__right">
                 <h3 class="process-phase__title">Deploy &amp; Support</h3>
-                <p class="process-phase__text">We handle hosting, monitoring, and quarterly optimisation reviews to keep your solution performing as your business grows and data changes.</p>
-                <div class="process-phase__deliverable">SLA-backed uptime &amp; improvement roadmap</div>
+                <p class="process-phase__text">I handle hosting, monitoring, and regular optimisation reviews to keep your solution performing as your business grows and data changes.</p>
+                <div class="process-phase__deliverable">Hosting, monitoring &amp; improvement roadmap</div>
             </div>
         </div>
 
@@ -89,22 +89,22 @@
 
     <div class="faq-item">
         <h3 class="faq-item__q">How long does a typical project take?</h3>
-        <p class="faq-item__a">Most projects run 6–10 weeks from kickoff to launch. Simpler automations can be live in as few as 2 weeks; larger multi-integration builds take 3–4 months.</p>
+        <p class="faq-item__a">Custom projects typically run 6 to 10 weeks from kickoff to launch, depending on scope. I give you a timeline in writing before work starts.</p>
     </div>
 
     <div class="faq-item">
-        <h3 class="faq-item__q">What do you need from us?</h3>
-        <p class="faq-item__a">Access to your data sources and existing tools, one stakeholder as primary contact, and 1–2 hours per week for demo reviews. We handle the rest.</p>
+        <h3 class="faq-item__q">What do you need from me?</h3>
+        <p class="faq-item__a">Access to your data sources and existing tools, one stakeholder as primary contact, and 1 to 2 hours per week for demo reviews. I handle the rest.</p>
     </div>
 
     <div class="faq-item">
         <h3 class="faq-item__q">Do you offer ongoing support?</h3>
-        <p class="faq-item__a">Yes — all projects include a 30-day post-launch support window. We also offer monthly retainers for ongoing optimisation, feature additions, and monitoring.</p>
+        <p class="faq-item__a">Yes. I can support the project after launch, and I can work on a monthly basis for ongoing optimisation, feature additions, and monitoring. You and I agree the terms in the scope.</p>
     </div>
 
     <div class="faq-item faq-item--last">
-        <h3 class="faq-item__q">Can we start with a small pilot?</h3>
-        <p class="faq-item__a">Absolutely. Many clients start with a focused 2–3 week pilot — a single automation or chatbot — before expanding. It's a low-risk way to see what we can do.</p>
+        <h3 class="faq-item__q">Can I start with a small pilot?</h3>
+        <p class="faq-item__a">Yes. You can start with a small pilot, such as a single automation or chatbot, before expanding. It's a low risk way to see how I work.</p>
     </div>
 </section>
 

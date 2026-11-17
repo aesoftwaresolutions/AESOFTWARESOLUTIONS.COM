@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Checkout
+ * Template Name: Checkout (page title: Choose a social media plan)
  *
  * Plan checkout for social media management: every plan links to its Stripe
  * payment page, with a short explanation of what happens next. Includes
@@ -26,19 +26,19 @@ $ae_checkout_faq = [
 	],
 	[
 		'q' => 'What happens after I pay?',
-		'a' => 'We contact you within one business day to book your kickoff call. Account setup starts right after your payment, and your first content calendar follows the kickoff call.',
+		'a' => 'I contact you within one business day to book your kickoff call. Account setup starts right after your payment, and your first content calendar follows the kickoff call.',
 	],
 	[
 		'q' => 'Can I cancel?',
-		'a' => 'Yes. Plans run a 3 month minimum, then month to month. Give us 30 days notice and we will hand over your content files and remove our access to your accounts.',
+		'a' => 'Yes. Plans run a 3 month minimum, then month to month. Give me 30 days notice and I will hand over your content files and remove my access to your accounts.',
 	],
 ];
 ?>
 
 <section class="page-hero op-hero">
-	<p class="page-hero__eyebrow">Checkout</p>
-	<h1 class="page-hero__headline">Pick your plan. Check out in minutes.</h1>
-	<p class="page-hero__subtitle">Every plan is billed monthly by card through Stripe, our payment provider. Your first payment includes the one time setup fee for your plan, then it is just the monthly price. If you have a discount code, you will enter it on the secure payment page before you pay.</p>
+	<p class="page-hero__eyebrow">Social media plans</p>
+	<h1 class="page-hero__headline">Choose your social media plan.</h1>
+	<p class="page-hero__subtitle">Every plan is billed monthly by card through Stripe, my payment provider. Your first payment includes the one time setup fee for your plan, then it is just the monthly price. If you have a discount code, you will enter it on the secure payment page before you pay.</p>
 </section>
 
 <!-- Plans for businesses -->
@@ -53,7 +53,7 @@ $ae_checkout_faq = [
 			<h3 class="v5-service__title">Social Front Desk</h3>
 			<div class="v5-service__text">
 				<p><strong>$199 a month plus a one time $75 setup.</strong> Posting handled for you with light planning, so your business shows up consistently.</p>
-				<p>First 3 clients: $149 a month for 3 months.</p>
+				<p>First 3 clients: $149 a month for 3 months, then $199 a month.</p>
 			</div>
 			<a class="v5-link v5-service__more" href="https://buy.stripe.com/7sYbJ1d2w2XcakXfFvabK0h">Start now</a>
 		</li>
@@ -130,7 +130,7 @@ $ae_checkout_faq = [
 	<h2 class="v5-section-title" id="co-steps-title" data-split>How it works</h2>
 	<ol class="op-steps__list">
 		<li data-reveal><span class="v5-label">01</span><h3>Pay securely</h3><p>Choose a plan and pay on the Stripe payment page. Today you pay the first month plus the one time setup fee.</p></li>
-		<li data-reveal><span class="v5-label">02</span><h3>We set up your accounts</h3><p>After your payment, we create your Meta, Claude and Canva accounts in your business name and connect your social media accounts. The accounts are yours.</p></li>
+		<li data-reveal><span class="v5-label">02</span><h3>I set up your accounts</h3><p>After your payment, I create your Meta, Claude and Canva accounts in your business name and connect your social media accounts. The accounts are yours.</p></li>
 		<li data-reveal><span class="v5-label">03</span><h3>Kickoff call</h3><p>A short call to confirm your goals and offers, gather your brand assets, and record a 30 to 45 minute voice interview so the content sounds like you.</p></li>
 		<li data-reveal><span class="v5-label">04</span><h3>First calendar for approval</h3><p>You approve the first month of content before anything is published. Nothing unapproved ever goes out.</p></li>
 	</ol>
@@ -142,7 +142,7 @@ $ae_checkout_faq = [
 	<h2 class="op-related__title" id="co-other-title" data-split>Also from AE:</h2>
 	<p class="op-related__text" data-reveal><a class="v5-link" href="https://buy.stripe.com/eVqaEX0fKfJY0KndxnabK04">Front Desk</a> $99 a month</p>
 	<p class="op-related__text" data-reveal><a class="v5-link" href="https://buy.stripe.com/6oUeVd9QkapEct52SJabK01">Always-On Front Desk</a> $250 a month</p>
-	<p class="op-related__text" data-reveal><a class="v5-link" href="https://buy.stripe.com/8x25kDfaEfJYdx964VabK02">Online Presence Management</a> $49 a month</p>
+	<p class="op-related__text" data-reveal><a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Online Presence Management</a> $199 a month</p>
 	<p class="op-related__text" data-reveal><a class="v5-link" href="https://buy.stripe.com/00wbJ15A4dBQgJl8d3abK03">Missed-Lead Audit</a> $250 one time</p>
 	<p class="op-related__text" data-reveal><a class="v5-link" href="https://buy.stripe.com/5kQ5kDbYs7dsfFheBrabK0a">AI Setup Guides Subscription</a> $19 a month</p>
 	<a class="v5-link op-related__link" href="<?php echo esc_url( home_url( '/social-management/' ) ); ?>" data-reveal>Compare the social plans in detail &rarr;</a>
@@ -152,7 +152,7 @@ $ae_checkout_faq = [
 <section class="op-related ae-rule" aria-labelledby="co-terms-title">
 	<p class="v5-label" data-reveal>Terms</p>
 	<h2 class="op-related__title" id="co-terms-title" data-split>The plain terms.</h2>
-	<p class="op-related__text" data-reveal>Social plans run a 3 month minimum, then month to month with 30 days notice to cancel. The setup fee is charged once, at signup. You own your accounts, your content, and your lists. We never buy followers or engagement. Plan details are on the <a class="v5-link" href="<?php echo esc_url( home_url( '/social-management/' ) ); ?>">Social Media Management page</a>.</p>
+	<p class="op-related__text" data-reveal>Social plans run a 3 month minimum, then month to month with 30 days notice to cancel. The setup fee is charged once, at signup. You own your accounts, your content, and your lists. I never buy followers or engagement. Plan details are on the <a class="v5-link" href="<?php echo esc_url( home_url( '/social-management/' ) ); ?>">Social Media Management page</a>.</p>
 </section>
 
 <!-- FAQ -->
@@ -178,8 +178,8 @@ echo wp_json_encode(
 		'@graph'   => [
 			[
 				'@type'       => 'WebPage',
-				'name'        => 'Checkout',
-				'description' => 'Pick a social media management plan and check out securely through Stripe.',
+				'name'        => 'Choose a social media plan',
+				'description' => 'Pick a social media management plan and pay securely through Stripe.',
 				'url'         => home_url( '/get-started/' ),
 			],
 			[

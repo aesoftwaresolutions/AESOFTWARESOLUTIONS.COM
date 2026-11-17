@@ -3,8 +3,8 @@
 <!-- HERO -->
 <div class="page-hero software-page-hero">
     <div class="page-hero__eyebrow">Paid Software</div>
-    <h1 class="page-hero__headline">Tools we built<br>for businesses that<br><em>think operationally.</em></h1>
-    <p class="page-hero__subtitle" data-reveal-text>Production-ready software products — built from the same operational intelligence principles we use in client engagements, refined into self-serve tools you can buy and run today.</p>
+    <h1 class="page-hero__headline">Tools I built<br>for businesses that<br><em>think operationally.</em></h1>
+    <p class="page-hero__subtitle" data-reveal-text>Software products I built from the same operational thinking I use with clients, made into self serve tools.</p>
 </div>
 
 <!-- PRODUCT 01: aeCRM -->
@@ -18,7 +18,7 @@
 
         <div class="product-section__head js-fade" style="--delay:0.1s">
             <h2 class="product-section__title">aeCRM</h2>
-            <p class="product-section__pitch">A full-stack CRM built for solo operators and small teams. Self-hosted, AI-augmented, compliance-aware — designed for regulated industries that outgrew their spreadsheets but can't justify Salesforce.</p>
+            <p class="product-section__pitch">A CRM built for solo operators and small teams. Self hosted and AI assisted, for businesses that outgrew their spreadsheets but can't justify Salesforce.</p>
         </div>
 
         <div class="product-section__body">
@@ -28,12 +28,12 @@
                     <h3 class="product-feature-list__label">What's included</h3>
                     <ul class="product-feature-list">
                         <li>Contact &amp; deal pipeline management with stage automation</li>
-                        <li>Built-in AI agent — drafts emails, summarizes calls, suggests next actions</li>
-                        <li>Activity timeline with full audit trail (compliance-ready)</li>
-                        <li>Email integration with automated follow-up sequences</li>
+                        <li>Built in AI agent that drafts emails, summarizes calls, and suggests next actions</li>
+                        <li>Activity timeline with an audit trail</li>
+                        <li>Email integration with automated follow up sequences</li>
                         <li>Document storage with metadata search</li>
                         <li>Reporting dashboard with custom metrics</li>
-                        <li>Role-based access and team permissions</li>
+                        <li>Role based access and team permissions</li>
                         <li>REST API for custom integrations</li>
                     </ul>
                 </div>
@@ -41,14 +41,13 @@
                 <div class="product-section__chips">
                     <span class="product-chip">Next.js</span>
                     <span class="product-chip">PostgreSQL</span>
-                    <span class="product-chip">Self-hosted</span>
+                    <span class="product-chip">Self hosted</span>
                     <span class="product-chip">AI agent</span>
                     <span class="product-chip">Audit trail</span>
                 </div>
 
                 <div class="product-section__cta-row">
-                    <a href="https://github.com/aesoftwaresolutions/aeCRM" target="_blank" rel="noopener" class="btn btn--primary">View on GitHub &nearr;</a>
-                    <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn--ghost">Request a demo</a>
+                    <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn--primary">Request a demo</a>
                 </div>
             </div>
 
@@ -131,7 +130,7 @@
 
         <div class="product-section__head js-fade" style="--delay:0.1s">
             <h2 class="product-section__title">Cash Flow Intelligence</h2>
-            <p class="product-section__pitch">Advanced trough-analysis for overdraft prevention. Upload a bank CSV, auto-detect every recurring bill and paycheck, and see exactly how much you can safely spend today without bouncing a future payment.</p>
+            <p class="product-section__pitch">Trough analysis to help prevent overdrafts. Upload a bank CSV, detect every recurring bill and paycheck, and see exactly how much you can safely spend today without bouncing a future payment.</p>
         </div>
 
         <div class="product-section__body">
@@ -186,7 +185,7 @@
                     <rect x="380" y="234" width="48" height="6" rx="1" fill="#ef4444"/>
                     <rect x="380" y="244" width="38" height="5" rx="1" fill="rgba(0,0,0,0.35)"/>
 
-                    <!-- Row 3 — lowest point highlight -->
+                    <!-- Row 3: lowest point highlight -->
                     <rect x="24" y="258" width="432" height="34" rx="6" fill="#fffbeb" stroke="#fbcfa1"/>
                     <rect x="40" y="270" width="22" height="12" rx="2" fill="#1c1c1c"/>
                     <rect x="74" y="270" width="50" height="6" rx="1" fill="#1c1c1c"/>
@@ -202,23 +201,23 @@
                 <div class="product-feature-list-block">
                     <h3 class="product-feature-list__label">Built into the product</h3>
                     <ul class="product-feature-list">
-                        <li>Bank statement CSV upload with auto-detection of recurring patterns</li>
-                        <li>Trough-analysis engine — pinpoints the exact day your balance will hit its lowest</li>
+                        <li>Bank statement CSV upload with automatic detection of recurring patterns</li>
+                        <li>Trough analysis engine that finds the day your balance will hit its lowest</li>
                         <li>"Safe to spend today" calculation that accounts for every upcoming bill</li>
                         <li>Shortfall alerts with the deposit amount needed to avoid overdraft</li>
                         <li>Manual rule editor for weekly, biweekly, and monthly transactions</li>
                         <li>Interactive timeline showing running balance after every event</li>
-                        <li>45-day forecast horizon (configurable)</li>
-                        <li>Zero-config setup — no bank login or third-party connection required</li>
+                        <li>45 day forecast horizon, configurable</li>
+                        <li>No bank login or third party connection required</li>
                     </ul>
                 </div>
 
                 <div class="product-section__chips">
                     <span class="product-chip">React</span>
                     <span class="product-chip">CSV intelligence</span>
-                    <span class="product-chip">Browser-only</span>
+                    <span class="product-chip">Browser only</span>
                     <span class="product-chip">No bank login</span>
-                    <span class="product-chip">Privacy-first</span>
+                    <span class="product-chip">Privacy first</span>
                 </div>
 
                 <div class="product-section__cta-row">
@@ -236,7 +235,7 @@
     <div class="software-cta__inner js-fade" style="--delay:0s">
         <span class="software-cta__eyebrow">Need something different?</span>
         <h2 class="software-cta__title">Custom builds<br>on the same foundation.</h2>
-        <p class="software-cta__sub">Every product on this page started as a client engagement. If you have a recurring operational problem worth productizing — let's talk about building it for you.</p>
+        <p class="software-cta__sub">If you have a recurring operational problem worth turning into a tool, tell me about it and I will tell you if I can build it.</p>
         <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn--primary">Start a conversation &rarr;</a>
     </div>
 </section>

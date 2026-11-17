@@ -6,7 +6,7 @@
         <div class="assessment-hero__inner">
             <span class="assessment-hero__eyebrow">Business Intelligence Discovery</span>
             <h1 class="assessment-hero__headline">Your operational<br><em>assessment</em><br>starts here.</h1>
-            <p class="assessment-hero__sub" data-reveal-text>15–30 minutes. 10 structured phases. A complete operational intelligence report — compliance risks, bottlenecks, automation opportunities, and a prioritized roadmap — delivered at the end.</p>
+            <p class="assessment-hero__sub" data-reveal-text>About 15 to 30 minutes. 10 structured phases. At the end you get an operational report covering risks, bottlenecks, automation opportunities, and a prioritized roadmap.</p>
             <div class="assessment-phases">
                 <div class="assessment-phase js-fade" style="--delay:0s">
                     <span class="assessment-phase__num">01</span>
@@ -29,10 +29,11 @@
                     <span class="assessment-phase__label">Compliance</span>
                 </div>
                 <div class="assessment-phase js-fade" style="--delay:0.30s">
-                    <span class="assessment-phase__num">06&ndash;10</span>
+                    <span class="assessment-phase__num">06 to 10</span>
                     <span class="assessment-phase__label">Intelligence Report</span>
                 </div>
             </div>
+            <p class="assessment-hero__sub assessment-addon">Looking for the paid AI Tools Assessment? It is $999 one time and is offered only as an add on to the Missed-Lead Audit, which is $250 and credited in full if you go ahead.</p>
         </div>
     </div>
 
@@ -44,21 +45,17 @@
 
     <div class="assessment-trust-bar">
         <div class="assessment-trust-bar__inner">
-            <div class="assessment-trust-item js-fade" style="--delay:0s">
-                <span class="assessment-trust-item__icon">&#9670;</span>
-                <span>Your responses are confidential</span>
-            </div>
             <div class="assessment-trust-item js-fade" style="--delay:0.08s">
                 <span class="assessment-trust-item__icon">&#9670;</span>
                 <span>No account required</span>
             </div>
             <div class="assessment-trust-item js-fade" style="--delay:0.16s">
                 <span class="assessment-trust-item__icon">&#9670;</span>
-                <span>Full report delivered in-chat</span>
+                <span>Full report delivered in the chat</span>
             </div>
             <div class="assessment-trust-item js-fade" style="--delay:0.24s">
                 <span class="assessment-trust-item__icon">&#9670;</span>
-                <span>Human follow-up available</span>
+                <span>Human follow up available</span>
             </div>
         </div>
     </div>

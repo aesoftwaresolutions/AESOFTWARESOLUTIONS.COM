@@ -27,9 +27,11 @@ function aesoftwares_offer_card( $item, $extra_class = '' ) {
 		</p>
 		<p class="ae-offer__cadence"><?php echo esc_html( $item['cadence'] ); ?></p>
 		<p class="ae-offer__pitch"><?php echo esc_html( $item['pitch'] ); ?></p>
+		<?php if ( ! empty( $item['points'] ) ) : ?>
 		<ul class="ae-offer__points">
 			<?php foreach ( $item['points'] as $pt ) : ?><li><?php echo esc_html( $pt ); ?></li><?php endforeach; ?>
 		</ul>
+		<?php endif; ?>
 		<?php if ( ! empty( $item['guarantee'] ) ) : ?>
 			<p class="ae-offer__guarantee">60 day guarantee</p>
 		<?php endif; ?>
@@ -63,6 +65,7 @@ function aesoftwares_pricing_cta_row() {
 		<a class="ae-jump__step" href="#start">Start</a>
 		<a class="ae-jump__step" href="#websites">Build</a>
 		<a class="ae-jump__step" href="#monthly">Keep it working</a>
+		<a class="ae-jump__step" href="#extras">Extras</a>
 		<a class="ae-jump__step" href="#launch">Launch Package</a>
 	</div>
 </nav>
@@ -97,8 +100,18 @@ function aesoftwares_pricing_cta_row() {
 	<div class="ae-offers ae-offers--two">
 		<?php foreach ( $o['monthly'] as $item ) { aesoftwares_offer_card( $item ); } ?>
 	</div>
-	<p class="ae-guarantee" data-reveal><strong>Our guarantee.</strong> <?php echo esc_html( $o['guarantee'] ); ?></p>
+	<p class="ae-guarantee" data-reveal><strong>My guarantee.</strong> <?php echo esc_html( $o['guarantee'] ); ?></p>
 	<?php aesoftwares_pricing_cta_row(); ?>
+</section>
+
+<section class="ae-pricing" id="extras" aria-labelledby="pr-extras">
+	<header class="v5-section-head">
+		<p class="v5-label" data-reveal>One time and yearly</p>
+		<h2 class="v5-section-title" id="pr-extras" data-reveal>Extras</h2>
+	</header>
+	<div class="ae-offers ae-offers--two">
+		<?php foreach ( $o['extras'] as $item ) { aesoftwares_offer_card( $item ); } ?>
+	</div>
 </section>
 
 <section class="ae-pricing ae-launch ae-alt" id="launch" aria-labelledby="pr-launch">
@@ -110,7 +123,7 @@ function aesoftwares_pricing_cta_row() {
 			<p class="ae-launch__pitch" data-reveal><?php echo esc_html( $b['pitch'] ); ?></p>
 		</div>
 		<div class="ae-launch__deal" data-reveal>
-			<p class="ae-offer__price"><s><?php echo esc_html( $b['was'] ); ?></s> <?php echo esc_html( $b['price'] ); ?></p>
+			<p class="ae-offer__price"><?php echo esc_html( $b['price'] ); ?></p>
 			<p class="ae-offer__cadence"><?php echo esc_html( $b['cadence'] ); ?></p>
 			<ul class="ae-offer__points">
 				<?php foreach ( $b['points'] as $pt ) : ?><li><?php echo esc_html( $pt ); ?></li><?php endforeach; ?>

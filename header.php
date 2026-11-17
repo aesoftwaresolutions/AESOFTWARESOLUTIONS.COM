@@ -76,8 +76,7 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
 <header class="site-header">
   <div class="site-header__inner">
     <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__logo" rel="home">
-      <img src="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-logo-mark.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-logo-mark.png' ) ); ?>" alt="" width="30" height="30" class="site-header__logo-mark" aria-hidden="true">
-      AE Software Solutions
+      <img src="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-logo-mark.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-logo-mark.png' ) ); ?>" alt="AE Software Solutions" width="30" height="30" class="site-header__logo-mark">
     </a>
 
     <nav class="site-header__nav" aria-label="Main">
