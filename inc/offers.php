@@ -1,6 +1,6 @@
 <?php
 /**
- * AE Software Solutions — the offer lineup, in one place.
+ * AE Software Solutions: the offer lineup, in one place.
  *
  * Change a price or a bullet here and it updates the Pricing page, the
  * Services page and the structured data Google reads. Nothing else needs
@@ -13,15 +13,15 @@ function aesoftwares_offers() {
 	$contact = home_url( '/contact/' );
 
 	return [
-		// ── Start here ──────────────────────────────────────────────────────
+		// Start here
 		'start' => [
 			[
 				'id'      => 'presence-check',
 				'icon'    => 'presence',
 				'name'    => 'Presence check',
 				'price'   => 'Free',
-				'cadence' => '15-minute call',
-				'pitch'   => 'We look at what a customer sees when they search for you and tell you the three things to fix first.',
+				'cadence' => '15 minute call',
+				'pitch'   => 'I look at what a customer sees when they search for you and tell you the three things to fix first.',
 				'points'  => [ 'Google, Maps and website reviewed live', 'No obligation, no sales script' ],
 				'cta'     => [ 'Run the check', home_url( '/online-presence/#presence-check' ) ],
 			],
@@ -37,14 +37,15 @@ function aesoftwares_offers() {
 					'Every way a customer can reach you, mapped',
 					'Which ones go unanswered after hours',
 					'What it is costing you, in your own numbers',
-					'Written report in 5 business days',
+					'Written report with what I found',
 					'Full $250 credited if you go ahead',
+					'Add on: AI Tools Assessment, $999 one time, offered only with the Missed-Lead Audit',
 				],
 				'cta'     => [ 'Buy the audit', 'https://buy.stripe.com/00wbJ15A4dBQgJl8d3abK03' ],
 			],
 		],
 
-		// ── Websites (one-time) ─────────────────────────────────────────────
+		// Websites (one time)
 		'websites' => [
 			[
 				'id'      => 'starter-site',
@@ -52,7 +53,7 @@ function aesoftwares_offers() {
 				'name'    => 'Starter Site',
 				'price'   => 'from $495',
 				'amount'  => 495,
-				'cadence' => 'one time · 5 to 10 business days',
+				'cadence' => 'one time',
 				'pitch'   => 'A fast, professional site that explains what you do and makes it easy to call or book.',
 				'points'  => [
 					'5 to 8 custom designed pages',
@@ -60,7 +61,6 @@ function aesoftwares_offers() {
 					'Google Business Profile set up and verified',
 					'Contact form and click to call',
 					'Search basics: titles, descriptions, sitemap',
-					'30 days of fixes after launch',
 				],
 				'cta'     => [ 'Get a quote', $contact ],
 			],
@@ -70,15 +70,14 @@ function aesoftwares_offers() {
 				'name'     => 'Lead Funnel Site',
 				'price'    => 'from $4,500',
 				'amount'   => 4500,
-				'cadence'  => 'one time · 10 to 18 business days',
-				'pitch'    => 'Everything in Starter, built to capture and follow up on every lead automatically.',
+				'cadence'  => 'one time',
+				'pitch'    => 'Everything in Starter, built to capture leads and follow up with them automatically.',
 				'points'   => [
 					'Everything in Starter Site',
-					'Conversion focused copywriting',
+					'Copywriting focused on calls and bookings',
 					'Online booking connected to your calendar',
 					'Lead forms routed to your CRM',
 					'Automatic email and text follow up',
-					'60 days of fixes after launch',
 				],
 				'featured' => true,
 				'cta'      => [ 'Get a quote', $contact ],
@@ -94,13 +93,13 @@ function aesoftwares_offers() {
 					'Connects to your existing software',
 					'Client or staff portal',
 					'Custom reporting',
-					'90 days of support and training',
+					'Support and training agreed in the scope',
 				],
 				'cta'     => [ 'Start a conversation', $contact ],
 			],
 		],
 
-		// ── Monthly ─────────────────────────────────────────────────────────
+		// Monthly
 		'monthly' => [
 			[
 				'id'      => 'ai-setup-guides',
@@ -120,17 +119,17 @@ function aesoftwares_offers() {
 				'id'      => 'online-presence',
 				'icon'    => 'presence',
 				'name'    => 'Online Presence Management',
-				'price'   => '$49',
-				'amount'  => 49,
+				'price'   => '$199',
+				'amount'  => 199,
 				'cadence' => 'per month · cancel anytime',
-				'pitch'   => 'We keep your Google Business Profile active and accurate, every month.',
+				'pitch'   => 'I keep your Google Business Profile active and accurate, every month.',
 				'points'  => [
 					'Weekly Google Business Profile posts',
 					'A drafted reply to every new review',
 					'Listings kept matching on Google, Bing, Apple Maps, Yelp, Facebook',
 					'One page monthly report',
 				],
-				'cta'     => [ 'Start now', 'https://buy.stripe.com/8x25kDfaEfJYdx964VabK02' ],
+				'cta'     => [ 'Get started', $contact ], // The old Stripe link charges $49. Swap in a $199 link when one exists.
 			],
 			[
 				'id'       => 'front-desk',
@@ -183,23 +182,72 @@ function aesoftwares_offers() {
 				],
 				'cta'     => [ 'Start now', 'https://buy.stripe.com/7sY14n9QkapE2Sv2SJabK0b' ],
 			],
+			[
+				'id'      => 'social-front-desk',
+				'name'    => 'Social Front Desk',
+				'price'   => '$199',
+				'amount'  => 199,
+				'cadence' => 'per month · plus one time $75 setup',
+				'pitch'   => 'Posting handled for you with light planning, so your business shows up consistently.',
+				'points'  => [
+					'Founding rate: $149 a month for the first 3 clients, for 3 months, then $199 a month',
+				],
+				'cta'     => [ 'Start now', 'https://buy.stripe.com/7sYbJ1d2w2XcakXfFvabK0h' ],
+			],
+			[
+				'id'      => 'total-presence',
+				'icon'    => 'presence',
+				'name'    => 'Total Presence',
+				'price'   => '$229',
+				'amount'  => 229,
+				'cadence' => 'per month · social plus Google Business Profile management',
+				'pitch'   => 'Social Front Desk and Google Business Profile management in one plan.',
+				'points'  => [
+					'Social Front Desk posting',
+					'Google Business Profile management',
+				],
+				'cta'     => [ 'Get started', $contact ],
+			],
 		],
 
-		// ── Bundle ──────────────────────────────────────────────────────────
+		// Extras (one time)
+		'extras' => [
+			[
+				'id'      => 'branded-templates',
+				'name'    => 'Branded Document Templates',
+				'price'   => '$295',
+				'amount'  => 295,
+				'cadence' => 'one time',
+				'pitch'   => 'Branded templates for the documents your business sends out.',
+				'points'  => [],
+				'cta'     => [ 'Ask about templates', $contact ],
+			],
+			[
+				'id'      => 'annual-prepay',
+				'name'    => 'Annual prepay',
+				'price'   => '$1,990',
+				'amount'  => 1990,
+				'cadence' => 'per year',
+				'pitch'   => 'Prefer to pay once for the year instead of monthly? Ask me which plan it applies to.',
+				'points'  => [],
+				'cta'     => [ 'Ask about annual prepay', $contact ],
+			],
+		],
+
+		// Bundle and extras
 		'bundle' => [
 			'id'      => 'launch',
 			'name'    => 'Launch Package',
 			'price'   => '$595',
 			'amount'  => 595,
-			'was'     => '$642',
 			'cadence' => 'one payment',
 			'pitch'   => 'A new Starter Site, your Google Business Profile set up properly, and the first three months of Online Presence Management.',
-			'points'  => [ 'Starter Site', 'Google Business Profile setup', '3 months of Online Presence Management', 'Then $49/month, cancel anytime' ],
+			'points'  => [ 'Starter Site', 'Google Business Profile setup', '3 months of Online Presence Management', 'Then $199/month, cancel anytime' ],
 			'cta'     => [ 'Get the Launch Package', $contact ],
 		],
 
-		// ── Promises ────────────────────────────────────────────────────────
-		'guarantee' => 'If Always-On Front Desk does not capture at least one qualifying lead within 60 days of go live, we refund your first two monthly payments. Conditions apply.',
+		// Promises
+		'guarantee' => 'If Always-On Front Desk does not capture at least one qualifying lead within 60 days of go live, I refund your first two monthly payments. Conditions apply.',
 		'terms'     => 'Website builds: 50% to start, 50% at launch. Monthly plans are billed at signup and are month to month. You own your website, domain and data.',
 	];
 }

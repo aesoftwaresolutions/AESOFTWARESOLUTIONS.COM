@@ -27,9 +27,13 @@
 
 		if (!inputEl || !outputEl || !submitBtn) return;
 
-		// Explicitly hide elements on init — overrides any CSS that may win over [hidden]
-		loader.style.display = 'none';
-		errorEl.style.display = 'none';
+		// Explicitly hide elements on init, overrides any CSS that may win over [hidden]
+		loader.hidden = true; loader.style.display = 'none';
+		errorEl.hidden = true; errorEl.style.display = 'none';
+
+		var FAIL_MSG = 'That request did not go through. Check your connection and try again.';
+		var submitLabel = submitBtn.querySelector('.rewriter-btn__text');
+		var idleLabel = submitLabel ? submitLabel.textContent : '';
 
 		function countWords(str) {
 			var trimmed = str.trim();
@@ -39,19 +43,52 @@
 
 		function showError(msg) {
 			errorEl.textContent = msg;
-			errorEl.style.display = 'block';
+			errorEl.hidden = false; errorEl.style.display = 'block';
 		}
 
 		function hideError() {
-			errorEl.style.display = 'none';
+			errorEl.hidden = true; errorEl.style.display = 'none';
 			errorEl.textContent = '';
 		}
 
 		function setLoading(on) {
-			loader.style.display = on ? 'flex' : 'none';
+			loader.hidden = !on; loader.style.display = on ? 'flex' : 'none';
 			submitBtn.disabled = on;
 			submitBtn.classList.toggle('is-loading', on);
+			submitBtn.setAttribute('aria-busy', on ? 'true' : 'false');
+			if (submitLabel) submitLabel.textContent = on ? 'Working' : idleLabel;
 		}
+
+		// Plain failure message with a retry button. Technical detail goes to the console only.
+		function showFailure(err, again) {
+			if (window.console && err) console.error('Tool request failed:', err);
+			errorEl.textContent = FAIL_MSG + ' ';
+			errorEl.hidden = false; errorEl.style.display = 'block';
+			var retry = document.createElement('button');
+			retry.type = 'button';
+			retry.className = 'rewriter-btn rewriter-btn--ghost rewriter-retry';
+			retry.textContent = 'Try again';
+			retry.addEventListener('click', function () {
+				hideError();
+				(again || function () { submitBtn.click(); })();
+			});
+			errorEl.appendChild(retry);
+		}
+
+		// Try an example: fills the input so the panels are not empty on first visit.
+		var EXAMPLE = 'Our team is pleased to announce that we have successfully implemented a comprehensive solution that leverages cutting edge technology to streamline operations and deliver significant value to all stakeholders. Furthermore, it is important to note that this initiative will ensure seamless collaboration across departments.';
+		var exampleBtn = document.createElement('button');
+		exampleBtn.type = 'button';
+		exampleBtn.id = 'rewriter-example';
+		exampleBtn.className = 'rewriter-btn rewriter-btn--ghost';
+		exampleBtn.textContent = 'Try an example';
+		exampleBtn.addEventListener('click', function () {
+			inputEl.value = EXAMPLE;
+			inputCount.textContent = countWords(EXAMPLE);
+			hideError();
+			inputEl.focus();
+		});
+		if (clearBtn && clearBtn.parentNode) clearBtn.parentNode.insertBefore(exampleBtn, clearBtn);
 
 		inputEl.addEventListener('input', function () {
 			inputCount.textContent = countWords(inputEl.value);
@@ -160,7 +197,7 @@
 				if (!text || !validateUrl) return;
 
 				checkScoreBtn.disabled = true;
-				checkScoreBtn.textContent = 'Checking…';
+				checkScoreBtn.textContent = 'Working';
 				if (scorePanel) scorePanel.hidden = true;
 
 				fetch(validateUrl, {
@@ -168,12 +205,15 @@
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({ text: text }),
 				})
-					.then(function (res) { return res.json(); })
+					.then(function (res) {
+						if (!res.ok) throw new Error('Server error ' + res.status);
+						return res.json();
+					})
 					.then(function (data) {
 						renderScorePanel(data.validation);
 					})
-					.catch(function () {
-						/* silently fail — score panel stays hidden */
+					.catch(function (err) {
+						showFailure(err, function () { checkScoreBtn.click(); });
 					})
 					.finally(function () {
 						checkScoreBtn.disabled = false;
@@ -183,6 +223,7 @@
 		}
 
 		submitBtn.addEventListener('click', function () {
+			if (submitBtn.disabled) return; // double click guard
 			var text = inputEl.value.trim();
 			if (!text) {
 				showError('Please paste some text before rewriting.');
@@ -230,10 +271,7 @@
 				})
 				.catch(function (err) {
 					clearTimeout(timeoutId);
-					var msg = err.name === 'AbortError'
-						? 'Request timed out. Please try again.'
-						: (err.message || 'Something went wrong. Please try again.');
-					showError(msg);
+					showFailure(err);
 				})
 				.finally(function () {
 					setLoading(false);

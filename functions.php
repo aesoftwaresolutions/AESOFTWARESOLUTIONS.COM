@@ -23,13 +23,17 @@ function aesoftwares_enqueue_scripts() {
     $uri  = get_template_directory_uri();
     $path = get_template_directory();
 
-    // One type family sitewide (v5): Plus Jakarta Sans, with Space Grotesk for
-    // small bracketed labels. Inter and DM Serif Display were dropped.
+    // One type family sitewide: Plus Jakarta Sans, self hosted (weights 400, 500,
+    // 600, 700 in assets/fonts/, declared in assets/refresh/ae-fonts.css with
+    // font-display: swap). No third party font request. Space Grotesk, Inter and
+    // DM Serif Display are gone. The handle stays 'ae-fonts' so style.css still
+    // loads after it.
+    $fonts_css = $path . '/assets/refresh/ae-fonts.css';
     wp_enqueue_style(
         'ae-fonts',
-        'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Space+Grotesk:wght@400;500&display=swap',
+        $uri . '/assets/refresh/ae-fonts.css',
         [],
-        null
+        file_exists( $fonts_css ) ? filemtime( $fonts_css ) : '6.0.0'
     );
 
     // Main stylesheet — filemtime() version for automatic cache busting
@@ -38,7 +42,7 @@ function aesoftwares_enqueue_scripts() {
     // ── Web component JS (all pages) ──────────────────────────────────────
     $js = $path . '/assets/js/';
 
-    // ── Motion engine (all pages): loader, reveals, page transitions, menu ─
+    // ── Motion (all pages): reveal, header hairline, mobile menu, home topics ─
     wp_enqueue_script(
         'ae-motion',
         $uri . '/assets/js/ae-motion.js',
@@ -53,10 +57,8 @@ function aesoftwares_enqueue_scripts() {
     wp_enqueue_script( 'ae-cta',          $uri . '/assets/js/ae-cta.js',          [], filemtime( $js . 'ae-cta.js' ),          [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'ae-widget',       $uri . '/assets/js/ae-widget.js',       [], filemtime( $js . 'ae-widget.js' ),       [ 'in_footer' => true, 'strategy' => 'defer' ] );
 
-    // Hero background motion (front page only).
-    if ( is_front_page() ) {
-        wp_enqueue_script( 'ae-hero-motion', $uri . '/assets/js/ae-hero-motion.js', [], filemtime( $js . 'ae-hero-motion.js' ), [ 'in_footer' => true, 'strategy' => 'defer' ] );
-    }
+    // The hero background canvas (ae-hero-motion.js) was retired in the v6
+    // redesign: the home hero is plain text and never waits on a script.
 
     // ── Free tool JS (one script per tool page) ──────────────────────────
     if ( is_page_template( 'page-rewriter.php' ) ) {
@@ -191,14 +193,8 @@ add_action( 'init', function () {
 } );
 
 
-// ── Preconnect to Google Fonts so the type arrives before the first reveal ──
-add_filter( 'wp_resource_hints', function ( $urls, $relation ) {
-    if ( 'preconnect' === $relation ) {
-        $urls[] = 'https://fonts.googleapis.com';
-        $urls[] = [ 'href' => 'https://fonts.gstatic.com', 'crossorigin' ];
-    }
-    return $urls;
-}, 10, 2 );
+// Fonts are self hosted now (see ae-fonts.css), so the old preconnect hints to
+// Google Fonts were removed. header.php preloads the 400 and 700 files.
 
 
 // ── Purge the page cache after a theme deploy ───────────────────────────────
@@ -207,7 +203,7 @@ add_filter( 'wp_resource_hints', function ( $urls, $relation ) {
 // changes, purge LiteSpeed once (no-op if the plugin isn't active).
 add_action( 'init', function () {
     $dir   = get_template_directory();
-    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js', '/assets/js/ae-hero-motion.js' ];
+    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js', '/assets/js/ae-cta.js', '/assets/refresh/ae-fonts.css' ];
     $sig   = '';
     foreach ( $files as $f ) {
         $sig .= file_exists( $dir . $f ) ? filemtime( $dir . $f ) : '0';
@@ -1251,7 +1247,7 @@ add_action( 'wp_head', function () {
         'url'         => home_url( '/' ),
         'email'       => 'anthony@aesoftwaresolutions.com',
         'image'       => get_template_directory_uri() . '/assets/img/work/monarch-mvc.jpg',
-        'description' => 'Website design, online presence management and follow-up automation for small businesses across the United States.',
+        'description' => 'Website design, online presence management and follow up automation for small businesses across the United States.',
         'areaServed'   => aesoftwares_service_area(),
         'openingHours' => 'Mo-Fr 09:00-17:00',
         'priceRange'   => '$$',
@@ -1260,8 +1256,8 @@ add_action( 'wp_head', function () {
             'name'            => 'Services',
             'itemListElement' => [
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Website design', 'url' => home_url( '/websites/' ) ] ],
-                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Online presence management', 'url' => home_url( '/online-presence/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 49, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
-                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Follow-up automation (Always-On Front Desk)', 'url' => home_url( '/pricing/#front-desk-always-on' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 250, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Online presence management', 'url' => home_url( '/online-presence/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 199, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Follow up automation (Always-On Front Desk)', 'url' => home_url( '/pricing/#front-desk-always-on' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 250, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Missed-Lead Audit', 'url' => home_url( '/pricing/#audit' ) ], 'price' => 250, 'priceCurrency' => 'USD' ],
             ],
         ],
@@ -1272,7 +1268,7 @@ add_action( 'wp_head', function () {
             '@type'       => 'Service',
             'name'        => 'Website design',
             'serviceType' => 'Website design and development',
-            'description' => 'Custom, mobile-first websites for small businesses, from five-page sites to lead funnels with booking and CRM built in.',
+            'description' => 'Custom, mobile first websites for small businesses, from five page sites to lead funnels with booking and CRM built in.',
             'url'         => home_url( '/websites/' ),
             'provider'    => [ '@id' => home_url( '/#localbusiness' ) ],
             'areaServed'  => aesoftwares_service_area(),
@@ -1299,7 +1295,7 @@ function aesoftwares_seo_meta() {
             ],
             'websites' => [
                 'Website Design for Small Businesses | AE Software Solutions',
-                'Custom, mobile first website design for small businesses nationwide. Fixed price builds from $495, delivered in as little as 5 business days. Get a quote.',
+                'Custom, mobile first website design for small businesses nationwide. Fixed price builds from $495. Get a quote.',
             ],
             'online-presence' => [
                 'Online Presence Management & Google Reviews | AE Software Solutions',
@@ -1310,31 +1306,31 @@ function aesoftwares_seo_meta() {
                 'Social media managed for you: content, short form video, posting, replies and a monthly report. Business plans from $199/mo, creator plans from $499/mo.',
             ],
             'get-started' => [
-                'Checkout | AE Software Solutions',
-                'Pick a social media management plan and check out securely in minutes. Business plans from $199 a month, creator plans from $499 a month. Discount codes accepted at checkout.',
+                'Choose a Social Media Plan | AE Software Solutions',
+                'Pick a social media management plan and pay securely. Business plans from $199 a month, creator plans from $499 a month. Discount codes accepted at checkout.',
             ],
             'services' => [
-                'Services: Website Design, Google Presence & Follow-Up | AE Software Solutions',
-                'Websites, Google Business Profile and review management, and missed-call follow-up automation for small service businesses nationwide.',
+                'Services: Website Design, Google Presence & Follow Up | AE Software Solutions',
+                'Websites, Google Business Profile and review management, and missed call follow up automation for small service businesses nationwide.',
             ],
             'pricing' => [
-                'Pricing: Websites from $495, Online Presence $49/mo | AE Software Solutions',
-                'Clear prices for small business websites, Google presence management and follow-up automation. Free presence check, $250 audit, 60-day guarantee.',
+                'Pricing: Websites from $495, Online Presence $199/mo | AE Software Solutions',
+                'Clear prices for small business websites, Google presence management and follow up automation. Free presence check, $250 audit, 60 day guarantee.',
             ],
             'work' => [
-                'Our Work: Websites & Systems for Small Businesses | AE Software Solutions',
-                'Websites and business systems we have designed and built for real clients, from a men’s health platform to an online English school.',
+                'Recent Websites for Small Businesses | AE Software Solutions',
+                'Websites I have designed and built, from a men’s health platform to an online English school.',
             ],
             'about' => [
                 'About AE Software Solutions | Web Design & Online Presence for Small Business',
-                'A small, founder-led studio building websites, Google presence and follow-up automation for small businesses nationwide. Fixed prices; you own everything.',
+                'I build websites, Google presence and follow up automation for small businesses nationwide. Fixed prices, and you own everything.',
             ],
             'contact' => [
                 'Contact AE Software Solutions | Free Website & Presence Consultation',
-                'Book a free 15-minute call about a new website, your Google presence or automating your follow-ups. Working with small businesses nationwide.',
+                'Book a free discovery call about a new website, your Google presence or automating your follow ups. I work with small businesses nationwide.',
             ],
             'business-starter' => [
-                'Business Starter Plan: CRM, Invoicing & Compliance Guides from $50/mo',
+                'Business Starter Plan: CRM, Invoicing & Registration Guides from $50/mo',
                 'One $50/month plan for small businesses: aeCRM, invoicing and accounting tools, and business registration and compliance guides for all 50 states.',
             ],
         ];
@@ -1469,7 +1465,7 @@ add_action( 'init', function () {
     update_option( 'ae_social_management_page_created', 1, false );
 }, 30 );
 
-// Create the Checkout page once, at the get-started slug because WooCommerce
+// Create the plan picker page once, at the get-started slug because WooCommerce
 // owns /checkout/. Assigned to its template so it exists without anyone
 // having to add it in WP Admin.
 add_action( 'init', function () {
@@ -1481,7 +1477,7 @@ add_action( 'init', function () {
         $id = wp_insert_post( [
             'post_type'    => 'page',
             'post_status'  => 'publish',
-            'post_title'   => 'Checkout',
+            'post_title'   => 'Choose a Social Media Plan',
             'post_name'    => 'get-started',
             'post_content' => '',
         ] );

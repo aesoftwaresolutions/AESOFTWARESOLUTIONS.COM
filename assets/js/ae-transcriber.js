@@ -21,8 +21,8 @@
 
 		if (!recordBtn || !submitBtn || !outputEl) return;
 
-		loader.style.display = 'none';
-		errorEl.style.display = 'none';
+		loader.hidden = true; loader.style.display = 'none';
+		errorEl.hidden = true; errorEl.style.display = 'none';
 
 		var mediaRecorder   = null;
 		var recordedChunks  = [];
@@ -45,18 +45,41 @@
 
 		function showError(msg) {
 			errorEl.textContent = msg;
-			errorEl.style.display = 'block';
+			errorEl.hidden = false; errorEl.style.display = 'block';
 		}
 
 		function hideError() {
-			errorEl.style.display = 'none';
+			errorEl.hidden = true; errorEl.style.display = 'none';
 			errorEl.textContent = '';
 		}
 
+		var FAIL_MSG = 'That request did not go through. Check your connection and try again.';
+		var submitLabel = submitBtn.querySelector('.rewriter-btn__text');
+		var idleLabel = submitLabel ? submitLabel.textContent : '';
+
 		function setLoading(on) {
-			loader.style.display = on ? 'flex' : 'none';
+			loader.hidden = !on; loader.style.display = on ? 'flex' : 'none';
 			submitBtn.disabled = on;
 			submitBtn.classList.toggle('is-loading', on);
+			submitBtn.setAttribute('aria-busy', on ? 'true' : 'false');
+			if (submitLabel) submitLabel.textContent = on ? 'Working' : idleLabel;
+		}
+
+		// Plain failure message with a retry button. Technical detail goes to the console only.
+		function showFailure(box, err, again) {
+			if (window.console && err) console.error('Tool request failed:', err);
+			box.textContent = FAIL_MSG + ' ';
+			box.hidden = false; box.style.display = 'block';
+			var retry = document.createElement('button');
+			retry.type = 'button';
+			retry.className = 'rewriter-btn rewriter-btn--ghost rewriter-retry';
+			retry.textContent = 'Try again';
+			retry.addEventListener('click', function () {
+				box.hidden = true; box.style.display = 'none';
+				box.textContent = '';
+				again();
+			});
+			box.appendChild(retry);
 		}
 
 		function formatTime(s) {
@@ -119,7 +142,7 @@
 					startTimer();
 				})
 				.catch(function (err) {
-					showError('Microphone access denied or unavailable: ' + err.message);
+					showError('Microphone access was denied or is not available. Allow microphone access in your browser, or upload a file instead.');
 				});
 		}
 
@@ -165,6 +188,7 @@
 		});
 
 		submitBtn.addEventListener('click', function () {
+			if (submitBtn.disabled) return; // double click guard
 			var audioSource = uploadedFile || recordedBlob;
 			if (!audioSource) {
 				showError('Record from your microphone or upload a file first.');
@@ -201,7 +225,7 @@
 					}
 				})
 				.catch(function (err) {
-					showError(err.message || 'Something went wrong. Please try again.');
+					showFailure(errorEl, err, function () { submitBtn.click(); });
 				})
 				.finally(function () {
 					setLoading(false);
@@ -254,8 +278,8 @@
 		var currentBlobUrl = null;
 
 		if (ttsInput && ttsSubmit && ttsOutputArea) {
-			ttsLoader.style.display = 'none';
-			ttsError.style.display  = 'none';
+			ttsLoader.hidden = true; ttsLoader.style.display = 'none';
+			ttsError.hidden = true; ttsError.style.display = 'none';
 
 			function ttsCountWords(str) {
 				var t = str.trim();
@@ -264,19 +288,41 @@
 
 			function ttsShowError(msg) {
 				ttsError.textContent   = msg;
-				ttsError.style.display = 'block';
+				ttsError.hidden = false; ttsError.style.display = 'block';
 			}
 
 			function ttsHideError() {
-				ttsError.style.display = 'none';
+				ttsError.hidden = true; ttsError.style.display = 'none';
 				ttsError.textContent   = '';
 			}
 
+			var ttsLabel = ttsSubmit.querySelector('.rewriter-btn__text');
+			var ttsIdleLabel = ttsLabel ? ttsLabel.textContent : '';
+
 			function ttsSetLoading(on) {
-				ttsLoader.style.display = on ? 'flex' : 'none';
+				ttsLoader.hidden = !on; ttsLoader.style.display = on ? 'flex' : 'none';
 				ttsSubmit.disabled      = on;
 				ttsSubmit.classList.toggle('is-loading', on);
+				ttsSubmit.setAttribute('aria-busy', on ? 'true' : 'false');
+				if (ttsLabel) ttsLabel.textContent = on ? 'Working' : ttsIdleLabel;
+				if (!on && ttsInput && ttsCountWords(ttsInput.value) === 0) ttsSubmit.disabled = true;
 			}
+
+			// Try an example: fills the text box so the panel is not empty on first visit.
+			var TTS_EXAMPLE = 'Thanks for calling. We are out on a job right now, but we got your message and we will call you back within the hour.';
+			var ttsExample = document.createElement('button');
+			ttsExample.type = 'button';
+			ttsExample.id = 'tts-example';
+			ttsExample.className = 'rewriter-btn rewriter-btn--ghost';
+			ttsExample.textContent = 'Try an example';
+			ttsExample.addEventListener('click', function () {
+				ttsInput.value = TTS_EXAMPLE;
+				if (ttsInputCount) ttsInputCount.textContent = ttsCountWords(TTS_EXAMPLE);
+				ttsSubmit.disabled = false;
+				ttsHideError();
+				ttsInput.focus();
+			});
+			if (ttsClear && ttsClear.parentNode) ttsClear.parentNode.insertBefore(ttsExample, ttsClear);
 
 			ttsInput.addEventListener('input', function () {
 				var wc = ttsCountWords(ttsInput.value);
@@ -294,6 +340,7 @@
 			}
 
 			ttsSubmit.addEventListener('click', function () {
+				if (ttsSubmit.disabled) return; // double click guard
 				var text  = ttsInput.value.trim();
 				var voice = ttsVoice ? ttsVoice.value : 'af_bella';
 				if (!text) return;
@@ -317,7 +364,7 @@
 						});
 					})
 					.then(function (data) {
-						if (!data.audio) throw new Error('No audio returned from server.');
+						if (!data.audio) throw new Error('No audio returned from server');
 						var binary = atob(data.audio);
 						var bytes  = new Uint8Array(binary.length);
 						for (var i = 0; i < binary.length; i++) {
@@ -336,7 +383,7 @@
 						}
 					})
 					.catch(function (err) {
-						ttsShowError(err.message || 'Something went wrong. Please try again.');
+						showFailure(ttsError, err, function () { ttsSubmit.click(); });
 					})
 					.finally(function () {
 						ttsSetLoading(false);

@@ -1,6 +1,6 @@
 <?php
 /**
- * The header for our theme — v4.0 Matthieu Givelet Inspired
+ * The header for our theme (v6 redesign).
  *
  * @package AE_Softwares
  */
@@ -9,7 +9,31 @@ $ae_theme_uri  = get_template_directory_uri();
 $ae_theme_path = get_template_directory();
 $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
 	$file = $ae_theme_path . $rel;
-	return file_exists( $file ) ? filemtime( $file ) : '4.3.0';
+	return file_exists( $file ) ? filemtime( $file ) : '6.0.0';
+};
+
+// Current section, for the active link underline. Work, Online presence and
+// Social management sit under Services, so that link stays marked on them.
+$ae_home_path = trim( (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
+$ae_req_path  = trim( (string) wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '', PHP_URL_PATH ), '/' );
+if ( '' !== $ae_home_path && 0 === strpos( $ae_req_path, $ae_home_path ) ) {
+	$ae_req_path = trim( substr( $ae_req_path, strlen( $ae_home_path ) ), '/' );
+}
+$ae_req_seg = '' === $ae_req_path ? '' : explode( '/', $ae_req_path )[0];
+
+// Five links. [ label, path, extra sections that count as "inside" this link ].
+$ae_nav = [
+	[ 'Services', 'services', [ 'work', 'online-presence', 'social-management', 'software', 'industries', 'process' ] ],
+	[ 'Websites', 'websites', [] ],
+	[ 'Pricing',  'pricing',  [] ],
+	[ 'Guides',   'guides',   [] ],
+	[ 'About',    'about',    [] ],
+];
+$ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
+	if ( $ae_req_seg === $slug && '' !== $slug ) {
+		return ' aria-current="page"';
+	}
+	return in_array( $ae_req_seg, $inside, true ) ? ' aria-current="true"' : '';
 };
 ?><!doctype html>
 <html <?php language_attributes(); ?>>
@@ -17,43 +41,31 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="profile" href="https://gmpg.org/xfn/11">
-<script>
-  // Runs before first paint.
-  //  ae-js            : motion CSS may hide elements that ae-motion.js will reveal
-  //  ae-skip-loader   : the counter loader shows only on the first page of a visit
-  //  ae-arriving      : we got here through a page transition, so start covered
-  //  ae-motion-failed : safety net, reveals everything if the motion script never runs
+<script data-no-optimize="1" data-no-defer="1" data-cfasync="false">
+  // Runs before first paint (kept out of LiteSpeed delay JS on purpose).
+  //  ae-js            : reveal CSS may hide blocks that ae-motion.js will fade in
+  //  ae-calm          : reduced motion, so nothing animates and nothing is hidden
+  //  ae-motion-failed : safety net, shows everything if the motion script never runs
   (function () {
     var html = document.documentElement;
     html.classList.add('ae-js');
     try {
-      var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (calm) { html.classList.add('ae-calm'); }
-      if (sessionStorage.getItem('ae_loader_seen') === '1' || calm) { html.classList.add('ae-skip-loader'); }
-      sessionStorage.setItem('ae_loader_seen', '1');
-      if (!calm && sessionStorage.getItem('ae_transition') === '1') { html.classList.add('ae-arriving'); }
-      sessionStorage.removeItem('ae_transition');
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { html.classList.add('ae-calm'); }
     } catch (e) {}
     setTimeout(function () {
       if (!html.classList.contains('ae-motion-ready')) { html.classList.add('ae-motion-failed'); }
     }, 4000);
   })();
 </script>
-<style>
-  .ae-skip-loader #ae-loader{display:none!important}
-  .ae-arriving #ae-transition{transform:translateY(0)!important}
-</style>
 <noscript><style>
-  #ae-loader{display:none!important}
-  [data-reveal],[data-reveal] *{opacity:1!important;transform:none!important;clip-path:none!important}
-  .mask-line span{transform:none!important}
+  [data-reveal],[data-reveal] *,.js-fade{opacity:1!important;transform:none!important}
 </style></noscript>
+<link rel="preload" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/fonts/plus-jakarta-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/fonts/plus-jakarta-sans-700.woff2" as="font" type="font/woff2" crossorigin>
 <?php wp_head(); ?>
 <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-favicon-32.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-favicon-32.png' ) ); ?>">
 <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-favicon-16.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-favicon-16.png' ) ); ?>">
 <link rel="apple-touch-icon" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-apple-touch-icon.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-apple-touch-icon.png' ) ); ?>">
-<link rel="stylesheet" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/refresh/ae-chrome.css?v=<?php echo esc_attr( $ae_asset_ver( '/assets/refresh/ae-chrome.css' ) ); ?>">
-<link rel="stylesheet" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/refresh/ae-fixes.css?v=<?php echo esc_attr( $ae_asset_ver( '/assets/refresh/ae-fixes.css' ) ); ?>">
 <link rel="stylesheet" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/refresh/ae-v5.css?v=<?php echo esc_attr( $ae_asset_ver( '/assets/refresh/ae-v5.css' ) ); ?>">
 </head>
 
@@ -61,35 +73,21 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
 <?php wp_body_open(); ?>
 <a class="skip-link" href="#main-content">Skip to content</a>
 
-<!-- Page loader: first page of a visit only; the counter tracks real image/font loading (ae-motion.js) -->
-<div id="ae-loader" aria-hidden="true">
-  <span id="ae-loader-num" class="ae-loader__num">0%</span>
-  <span class="ae-loader__name">AE Software Solutions</span>
-</div>
-
-<!-- Page transition panel (ae-motion.js) -->
-<div id="ae-transition" aria-hidden="true"></div>
-
 <header class="site-header">
   <div class="site-header__inner">
     <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__logo" rel="home">
-      <img src="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-logo-mark.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-logo-mark.png' ) ); ?>" alt="" width="30" height="30" class="site-header__logo-mark" aria-hidden="true">
-      AE Software Solutions
+      <img src="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-logo-mark.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-logo-mark.png' ) ); ?>" alt="AE Software Solutions" width="30" height="30" class="site-header__logo-mark">
     </a>
 
     <nav class="site-header__nav" aria-label="Main">
-      <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="site-header__nav-link">Services<sup>04</sup></a>
-      <a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="site-header__nav-link">Work<sup>07</sup></a>
-      <a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="site-header__nav-link">Websites</a>
-      <a href="<?php echo esc_url( home_url( '/online-presence/' ) ); ?>" class="site-header__nav-link">Presence</a>
-      <a href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>" class="site-header__nav-link">Pricing</a>
-      <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="site-header__nav-link">Guides</a>
-      <a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="site-header__nav-link">About</a>
+      <?php foreach ( $ae_nav as $item ) : ?>
+        <a href="<?php echo esc_url( home_url( '/' . $item[1] . '/' ) ); ?>" class="site-header__nav-link"<?php echo $ae_current( $item[1], $item[2] ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $item[0] ); ?></a>
+      <?php endforeach; ?>
     </nav>
 
-    <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="site-header__cta btn">Get in touch</a>
+    <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="site-header__cta btn btn--primary">Get in touch</a>
 
-    <!-- Hamburger: shown below 960px by ae-fixes.css, wired up in ae-animations.js -->
+    <!-- Hamburger: shown below 960px, wired up in ae-motion.js -->
     <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
       <span class="nav-toggle__bar"></span>
       <span class="nav-toggle__bar"></span>
@@ -101,17 +99,13 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
 <div class="mobile-nav-overlay" id="mobile-nav">
   <nav aria-label="Mobile">
     <ul class="mobile-nav-overlay__links">
-      <li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="mobile-nav-overlay__link">Services</a></li>
-      <li><a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="mobile-nav-overlay__link">Work</a></li>
-      <li><a href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" class="mobile-nav-overlay__link">Websites</a></li>
-      <li><a href="<?php echo esc_url( home_url( '/online-presence/' ) ); ?>" class="mobile-nav-overlay__link">Online presence</a></li>
-      <li><a href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>" class="mobile-nav-overlay__link">Pricing</a></li>
-      <li><a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="mobile-nav-overlay__link">Guides</a></li>
-      <li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="mobile-nav-overlay__link">About</a></li>
+      <?php foreach ( $ae_nav as $item ) : ?>
+        <li><a href="<?php echo esc_url( home_url( '/' . $item[1] . '/' ) ); ?>" class="mobile-nav-overlay__link"<?php echo $ae_current( $item[1], $item[2] ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $item[0] ); ?></a></li>
+      <?php endforeach; ?>
     </ul>
-    <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn mobile-nav-overlay__cta">Get in touch</a>
+    <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn--primary mobile-nav-overlay__cta">Get in touch</a>
   </nav>
-  <p class="mobile-nav-overlay__footer">anthony@aesoftwaresolutions.com</p>
+  <p class="mobile-nav-overlay__footer"><a href="mailto:anthony@aesoftwaresolutions.com">anthony@aesoftwaresolutions.com</a></p>
 </div>
 
 <main class="site-main" id="main-content">
