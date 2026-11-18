@@ -117,6 +117,27 @@ $ae_topic_close = function () {
   </ul>
 </section>
 
+<!-- 1b. SHOWCASE: a recent site inside a dark glass Safari window -->
+<?php $ae_show = $ae_work[0]; ?>
+<section class="v5-showcase" aria-labelledby="v5-showcase-title">
+  <p class="v5-label">A recent build</p>
+  <h2 class="v5-showcase__title" id="v5-showcase-title">Here is how our work looks in a browser.</h2>
+  <figure class="ae-safari">
+    <div class="ae-safari__bar" aria-hidden="true">
+      <span class="ae-safari__dots"><i></i><i></i><i></i></span>
+      <span class="ae-safari__url">
+        <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2.4" y="5.4" width="7.2" height="5" rx="1.3"/><path d="M4 5.4V3.9a2 2 0 0 1 4 0v1.5"/></svg>
+        aesoftwaresolutions.com/work
+      </span>
+      <span class="ae-safari__spacer"></span>
+    </div>
+    <a class="ae-safari__view" href="<?php echo esc_url( $ae_show['url'] ); ?>">
+      <img src="<?php echo esc_url( $ae_show['img'] ); ?>" alt="<?php echo esc_attr( $ae_show['alt'] ); ?>" width="1440" height="900" loading="lazy" decoding="async">
+    </a>
+    <figcaption class="ae-safari__cap"><?php echo esc_html( $ae_show['title'] ); ?>: <?php echo esc_html( $ae_show['desc'] ); ?></figcaption>
+  </figure>
+</section>
+
 <!-- 2. TOPICS: pick one to open it -->
 <section class="v5-topics" id="topics" aria-labelledby="v5-topics-title">
   <header class="v5-section-head" data-reveal>
