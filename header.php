@@ -55,6 +55,19 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
     setTimeout(function () {
       if (!html.classList.contains('ae-motion-ready')) { html.classList.add('ae-motion-failed'); }
     }, 4000);
+    // Intro curtain (first page of a visit) and page wipe arrival (after an internal link).
+    // Both are decoration only: skipped for reduced motion, and a hard timer always clears them.
+    try {
+      if (!html.classList.contains('ae-calm')) {
+        var arriving = sessionStorage.getItem('ae_wipe') === '1';
+        var seen = sessionStorage.getItem('ae_seen') === '1';
+        sessionStorage.removeItem('ae_wipe');
+        sessionStorage.setItem('ae_seen', '1');
+        if (arriving) { html.classList.add('ae-arriving'); }
+        else if (!seen && !location.hash) { html.classList.add('ae-intro-on'); }
+        setTimeout(function () { html.classList.remove('ae-arriving', 'ae-intro-on'); }, 2600);
+      }
+    } catch (e) {}
   })();
 </script>
 <noscript><style>
@@ -71,10 +84,14 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
 <?php wp_body_open(); ?>
 <a class="skip-link" href="#main-content">Skip to content</a>
 
+<!-- Decoration only (ae-motion.js): intro curtain and page wipe. Hidden unless html has ae-intro-on, ae-arriving or ae-wiping. -->
+<div class="ae-intro" id="ae-intro" aria-hidden="true"><span class="ae-intro__bar"></span></div>
+<div class="ae-wipe" id="ae-wipe" aria-hidden="true"></div>
+
 <!-- Dynamic Island style status pill (assets/js/ae-apple.js cycles the line). Quiet, not a banner. -->
-<div class="ae-island" id="ae-island" role="status" aria-live="polite" data-lines="We reply within 24 hours|Open Monday to Friday, 9am to 5pm ET">
+<div class="ae-island" id="ae-island" role="status" aria-live="polite" data-lines="Open Monday to Friday, 9am to 5pm ET">
   <span class="ae-island__dot" aria-hidden="true"></span>
-  <span class="ae-island__text">We reply within 24 hours</span>
+  <span class="ae-island__text">Open Monday to Friday, 9am to 5pm ET</span>
 </div>
 
 <header class="site-header">

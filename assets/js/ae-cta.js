@@ -1,6 +1,6 @@
 /**
  * <ae-cta>: closing call to action used on inner pages (v6 redesign).
- * White band, ink text, a hairline across the top, one button and the email
+ * Dark band, white text, a hairline across the top, one button and the email
  * link below it. The block fades up once when it scrolls into view. Reduced
  * motion (and no IntersectionObserver) shows it immediately.
  */
