@@ -32,10 +32,16 @@ $ae_testimonials = [];
             <p>Anthony keeps the tools simple and connects to what you already use. If you have booking or job software that works, he builds around it instead of asking you to switch.</p>
         </div>
     </div>
-    <figure class="ae-about-photo">
-        <img src="<?php echo esc_url( $ae_img . 'brand/founder-anthony-nobg.jpg' ); ?>" alt="Anthony, founder of AE Software Solutions" width="1514" height="1821" decoding="async">
-        <figcaption>Anthony, founder</figcaption>
-    </figure>
+    <div class="ae-about-photos">
+        <figure class="ae-about-photo">
+            <img src="<?php echo esc_url( $ae_img . 'brand/founder-anthony.jpg' ); ?>" alt="Anthony, founder of AE Software Solutions" width="1179" height="1571" decoding="async">
+            <figcaption>Anthony, founder</figcaption>
+        </figure>
+        <figure class="ae-about-photo">
+            <img src="<?php echo esc_url( $ae_img . 'brand/founder-evelyn.jpg' ); ?>" alt="Evelyn, co-founder of AE Software Solutions" width="1179" height="786" decoding="async">
+            <figcaption>Evelyn, co-founder</figcaption>
+        </figure>
+    </div>
 </section>
 
 <section class="ae-promises ae-alt" aria-labelledby="about-promises">
