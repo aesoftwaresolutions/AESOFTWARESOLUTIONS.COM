@@ -1,5 +1,5 @@
 /**
- * AE Software Solutions: motion and behavior (v6)
+ * AE Software Solutions: motion and behavior (v7)
  *
  * Small on purpose. Nothing here blocks reading, and every effect is optional.
  *
@@ -12,11 +12,19 @@
  *  7. Legacy hooks  process connector and assessment badges (older pages)
  *  8. Nav pill      black pill glides between the nav links, rests on the current section
  *
+ *  9. Page wipe     a dark panel slides over the page on internal links, then away on arrival
+ * 10. Intro         first page of a visit only: a 1.2s curtain with a thin progress line (CSS driven)
+ * 11. Split heads   h1, section titles and [data-split] rise word by word from a mask
+ * 12. Magnetic      buttons lean toward a fine pointer (up to 6px)
+ * 13. Cursor glow   a faint white light trails a fine pointer
+ *
  * Reduced motion: content is shown at once (html.ae-calm).
  * html.ae-js is set in <head>; if this file never runs, html.ae-motion-failed
  * shows everything after 4 seconds, so text is never stuck hidden.
- * The page loader, page transition panel, custom cursor, magnetic buttons,
- * cursor glow, split text headlines and footer wordmark slide are gone.
+ * Sections 9 to 13 are the preview motion layer, restored in v7 as decoration only:
+ * each one is skipped under reduced motion, a hard timer in header.php clears the
+ * intro and wipe even if this file never runs, and split words show at once on failure.
+ * The footer wordmark slide is NOT restored: the v6 footer has no wordmark element.
  */
 (function () {
   'use strict';
@@ -360,6 +368,131 @@
     updateSection();
   }
 
+  var finePointer = !!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+
+  /* 9. PAGE WIPE */
+  function initWipe() {
+    if (calm) return;
+    var arriving = html.classList.contains('ae-arriving');
+    if (arriving) setTimeout(function () { html.classList.remove('ae-arriving'); }, 700);
+    // Coming back through the back button must never show a stuck panel.
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) html.classList.remove('ae-wiping', 'ae-arriving', 'ae-intro-on');
+    });
+    doc.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download')) return;
+      if (a.origin !== location.origin || /^(mailto|tel):/i.test(a.getAttribute('href'))) return;
+      if (a.pathname === location.pathname && a.search === location.search) return; // same page or hash jump
+      if (/\.(pdf|zip|png|jpe?g|gif|webp|svg|mp4)$/i.test(a.pathname)) return;
+      e.preventDefault();
+      try { sessionStorage.setItem('ae_wipe', '1'); } catch (err) {}
+      html.classList.add('ae-wiping');
+      var go = function () { location.href = a.href; };
+      setTimeout(go, 340);
+      // If the navigation is cancelled or slow, never leave the panel up.
+      setTimeout(function () { html.classList.remove('ae-wiping'); }, 3000);
+    });
+  }
+
+  /* 10. INTRO is pure CSS (html.ae-intro-on, set before paint in header.php). */
+
+  /* 11. SPLIT HEADLINES */
+  function splitNode(node, state) {
+    Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+      if (n.nodeType === 3) {
+        var parts = n.nodeValue.split(/(\s+)/);
+        var frag = doc.createDocumentFragment();
+        parts.forEach(function (part) {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(doc.createTextNode(part)); return; }
+          var w = doc.createElement('span'); w.className = 'ae-split__w';
+          var i = doc.createElement('span'); i.className = 'ae-split__i';
+          i.style.setProperty('--i', Math.min(state.n++, 14));
+          i.textContent = part;
+          w.appendChild(i); frag.appendChild(w);
+        });
+        node.replaceChild(frag, n);
+      } else if (n.nodeType === 1 && !/^(BR|SCRIPT|STYLE|SVG|IMG)$/i.test(n.nodeName)) {
+        splitNode(n, state);
+      }
+    });
+  }
+
+  function initSplit() {
+    if (calm || !('IntersectionObserver' in window)) return;
+    var heads = doc.querySelectorAll('h1, .v5-section-title, [data-split]');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        io.unobserve(entry.target);
+        var el = entry.target;
+        requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('is-in'); }); });
+      });
+    }, { threshold: 0.2 });
+    heads.forEach(function (el) {
+      if (el.classList.contains('ae-split') || el.closest('.ae-split')) return;
+      if (!el.textContent.trim()) return;
+      var label = el.textContent.replace(/\s+/g, ' ').trim();
+      splitNode(el, { n: 0 });
+      el.setAttribute('aria-label', label);
+      el.classList.add('ae-split');
+      io.observe(el);
+    });
+    // Backstop: whatever has not revealed after 3s is shown.
+    setTimeout(function () {
+      doc.querySelectorAll('.ae-split:not(.is-in)').forEach(function (el) { el.classList.add('is-in'); });
+    }, 3000);
+  }
+
+  /* 12. MAGNETIC BUTTONS */
+  function initMagnetic() {
+    if (calm || !finePointer) return;
+    var RANGE = 6;
+    doc.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      var b = e.target.closest && e.target.closest('.btn, .v5-button');
+      if (!b || b.disabled) return;
+      var r = b.getBoundingClientRect();
+      var dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+      var dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+      b.classList.remove('is-magnet-out');
+      b.style.setProperty('--mx', (dx * RANGE).toFixed(1) + 'px');
+      b.style.setProperty('--my', (dy * RANGE).toFixed(1) + 'px');
+    }, { passive: true });
+    doc.addEventListener('pointerout', function (e) {
+      var b = e.target.closest && e.target.closest('.btn, .v5-button');
+      if (!b || (e.relatedTarget && b.contains(e.relatedTarget))) return;
+      b.classList.add('is-magnet-out');
+      b.style.removeProperty('--mx');
+      b.style.removeProperty('--my');
+    }, { passive: true });
+  }
+
+  /* 13. CURSOR GLOW */
+  function initGlow() {
+    if (calm || !finePointer) return;
+    var g = doc.createElement('div');
+    g.className = 'ae-glow';
+    g.setAttribute('aria-hidden', 'true');
+    doc.body.appendChild(g);
+    var x = -999, y = -999, tx = -999, ty = -999, raf = 0;
+    function step() {
+      x += (tx - x) * 0.14; y += (ty - y) * 0.14;
+      g.style.setProperty('--gx', x.toFixed(1) + 'px');
+      g.style.setProperty('--gy', y.toFixed(1) + 'px');
+      raf = (Math.abs(tx - x) + Math.abs(ty - y) > 0.5) ? requestAnimationFrame(step) : 0;
+    }
+    window.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      if (!g.classList.contains('is-on')) { x = tx = e.clientX; y = ty = e.clientY; g.classList.add('is-on'); }
+      tx = e.clientX; ty = e.clientY;
+      if (!raf) raf = requestAnimationFrame(step);
+    }, { passive: true });
+    doc.addEventListener('pointerleave', function () { g.classList.remove('is-on'); });
+  }
+
   function init() {
     initAutoFade();
     initReveals();
@@ -370,6 +503,9 @@
     initJumpBar();
     initLegacy();
     initNavPill();
+    [initWipe, initSplit, initMagnetic, initGlow].forEach(function (fn) {
+      try { fn(); } catch (err) { /* decoration only: never break the page */ }
+    });
     html.classList.add('ae-motion-ready');
     doc.body.classList.add('loaded'); // hook some older rules still read
   }

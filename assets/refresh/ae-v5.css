@@ -19,10 +19,10 @@
      --ink is the text colour (white). --surface and --paper-2 are glass. */
   --paper: #0A0A0B;
   --paper-2: rgba(255, 255, 255, .04);
-  --surface: rgba(255, 255, 255, .07);
-  --glass: rgba(255, 255, 255, .07);
-  --glass-strong: rgba(255, 255, 255, .11);
-  --glass-line: rgba(255, 255, 255, .16);
+  --surface: rgba(255, 255, 255, .045);
+  --glass: rgba(255, 255, 255, .045);
+  --glass-strong: rgba(255, 255, 255, .08);
+  --glass-line: rgba(255, 255, 255, .15);
   --ink: #FFFFFF;
   --ink-70: rgba(255, 255, 255, .84);   /* secondary text, 12:1 on the page */
   --ink-60: rgba(255, 255, 255, .74);   /* tertiary text, the lightest allowed for text */
@@ -437,18 +437,20 @@ header.site-header {
 }
 /* Scrolled, fallback first: near opaque dark where backdrop blur is not supported. */
 header.site-header.aec--scrolled {
-  background: rgba(10, 10, 11, .99);
+  background: rgba(10, 10, 11, .94);
   border-bottom-color: rgba(255, 255, 255, .10);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08);
   padding: 0 var(--gutter);
 }
 @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   header.site-header.aec--scrolled {
-    /* .985 not .55: at .55 the white hero buttons showed through the glass and read as
-       sitting on top of the header, covering the logo and menu icon on phones. */
-    background: rgba(10, 10, 11, .985);
-    -webkit-backdrop-filter: saturate(140%) blur(16px);
-    backdrop-filter: saturate(140%) blur(16px);
+    /* Glass at .86 (was .985; at .55 the white hero buttons read as sitting on the header).
+       brightness(.42) in the backdrop dims whatever scrolls underneath so a white button
+       does not read as a button, and the 28px blur frosts it. Going lower brings the
+       ghosted button back over the logo on phones. */
+    background: rgba(10, 10, 11, .86);
+    -webkit-backdrop-filter: brightness(.42) saturate(160%) blur(28px);
+    backdrop-filter: brightness(.42) saturate(160%) blur(28px);
   }
 }
 .site-header__inner {
@@ -516,7 +518,7 @@ header.site-header .site-header__cta.btn {
   letter-spacing: 0;
   border-radius: var(--radius-btn);
   /* Glass, the same recipe as the nav pill: translucent white, blur, hairline, soft top highlight. */
-  background-color: rgba(255, 255, 255, .14);
+  background-color: rgba(255, 255, 255, .09);
   background-image: linear-gradient(var(--gold), var(--gold));
   background-repeat: no-repeat;
   background-position: 0 100%;
@@ -541,7 +543,7 @@ header.site-header .site-header__cta.btn:hover { background-size: 100% 2px; back
   width: var(--pw, 0);
   height: var(--ph, 0);
   transform: translate3d(var(--px, 0), var(--py, 0), 0);
-  background: rgba(40, 40, 44, 0.9);
+  background: rgba(40, 40, 44, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
@@ -552,7 +554,7 @@ header.site-header .site-header__cta.btn:hover { background-size: 100% 2px; back
 }
 @supports (backdrop-filter: blur(1px)) {
   .ae-navpill {
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.09);
     backdrop-filter: saturate(140%) blur(14px);
     -webkit-backdrop-filter: saturate(140%) blur(14px);
   }
@@ -981,7 +983,10 @@ footer.site-footer.v5-footer {
   position: sticky;
   top: var(--header-h);
   z-index: 900;
-  background: var(--paper);
+  /* Dark glass like the header above it, not a solid band. */
+  background: rgba(10, 10, 11, .8);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
 }
@@ -1593,7 +1598,7 @@ a { color: inherit; }
 
 /* Sections that used to paint a solid light band are transparent over the animation. */
 .ae-alt, .ae-alt::before { background: var(--paper-2); box-shadow: 0 0 0 100vmax var(--paper-2); }
-footer.site-footer.v5-footer { background: rgba(10, 10, 11, .72); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+footer.site-footer.v5-footer { background: rgba(10, 10, 11, .5); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 .mobile-nav-overlay { background: rgba(0, 0, 0, .5); }
 .ae-gate { background: rgba(0, 0, 0, .55); }
 .ae-media { background: rgba(255, 255, 255, .05); }
@@ -1681,7 +1686,7 @@ footer.site-footer.v5-footer { background: rgba(10, 10, 11, .72); -webkit-backdr
     height: 36px;
     margin: -18px 0 0 -18px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, .08);
+    background: rgba(255, 255, 255, .05);
     border: 1px solid rgba(255, 255, 255, .4);
     box-shadow: 0 2px 10px rgba(0, 0, 0, .25), inset 0 1px 0 rgba(255, 255, 255, .18);
     -webkit-backdrop-filter: blur(5px) saturate(140%);
@@ -1728,11 +1733,11 @@ html.ae-calm .ae-glass-cursor { display: none !important; }
   max-width: calc(100vw - 190px);
   padding: 0 13px;
   border-radius: 999px;
-  background: rgba(8, 8, 10, .82);
+  background: rgba(8, 8, 10, .5);
   border: 1px solid rgba(255, 255, 255, .14);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 8px 24px rgba(0, 0, 0, .4);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
   color: var(--text);
   font-size: .8125rem;
   font-weight: 500;
@@ -1781,7 +1786,7 @@ html.ae-calm .ae-island__text, html.ae-calm .ae-island { transition: none; }
 .ae-sheet {
   position: relative;
   border-radius: 24px 24px 0 0;
-  background: rgba(22, 22, 26, .98);
+  background: rgba(22, 22, 26, .74);
   border: 1px solid rgba(255, 255, 255, .16);
   border-bottom: 0;
   -webkit-backdrop-filter: blur(28px) saturate(160%);
@@ -1805,8 +1810,8 @@ html.ae-calm .ae-island__text, html.ae-calm .ae-island { transition: none; }
   align-items: stretch;
   justify-content: flex-end;
   padding: calc(var(--header-h) + 12px) 0 0;
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  /* No backdrop-filter here: a filtered parent becomes the backdrop root, so the sheet's own
+     blur would see only the scrim and not the page. The scrim stays a plain dim. */
   overflow: hidden;
 }
 .mobile-nav-overlay.is-open { animation: ae-scrim-in .3s var(--ease); }
@@ -1828,7 +1833,7 @@ html.ae-calm .ae-island__text, html.ae-calm .ae-island { transition: none; }
 .mobile-nav-sheet .ae-sheet__grabber { margin-bottom: 8px; padding: 0; cursor: grab; }
 
 /* Guides signup dialog: a bottom sheet that rises from the bottom edge. */
-.ae-gate { align-items: flex-end; padding: 0; overflow: hidden; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.ae-gate { align-items: flex-end; padding: 0; overflow: hidden; } /* no backdrop-filter on the scrim, so the sheet card can blur the page itself */
 .ae-gate__card.ae-sheet {
   max-width: 520px;
   max-height: 92dvh;
@@ -1840,7 +1845,7 @@ html.ae-calm .ae-island__text, html.ae-calm .ae-island { transition: none; }
   border-top: 1px solid rgba(255, 255, 255, .22);
   border-bottom: 0 !important;
   border-radius: 24px 24px 0 0;
-  background: rgba(22, 22, 26, .98) !important;
+  background: rgba(22, 22, 26, .74) !important;
   transform: translateY(100%);
   transition: transform .45s cubic-bezier(.2, .9, .25, 1);
 }
@@ -1863,7 +1868,7 @@ html.ae-calm .ae-gate__card.ae-sheet { transition: none; }
   max-width: 980px;
   border-radius: 14px;
   overflow: hidden;
-  background: rgba(22, 22, 26, .78);
+  background: rgba(22, 22, 26, .5);
   border: 1px solid var(--glass-line);
   -webkit-backdrop-filter: blur(14px) saturate(130%);
   backdrop-filter: blur(14px) saturate(130%);
@@ -1917,3 +1922,67 @@ html.ae-calm .ae-gate__card.ae-sheet { transition: none; }
 }
 /* The island stays out of the way while the menu sheet is open. */
 body.nav-open .ae-island { opacity: 0; transition: opacity .2s var(--ease); }
+
+/* ── Motion layer v7 (assets/js/ae-motion.js, sections 9 to 13) ─────────────
+   Intro curtain, page wipe, split headlines, magnetic buttons, cursor glow.
+   Black and white only. Every rule that hides anything is scoped to a class
+   that JS adds AND clears, with a hard timer in header.php as the backstop.
+   Reduced motion (html.ae-calm) and a failed script (html.ae-motion-failed)
+   switch all of it off. */
+.ae-intro, .ae-wipe {
+  position: fixed; inset: 0; z-index: 3000; pointer-events: none;
+  background: #0A0A0B; visibility: hidden; opacity: 0;
+}
+.ae-intro__bar {
+  position: absolute; left: 50%; top: 50%; width: 120px; height: 2px; margin: -1px 0 0 -60px;
+  background: rgba(255, 255, 255, .18); overflow: hidden;
+}
+.ae-intro__bar::after {
+  content: ''; position: absolute; inset: 0; background: #fff;
+  transform: scaleX(0); transform-origin: left;
+}
+html.ae-intro-on .ae-intro { visibility: visible; opacity: 1; animation: ae-intro-out .5s .75s var(--ease) forwards; }
+html.ae-intro-on .ae-intro__bar::after { animation: ae-intro-bar .7s var(--ease) forwards; }
+@keyframes ae-intro-bar { to { transform: scaleX(1); } }
+@keyframes ae-intro-out { to { opacity: 0; visibility: hidden; } }
+
+.ae-wipe { opacity: 1; transform: translateY(100%); }
+html.ae-wiping .ae-wipe { visibility: visible; transform: translateY(0); transition: transform .34s cubic-bezier(.7, 0, .2, 1); pointer-events: auto; }
+html.ae-arriving .ae-wipe { visibility: visible; transform: translateY(0); animation: ae-wipe-away .45s .05s cubic-bezier(.7, 0, .2, 1) forwards; }
+@keyframes ae-wipe-away { to { transform: translateY(-100%); visibility: hidden; } }
+
+/* Split headlines: words rise from a mask. Only applies once JS has split the words
+   (.ae-split), and the reveal class is added by JS or by the failsafe below. */
+.ae-split__w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; }
+.ae-split__i { display: inline-block; transform: translateY(105%); transition: transform .7s var(--ease); transition-delay: calc(var(--i, 0) * 45ms); }
+.ae-split.is-in .ae-split__i { transform: none; }
+
+/* Magnetic buttons: use the independent translate property so hover transforms are untouched. */
+.btn, .v5-button { translate: var(--mx, 0) var(--my, 0); transition-property: translate, background-color, color, border-color, box-shadow, background-size, transform, opacity; }
+.btn.is-magnet-out, .v5-button.is-magnet-out { transition-duration: .4s; }
+
+/* Cursor glow: a faint white light that trails the pointer (fine pointers only). */
+.ae-glow {
+  position: fixed; left: 0; top: 0; width: 520px; height: 520px; margin: -260px 0 0 -260px;
+  border-radius: 50%; pointer-events: none; z-index: 0; opacity: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, .07) 0%, rgba(255, 255, 255, 0) 65%);
+  transform: translate3d(var(--gx, -999px), var(--gy, -999px), 0);
+  transition: opacity .4s var(--ease);
+}
+.ae-glow.is-on { opacity: 1; }
+
+html.ae-calm .ae-intro, html.ae-calm .ae-wipe, html.ae-calm .ae-glow,
+html.ae-motion-failed .ae-intro, html.ae-motion-failed .ae-wipe, html.ae-motion-failed .ae-glow { display: none !important; }
+html.ae-calm .ae-split__i, html.ae-motion-failed .ae-split__i { transform: none !important; transition: none !important; }
+html.ae-calm .btn, html.ae-calm .v5-button { translate: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ae-intro, .ae-wipe, .ae-glow { display: none !important; }
+  .ae-split__i { transform: none !important; transition: none !important; }
+  .btn, .v5-button { translate: none; }
+}
+
+/* ── Consistency sweep (Nov 18) ─────────────────────────────────────────────
+   style.css (legacy, untouched) still names Inter in about 15 rules, for example
+   .product-section__num on Software. One rule so no page can fall back to it:
+   the Apple system stack everywhere, pseudo elements included. */
+html body *, html body *::before, html body *::after { font-family: var(--font-main) !important; }
