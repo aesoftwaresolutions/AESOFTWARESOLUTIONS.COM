@@ -28,8 +28,8 @@ $ae_testimonials = [];
         <blockquote class="ae-pullquote" data-reveal>Most small businesses don&rsquo;t need more software. They need the calls they&rsquo;re already getting to turn into booked work.</blockquote>
         <div class="ae-about-body" data-reveal>
             <p>That&rsquo;s the whole focus. A website that makes it obvious what you do and how to reach you. A Google profile with current hours, recent photos and replies to every review. And a system that answers when you can&rsquo;t: a text back after a missed call, a booking link, a reminder to follow up on a quote.</p>
-            <p>Anthony leads every project himself, start to finish. You talk to the person building your system, not an account manager, and you get a fixed price in writing before any work starts.</p>
-            <p>Anthony keeps the tools simple and connects to what you already use. If you have booking or job software that works, he builds around it instead of asking you to switch.</p>
+            <p>We handle every project ourselves, start to finish. You talk to the person building your system, not an account manager, and you get a fixed price in writing before any work starts.</p>
+            <p>We keep the tools simple and connect to what you already use. If you have booking or job software that works, we build around it instead of asking you to switch.</p>
         </div>
     </div>
     <div class="ae-about-photos">
