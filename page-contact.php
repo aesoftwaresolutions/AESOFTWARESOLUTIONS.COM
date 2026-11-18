@@ -110,7 +110,7 @@ $ae_timelines = [
 
             <div>
                 <button type="submit" class="v5-button" id="contact-submit">Send message</button>
-                <p class="contact-form__note" style="margin-top:12px">We reply within 24 hours. Your information is never shared.</p>
+                <p class="contact-form__note" style="margin-top:12px">Your information is never shared.</p>
                 <p class="contact-form__status" id="contact-form-status" role="status" aria-live="polite" hidden></p>
             </div>
 
@@ -222,7 +222,6 @@ $ae_timelines = [
             <p class="contact-sidebar__label">What happens next</p>
             <ol class="contact-sidebar__next">
                 <li>We read your message ourselves.</li>
-                <li>We reply within 24 hours.</li>
                 <li>You and we set up a free 30 minute discovery call.</li>
             </ol>
         </div>
