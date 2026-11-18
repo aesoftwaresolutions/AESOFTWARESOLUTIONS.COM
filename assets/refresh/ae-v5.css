@@ -111,14 +111,12 @@ img, svg { max-width: 100%; }
 }
 .skip-link:focus { top: 16px; }
 
-/* Focus: an ink ring (3:1 or better on white) with a gold halo inside it. */
+/* Focus: an ink ring, no gold. */
 a:focus-visible, button:focus-visible, summary:focus-visible, .btn:focus-visible,
 input:focus-visible, select:focus-visible, textarea:focus-visible,
 [tabindex]:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
-  box-shadow: 0 0 0 2px var(--gold);
-  transition: box-shadow .15s var(--ease);
 }
 
 /* Legacy blocks the old motion engine hid until it ran. Always visible now. */
