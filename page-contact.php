@@ -17,7 +17,7 @@ $ae_services = [
 	'front-desk'           => 'Front Desk phone answering',
 	'social-front-desk'    => 'Social Front Desk',
 	'missed-lead-audit'    => 'Missed-Lead Audit',
-	'ai-tools-assessment'  => 'AI Tools Assessment',
+	'ai-tools-assessment'  => 'AI Tools Assessment (add on to the Missed-Lead Audit)',
 	'custom'               => 'Something custom',
 ];
 $ae_budgets = [
