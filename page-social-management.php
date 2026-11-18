@@ -45,7 +45,7 @@ $ae_social_faq = [
 	<p class="page-hero__subtitle">We plan, write, design, post and reply for businesses that want leads and creators who want to grow, with a monthly report that shows what it brought in.</p>
 	<div class="op-hero__actions" data-reveal>
 		<a class="v5-button" href="#plans">See the plans</a>
-		<a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Book a free discovery call</a>
+		<a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-ae-popup>Book a free discovery call</a>
 	</div>
 </section>
 

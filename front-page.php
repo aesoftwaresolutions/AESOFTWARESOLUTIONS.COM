@@ -93,7 +93,7 @@ $ae_topic_close = function () {
     We work with small businesses to untangle daily workflows, build clear customer facing websites, and put practical systems in place that free up your time.
   </p>
   <div class="v5-hero__actions">
-    <a class="v5-button" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Book a discovery call</a>
+    <a class="v5-button" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-ae-popup>Book a discovery call</a>
     <a class="v5-textlink" href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>">See pricing &rarr;</a>
   </div>
 
@@ -153,7 +153,7 @@ $ae_topic_close = function () {
       <ul class="v5-approach__links">
         <li><a class="v5-link" href="<?php echo esc_url( home_url( '/process/' ) ); ?>">&rarr; Our process, step by step</a></li>
         <li><a class="v5-link" href="<?php echo esc_url( home_url( '/about/' ) ); ?>">&rarr; About Anthony</a></li>
-        <li><a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">&rarr; Book a discovery call</a></li>
+        <li><a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-ae-popup>&rarr; Book a discovery call</a></li>
       </ul>
     </div>
   <?php $ae_topic_close(); ?>
@@ -286,7 +286,7 @@ $ae_topic_close = function () {
 <!-- 6. CLOSING CTA: white, one button, email below -->
 <section class="v5-closing" aria-labelledby="v5-closing-title">
   <h2 class="v5-closing__title" id="v5-closing-title">Have a process that eats your week? Let&rsquo;s take it apart.</h2>
-  <a class="v5-button" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Book a discovery call</a>
+  <a class="v5-button" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-ae-popup>Book a discovery call</a>
   <p class="v5-closing__email">Or write to <a class="v5-link" href="mailto:anthony@aesoftwaresolutions.com">anthony@aesoftwaresolutions.com</a></p>
 </section>
 

@@ -90,7 +90,7 @@ $ae_presence_faq = [
 				<p class="v5-label">Biggest gaps</p>
 				<ul id="op-score-gap-list"></ul>
 			</div>
-			<a class="v5-button op-score__cta" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Get these fixed</a>
+			<a class="v5-button op-score__cta" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-ae-popup data-ae-service="online-presence" data-ae-plan="Online presence fixes">Get these fixed</a>
 		</aside>
 	</div>
 </section>

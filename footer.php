@@ -62,6 +62,13 @@
   </div>
 </footer>
 
+<?php
+// Glass card contact popup (assets/js/ae-popup.js). The Contact page already is the form, so it skips this.
+if ( ! is_page_template( 'page-contact.php' ) ) {
+	include get_template_directory() . '/popup-contact.php';
+}
+?>
+
 <?php wp_footer(); ?>
 
 </body>

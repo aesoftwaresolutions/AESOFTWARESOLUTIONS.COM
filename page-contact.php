@@ -37,7 +37,7 @@ $ae_timelines = [
 <section class="page-hero contact-page-hero">
     <p class="page-hero__eyebrow">Get in touch</p>
     <h1 class="page-hero__headline">Tell us about the project.</h1>
-    <p class="page-hero__subtitle">We read every message ourselves and reply within 24 hours. The first call is a free 30 minute discovery call.</p>
+    <p class="page-hero__subtitle">We read every message ourselves. The first call is a free 30 minute discovery call.</p>
 </section>
 
 <section class="ae-contact" aria-label="Contact form">

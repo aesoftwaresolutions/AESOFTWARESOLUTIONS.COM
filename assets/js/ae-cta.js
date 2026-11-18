@@ -31,7 +31,7 @@
     '  <p class="label">Next step</p>' +
     '  <h2 id="cta-title">Tell us what slows you down. We&rsquo;ll map the fix.</h2>' +
     '  <div class="actions">' +
-    '    <a class="btn" href="/contact/">Book a discovery call</a>' +
+    '    <a class="btn" href="/contact/" data-ae-popup>Book a discovery call</a>' +
     '    <span class="note">Free 30 minute discovery call</span>' +
     '  </div>' +
     '  <p class="mail">Or write to <a href="mailto:anthony@aesoftwaresolutions.com">anthony@aesoftwaresolutions.com</a></p>' +
