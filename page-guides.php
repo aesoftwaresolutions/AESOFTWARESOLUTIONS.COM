@@ -147,8 +147,8 @@ $faqs = array(
 	data-nonce="<?php echo esc_attr( wp_create_nonce( 'ae_guides_signup' ) ); ?>">
 	<div class="ae-gate__card">
 		<p class="ae-gate__eyebrow">Free guides</p>
-		<h2 class="ae-gate__title" id="ae-gate-title">Join our monthly newsletter and get all six guides.</h2>
-		<p class="ae-gate__copy" id="ae-gate-copy">We send one newsletter a month. It covers what is happening at AE Software Solutions, current world events that affect small businesses and contractors, and how AE can help. The six guides are free when you join.</p>
+		<h2 class="ae-gate__title" id="ae-gate-title">Join our monthly newsletter and get all ten guides.</h2>
+		<p class="ae-gate__copy" id="ae-gate-copy">We send one newsletter a month. It covers what is happening at AE Software Solutions, current world events that affect small businesses and contractors, and how AE can help. The ten guides are free when you join.</p>
 		<form class="ae-gate__form" id="ae-gate-form" novalidate>
 			<label class="ae-gate__field">
 				<span class="ae-gate__label">Name</span>

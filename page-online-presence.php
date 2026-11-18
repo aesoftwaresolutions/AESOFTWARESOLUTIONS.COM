@@ -141,7 +141,7 @@ $ae_presence_faq = [
 <section class="op-steps ae-rule" aria-labelledby="op-steps-title">
 	<h2 class="v5-section-title" id="op-steps-title" data-split>How it works</h2>
 	<ol class="op-steps__list">
-		<li data-reveal><span class="v5-label">01</span><h3>Presence check</h3><p>A free 15-minute call. We look at what a customer sees when they search for you and list what to fix first.</p></li>
+		<li data-reveal><span class="v5-label">01</span><h3>Presence check</h3><p>A free 15 minute call. We look at what a customer sees when they search for you and list what to fix first.</p></li>
 		<li data-reveal><span class="v5-label">02</span><h3>Cleanup</h3><p>We fix the profile, listings and website basics first, so the foundation is right.</p></li>
 		<li data-reveal><span class="v5-label">03</span><h3>Ongoing care</h3><p>Posts, review replies and listing upkeep every month, with a report so you can see what changed.</p></li>
 	</ol>
