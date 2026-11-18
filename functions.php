@@ -23,11 +23,11 @@ function aesoftwares_enqueue_scripts() {
     $uri  = get_template_directory_uri();
     $path = get_template_directory();
 
-    // One type family sitewide: Plus Jakarta Sans, self hosted (weights 400, 500,
-    // 600, 700 in assets/fonts/, declared in assets/refresh/ae-fonts.css with
-    // font-display: swap). No third party font request. Space Grotesk, Inter and
-    // DM Serif Display are gone. The handle stays 'ae-fonts' so style.css still
-    // loads after it.
+    // Primary font is now the Apple system stack (--font-main in ae-v5.css), so
+    // Apple devices render San Francisco. Plus Jakarta Sans stays in assets/fonts/
+    // and ae-fonts.css as an unused fallback (font-display: swap, only fetched if
+    // something asks for it by name). The handle stays 'ae-fonts' so style.css
+    // still loads after it.
     $fonts_css = $path . '/assets/refresh/ae-fonts.css';
     wp_enqueue_style(
         'ae-fonts',
@@ -50,6 +50,11 @@ function aesoftwares_enqueue_scripts() {
         filemtime( $js . 'ae-motion.js' ),
         [ 'in_footer' => false, 'strategy' => 'defer' ]
     );
+
+    // Glass circle cursor: desktop mouse only (the script exits on touch and on
+    // reduced motion), so it costs phones nothing beyond the tiny file.
+    wp_enqueue_script( 'ae-apple', $uri . '/assets/js/ae-apple.js', [], filemtime( $js . 'ae-apple.js' ), [ 'in_footer' => true, 'strategy' => 'defer' ] );
+    wp_enqueue_script( 'ae-cursor', $uri . '/assets/js/ae-cursor.js', [], filemtime( $js . 'ae-cursor.js' ), [ 'in_footer' => true, 'strategy' => 'defer' ] );
 
     // ae-greetings, ae-products, ae-testimonials and ae-assistant were removed:
     // nothing on the current pages uses them, and ae-testimonials showed
@@ -163,6 +168,16 @@ function aesoftwares_enqueue_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'aesoftwares_enqueue_scripts' );
 
+// LiteSpeed "delay JS" holds scripts until the first touch or key press, which
+// leaves the nav pill and cursor dead on first hover. Keep the two small
+// interaction scripts out of it.
+add_filter( 'script_loader_tag', function ( $tag, $handle ) {
+    if ( in_array( $handle, [ 'ae-motion', 'ae-cursor', 'ae-apple' ], true ) && false === strpos( $tag, 'data-no-optimize' ) ) {
+        $tag = str_replace( '<script ', '<script data-no-optimize="1" data-no-defer="1" data-cfasync="false" ', $tag );
+    }
+    return $tag;
+}, 10, 2 );
+
 
 // ── Retired Aria pages → homepage ──────────────────────────────────────────
 // The Aria console, store and marketplace pages were removed. Their old URLs
@@ -203,7 +218,7 @@ add_action( 'init', function () {
 // changes, purge LiteSpeed once (no-op if the plugin isn't active).
 add_action( 'init', function () {
     $dir   = get_template_directory();
-    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js', '/assets/js/ae-cta.js', '/assets/refresh/ae-fonts.css' ];
+    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js', '/assets/js/ae-cursor.js', '/assets/js/ae-apple.js', '/assets/js/ae-cta.js', '/assets/refresh/ae-fonts.css' ];
     $sig   = '';
     foreach ( $files as $f ) {
         $sig .= file_exists( $dir . $f ) ? filemtime( $dir . $f ) : '0';

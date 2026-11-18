@@ -60,8 +60,6 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
 <noscript><style>
   [data-reveal],[data-reveal] *,.js-fade{opacity:1!important;transform:none!important}
 </style></noscript>
-<link rel="preload" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/fonts/plus-jakarta-sans-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/fonts/plus-jakarta-sans-700.woff2" as="font" type="font/woff2" crossorigin>
 <?php wp_head(); ?>
 <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-favicon-32.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-favicon-32.png' ) ); ?>">
 <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-favicon-16.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-favicon-16.png' ) ); ?>">
@@ -72,6 +70,12 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <a class="skip-link" href="#main-content">Skip to content</a>
+
+<!-- Dynamic Island style status pill (assets/js/ae-apple.js cycles the line). Quiet, not a banner. -->
+<div class="ae-island" id="ae-island" role="status" aria-live="polite" data-lines="We reply within 24 hours|Open Monday to Friday, 9am to 5pm ET">
+  <span class="ae-island__dot" aria-hidden="true"></span>
+  <span class="ae-island__text">We reply within 24 hours</span>
+</div>
 
 <header class="site-header">
   <div class="site-header__inner">
@@ -96,16 +100,20 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
   </div>
 </header>
 
+<!-- Mobile menu: an iOS style bottom sheet (grabber, rounded top corners, slides up). -->
 <div class="mobile-nav-overlay" id="mobile-nav">
-  <nav aria-label="Mobile">
-    <ul class="mobile-nav-overlay__links">
-      <?php foreach ( $ae_nav as $item ) : ?>
-        <li><a href="<?php echo esc_url( home_url( '/' . $item[1] . '/' ) ); ?>" class="mobile-nav-overlay__link"<?php echo $ae_current( $item[1], $item[2] ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $item[0] ); ?></a></li>
-      <?php endforeach; ?>
-    </ul>
-    <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn--primary mobile-nav-overlay__cta">Get in touch</a>
-  </nav>
-  <p class="mobile-nav-overlay__footer"><a href="mailto:anthony@aesoftwaresolutions.com">anthony@aesoftwaresolutions.com</a></p>
+  <div class="ae-sheet mobile-nav-sheet" data-sheet>
+    <span class="ae-sheet__grabber" data-sheet-grab aria-hidden="true"></span>
+    <nav aria-label="Mobile">
+      <ul class="mobile-nav-overlay__links">
+        <?php foreach ( $ae_nav as $item ) : ?>
+          <li><a href="<?php echo esc_url( home_url( '/' . $item[1] . '/' ) ); ?>" class="mobile-nav-overlay__link"<?php echo $ae_current( $item[1], $item[2] ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $item[0] ); ?></a></li>
+        <?php endforeach; ?>
+      </ul>
+      <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn--primary mobile-nav-overlay__cta">Get in touch</a>
+    </nav>
+    <p class="mobile-nav-overlay__footer"><a href="mailto:anthony@aesoftwaresolutions.com">anthony@aesoftwaresolutions.com</a></p>
+  </div>
 </div>
 
 <main class="site-main" id="main-content">

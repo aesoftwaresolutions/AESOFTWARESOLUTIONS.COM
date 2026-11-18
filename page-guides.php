@@ -141,11 +141,12 @@ $faqs = array(
 	</div>
 </section>
 
-<!-- Signup popup. Not dismissible: no close button, no click outside, no Escape. -->
+<!-- Signup popup. iOS style bottom sheet. Not dismissible: no close button, no click outside, no Escape. -->
 <div class="ae-gate" id="ae-gate" role="dialog" aria-modal="true" aria-labelledby="ae-gate-title" aria-describedby="ae-gate-copy"
 	data-ajax-url="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>"
 	data-nonce="<?php echo esc_attr( wp_create_nonce( 'ae_guides_signup' ) ); ?>">
-	<div class="ae-gate__card">
+	<div class="ae-gate__card ae-sheet">
+		<span class="ae-sheet__grabber" aria-hidden="true"></span>
 		<p class="ae-gate__eyebrow">Free guides</p>
 		<h2 class="ae-gate__title" id="ae-gate-title">Join our monthly newsletter and get all ten guides.</h2>
 		<p class="ae-gate__copy" id="ae-gate-copy">We send one newsletter a month. It covers what is happening at AE Software Solutions, current world events that affect small businesses and contractors, and how AE can help. The ten guides are free when you join.</p>
