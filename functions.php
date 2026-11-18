@@ -60,6 +60,8 @@ function aesoftwares_enqueue_scripts() {
     // nothing on the current pages uses them, and ae-testimonials showed
     // invented clients and stock photos. The floating ae-widget chat was
     // removed Nov 17 per Anthony, so it is no longer enqueued.
+    // Glass card contact popup: opens from any link or button with data-ae-popup.
+    wp_enqueue_script( 'ae-popup',        $uri . '/assets/js/ae-popup.js',        [], filemtime( $js . 'ae-popup.js' ),        [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'ae-cta',          $uri . '/assets/js/ae-cta.js',          [], filemtime( $js . 'ae-cta.js' ),          [ 'in_footer' => true, 'strategy' => 'defer' ] );
 
     // The hero background canvas (ae-hero-motion.js) was retired in the v6
@@ -218,7 +220,7 @@ add_action( 'init', function () {
 // changes, purge LiteSpeed once (no-op if the plugin isn't active).
 add_action( 'init', function () {
     $dir   = get_template_directory();
-    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js', '/assets/js/ae-cursor.js', '/assets/js/ae-apple.js', '/assets/js/ae-cta.js', '/assets/refresh/ae-fonts.css' ];
+    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js', '/assets/js/ae-cursor.js', '/assets/js/ae-apple.js', '/assets/js/ae-cta.js', '/assets/js/ae-popup.js', '/popup-contact.php', '/page-pricing.php', '/assets/refresh/ae-fonts.css' ];
     $sig   = '';
     foreach ( $files as $f ) {
         $sig .= file_exists( $dir . $f ) ? filemtime( $dir . $f ) : '0';

@@ -1,5 +1,5 @@
 /**
- * AE Software Solutions: motion and behavior (v7)
+ * AE Software Solutions: motion and behavior (v8)
  *
  * Small on purpose. Nothing here blocks reading, and every effect is optional.
  *
@@ -17,6 +17,9 @@
  * 11. Split heads   h1, section titles and [data-split] rise word by word from a mask
  * 12. Magnetic      buttons lean toward a fine pointer (up to 6px)
  * 13. Cursor glow   a faint white light trails a fine pointer
+ * 14. Stagger       sibling cards, rows and steps reveal a few ms apart as they scroll in
+ * 15. Card light    a faint spotlight follows the pointer across glass cards (CSS reads --sx, --sy)
+ * (The contact popup lives in ae-popup.js.)
  *
  * Reduced motion: content is shown at once (html.ae-calm).
  * html.ae-js is set in <head>; if this file never runs, html.ae-motion-failed
@@ -44,6 +47,17 @@
   }
 
   /* 1. REVEAL */
+  function initStagger() {
+    // Siblings that appear together arrive one after another, 60ms apart (max 4 steps).
+    ['.ae-offers', '.v5-cards', '.v5-proof', '.v5-prices', '.op-steps__list', '.ae-promises__grid', '.ae-values'].forEach(function (sel) {
+      doc.querySelectorAll(sel).forEach(function (parent) {
+        Array.prototype.forEach.call(parent.children, function (child, i) {
+          if (!child.style.getPropertyValue('--delay')) child.style.setProperty('--delay', (i % 4) * 0.06 + 's');
+        });
+      });
+    });
+  }
+
   function initAutoFade() {
     // Older inner pages: card grids and headers get the same gentle fade up.
     ['.stats-row', '.process-header', '.section-header', '.inner-section-header'].forEach(function (sel) {
@@ -62,6 +76,8 @@
 
   function reveal(el) {
     el.classList.add('is-revealed');
+    // The stagger delay is only for the entrance: drop it so hover lifts respond at once.
+    if (el.style.getPropertyValue('--delay')) setTimeout(function () { el.style.removeProperty('--delay'); }, 1200);
     if (el.classList.contains('js-fade')) el.classList.add('js-fade--in');
   }
 
@@ -493,7 +509,22 @@
     doc.addEventListener('pointerleave', function () { g.classList.remove('is-on'); });
   }
 
+  /* 15. CARD LIGHT: feed the pointer position to the card spotlight in CSS */
+  function initCardLight() {
+    if (calm || !finePointer) return;
+    var sel = '.ae-offer, .ae-launch__deal, .v5-card';
+    doc.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      var c = e.target.closest && e.target.closest(sel);
+      if (!c) return;
+      var r = c.getBoundingClientRect();
+      c.style.setProperty('--sx', (e.clientX - r.left).toFixed(0) + 'px');
+      c.style.setProperty('--sy', (e.clientY - r.top).toFixed(0) + 'px');
+    }, { passive: true });
+  }
+
   function init() {
+    initStagger();
     initAutoFade();
     initReveals();
     initHeader();
@@ -503,7 +534,7 @@
     initJumpBar();
     initLegacy();
     initNavPill();
-    [initWipe, initSplit, initMagnetic, initGlow].forEach(function (fn) {
+    [initWipe, initSplit, initMagnetic, initGlow, initCardLight].forEach(function (fn) {
       try { fn(); } catch (err) { /* decoration only: never break the page */ }
     });
     html.classList.add('ae-motion-ready');

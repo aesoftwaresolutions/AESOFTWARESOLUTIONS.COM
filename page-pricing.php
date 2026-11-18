@@ -12,6 +12,36 @@ get_header();
 $o = aesoftwares_offers();
 
 /**
+ * Popup attributes for a card button. Cards whose button goes to the contact page open
+ * the glass card popup instead (assets/js/ae-popup.js), with the matching service ticked.
+ * Cards that go to Stripe or an anchor are left alone. The href stays, so the button
+ * still works as a link without JavaScript.
+ */
+function aesoftwares_popup_attrs( $item ) {
+	$url = isset( $item['cta'][1] ) ? (string) $item['cta'][1] : '';
+	if ( false === strpos( $url, '/contact/' ) ) {
+		return '';
+	}
+	$services = [
+		'starter-site' => 'website',
+		'lead-funnel'  => 'website',
+		'custom'       => 'custom',
+		'launch'       => 'website,online-presence',
+		'online-presence'    => 'online-presence',
+		'total-presence'     => 'online-presence',
+		'branded-templates'  => 'custom',
+	];
+	$out = ' data-ae-popup';
+	if ( ! empty( $item['id'] ) && isset( $services[ $item['id'] ] ) ) {
+		$out .= ' data-ae-service="' . esc_attr( $services[ $item['id'] ] ) . '"';
+	}
+	if ( ! empty( $item['name'] ) ) {
+		$out .= ' data-ae-plan="' . esc_attr( $item['name'] ) . '"';
+	}
+	return $out;
+}
+
+/**
  * One offer card. Order: name, price, cadence, pitch, points, guarantee, button.
  * The featured card gets a 2px ink border and the gold "Recommended" flag.
  */
@@ -35,7 +65,7 @@ function aesoftwares_offer_card( $item, $extra_class = '' ) {
 		<?php if ( ! empty( $item['guarantee'] ) ) : ?>
 			<p class="ae-offer__guarantee">60 day guarantee</p>
 		<?php endif; ?>
-		<a class="<?php echo $featured ? 'v5-button' : 'ae-offer__cta'; ?>" href="<?php echo esc_url( $item['cta'][1] ); ?>"><?php echo esc_html( $item['cta'][0] ); ?></a>
+		<a class="<?php echo $featured ? 'v5-button' : 'ae-offer__cta'; ?>" href="<?php echo esc_url( $item['cta'][1] ); ?>"<?php echo aesoftwares_popup_attrs( $item ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $item['cta'][0] ); ?></a>
 	</article>
 	<?php
 }
@@ -128,7 +158,7 @@ function aesoftwares_pricing_cta_row() {
 			<ul class="ae-offer__points">
 				<?php foreach ( $b['points'] as $pt ) : ?><li><?php echo esc_html( $pt ); ?></li><?php endforeach; ?>
 			</ul>
-			<a class="v5-button" href="<?php echo esc_url( $b['cta'][1] ); ?>"><?php echo esc_html( $b['cta'][0] ); ?></a>
+			<a class="v5-button" href="<?php echo esc_url( $b['cta'][1] ); ?>"<?php echo aesoftwares_popup_attrs( $b ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $b['cta'][0] ); ?></a>
 		</div>
 	</div>
 </section>

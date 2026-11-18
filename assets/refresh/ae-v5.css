@@ -1984,3 +1984,174 @@ html.ae-calm .btn, html.ae-calm .v5-button { translate: none; }
    .product-section__num on Software. One rule so no page can fall back to it:
    the Apple system stack everywhere, pseudo elements included. */
 html body *, html body *::before, html body *::after { font-family: var(--font-main) !important; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   Glass card popup (assets/js/ae-popup.js, markup in popup-contact.php)
+   Desktop: a centred frosted card that fades and settles in. Phones: the same
+   iOS bottom sheet as the mobile menu and the guides signup. The scrim has no
+   backdrop-filter so the card can blur the page itself.
+   ══════════════════════════════════════════════════════════════════════ */
+html.ae-pop-lock { overflow: hidden; }
+.ae-pop {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+  background: rgba(4, 4, 6, 0);
+  transition: background-color .22s var(--ease);
+}
+.ae-pop[hidden] { display: none; }
+.ae-pop.is-open { background: rgba(4, 4, 6, .58); }
+/* Blur the page behind the popup. The popup is a sibling of header, main and footer, so it stays sharp. This uses a direct filter, not backdrop-filter, so it renders everywhere including the preview screenshots. */
+.site-header, .site-main, .site-footer { transition: filter .3s var(--ease); }
+html.ae-pop-lock .site-header,
+html.ae-pop-lock .site-main,
+html.ae-pop-lock .site-footer { filter: blur(8px); }
+.ae-pop__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 660px;
+  max-height: calc(100dvh - 48px);
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgba(22, 22, 26, .62);
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-top-color: rgba(255, 255, 255, .34);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  backdrop-filter: blur(28px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), 0 30px 80px rgba(0, 0, 0, .55);
+  color: var(--ink);
+  outline: none;
+  opacity: 0;
+  transform: translateY(14px) scale(.97);
+  transition: opacity .2s var(--ease), transform .2s var(--ease);
+}
+.ae-pop.is-open .ae-pop__card {
+  opacity: 1;
+  transform: none;
+  transition: opacity .26s var(--ease), transform .34s cubic-bezier(.2, .9, .25, 1);
+}
+.ae-pop__body { overflow-y: auto; overscroll-behavior: contain; padding: 36px 36px 32px; }
+.ae-pop__grabber { display: none; flex: none; }
+.ae-pop__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .08);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color .2s var(--ease), transform .2s var(--ease), border-color .2s var(--ease);
+}
+.ae-pop__close:hover { background: rgba(255, 255, 255, .16); border-color: rgba(255, 255, 255, .34); transform: rotate(90deg); }
+.ae-pop__close:active { scale: .92; }
+.ae-pop__close:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.ae-pop__eyebrow { margin: 0 44px 8px 0; font-size: .875rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-secondary); }
+.ae-pop__title { margin: 0 44px 10px 0; font-size: 1.75rem; font-weight: 600; line-height: 1.15; letter-spacing: -0.025em; color: var(--ink); opacity: 1 !important; }
+.ae-pop__lead { margin: 0 0 24px; line-height: 1.55; color: var(--text-secondary); }
+.ae-pop .contact-form { gap: 22px; }
+.ae-pop__done-btn { margin-top: 20px; }
+.ae-pop .contact-done { padding: 12px 0 4px; }
+.ae-pop .contact-done__title { outline: none; margin-right: 44px; }
+.ae-pop .contact-form__status a { color: inherit; text-decoration: underline; }
+/* Entrance: the heading block and then each form group rise in, a few ms apart. */
+@keyframes ae-pop-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.ae-pop.is-open .ae-pop__eyebrow,
+.ae-pop.is-open .ae-pop__title,
+.ae-pop.is-open .ae-pop__lead,
+.ae-pop.is-open .ae-pop__form > * { animation: ae-pop-rise .38s var(--ease) both; }
+.ae-pop.is-open .ae-pop__title { animation-delay: .04s; }
+.ae-pop.is-open .ae-pop__lead { animation-delay: .08s; }
+.ae-pop.is-open .ae-pop__form > :nth-child(2) { animation-delay: .1s; }
+.ae-pop.is-open .ae-pop__form > :nth-child(3) { animation-delay: .14s; }
+.ae-pop.is-open .ae-pop__form > :nth-child(4) { animation-delay: .18s; }
+.ae-pop.is-open .ae-pop__form > :nth-child(5) { animation-delay: .22s; }
+.ae-pop.is-open .ae-pop__form > :nth-child(6) { animation-delay: .26s; }
+.ae-pop.is-open .ae-pop__form > :nth-child(7) { animation-delay: .3s; }
+.ae-pop.is-open .ae-pop__form > :nth-child(8) { animation-delay: .34s; }
+
+@media (max-width: 640px) {
+  .ae-pop { align-items: flex-end; padding: 0; }
+  .ae-pop__card {
+    max-width: none;
+    max-height: 92dvh;
+    border-radius: 24px 24px 0 0;
+    border-bottom: 0;
+    opacity: 1;
+    transform: translateY(100%);
+  }
+  .ae-pop.is-open .ae-pop__card { transform: translateY(0); transition: transform .42s cubic-bezier(.2, .9, .25, 1); }
+  .ae-pop:not(.is-open) .ae-pop__card { transition: transform .24s var(--ease); }
+  .ae-pop__grabber { display: block; margin: 10px auto 0; padding: 0; cursor: grab; }
+  .ae-pop__body { padding: 16px 20px max(28px, env(safe-area-inset-bottom)); }
+  .ae-pop__close { top: 18px; right: 14px; }
+  .ae-pop__title { font-size: 1.5rem; }
+}
+
+/* ── Interactive motion (Nov 18): subtle and fast, dark glass only ──────── */
+/* Selecting a service, budget or timeline gives the tick a small pop. */
+@keyframes ae-check-pop { 0% { transform: scale(.82); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
+.ae-check input:checked + .ae-check__box { animation: ae-check-pop .26s var(--ease); }
+.ae-check, .contact-form input:not([type="checkbox"]):not([type="radio"]), .contact-form textarea {
+  transition: border-color .2s var(--ease), background-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.contact-form input:not([type="checkbox"]):not([type="radio"]):focus, .contact-form textarea:focus {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .12);
+}
+/* Press state: every button dips a little under the finger. `scale` is its own
+   property, so it stacks with the magnetic `translate` and the hover lift. */
+.v5-button, .btn, .ae-offer__cta, .ae-pop__close { transition-property: translate, scale, background-color, color, border-color, box-shadow, background-size, transform, opacity; }
+.v5-button:active, .btn:active, .ae-offer__cta:active { scale: .97; box-shadow: 0 0 0 4px rgba(255, 255, 255, .12); transition-duration: .08s; }
+
+/* Card hover: a gentle lift, a soft light edge, and a faint spotlight that follows
+   the pointer (ae-motion.js sets --sx and --sy). Fine pointers only. */
+@media (hover: hover) and (pointer: fine) {
+  html:not(.ae-calm) :is(.ae-offer, .ae-launch__deal, .v5-card, .web-tier, .work-card, .tool-card, .value-card, .ae-card) {
+    transition: opacity .4s var(--ease) var(--delay, 0s), transform .4s var(--ease) var(--delay, 0s),
+                box-shadow .28s var(--ease), border-color .28s var(--ease), background-color .28s var(--ease);
+  }
+  html:not(.ae-calm) :is(.ae-offer, .ae-launch__deal, .v5-card, .web-tier, .work-card, .tool-card, .value-card, .ae-card):hover {
+    transform: translateY(-4px);
+    transition: transform .28s var(--ease), box-shadow .28s var(--ease), border-color .28s var(--ease), background-color .28s var(--ease);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), 0 22px 54px rgba(0, 0, 0, .48), 0 0 0 1px rgba(255, 255, 255, .14), 0 0 46px rgba(255, 255, 255, .07) !important;
+  }
+  html:not(.ae-calm) :is(.ae-offer, .ae-launch__deal, .v5-card) { position: relative; }
+  html:not(.ae-calm) :is(.ae-offer, .ae-launch__deal, .v5-card)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(360px circle at var(--sx, 50%) var(--sy, 0%), rgba(255, 255, 255, .075), transparent 62%);
+    transition: opacity .3s var(--ease);
+  }
+  html:not(.ae-calm) :is(.ae-offer, .ae-launch__deal, .v5-card):hover::after { opacity: 1; }
+}
+
+/* Reduced motion: no lift, no spotlight, no popup animation. Content is just there. */
+@media (prefers-reduced-motion: reduce) {
+  .ae-pop, .ae-pop__card, .ae-pop.is-open .ae-pop__card { transition: none !important; transform: none !important; opacity: 1; }
+  .ae-pop.is-open .ae-pop__eyebrow, .ae-pop.is-open .ae-pop__title, .ae-pop.is-open .ae-pop__lead, .ae-pop.is-open .ae-pop__form > * { animation: none; }
+  .ae-check input:checked + .ae-check__box { animation: none; }
+  .v5-button:active, .btn:active, .ae-offer__cta:active { scale: 1; }
+  .ae-pop__close:hover { transform: none; }
+}
+html.ae-calm .ae-pop, html.ae-calm .ae-pop__card, html.ae-calm .ae-pop.is-open .ae-pop__card { transition: none !important; transform: none !important; opacity: 1; }
+html.ae-calm .ae-pop.is-open .ae-pop__eyebrow, html.ae-calm .ae-pop.is-open .ae-pop__title, html.ae-calm .ae-pop.is-open .ae-pop__lead, html.ae-calm .ae-pop.is-open .ae-pop__form > * { animation: none; }
+html.ae-calm .ae-check input:checked + .ae-check__box { animation: none; }
+html.ae-calm .v5-button:active, html.ae-calm .btn:active, html.ae-calm .ae-offer__cta:active { scale: 1; }
+html.ae-calm .ae-pop__close:hover { transform: none; }
