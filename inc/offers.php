@@ -137,7 +137,7 @@ function aesoftwares_offers() {
 				'name'     => 'Front Desk',
 				'price'    => '$99',
 				'amount'   => 99,
-				'cadence'  => 'per month · cancel anytime',
+				'cadence'  => 'per month · plus one time $75 setup',
 				'pitch'    => 'Your calls answered while you work. No lead goes cold.',
 				'points'   => [
 						'AI answers your calls in your business name',
@@ -154,7 +154,7 @@ function aesoftwares_offers() {
 				'name'      => 'Always-On Front Desk',
 				'price'     => '$250',
 				'amount'    => 250,
-				'cadence'   => 'per month · cancel anytime',
+				'cadence'   => 'per month · plus one time setup, quoted after the audit',
 				'pitch'     => 'Missed calls answered in seconds, day or night.',
 				'points'    => [
 						'AI answers your calls in your business name, day or night',
