@@ -768,7 +768,9 @@ footer.site-footer.v5-footer {
 .v5-proof__src { display: block; margin-top: 6px; font-size: .875rem; font-weight: 500; color: var(--text-secondary); }
 @media (max-width: 760px) { .v5-proof { grid-template-columns: minmax(0, 1fr); gap: 28px; margin-top: 48px; } }
 
-/* Topics: an accordion of list rows (native details, works without JS). */
+/* Topics: list rows that open the glass detail popup (assets/js/ae-detail-popup.js).
+   The row is a button now, not a details summary, so the content opens in the
+   popup instead of expanding inline. */
 .v5-topics { padding-top: 0; }
 .v5-topic { border-top: 1px solid var(--rule); }
 .v5-topic:last-child { border-bottom: 1px solid var(--rule); }
@@ -782,6 +784,11 @@ footer.site-footer.v5-footer {
   cursor: pointer;
   color: var(--text);
   -webkit-tap-highlight-color: transparent;
+  background: none;
+  border: 0;
+  font: inherit;
+  text-align: left;
+  width: 100%;
 }
 .v5-topic__summary::-webkit-details-marker { display: none; }
 .v5-topic__summary::marker { content: ''; }
@@ -1144,7 +1151,8 @@ footer.site-footer.v5-footer {
 .ae-pref-source { padding: 24px var(--gutter); background: var(--paper-2); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); text-align: center; }
 .ae-faq { max-width: 880px; border-top: 1px solid var(--rule); }
 .ae-faq__item { border-bottom: 1px solid var(--rule); }
-.ae-faq__item summary {
+.ae-faq__item summary,
+.ae-faq__item .ae-faq__question {
   list-style: none;
   display: flex;
   justify-content: space-between;
@@ -1155,9 +1163,16 @@ footer.site-footer.v5-footer {
   font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: -0.015em;
+  background: none;
+  border: 0;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+  color: var(--text);
 }
 .ae-faq__item summary::-webkit-details-marker { display: none; }
-.ae-faq__item summary::after { content: '+'; flex: none; font-size: 1.5rem; font-weight: 400; line-height: 1; transition: transform .25s var(--ease); }
+.ae-faq__item summary::after,
+.ae-faq__item .ae-faq__question::after { content: '+'; flex: none; font-size: 1.5rem; font-weight: 400; line-height: 1; transition: transform .25s var(--ease); }
 .ae-faq__item[open] summary::after { transform: rotate(45deg); }
 .ae-faq__item p { padding: 0 0 24px; max-width: 64ch; line-height: 1.6; color: var(--text-secondary); animation: ae-fade .3s var(--ease); }
 
@@ -1418,7 +1433,8 @@ html.ae-gate-lock { overflow: hidden; }
 .op-faq .v5-section-title { margin-bottom: 24px; }
 .op-faq__list { max-width: 880px; border-top: 1px solid var(--rule); }
 .op-faq__item { border-bottom: 1px solid var(--rule); }
-.op-faq__item summary {
+.op-faq__item summary,
+.op-faq__item .op-faq__question {
   list-style: none;
   cursor: pointer;
   display: flex;
@@ -1429,9 +1445,16 @@ html.ae-gate-lock { overflow: hidden; }
   font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: -0.015em;
+  background: none;
+  border: 0;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+  color: var(--text);
 }
 .op-faq__item summary::-webkit-details-marker { display: none; }
-.op-faq__item summary::after { content: '+'; flex: none; font-size: 1.5rem; font-weight: 400; line-height: 1; transition: transform .25s var(--ease); }
+.op-faq__item summary::after,
+.op-faq__item .op-faq__question::after { content: '+'; flex: none; font-size: 1.5rem; font-weight: 400; line-height: 1; transition: transform .25s var(--ease); }
 .op-faq__item[open] summary::after { transform: rotate(45deg); }
 .op-faq__item p { padding: 0 0 24px; max-width: 64ch; line-height: 1.6; color: var(--text-secondary); }
 @media (max-width: 960px) {
@@ -2100,6 +2123,20 @@ html.ae-pop-lock .site-footer { filter: blur(8px); }
   .ae-pop__close { top: 18px; right: 14px; }
   .ae-pop__title { font-size: 1.5rem; }
 }
+
+/* ── Glass detail popup (assets/js/ae-detail-popup.js, markup in popup-detail.php)
+   Topic rows and FAQ answers open in the same glass card as the contact popup.
+   Inside the 660px card the wide topic layouts stack, so nothing reads cramped. */
+.ae-detail__content p { line-height: 1.6; color: var(--text-secondary); }
+.ae-detail__content p + p { margin-top: 12px; }
+.ae-pop.is-open .ae-detail__content { animation: ae-pop-rise .38s var(--ease) both; animation-delay: .08s; }
+.ae-detail__content .v5-approach, .ae-detail__content .v5-seq { max-width: none; margin: 0; padding: 0; }
+.ae-detail__content .v5-work__grid { grid-template-columns: minmax(0, 1fr); }
+.ae-detail__content .v5-service, .ae-detail__content .v5-service--priced { grid-template-columns: 40px minmax(0, 1fr); gap: 8px 16px; }
+.ae-detail__content .v5-service__text, .ae-detail__content .v5-service__more, .ae-detail__content .v5-service__side { grid-column: 2; justify-self: start; align-items: flex-start; text-align: left; }
+.ae-detail__content .v5-prices__row a { grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; }
+.ae-detail__content .v5-prices__pitch { grid-column: 1 / -1; grid-row: 2; }
+.ae-detail__content .v5-topic__more { margin-top: 24px; }
 
 /* ── Interactive motion (Nov 18): subtle and fast, dark glass only ──────── */
 /* Selecting a service, budget or timeline gives the tick a small pop. */

@@ -220,11 +220,13 @@ $ae_social_faq = [
 <section class="op-faq ae-rule" aria-labelledby="sm-faq-title">
 	<h2 class="v5-section-title" id="sm-faq-title" data-split>Questions</h2>
 	<div class="op-faq__list">
-		<?php foreach ( $ae_social_faq as $f ) : ?>
-			<details class="op-faq__item" data-reveal>
-				<summary><?php echo esc_html( $f['q'] ); ?></summary>
-				<p><?php echo esc_html( $f['a'] ); ?></p>
-			</details>
+		<?php foreach ( $ae_social_faq as $i => $f ) : ?>
+			<div class="op-faq__item" data-reveal>
+				<button type="button" class="op-faq__question" data-ae-detail data-ae-detail-target="social-faq-<?php echo esc_attr( $i ); ?>" data-ae-detail-title="<?php echo esc_attr( $f['q'] ); ?>" aria-expanded="false"><?php echo esc_html( $f['q'] ); ?></button>
+				<div class="ae-detail__source" id="ae-detail-social-faq-<?php echo esc_attr( $i ); ?>" hidden>
+					<p><?php echo esc_html( $f['a'] ); ?></p>
+				</div>
+			</div>
 		<?php endforeach; ?>
 	</div>
 </section>

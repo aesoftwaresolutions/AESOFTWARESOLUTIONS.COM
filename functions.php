@@ -13,7 +13,6 @@ require_once get_template_directory() . '/inc/offers.php';
 
 // ── Guides page newsletter signup (admin-ajax: ae_guides_signup) ─────────────
 require_once get_template_directory() . '/inc/guides-newsletter.php';
-require_once get_template_directory() . '/inc/ae-booking.php';
 
 // ══════════════════════════════════════════════════════════════════════════════
 // 1. ENQUEUE SCRIPTS & STYLES
@@ -63,6 +62,8 @@ function aesoftwares_enqueue_scripts() {
     // removed Nov 17 per Anthony, so it is no longer enqueued.
     // Glass card contact popup: opens from any link or button with data-ae-popup.
     wp_enqueue_script( 'ae-popup',        $uri . '/assets/js/ae-popup.js',        [], filemtime( $js . 'ae-popup.js' ),        [ 'in_footer' => true, 'strategy' => 'defer' ] );
+    // Glass detail popup: opens topic rows and FAQ answers in the same glass card.
+    wp_enqueue_script( 'ae-detail-popup', $uri . '/assets/js/ae-detail-popup.js', [], filemtime( $js . 'ae-detail-popup.js' ), [ 'in_footer' => true, 'strategy' => 'defer' ] );
     wp_enqueue_script( 'ae-cta',          $uri . '/assets/js/ae-cta.js',          [], filemtime( $js . 'ae-cta.js' ),          [ 'in_footer' => true, 'strategy' => 'defer' ] );
 
     // The hero background canvas (ae-hero-motion.js) was retired in the v6
@@ -173,9 +174,10 @@ add_action( 'wp_enqueue_scripts', 'aesoftwares_enqueue_scripts' );
 
 // LiteSpeed "delay JS" holds scripts until the first touch or key press, which
 // leaves the nav pill and cursor dead on first hover. Keep the two small
-// interaction scripts out of it.
+// interaction scripts out of it. The detail popup joins them: the topic rows are
+// above the fold on the home page, so the first click has to open the popup.
 add_filter( 'script_loader_tag', function ( $tag, $handle ) {
-    if ( in_array( $handle, [ 'ae-motion', 'ae-cursor', 'ae-apple' ], true ) && false === strpos( $tag, 'data-no-optimize' ) ) {
+    if ( in_array( $handle, [ 'ae-motion', 'ae-cursor', 'ae-apple', 'ae-detail-popup' ], true ) && false === strpos( $tag, 'data-no-optimize' ) ) {
         $tag = str_replace( '<script ', '<script data-no-optimize="1" data-no-defer="1" data-cfasync="false" ', $tag );
     }
     return $tag;
@@ -221,7 +223,7 @@ add_action( 'init', function () {
 // changes, purge LiteSpeed once (no-op if the plugin isn't active).
 add_action( 'init', function () {
     $dir   = get_template_directory();
-    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js', '/assets/js/ae-cursor.js', '/assets/js/ae-apple.js', '/assets/js/ae-cta.js', '/assets/js/ae-popup.js', '/popup-contact.php', '/page-pricing.php', '/assets/refresh/ae-fonts.css' ];
+    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js', '/assets/js/ae-cursor.js', '/assets/js/ae-apple.js', '/assets/js/ae-cta.js', '/assets/js/ae-popup.js', '/assets/js/ae-detail-popup.js', '/popup-contact.php', '/popup-detail.php', '/page-pricing.php', '/assets/refresh/ae-fonts.css' ];
     $sig   = '';
     foreach ( $files as $f ) {
         $sig .= file_exists( $dir . $f ) ? filemtime( $dir . $f ) : '0';

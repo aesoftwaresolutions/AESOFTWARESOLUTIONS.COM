@@ -132,11 +132,13 @@ $faqs = array(
 		<h2 class="v5-section-title" id="gd-faq" data-reveal>Questions</h2>
 	</header>
 	<div class="ae-faq" data-reveal>
-		<?php foreach ( $faqs as $f ) : ?>
-			<details class="ae-faq__item">
-				<summary><?php echo esc_html( $f[0] ); ?></summary>
-				<p><?php echo esc_html( $f[1] ); ?></p>
-			</details>
+		<?php foreach ( $faqs as $i => $f ) : ?>
+			<div class="ae-faq__item">
+				<button type="button" class="ae-faq__question" data-ae-detail data-ae-detail-target="guides-faq-<?php echo esc_attr( $i ); ?>" data-ae-detail-title="<?php echo esc_attr( $f[0] ); ?>" aria-expanded="false"><?php echo esc_html( $f[0] ); ?></button>
+				<div class="ae-detail__source" id="ae-detail-guides-faq-<?php echo esc_attr( $i ); ?>" hidden>
+					<p><?php echo esc_html( $f[1] ); ?></p>
+				</div>
+			</div>
 		<?php endforeach; ?>
 	</div>
 </section>
