@@ -1376,6 +1376,23 @@ html.ae-gate-lock { overflow: hidden; }
 }
 
 /* ══════════════════════════════════════════════════════════════════════
+   FRONT DESK INTAKE (page-front-desk-intake.php)
+   ══════════════════════════════════════════════════════════════════════ */
+.ae-intake { max-width: var(--wrap); margin: 0 auto; padding: var(--section-pad) var(--gutter); padding-top: 0; }
+.ae-intake__form { padding: 40px; background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); }
+.ae-intake__privacy { margin: 0 0 32px; font-size: .9375rem; line-height: 1.6; color: var(--text-secondary); }
+.ae-intake__section { display: grid; gap: 28px; margin-bottom: 12px; }
+.ae-intake__section:last-of-type { margin-bottom: 0; }
+.ae-intake__section-title { margin: 0; padding-bottom: 12px; border-bottom: 1px solid var(--rule); font-size: 1.375rem; font-weight: 600; letter-spacing: -0.02em; }
+.ae-intake__hint { margin: 6px 0 0; font-size: .875rem; line-height: 1.5; color: var(--text-secondary); }
+.ae-intake textarea { min-height: 0; }
+.ae-intake__keynote { margin: 0; padding: 16px 20px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: var(--radius); font-size: .9375rem; line-height: 1.6; color: var(--text); }
+.ae-intake__conditional { display: grid; gap: 28px; }
+.ae-intake__conditional[hidden] { display: none; }
+.ae-intake__section .ae-intake__conditional { margin: 0; }
+@media (max-width: 960px) { .ae-intake__form { padding: 24px; } }
+
+/* ══════════════════════════════════════════════════════════════════════
    ONLINE PRESENCE, SOCIAL MANAGEMENT, CHECKOUT (shared v5 pieces)
    ══════════════════════════════════════════════════════════════════════ */
 .op-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; margin-top: 32px; font-weight: 600; }
@@ -2204,3 +2221,39 @@ html.ae-calm .ae-pop.is-open .ae-pop__eyebrow, html.ae-calm .ae-pop.is-open .ae-
 html.ae-calm .ae-check input:checked + .ae-check__box { animation: none; }
 html.ae-calm .v5-button:active, html.ae-calm .btn:active, html.ae-calm .ae-offer__cta:active { scale: 1; }
 html.ae-calm .ae-pop__close:hover { transform: none; }
+
+/* FRONT DESK TERMS */
+.ae-tos { padding: 32px 24px 96px; max-width: 1100px; margin: 0 auto; }
+.ae-tos__inner { max-width: 70ch; margin: 0 auto; }
+.ae-tos__draft { padding: 16px 20px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: var(--radius); font-size: .9375rem; line-height: 1.6; color: var(--text); }
+.ae-tos__inner h2 { margin: 40px 0 16px; font-size: 1.5rem; line-height: 1.3; }
+.ae-tos__inner h3 { margin: 32px 0 12px; font-size: 1.125rem; line-height: 1.4; }
+.ae-tos__inner p { margin: 0 0 16px; line-height: 1.7; color: var(--text); }
+.ae-tos__inner ul, .ae-tos__inner ol { margin: 0 0 16px; padding-left: 24px; line-height: 1.7; color: var(--text); }
+.ae-tos__inner li { margin-bottom: 8px; }
+.ae-tos__inner li ul, .ae-tos__inner li ol { margin: 8px 0 0; }
+.ae-tos__table { width: 100%; border-collapse: collapse; margin: 0 0 16px; font-size: .9375rem; line-height: 1.5; }
+.ae-tos__table th, .ae-tos__table td { padding: 10px 12px; border: 1px solid var(--rule); text-align: left; vertical-align: top; }
+.ae-tos__table th { background: var(--paper-2); }
+.ae-tos__inner blockquote { margin: 0 0 16px; padding: 20px 24px; border-left: 3px solid var(--rule); background: var(--paper-2); border-radius: 0 var(--radius) var(--radius) 0; }
+.ae-tos__inner blockquote p, .ae-tos__inner blockquote ol { margin-bottom: 12px; }
+@media (max-width: 960px) {
+    .ae-tos { padding: 32px 16px 64px; }
+    .ae-tos__table { display: block; overflow-x: auto; }
+}
+
+/* ── UI/UX review (Nov 19): side padding inside boxed elements ──────────────
+   The card and glass rules above add a border and background to these
+   elements, but their own padding was vertical only (style.css or the row
+   rules), so text sat flush against the border. */
+.process-phase { padding: 32px 24px; }
+.process-phase__right { padding: 20px 24px; }
+.faq-item { padding-left: 24px; padding-right: 24px; }
+.op-faq__item { padding-left: 24px; padding-right: 24px; }
+.contact-sidebar__info { padding: 24px; }
+@media (max-width: 640px) {
+  .process-phase { padding: 24px 20px; }
+  .process-phase__right { padding: 16px 20px; }
+  .faq-item, .op-faq__item { padding-left: 20px; padding-right: 20px; }
+  .contact-sidebar__info { padding: 20px; }
+}
