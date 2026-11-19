@@ -140,7 +140,7 @@ $ae_checkout_faq = [
 <section class="op-related ae-rule" aria-labelledby="co-other-title">
 	<p class="v5-label" data-reveal>Other services</p>
 	<h2 class="op-related__title" id="co-other-title" data-split>Also from AE:</h2>
-	<p class="op-related__text" data-reveal><a class="v5-link" href="https://shop.aesoftwaresolutions.com/plans/front-desk">Front Desk</a> $99 a month</p>
+	<p class="op-related__text" data-reveal><a class="v5-link" href="https://shop.aesoftwaresolutions.com/plans/front-desk">Front Desk</a> from $99 a month</p>
 	<p class="op-related__text" data-reveal><a class="v5-link" href="https://shop.aesoftwaresolutions.com/plans/always-on-front-desk">Always-On Front Desk</a> $250 a month</p>
 	<p class="op-related__text" data-reveal><a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Online Presence Management</a> $199 a month</p>
 	<p class="op-related__text" data-reveal><a class="v5-link" href="https://shop.aesoftwaresolutions.com/product/missed-lead-audit">Missed-Lead Audit</a> $250 one time</p>
