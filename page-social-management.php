@@ -127,7 +127,7 @@ $ae_social_faq = [
 				<p>First 3 clients: $149 a month for 3 months, then $199 a month. Use code FOUNDING149 at checkout.</p>
 				<p>Want Google Business Profile management too? Total Presence is $229 a month and covers both. <a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Ask us about it</a>.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://arctic-powderblue-ibex-73.hostingersite.com/plans/social-front-desk">Start now</a>
+			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/social-front-desk">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">02</span>
@@ -135,7 +135,7 @@ $ae_social_faq = [
 			<div class="v5-service__text">
 				<p><strong>$799 a month plus a one time $300 setup.</strong> Up to 4 platforms, 12 to 16 posts a month, strategy and calendar, outreach, replies handled, 1 email campaign, monthly report and review call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://arctic-powderblue-ibex-73.hostingersite.com/plans/social-management">Start now</a>
+			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/social-management">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">03</span>
@@ -143,7 +143,7 @@ $ae_social_faq = [
 			<div class="v5-service__text">
 				<p><strong>$1,299 a month plus a one time $495 setup.</strong> Up to 6 platforms, 20 to 24 posts, 8 short form videos, 2 email campaigns, priority turnaround, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://arctic-powderblue-ibex-73.hostingersite.com/plans/social-management-growth">Start now</a>
+			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/social-management-growth">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">04</span>
@@ -151,7 +151,7 @@ $ae_social_faq = [
 			<div class="v5-service__text">
 				<p><strong>$1,999 a month plus a one time $750 setup.</strong> Up to 8 platforms including TikTok and YouTube, 28 to 32 posts, 12 short form videos, daily engagement checks, 2 email campaigns, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://arctic-powderblue-ibex-73.hostingersite.com/plans/social-management-scale">Start now</a>
+			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/social-management-scale">Start now</a>
 		</li>
 	</ol>
 </section>
@@ -169,7 +169,7 @@ $ae_social_faq = [
 			<div class="v5-service__text">
 				<p><strong>$499 a month plus a one time $195 setup.</strong> 3 platforms, 12 short form videos a month cross posted, captions and hashtags written for each platform, posting handled, monthly growth report.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://arctic-powderblue-ibex-73.hostingersite.com/plans/creator-launch">Start now</a>
+			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/creator-launch">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">02</span>
@@ -177,7 +177,7 @@ $ae_social_faq = [
 			<div class="v5-service__text">
 				<p><strong>$899 a month plus a one time $345 setup.</strong> Up to 5 platforms, 20 short form videos, comment handling on business days, profile and link page polish, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://arctic-powderblue-ibex-73.hostingersite.com/plans/creator-growth">Start now</a>
+			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/creator-growth">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">03</span>
@@ -185,7 +185,7 @@ $ae_social_faq = [
 			<div class="v5-service__text">
 				<p><strong>$1,999 a month plus a one time $750 setup.</strong> Up to 6 platforms, 30 short form videos, daily engagement checks, sponsor inquiries flagged with drafted replies you approve, 1 email or newsletter a month, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://arctic-powderblue-ibex-73.hostingersite.com/plans/creator-authority">Start now</a>
+			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/creator-authority">Start now</a>
 		</li>
 	</ol>
 </section>
