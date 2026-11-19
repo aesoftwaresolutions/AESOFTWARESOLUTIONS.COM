@@ -13,7 +13,12 @@ require_once get_template_directory() . '/inc/offers.php';
 
 // ── Guides page newsletter signup (admin-ajax: ae_guides_signup) ─────────────
 require_once get_template_directory() . '/inc/guides-newsletter.php';
-require_once get_template_directory() . '/inc/ae-booking.php';
+
+// ── Front Desk intake form (admin-ajax: ae_front_desk_intake) ────────────────
+// Paid Front Desk / Always-On customers fill this in after payment. It emails
+// the intake to anthony@aesoftwaresolutions.com. The page is not in the nav
+// and no public page links to it; the link goes in the welcome email only.
+require_once get_template_directory() . '/inc/front-desk-intake.php';
 
 // ══════════════════════════════════════════════════════════════════════════════
 // 1. ENQUEUE SCRIPTS & STYLES
@@ -224,7 +229,7 @@ add_action( 'init', function () {
 // changes, purge LiteSpeed once (no-op if the plugin isn't active).
 add_action( 'init', function () {
     $dir   = get_template_directory();
-    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js', '/assets/js/ae-cursor.js', '/assets/js/ae-apple.js', '/assets/js/ae-cta.js', '/assets/js/ae-popup.js', '/assets/js/ae-detail-popup.js', '/popup-contact.php', '/popup-detail.php', '/page-pricing.php', '/assets/refresh/ae-fonts.css' ];
+    $files = [ '/functions.php', '/header.php', '/footer.php', '/front-page.php', '/assets/refresh/ae-v5.css', '/assets/js/ae-motion.js', '/assets/js/ae-cursor.js', '/assets/js/ae-apple.js', '/assets/js/ae-cta.js', '/assets/js/ae-popup.js', '/assets/js/ae-detail-popup.js', '/popup-contact.php', '/popup-detail.php', '/page-pricing.php', '/assets/refresh/ae-fonts.css', '/page-front-desk-intake.php', '/inc/front-desk-intake.php', '/page-front-desk-terms.php' ];
     $sig   = '';
     foreach ( $files as $f ) {
         $sig .= file_exists( $dir . $f ) ? filemtime( $dir . $f ) : '0';
@@ -1246,7 +1251,7 @@ add_action( 'wpseo_add_opengraph_images', function ( $image_container ) {
     if ( method_exists( $image_container, 'has_images' ) && $image_container->has_images() ) {
         return;
     }
-    $image_container->add_image_by_url( 'https://aesoftwaresolutions.com/wp-content/uploads/2025/11/cropped-Let-us-do-the-work-for-you.jpeg' );
+    $image_container->add_image_by_url( get_template_directory_uri() . '/assets/img/brand/ae-social-share.png' );
 } );
 
 // ══════════════════════════════════════════════════════════════════════════════
