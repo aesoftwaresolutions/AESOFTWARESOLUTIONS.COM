@@ -146,7 +146,7 @@ function aesoftwares_offers() {
 						'Booking link sent automatically',
 				],
 				'featured' => true,
-				'cta'      => [ 'Start now', 'https://arctic-powderblue-ibex-73.hostingersite.com/plans/front-desk' ],
+				'cta'      => [ 'Start now', 'https://shop.aesoftwaresolutions.com/plans/front-desk' ],
 			],
 			[
 				'id'        => 'front-desk-always-on',
@@ -164,7 +164,7 @@ function aesoftwares_offers() {
 						'Review requests after every job',
 				],
 				'guarantee' => true,
-				'cta'       => [ 'Start now', 'https://arctic-powderblue-ibex-73.hostingersite.com/plans/always-on-front-desk' ],
+				'cta'       => [ 'Start now', 'https://shop.aesoftwaresolutions.com/plans/always-on-front-desk' ],
 			],
 			[
 				'id'      => 'social-management',
