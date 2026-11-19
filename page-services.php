@@ -63,7 +63,7 @@ $price = function ( $group, $id ) use ( $o ) {
 				<p>Missed call text back, instant replies to web and Facebook inquiries, booking links and review requests. It connects to the tools you already use rather than replacing them.</p>
 			</div>
 			<div class="v5-service__side">
-				<p class="svc-meta">Front Desk <?php echo esc_html( $price( 'monthly', 'front-desk' ) ); ?> &middot; Always-On Front Desk <?php echo esc_html( $price( 'monthly', 'front-desk-always-on' ) ); ?> &middot; 60 day guarantee</p>
+				<p class="svc-meta">Front Desk from <?php echo esc_html( $price( 'monthly', 'front-desk' ) ); ?> &middot; Always-On Front Desk <?php echo esc_html( $price( 'monthly', 'front-desk-always-on' ) ); ?> &middot; 60 day guarantee</p>
 				<a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/pricing/#front-desk' ) ); ?>">Front Desk</a>
 			</div>
 		</li>
