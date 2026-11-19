@@ -19,8 +19,8 @@ $ae_testimonials = [];
 
 <section class="page-hero about-page-hero">
     <p class="page-hero__eyebrow">About</p>
-    <h1 class="page-hero__headline">Anthony builds for <em>small</em> businesses.</h1>
-    <p class="page-hero__subtitle">Anthony Pioquinto builds websites, looks after Google presence and sets up follow up automation for small businesses that would rather be doing the work than chasing leads.</p>
+    <h1 class="page-hero__headline">We build for <em>small</em> businesses.</h1>
+    <p class="page-hero__subtitle">We build websites, look after Google presence and set up follow up automation for small businesses that would rather be doing the work than chasing leads.</p>
 </section>
 
 <section class="ae-about-story" aria-label="Anthony&rsquo;s story">
@@ -46,7 +46,7 @@ $ae_testimonials = [];
 
 <section class="ae-promises ae-alt" aria-labelledby="about-promises">
     <header class="v5-section-head">
-        <p class="v5-label" data-reveal>How Anthony works</p>
+        <p class="v5-label" data-reveal>How we work</p>
         <h2 class="v5-section-title" id="about-promises" data-reveal>Three promises.</h2>
     </header>
     <div class="values-grid">
