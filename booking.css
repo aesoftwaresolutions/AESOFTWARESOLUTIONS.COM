@@ -1,0 +1,88 @@
+/* Booking flow. Uses the site tokens from ae-v5.css (black and white, gold as a tiny accent). */
+
+.ae-contact.ae-book { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+
+.ae-book__panel {
+	background: var(--paper);
+	border: 1px solid var(--rule);
+	border-radius: var(--radius);
+	padding: 40px;
+	max-width: 880px;
+}
+
+.ae-book__step + .ae-book__step { margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--rule); }
+.ae-book__step[hidden], .ae-book__done[hidden], .ae-book__flow[hidden] { display: none; }
+
+/* Gold accent: one short rule before each step label. */
+.ae-book__eyebrow {
+	display: flex; align-items: center; gap: 12px;
+	margin: 0 0 10px;
+	font-size: .8125rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+	color: var(--text-secondary);
+}
+.ae-book__eyebrow::before { content: ''; width: 24px; height: 2px; background: #C9A96E; }
+
+.ae-book__title { margin: 0 0 8px; font-size: 1.5rem; line-height: 1.2; font-weight: 600; color: var(--ink); }
+.ae-book__note { margin: 0 0 20px; color: var(--text-secondary); }
+.ae-book__chosen { margin: 0 0 20px; font-weight: 600; color: var(--ink); }
+
+.ae-book__weekbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.ae-book__month { margin: 0; font-weight: 600; color: var(--ink); }
+.ae-book__nav {
+	width: 44px; height: 44px; flex: none;
+	display: inline-flex; align-items: center; justify-content: center;
+	background: transparent; color: var(--ink);
+	border: 1px solid var(--rule-strong); border-radius: var(--radius);
+	font-size: 1.125rem; cursor: pointer;
+	transition: border-color .15s var(--ease), background-color .15s var(--ease);
+}
+.ae-book__nav:hover:not([disabled]) { border-color: var(--ink); }
+.ae-book__nav[disabled] { opacity: .35; cursor: default; }
+
+.ae-book__days { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.ae-book__day, .ae-book__slot {
+	display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+	min-height: 48px; padding: 10px 6px;
+	background: var(--paper); color: var(--ink);
+	border: 1px solid var(--rule-strong); border-radius: var(--radius);
+	font: inherit; font-weight: 500; cursor: pointer;
+	transition: border-color .15s var(--ease), background-color .15s var(--ease), color .15s var(--ease);
+}
+.ae-book__day { min-height: 76px; }
+.ae-book__day small { font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--text-secondary); font-weight: 600; }
+.ae-book__day strong { font-size: 1.375rem; line-height: 1; font-weight: 600; }
+.ae-book__day em { font-style: normal; font-size: .75rem; color: var(--text-secondary); }
+.ae-book__day:hover:not([disabled]), .ae-book__slot:hover { border-color: var(--ink); }
+.ae-book__day[disabled] { opacity: .35; cursor: default; }
+.ae-book__day[aria-pressed="true"], .ae-book__slot[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.ae-book__day[aria-pressed="true"] strong, .ae-book__day[aria-pressed="true"] small, .ae-book__day[aria-pressed="true"] em { color: var(--paper); }
+
+.ae-book__slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 10px; }
+.ae-book__status { margin: 16px 0 0; color: var(--text-secondary); }
+.ae-book__status:empty { display: none; }
+
+.ae-book__day:focus-visible, .ae-book__slot:focus-visible, .ae-book__nav:focus-visible {
+	outline: 2px solid var(--ink); outline-offset: 3px;
+}
+
+.ae-book__form { max-width: 560px; }
+.ae-book__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.ae-book__hint { color: var(--text-secondary); font-size: .9375rem; }
+.ae-book__error { margin: 0; padding: 12px 14px; color: var(--error); background: var(--error-tint); border: 1px solid var(--error-line); border-radius: var(--radius); }
+.ae-book__error[hidden] { display: none; }
+
+.ae-book__done:focus { outline: none; }
+.ae-book__when { margin: 0 0 8px; font-size: 1.125rem; font-weight: 600; color: var(--ink); }
+.ae-book__meetrow { margin: 20px 0 0; }
+
+.ae-book__fallback { margin: 0; color: var(--ink); }
+.ae-book__fallback a { color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-color: #C9A96E; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.ae-book__fallback a:hover, .ae-book__fallback a:focus-visible { text-decoration-color: var(--ink); }
+
+@media (max-width: 640px) {
+	.ae-book__panel { padding: 24px 18px; }
+	.ae-book__days { gap: 6px; }
+	.ae-book__day { padding: 8px 2px; }
+	.ae-book__day strong { font-size: 1.125rem; }
+	.ae-book__step + .ae-book__step { margin-top: 32px; padding-top: 32px; }
+}

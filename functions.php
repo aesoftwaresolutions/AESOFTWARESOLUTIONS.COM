@@ -13,6 +13,7 @@ require_once get_template_directory() . '/inc/offers.php';
 
 // ── Guides page newsletter signup (admin-ajax: ae_guides_signup) ─────────────
 require_once get_template_directory() . '/inc/guides-newsletter.php';
+require_once get_template_directory() . '/inc/ae-booking.php';
 
 // ══════════════════════════════════════════════════════════════════════════════
 // 1. ENQUEUE SCRIPTS & STYLES
