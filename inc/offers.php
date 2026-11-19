@@ -146,7 +146,7 @@ function aesoftwares_offers() {
 						'Booking link sent automatically',
 				],
 				'featured' => true,
-				'cta'      => [ 'Start now', 'https://buy.stripe.com/eVqaEX0fKfJY0KndxnabK04' ],
+				'cta'      => [ 'Start now', 'https://arctic-powderblue-ibex-73.hostingersite.com/plans/front-desk' ],
 			],
 			[
 				'id'        => 'front-desk-always-on',
@@ -154,7 +154,7 @@ function aesoftwares_offers() {
 				'name'      => 'Always-On Front Desk',
 				'price'     => '$250',
 				'amount'    => 250,
-				'cadence'   => 'per month · plus one time setup, quoted after the audit',
+				'cadence'   => 'per month · cancel anytime',
 				'pitch'     => 'Missed calls answered in seconds, day or night.',
 				'points'    => [
 						'AI answers your calls in your business name, day or night',
@@ -164,7 +164,7 @@ function aesoftwares_offers() {
 						'Review requests after every job',
 				],
 				'guarantee' => true,
-				'cta'       => [ 'Start now', 'https://buy.stripe.com/6oUeVd9QkapEct52SJabK01' ],
+				'cta'       => [ 'Start now', 'https://arctic-powderblue-ibex-73.hostingersite.com/plans/always-on-front-desk' ],
 			],
 			[
 				'id'      => 'social-management',
