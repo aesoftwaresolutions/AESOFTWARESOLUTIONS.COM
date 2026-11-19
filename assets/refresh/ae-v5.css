@@ -119,6 +119,18 @@ input:focus-visible, select:focus-visible, textarea:focus-visible,
   outline-offset: 3px;
 }
 
+/* Touch devices: a tap leaves focus on the element, so the focus ring lingers
+   around the whole card after the tap. Suppress it where there is no hover
+   (phones and tablets); keyboard focus still shows the ring on desktop. */
+@media (hover: none) {
+  .v5-prices__row a:focus-visible,
+  .v5-topic__summary:focus-visible,
+  .ae-faq__question:focus-visible,
+  .op-faq__question:focus-visible {
+    outline: none;
+  }
+}
+
 /* Legacy blocks the old motion engine hid until it ran. Always visible now. */
 .mask-line span { transform: none !important; }
 .ae-gold-rule, .aem-hr, .ae-cursor, #ae-loader, #ae-transition,
@@ -949,7 +961,7 @@ footer.site-footer.v5-footer {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) 150px;
   gap: 24px;
   align-items: baseline;
-  padding: 20px 0;
+  padding: 20px 24px;
   color: var(--text);
   border-top: 1px solid var(--rule);
 }
