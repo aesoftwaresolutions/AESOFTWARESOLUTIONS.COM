@@ -65,22 +65,26 @@ $ae_launch   = $ae_offer( 'launch' );
 $ae_audit    = $ae_offer( 'audit' );
 
 /**
- * Opens one topic row: a native details element. Closed by $ae_topic_close().
+ * Opens one topic row: a button that opens the glass detail popup with the
+ * topic content. The content lives in a hidden div right after the button;
+ * assets/js/ae-detail-popup.js clones it into the popup card. Closed by
+ * $ae_topic_close(). Readers without JavaScript see the content inline below
+ * each row (the noscript style in popup-detail.php unhides it).
  */
 $ae_topic_open = function ( $slug, $num, $title, $teaser ) {
 	?>
-	<details class="v5-topic" id="<?php echo esc_attr( $slug ); ?>" name="ae-topics" data-topic>
-		<summary class="v5-topic__summary">
+	<div class="v5-topic" data-topic>
+		<button type="button" class="v5-topic__summary" data-ae-detail data-ae-detail-target="<?php echo esc_attr( $slug ); ?>" data-ae-detail-title="<?php echo esc_attr( $title ); ?>" data-ae-detail-eyebrow="<?php echo esc_attr( $teaser ); ?>" aria-expanded="false">
 			<span class="v5-topic__num"><?php echo esc_html( $num ); ?></span>
-			<h3 class="v5-topic__title"><?php echo esc_html( $title ); ?></h3>
+			<span class="v5-topic__title"><?php echo esc_html( $title ); ?></span>
 			<span class="v5-topic__teaser"><?php echo esc_html( $teaser ); ?></span>
 			<span class="v5-topic__icon" aria-hidden="true"></span>
-		</summary>
-		<div class="v5-topic__inner">
+		</button>
+		<div class="ae-detail__source" id="ae-detail-<?php echo esc_attr( $slug ); ?>" hidden>
 	<?php
 };
 $ae_topic_close = function () {
-	echo "\t\t</div>\n\t</details>\n";
+	echo "\t\t</div>\n\t</div>\n";
 };
 
 ?>

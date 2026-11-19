@@ -67,6 +67,9 @@
 if ( ! is_page_template( 'page-contact.php' ) ) {
 	include get_template_directory() . '/popup-contact.php';
 }
+
+// Glass detail popup for topic rows and FAQ answers (assets/js/ae-detail-popup.js).
+include get_template_directory() . '/popup-detail.php';
 ?>
 
 <?php wp_footer(); ?>
