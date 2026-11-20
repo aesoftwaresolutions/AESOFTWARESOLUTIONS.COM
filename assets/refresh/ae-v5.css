@@ -1922,6 +1922,13 @@ html.ae-calm .ae-gate__card.ae-sheet { transition: none; }
 
 /* 3. Safari chrome: a dark glass browser window around the showcase. */
 .v5-showcase { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter) var(--section-pad); }
+/* Advert video: vertical short in a phone frame, replaces the Monarch showcase. */
+.v5-advert { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter) var(--section-pad); text-align: center; }
+.v5-advert__title { margin: 0 auto 16px; max-width: 24ch; font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 600; letter-spacing: -0.025em; line-height: 1.15; }
+.v5-advert__lede { margin: 0 auto 32px; max-width: 52ch; color: var(--text-muted); font-size: 1rem; line-height: 1.7; }
+.v5-advert__phone { max-width: 340px; margin: 0 auto 32px; border: 1px solid var(--glass-line); border-radius: 28px; overflow: hidden; background: #000; box-shadow: 0 10px 34px rgba(0, 0, 0, .38); }
+.v5-advert__phone video { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; }
+.v5-advert__cta { margin: 0; }
 .v5-showcase__title { margin: 0 0 32px; max-width: 24ch; font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 600; letter-spacing: -0.025em; line-height: 1.15; }
 .ae-safari {
   margin: 0 auto;
