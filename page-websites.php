@@ -123,6 +123,8 @@ add_action( 'wp_head', function () { ?>
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px 12px;
     border-top: 1px solid var(--border);
 }
 .web-scroll-card__label-name {
@@ -131,11 +133,12 @@ add_action( 'wp_head', function () { ?>
     color: var(--text);
 }
 .web-scroll-card__label-type {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--accent);
     font-weight: 600;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 /* TIER CARDS */
@@ -178,7 +181,7 @@ add_action( 'wp_head', function () { ?>
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
-    align-items: start;
+    align-items: stretch;
 }
 @media (max-width: 960px) { .web-tier-grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; } }
 

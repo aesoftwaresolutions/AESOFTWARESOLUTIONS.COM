@@ -684,6 +684,8 @@ footer.site-footer.v5-footer {
 .v5-social { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; font-size: .9375rem; }
 .v5-social__link { display: inline-flex; align-items: center; gap: .55em; color: var(--text); text-decoration: none; min-height: 28px; }
 .v5-social__link svg { display: inline-block; width: 18px; height: 18px; flex: none; }
+/* Nextdoor's mark is a wide wordmark, not a square glyph: give it a wide box so it reads at the same weight as the other icons. */
+.v5-social__link--nextdoor svg { width: 44px; height: 18px; }
 .v5-social__link:hover, .v5-social__link:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
 .v5-footer__legal {
   max-width: var(--wrap);
