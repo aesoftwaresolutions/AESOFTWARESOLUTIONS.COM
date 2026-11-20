@@ -336,7 +336,7 @@ add_action( 'wp_head', function () { ?>
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 2rem;
 }
-.web-process-step { display: flex; flex-direction: column; gap: 0.75rem; }
+.web-process-step { display: flex; flex-direction: column; gap: 0.75rem; padding: 1.5rem; border-radius: var(--radius); }
 .web-process-step__num {
     font-size: 0.72rem;
     font-weight: 700;
