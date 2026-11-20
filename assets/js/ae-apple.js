@@ -55,11 +55,8 @@
     function cycle() {
       text.textContent = lines[i % lines.length];
       island.classList.add('is-open');
-      later(function () {
-        island.classList.remove('is-open');
-        i++;
-        later(cycle, 7000);
-      }, 4200);
+      i++;
+      later(cycle, 7000);
     }
     later(cycle, 900);
     doc.addEventListener('visibilitychange', function () {
