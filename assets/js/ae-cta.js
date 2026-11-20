@@ -11,7 +11,7 @@
   var tpl = document.createElement('template');
   tpl.innerHTML = '' +
     '<style>' +
-    ':host{display:block;--ink:#FFFFFF;--paper:#0B0B0D;--muted:rgba(255,255,255,.78);--gold:#C9A96E;--rule:rgba(255,255,255,.16);--ease:cubic-bezier(.18,.66,.18,1)}' +
+    ':host{display:block;--ink:#FFFFFF;--paper:#0B0B0D;--muted:rgba(255,255,255,.78);--gold:#FFFFFF;--rule:rgba(255,255,255,.16);--ease:cubic-bezier(.18,.66,.18,1)}' +
     '.cta{box-sizing:border-box;max-width:1200px;margin:0 auto;padding:96px clamp(20px,4vw,40px);border-top:1px solid var(--rule);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display",system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);opacity:0;transform:translateY(12px);transition:opacity .4s var(--ease),transform .4s var(--ease)}' +
     '.cta.in{opacity:1;transform:none}' +
     '.label{font-size:.875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 16px}' +

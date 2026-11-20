@@ -4,8 +4,8 @@
    ae-fixes.css, which header.php no longer links.
 
    Look      Dark. Page #0A0A0B under a slow animated background, white text,
-             frosted glass cards. Black and white only: no new gold.
-   Accent    Gold #C9A96E is hairlines only (the existing ones): the footer
+             frosted glass cards. Black and white only: no gold.
+   Accent    White is the only accent (hairlines only): the footer
              rule, the focus halo, the button underline on hover and the single
              "Recommended" flag. It is never used for text or fills elsewhere.
    Type      Apple system font stack (San Francisco on Apple devices). Plus Jakarta Sans files kept, unused.
@@ -14,7 +14,7 @@
 
 :root {
   /* ── Colour tokens ───────────────────────────────────────────────────── */
-  --gold: #C9A96E;
+  --gold: #FFFFFF;
   /* Dark: --paper is the page colour and the text colour ON a white button.
      --ink is the text colour (white). --surface and --paper-2 are glass. */
   --paper: #0A0A0B;
@@ -44,7 +44,7 @@
   --gold-ink: var(--ink);
 
   /* Channel triplets for alpha variants: rgb(var(--ink-rgb) / .12) */
-  --gold-rgb: 201 169 110;
+  --gold-rgb: 255 255 255;
   --paper-rgb: 10 10 11;
   --ink-rgb: 255 255 255;
   --error-rgb: 255 154 138;
@@ -280,7 +280,7 @@ a.v5-label {
   cursor: pointer;
   transition: transform .2s var(--ease), background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease), background-size .25s var(--ease);
 }
-/* Primary: ink fill. On hover a gold underline slides in under the label. */
+/* Primary: ink fill. On hover a white underline slides in under the label. */
 .v5-button, .btn--primary, body .report-request-btn {
   background-color: var(--ink);
   background-image: linear-gradient(var(--gold), var(--gold));
@@ -648,7 +648,7 @@ html.ae-calm .mobile-nav-overlay__link { transition: none; }
 @media (max-width: 400px) { .site-header__logo { font-size: .85rem; } }
 
 /* ══════════════════════════════════════════════════════════════════════
-   FOOTER: white, ink text. A gold hairline across the top.
+   FOOTER: white, ink text. A white hairline across the top.
    ══════════════════════════════════════════════════════════════════════ */
 footer.site-footer.v5-footer {
   display: block;
@@ -1681,7 +1681,7 @@ footer.site-footer.v5-footer { background: rgba(10, 10, 11, .5); -webkit-backdro
 .ae-offer--featured, .web-tier--featured, .tiers-section .tier-card--featured, .ae-launch__deal {
   border: 1px solid rgba(255, 255, 255, .5) !important;
 }
-/* The "Recommended" flag is the one existing gold pill: ink text on it. */
+/* The "Recommended" flag is the one existing white pill: ink text on it. */
 .ae-offer__flag, .web-tier__badge { color: #121212 !important; }
 .web-tier__badge { background: var(--gold) !important; }
 
