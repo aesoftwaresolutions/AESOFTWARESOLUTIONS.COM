@@ -684,8 +684,8 @@ footer.site-footer.v5-footer {
 .v5-social { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; font-size: .9375rem; }
 .v5-social__link { display: inline-flex; align-items: center; gap: .55em; color: var(--text); text-decoration: none; min-height: 28px; }
 .v5-social__link svg { display: inline-block; width: 18px; height: 18px; flex: none; }
-/* Nextdoor's mark is a wide wordmark, not a square glyph: give it a wide box so it reads at the same weight as the other icons. */
-.v5-social__link--nextdoor svg { width: 44px; height: 18px; }
+/* Nextdoor's mark is a wide wordmark, not a square glyph: give it a wide box so it reads at the same height (18px) as the other icons. The viewBox is 24x6 (4:1), so 72px wide renders the wordmark 18px tall. */
+.v5-social__link--nextdoor svg { width: 72px; height: 18px; }
 .v5-social__link:hover, .v5-social__link:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
 .v5-footer__legal {
   max-width: var(--wrap);
@@ -1811,11 +1811,11 @@ html.ae-calm .ae-glass-cursor { display: none !important; }
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 0;
-  opacity: 0;
-  margin-left: 0;
+  max-width: 300px;
+  opacity: 1;
+  margin-left: 10px;
 }
-/* Open: the pill widens to show the line. Without JS (or reduced motion) it is open and still. */
+/* The pill always shows the status line. The old open/close cycle left visitors seeing only a green dot, so the text is no longer gated on .is-open. */
 .ae-island.is-open .ae-island__text { max-width: 300px; opacity: 1; margin-left: 10px; }
 html.ae-js:not(.ae-calm) .ae-island__text {
   transition: max-width .55s cubic-bezier(.3, 1.25, .5, 1), opacity .35s var(--ease), margin-left .55s cubic-bezier(.3, 1.25, .5, 1);
