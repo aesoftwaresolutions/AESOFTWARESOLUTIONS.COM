@@ -43,7 +43,7 @@ function aesoftwares_popup_attrs( $item ) {
 
 /**
  * One offer card. Order: name, price, cadence, pitch, points, guarantee, button.
- * The featured card gets a 2px ink border and the gold "Recommended" flag.
+ * The featured card gets a 2px ink border and the white "Recommended" flag.
  */
 function aesoftwares_offer_card( $item, $extra_class = '' ) {
 	$featured = ! empty( $item['featured'] );

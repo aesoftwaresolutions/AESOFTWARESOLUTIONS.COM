@@ -1,6 +1,6 @@
 <?php
 /**
- * Site footer (v6 redesign). White, ink text, a gold hairline across the top.
+ * Site footer (v6 redesign). White, ink text, a white hairline across the top.
  * Four columns: brand and email, Services, Resources, Contact.
  *
  * @package AE_Softwares
