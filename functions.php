@@ -14,12 +14,6 @@ require_once get_template_directory() . '/inc/offers.php';
 // ── Guides page newsletter signup (admin-ajax: ae_guides_signup) ─────────────
 require_once get_template_directory() . '/inc/guides-newsletter.php';
 
-// ── Front Desk intake form (admin-ajax: ae_front_desk_intake) ────────────────
-// Paid Front Desk / Always-On customers fill this in after payment. It emails
-// the intake to anthony@aesoftwaresolutions.com. The page is not in the nav
-// and no public page links to it; the link goes in the welcome email only.
-require_once get_template_directory() . '/inc/front-desk-intake.php';
-
 // ══════════════════════════════════════════════════════════════════════════════
 // 1. ENQUEUE SCRIPTS & STYLES
 // ══════════════════════════════════════════════════════════════════════════════
