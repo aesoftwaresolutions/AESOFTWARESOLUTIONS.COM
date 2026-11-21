@@ -1,0 +1,69 @@
+# AE Software Solutions LLC
+
+> AE Software Solutions LLC is a compliance-aware operational intelligence consultancy and software and web studio in Chambersburg, Pennsylvania, serving small businesses across the United States. It builds websites, manages online presence, and runs AI follow-up automation for businesses with 5 to 50 employees, often in regulated industries such as mortgage and lending, insurance, and home services. The founder is Anthony Pioquinto. There is no published street address; this is a service-area business and all work is done remotely.
+
+## Services
+
+- [Websites](https://aesoftwaresolutions.com/websites/): Custom websites from $495 one time. Starter Site from $495, Lead Funnel Site from $4,500, Custom Platform quoted after a scoping call.
+- [Online Presence Management](https://aesoftwaresolutions.com/online-presence/): $199 per month. Google Business Profile management, review replies, listing consistency, website care, monthly reporting.
+- [Front Desk](https://aesoftwaresolutions.com/pricing/#front-desk): AI receptionist from $99 per month plus a one time $75 setup. $99 up to 60 calls, $179 up to 150 calls, $309 up to 300 calls, $45 per extra 50 calls over 300.
+- [Always-On Front Desk](https://aesoftwaresolutions.com/pricing/#front-desk-always-on): $250 per month. Full time AI call answering and follow up.
+- [Missed-Lead Audit](https://aesoftwaresolutions.com/pricing/#audit): $250 one time, credited in full toward a first retainer month. Maps every way customers can reach the business and finds where inquiries leak.
+- [Launch Package](https://aesoftwaresolutions.com/pricing/#launch): $595 one time. Launch setup for a new online presence.
+- [Social Front Desk](https://aesoftwaresolutions.com/pricing/#social-front-desk): $199 per month. Social inbox and comment handling.
+- [Total Presence](https://aesoftwaresolutions.com/pricing/#total-presence): $229 per month. Social Front Desk plus Google Business Profile management.
+- [Social Management](https://aesoftwaresolutions.com/social-management/): $799 per month plus a one time $300 setup. Content, short form video, posting, replies, monthly report. Growth $1,299 per month, Scale $1,999 per month.
+- [Creator Packages](https://aesoftwaresolutions.com/social-management/): Creator Launch $499 per month, Creator Growth $899 per month, Creator Authority $1,999 per month.
+- [Order Desk](https://aesoftwaresolutions.com/services/): $149 per month up to 100 orders, $299 up to 500 orders, $549 up to 2,000 orders, $25 per extra 50 orders. Managed AI back office for small B2B sellers: order entry and pricing agents. Setup $150, $295, or $495 by tier.
+- [Free Operational Assessment](https://aesoftwaresolutions.com/services/): Free. A 10-phase AI-guided discovery interview producing a risk report, compliance register, automation ROI matrix, and roadmap.
+- [AI Setup Guides](https://aesoftwaresolutions.com/get-started/): $19 per month. Step by step AI setup guides.
+- [Branded Document Templates](https://aesoftwaresolutions.com/pricing/): $295 one time.
+- [Contractor Guides](https://aesoftwaresolutions.com/guides/): Free. PDF guides for contractors and small service businesses.
+- [AI Tools Assessment](https://aesoftwaresolutions.com/pricing/#audit): $999 one time. Offered only as an add-on to the Missed-Lead Audit, never sold cold.
+
+## Key pages
+
+- [Home](https://aesoftwaresolutions.com/): What AE does and how to start.
+- [Services](https://aesoftwaresolutions.com/services/): Full service list.
+- [Pricing](https://aesoftwaresolutions.com/pricing/): All prices in one place.
+- [Websites](https://aesoftwaresolutions.com/websites/): Website design details and examples.
+- [Online Presence](https://aesoftwaresolutions.com/online-presence/): Google Business Profile and review management.
+- [Social Management](https://aesoftwaresolutions.com/social-management/): Social media management plans.
+- [Guides](https://aesoftwaresolutions.com/guides/): Free guides for small businesses.
+- [About](https://aesoftwaresolutions.com/about/): The founder and how AE works.
+- [Contact](https://aesoftwaresolutions.com/contact/): Contact form and details.
+- [Book a discovery call](https://calendar.app.google/oWNCzxkmP43DBkhbA): Free 30 minute discovery call, Google Meet. Monday, Tuesday, Thursday 3 to 8 pm ET; Wednesday, Friday 3 to 6 pm ET.
+- [Client dashboard](https://dashboard.aesoftwaresolutions.com/): Client login for service status, activity, and API access.
+- [For AI agents](https://aesoftwaresolutions.com/agents/): Machine-readable service and API reference for AI agents.
+- [Full content](https://aesoftwaresolutions.com/llms-full.txt): Fuller version of this file with service details and API reference.
+
+## Contact
+
+- Email: anthony@aesoftwaresolutions.com
+- Phone: (240) 317-7677
+- Booking: https://calendar.app.google/oWNCzxkmP43DBkhbA
+- Hours: Monday to Friday, 9 am to 5 pm ET (website); Google Business Profile lists 9 am to 10 pm weekdays.
+- Service area: United States, nationwide. No published street address.
+
+## Free tools API
+
+Base URL: https://aesoftwaresolutions.com/wp-json/aesoftwares/v1/
+
+- POST /rewrite: Rewrite text.
+- POST /summarize: Summarize text.
+- POST /email: Draft an email.
+- POST /transcribe: Transcribe audio.
+- POST /tts: Text to speech.
+- POST /assessment: Run the free operational assessment.
+- POST /marketplace: Marketplace lookup.
+- POST /validate: Validate input.
+- POST /chat: Chat with the free tools assistant.
+
+## Client dashboard API
+
+Base URL: https://dashboard.aesoftwaresolutions.com/api/v1/
+
+- POST /{service}/events: Post a service event. Per-client Bearer API key required.
+- GET /clients/{client_id}/services: List a client's services and status.
+- GET /clients/{client_id}/activity: Client activity feed.
+- POST /webhooks/telnyx/call-summary: Front Desk call summary webhook.
