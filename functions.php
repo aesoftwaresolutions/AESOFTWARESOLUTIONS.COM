@@ -1277,10 +1277,19 @@ add_action( 'wp_head', function () {
             '@type'           => 'OfferCatalog',
             'name'            => 'Services',
             'itemListElement' => [
-                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Website design', 'url' => home_url( '/websites/' ) ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Website design', 'url' => home_url( '/websites/' ) ], 'priceSpecification' => [ '@type' => 'PriceSpecification', 'minPrice' => 495, 'priceCurrency' => 'USD' ] ],
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Online presence management', 'url' => home_url( '/online-presence/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 199, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
-                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Follow up automation (Always-On Front Desk)', 'url' => home_url( '/pricing/#front-desk-always-on' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 250, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Front Desk AI receptionist', 'url' => home_url( '/pricing/#front-desk' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 99, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Always-On Front Desk', 'url' => home_url( '/pricing/#front-desk-always-on' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 250, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Missed-Lead Audit', 'url' => home_url( '/pricing/#audit' ) ], 'price' => 250, 'priceCurrency' => 'USD' ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Launch Package', 'url' => home_url( '/pricing/#launch' ) ], 'price' => 595, 'priceCurrency' => 'USD' ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Social Front Desk', 'url' => home_url( '/pricing/#social-front-desk' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 199, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Total Presence', 'url' => home_url( '/pricing/#total-presence' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 229, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Social Management', 'url' => home_url( '/social-management/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 799, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Order Desk', 'url' => home_url( '/services/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 149, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'AI Setup Guides Subscription', 'url' => home_url( '/get-started/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 19, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Branded Document Templates', 'url' => home_url( '/pricing/' ) ], 'price' => 295, 'priceCurrency' => 'USD' ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Free Operational Assessment', 'url' => home_url( '/services/' ) ], 'price' => 0, 'priceCurrency' => 'USD' ],
             ],
         ],
     ];
@@ -1301,7 +1310,48 @@ add_action( 'wp_head', function () {
             ],
         ], JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
     }
+    // Agent visibility (Nov 20): Organization block with contact and social
+    // profiles, so agents and search engines get the full business identity.
+    $ae_organization = [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'Organization',
+        '@id'         => home_url( '/#organization' ),
+        'name'        => 'AE Software Solutions LLC',
+        'url'         => home_url( '/' ),
+        'email'       => 'anthony@aesoftwaresolutions.com',
+        'telephone'   => '+1-240-317-7677',
+        'description' => 'Website design, online presence management and AI follow-up automation for small businesses across the United States.',
+        'foundingDate' => '2025-08-12',
+        'knowsAbout'  => [
+            'Website design',
+            'Google Business Profile management',
+            'Online presence management',
+            'Review management',
+            'AI call answering',
+            'Missed call follow up automation',
+            'Social media management',
+            'Order entry automation',
+            'Small business automation',
+        ],
+        'sameAs'      => [
+            'https://www.linkedin.com/company/111336788',
+            'https://www.youtube.com/@AESoftwareSolutionsLLC',
+            'https://www.instagram.com/aesoftwaresolutionsllc',
+            'https://x.com/aesoftwarellc',
+            'https://www.facebook.com/813603801839060',
+        ],
+        'contactPoint' => [
+            '@type'           => 'ContactPoint',
+            'contactType'     => 'sales',
+            'email'           => 'anthony@aesoftwaresolutions.com',
+            'telephone'       => '+1-240-317-7677',
+            'areaServed'      => 'US',
+            'availableLanguage' => 'en',
+            'hoursAvailable'  => 'Mo-Fr 09:00-17:00',
+        ],
+    ];
     echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
+    echo '<script type="application/ld+json">' . wp_json_encode( $ae_organization, JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
 }, 20 );
 
 // Titles and descriptions for the key pages, aimed at the searches we want:
@@ -1424,6 +1474,70 @@ add_filter( 'wpseo_robots_array', function ( $robots ) {
     }
     return $robots;
 }, 20 );
+
+// Agent visibility (Nov 20): AI crawlers are welcome. WordPress builds the
+// virtual robots.txt through this filter; Yoast hooks into the same filter,
+// so this appends after Yoast's output. To block a crawler from training
+// use, change its Allow to Disallow for that user-agent only.
+add_filter( 'robots_txt', function ( $output, $public ) {
+	if ( ! $public ) {
+		return $output;
+	}
+	$bots = [
+		'GPTBot',
+		'OAI-SearchBot',
+		'ChatGPT-User',
+		'ClaudeBot',
+		'Claude-Web',
+		'anthropic-ai',
+		'Google-Extended',
+		'CCBot',
+		'PerplexityBot',
+		'Perplexity-User',
+		'Applebot-Extended',
+		'Meta-ExternalAgent',
+		'Bytespider',
+		'cohere-ai',
+		'DuckAssistBot',
+	];
+	$rules = "\n# AI crawlers are welcome. See /llms.txt for a machine-readable index.\n";
+	foreach ( $bots as $bot ) {
+		$rules .= "User-agent: {$bot}\nAllow: /\n\n";
+	}
+	return $output . $rules;
+}, 20, 2 );
+
+// Agent visibility (Nov 20): serve /llms.txt and /llms-full.txt from the
+// theme. The two text files must be committed to the theme directory
+// alongside functions.php. After pushing, flush rewrite rules once:
+// WP Admin > Settings > Permalinks > Save, or the rules below flush on
+// theme activation.
+add_action( 'init', function () {
+	add_rewrite_rule( '^llms\.txt$', 'index.php?ae_llms=1', 'top' );
+	add_rewrite_rule( '^llms-full\.txt$', 'index.php?ae_llms=full', 'top' );
+} );
+add_filter( 'query_vars', function ( $vars ) {
+	$vars[] = 'ae_llms';
+	return $vars;
+} );
+add_action( 'template_redirect', function () {
+	$llms = get_query_var( 'ae_llms' );
+	if ( '' === $llms ) {
+		return;
+	}
+	$file = ( 'full' === $llms ) ? 'llms-full.txt' : 'llms.txt';
+	$path = get_template_directory() . '/' . $file;
+	if ( ! file_exists( $path ) ) {
+		status_header( 404 );
+		exit;
+	}
+	header( 'Content-Type: text/plain; charset=utf-8' );
+	readfile( $path );
+	exit;
+} );
+add_action( 'after_switch_theme', function () {
+	flush_rewrite_rules();
+} );
 
 // Create the Online Presence page once, assigned to its template, so it
 // exists without anyone having to add it in WP Admin.
