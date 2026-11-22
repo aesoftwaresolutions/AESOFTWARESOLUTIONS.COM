@@ -69,20 +69,20 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
     setTimeout(function () {
       if (!html.classList.contains('ae-motion-ready')) { html.classList.add('ae-motion-failed'); }
     }, 4000);
-    // Intro curtain (first page of a visit) and page wipe arrival (after an internal link).
-    // Both are decoration only: skipped for reduced motion, and a hard timer always clears them.
+    // No intro curtain and no arrival wipe on any page: every headline must be
+    // visible on first paint, not hidden behind a full-screen panel.
     try {
       if (!html.classList.contains('ae-calm')) {
-        var arriving = sessionStorage.getItem('ae_wipe') === '1';
-        var seen = sessionStorage.getItem('ae_seen') === '1';
+  
+  
         sessionStorage.removeItem('ae_wipe');
         sessionStorage.setItem('ae_seen', '1');
-        // Never on the home page: its headline must be visible on first paint.
-        var home = <?php echo is_front_page() ? 'true' : 'false'; ?>;
-        if (home) { /* no curtain, no wipe */ }
-        else if (arriving) { html.classList.add('ae-arriving'); }
-        else if (!seen && !location.hash) { html.classList.add('ae-intro-on'); }
-        setTimeout(function () { html.classList.remove('ae-arriving', 'ae-intro-on'); }, 2600);
+  
+  
+  
+  
+  
+  
       }
     } catch (e) {}
   })();
