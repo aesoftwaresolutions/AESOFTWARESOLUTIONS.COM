@@ -37,11 +37,11 @@ get_header();
 
 $ae_img = get_template_directory_uri() . '/assets/img/';
 
-// Hero carousel slides, in order. Copy stays minimal: name, one line, price,
-// booking link. Full detail lives on each product page. The node labels drawn on
-// each graphic are repeated in its alt text.
-$ae_book_url = 'https://calendar.app.google/oWNCzxkmP43DBkhbA';
-$ae_slides   = [
+// Hero carousel slides, in order. Copy stays minimal: name, one line, price.
+// The hero's single booking button sits in the hero copy, not on the slides.
+// Full detail lives on each product page. The node labels drawn on each graphic
+// are repeated in its alt text.
+$ae_slides = [
 	[
 		'slug'  => 'front-desk',
 		'name'  => 'Front Desk',
@@ -55,7 +55,7 @@ $ae_slides   = [
 		'name'  => 'Online Presence Management',
 		'line'  => 'Ongoing management of your Google Business Profile, reviews, and listings.',
 		'price' => '$199/mo',
-		'url'   => home_url( '/online-presence-management/' ),
+		'url'   => home_url( '/online-presence/' ),
 		'alt'   => 'Online Presence Management: Audit and claim, Clean up and align, Ongoing upkeep.',
 	],
 	[
@@ -182,10 +182,7 @@ $ae_topic_close = function () {
           <div class="ae-hc__cap">
             <h2 class="ae-hc__name"><a href="<?php echo esc_url( $slide['url'] ); ?>"><?php echo esc_html( $slide['name'] ); ?></a></h2>
             <p class="ae-hc__line"><?php echo esc_html( $slide['line'] ); ?></p>
-            <div class="ae-hc__foot">
-              <p class="ae-hc__price"><?php echo esc_html( $slide['price'] ); ?></p>
-              <a class="v5-button ae-hc__cta" href="<?php echo esc_url( $ae_book_url ); ?>">Book a discovery call</a>
-            </div>
+            <p class="ae-hc__price"><?php echo esc_html( $slide['price'] ); ?></p>
           </div>
         </article>
       <?php endforeach; ?>
