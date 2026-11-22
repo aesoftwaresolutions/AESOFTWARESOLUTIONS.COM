@@ -106,6 +106,8 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
       <?php endforeach; ?>
     </nav>
 
+    <a href="https://dashboard.aesoftwaresolutions.com/login" class="site-header__signin">Sign in</a>
+
     <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="site-header__cta btn btn--primary">Get in touch</a>
 
     <!-- Hamburger: shown below 960px, wired up in ae-motion.js -->
@@ -126,6 +128,7 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
         <?php foreach ( $ae_nav as $item ) : ?>
           <li><a href="<?php echo esc_url( home_url( '/' . $item[1] . '/' ) ); ?>" class="mobile-nav-overlay__link"<?php echo $ae_current( $item[1], $item[2] ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $item[0] ); ?></a></li>
         <?php endforeach; ?>
+        <li><a href="https://dashboard.aesoftwaresolutions.com/login" class="mobile-nav-overlay__link">Sign in</a></li>
       </ul>
       <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn--primary mobile-nav-overlay__cta">Get in touch</a>
     </nav>

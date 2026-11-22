@@ -518,6 +518,35 @@ header.site-header.aec--scrolled {
 .site-header__nav-link:hover { color: var(--text); }
 .site-header__nav-link:hover::after, .site-header__nav-link[aria-current]::after { transform: scaleX(1); }
 .site-header__nav-link[aria-current] { color: var(--text); }
+/* Sign in (client dashboard) — same quiet text-link treatment as the nav links,
+   kept outside .site-header__nav so the gliding nav pill never targets it. */
+.site-header__signin {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  min-height: 44px;
+  margin-left: 8px;
+  color: var(--text-secondary);
+  font-size: .9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color .2s var(--ease);
+}
+.site-header__signin::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  height: 2px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s var(--ease);
+}
+.site-header__signin:hover { color: var(--text); }
+.site-header__signin:hover::after { transform: scaleX(1); }
 header.site-header .site-header__cta.btn {
   flex: none;
   min-height: 44px;
