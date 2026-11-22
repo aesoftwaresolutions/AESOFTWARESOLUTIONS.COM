@@ -96,6 +96,33 @@ $price = function ( $group, $id ) use ( $o ) {
 	</p>
 </section>
 
+<?php
+// Every product page, grouped. The list lives in inc/products.php and also
+// feeds the desktop Services dropdown in header.php.
+require_once get_template_directory() . '/inc/products.php';
+?>
+<section class="ae-section svc-catalog" id="all-services" aria-labelledby="svc-all">
+	<header class="v5-section-head">
+		<h2 class="v5-section-title" id="svc-all" data-reveal>Every service</h2>
+	</header>
+	<?php foreach ( aesoftwares_products() as $g => $group ) : ?>
+		<div class="svc-catalog__group" data-reveal>
+			<h3 class="v5-label svc-catalog__title" id="svc-group-<?php echo (int) $g; ?>"><?php echo esc_html( $group['title'] ); ?></h3>
+			<ul class="v5-prices" aria-labelledby="svc-group-<?php echo (int) $g; ?>">
+				<?php foreach ( $group['items'] as $item ) : ?>
+					<li class="v5-prices__row">
+						<a href="<?php echo esc_url( home_url( '/' . $item['slug'] . '/' ) ); ?>">
+							<span class="v5-prices__name"><?php echo esc_html( $item['name'] ); ?></span>
+							<span class="v5-prices__pitch"><?php echo esc_html( $item['line'] ); ?></span>
+							<span class="v5-prices__price"><?php echo esc_html( $item['price'] ); ?></span>
+						</a>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	<?php endforeach; ?>
+</section>
+
 <section class="op-steps" aria-labelledby="svc-who">
 	<header class="v5-section-head">
 		<h2 class="v5-section-title" id="svc-who" data-reveal>Who it&rsquo;s for</h2>
