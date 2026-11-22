@@ -13,8 +13,8 @@
  *  8. Nav pill      black pill glides between the nav links, rests on the current section
  *
  *  9. Page wipe     a dark panel slides over the page on internal links, then away on arrival
- * 10. Intro         first page of a visit only: a 1.2s curtain with a thin progress line (CSS driven)
- * 11. Split heads   h1, section titles and [data-split] rise word by word from a mask
+ * 10. Intro         retired: no page gets the first-visit curtain any more
+ * 11. Split heads   section titles and [data-split] rise word by word from a mask (never h1)
  * 12. Magnetic      buttons lean toward a fine pointer (up to 6px)
  * 13. Cursor glow   a faint white light trails a fine pointer
  * 14. Stagger       sibling cards, rows and steps reveal a few ms apart as they scroll in
@@ -25,8 +25,8 @@
  * html.ae-js is set in <head>; if this file never runs, html.ae-motion-failed
  * shows everything after 4 seconds, so text is never stuck hidden.
  * Sections 9 to 13 are the preview motion layer, restored in v7 as decoration only:
- * each one is skipped under reduced motion, a hard timer in header.php clears the
- * intro and wipe even if this file never runs, and split words show at once on failure.
+ * each one is skipped under reduced motion, and split words show at once on failure.
+ * The intro curtain and arrival wipe are retired, so there is nothing to clear.
  * The footer wordmark slide is NOT restored: the v6 footer has no wordmark element.
  */
 (function () {
@@ -412,7 +412,7 @@
     });
   }
 
-  /* 10. INTRO is pure CSS (html.ae-intro-on, set before paint in header.php). */
+  /* 10. INTRO retired: header.php no longer sets html.ae-intro-on on any page. */
 
   /* 11. SPLIT HEADLINES */
   function splitNode(node, state) {
@@ -438,9 +438,9 @@
 
   function initSplit() {
     if (calm || !('IntersectionObserver' in window)) return;
-    // The home hero headline is never split: it must be whole and readable on
+    // No h1 is ever split: every headline must be whole and readable on
     // first paint, not rise word by word from a mask.
-    var heads = doc.querySelectorAll('h1:not(.v5-hero__title), .v5-section-title, [data-split]');
+    var heads = doc.querySelectorAll('.v5-section-title, [data-split]');
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
