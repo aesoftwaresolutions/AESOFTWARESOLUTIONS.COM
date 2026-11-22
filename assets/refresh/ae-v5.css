@@ -2526,6 +2526,10 @@ html.ae-glass-on [data-ae-glass="card"][data-ae-glass-key] {
   html.ae-glass-on header.site-header.aec--scrolled[data-ae-glass] {
     -webkit-backdrop-filter: brightness(.42) saturate(160%) blur(28px) var(--ae-refract, );
     backdrop-filter: brightness(.42) saturate(160%) blur(28px) var(--ae-refract, );
+    /* A backdrop filter paints under the element's own fill: at .86 the fill
+       hid the glass. The .42 dim and 28px blur still keep white buttons from
+       ghosting through (measured: a white button reads at most 50/255). */
+    background: rgba(10, 10, 11, .55);
   }
 }
 
@@ -2533,7 +2537,7 @@ html.ae-glass-on [data-ae-glass="card"][data-ae-glass-key] {
    it becomes the panel's backdrop root (the panel would see only the header),
    so the panel stays opaque there, as before. */
 html.ae-glass-on header.site-header:not(.aec--scrolled) .site-header__panel[data-ae-glass][data-ae-glass-key] {
-  background: rgba(10, 10, 11, .78);
+  background: rgba(10, 10, 11, .55);   /* light enough for the glass to show; text stays clear over 28px blur */
   -webkit-backdrop-filter: blur(28px) saturate(140%) var(--ae-refract, );
   backdrop-filter: blur(28px) saturate(140%) var(--ae-refract, );
 }
