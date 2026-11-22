@@ -2303,3 +2303,120 @@ html.ae-calm .ae-pop__close:hover { transform: none; }
   .faq-item, .op-faq__item { padding-left: 20px; padding-right: 20px; }
   .contact-sidebar__info { padding: 20px; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   HERO CAROUSEL (front page)
+   The product carousel is the backdrop of the home hero. The hero takes the
+   graphics' own ground (#111) edge to edge, so slide text sits on the same
+   dark as the line art. Black and white only: no glow, no gold.
+   Phone and tablet: headline, then the carousel, then the proof strip.
+   Desktop (1024px and up): headline left, carousel right.
+   Behaviour lives in assets/js/ae-hero-carousel.js.
+   ══════════════════════════════════════════════════════════════════════ */
+.v5-hero.v5-hero--carousel {
+  --ae-hc-ground: #111111;
+  background: var(--ae-hc-ground);
+  box-shadow: 0 0 0 100vmax var(--ae-hc-ground);
+  clip-path: inset(0 -100vmax);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 48px;
+}
+.v5-hero--carousel > * { min-width: 0; }
+.v5-hero--carousel .v5-proof { margin-top: 0; }
+
+.ae-hc {
+  position: relative;
+  overflow: hidden;
+  overflow: clip;
+  background: var(--ae-hc-ground, #111111);
+}
+.ae-hc__track {
+  display: flex;
+  align-items: stretch;
+  transition: transform .9s var(--ease);
+  will-change: transform;
+}
+.ae-hc__track.is-jump, .ae-hc.is-calm .ae-hc__track { transition: none; }
+.ae-hc__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ae-hc__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: contain;
+  background: var(--ae-hc-ground, #111111);
+  /* Feather the outer 5% so the JPG's own ground melts into the hero. The
+     line art and node labels all sit well inside this margin. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(to bottom, transparent, #000 5%, #000 95%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(to bottom, transparent, #000 5%, #000 95%, transparent);
+  mask-composite: intersect;
+}
+.ae-hc__cap {
+  display: grid;
+  gap: 8px;
+  padding: 12px 0 4px;
+}
+.ae-hc__name {
+  margin: 0;
+  font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  overflow-wrap: break-word;
+}
+.ae-hc__name a {
+  color: var(--text);
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size .3s var(--ease);
+}
+.ae-hc__name a:hover, .ae-hc__name a:focus-visible { background-size: 100% 1px; }
+.ae-hc__line {
+  margin: 0;
+  max-width: 52ch;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  overflow-wrap: break-word;
+}
+.ae-hc__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin-top: 8px;
+}
+.ae-hc__price {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.ae-hc__cta { max-width: 100%; }
+
+/* Phone: the graphic runs edge to edge; the caption keeps the gutter. */
+@media (max-width: 640px) {
+  .v5-hero.v5-hero--carousel { row-gap: 36px; }
+  .ae-hc { margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); }
+  .ae-hc__cap { padding-left: var(--gutter); padding-right: var(--gutter); }
+}
+
+/* Desktop: headline left, carousel right, proof strip across the bottom. */
+@media (min-width: 1024px) {
+  .v5-hero.v5-hero--carousel {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: clamp(32px, 4vw, 64px);
+    row-gap: 56px;
+    align-items: center;
+  }
+  .v5-hero--carousel .v5-hero__title { font-size: clamp(2.5rem, 4.2vw, 4rem); }
+  .v5-hero--carousel .v5-proof { grid-column: 1 / -1; }
+}
