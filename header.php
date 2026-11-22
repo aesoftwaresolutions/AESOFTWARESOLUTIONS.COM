@@ -12,6 +12,16 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
 	return file_exists( $file ) ? filemtime( $file ) : '6.0.0';
 };
 
+// Liquid glass refraction (assets/js/ae-glass.js). Desktop Chromium only; it
+// exits at once everywhere else. Kept out of LiteSpeed "delay JS".
+wp_enqueue_script( 'ae-glass', $ae_theme_uri . '/assets/js/ae-glass.js', [], $ae_asset_ver( '/assets/js/ae-glass.js' ), [ 'in_footer' => true, 'strategy' => 'defer' ] );
+add_filter( 'script_loader_tag', function ( $tag, $handle ) {
+	if ( 'ae-glass' === $handle && false === strpos( $tag, 'data-no-optimize' ) ) {
+		$tag = str_replace( '<script ', '<script data-no-optimize="1" data-no-defer="1" data-cfasync="false" ', $tag );
+	}
+	return $tag;
+}, 10, 2 );
+
 // Current section, for the active link underline. Work, Online presence and
 // Social management sit under Services, so that link stays marked on them.
 $ae_home_path = trim( (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
