@@ -36,6 +36,7 @@
         <li><a class="v5-link" href="<?php echo esc_url( home_url( '/work/' ) ); ?>">Work</a></li>
         <li><a class="v5-link" href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a></li>
         <li><a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Contact</a></li>
+        <li><a class="v5-link" href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>">Privacy policy</a></li>
       </ul>
     </nav>
 

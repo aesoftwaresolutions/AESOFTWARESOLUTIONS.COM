@@ -195,6 +195,20 @@ add_action( 'template_redirect', function () {
     }
 }, 1 );
 
+// ── Replaced pages → their replacements ───────────────────────────────────
+// Old duplicate pages that a newer page replaced. Each old URL 301s to its
+// replacement, whether or not the old WordPress page still exists.
+add_action( 'template_redirect', function () {
+    $moved = [
+        'business-starter' => '/business-starter-package/',
+    ];
+    $path = trim( (string) wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '', PHP_URL_PATH ), '/' );
+    if ( isset( $moved[ $path ] ) ) {
+        wp_safe_redirect( home_url( $moved[ $path ] ), 301 );
+        exit;
+    }
+}, 1 );
+
 
 // ── Strip WordPress bloat from the front page ─────────────────────────────
 function aesoftwares_clean_front_page() {
