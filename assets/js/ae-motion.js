@@ -438,7 +438,9 @@
 
   function initSplit() {
     if (calm || !('IntersectionObserver' in window)) return;
-    var heads = doc.querySelectorAll('h1, .v5-section-title, [data-split]');
+    // The home hero headline is never split: it must be whole and readable on
+    // first paint, not rise word by word from a mask.
+    var heads = doc.querySelectorAll('h1:not(.v5-hero__title), .v5-section-title, [data-split]');
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;

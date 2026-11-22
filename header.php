@@ -67,7 +67,10 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
         var seen = sessionStorage.getItem('ae_seen') === '1';
         sessionStorage.removeItem('ae_wipe');
         sessionStorage.setItem('ae_seen', '1');
-        if (arriving) { html.classList.add('ae-arriving'); }
+        // Never on the home page: its headline must be visible on first paint.
+        var home = <?php echo is_front_page() ? 'true' : 'false'; ?>;
+        if (home) { /* no curtain, no wipe */ }
+        else if (arriving) { html.classList.add('ae-arriving'); }
         else if (!seen && !location.hash) { html.classList.add('ae-intro-on'); }
         setTimeout(function () { html.classList.remove('ae-arriving', 'ae-intro-on'); }, 2600);
       }
