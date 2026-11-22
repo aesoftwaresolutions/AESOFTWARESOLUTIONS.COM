@@ -2504,3 +2504,36 @@ html.ae-calm .site-header__panel { transition: none; }
 @media (max-width: 640px) {
   .svc-catalog .v5-prices__row a { grid-template-columns: minmax(0, 1fr) auto; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   LIQUID GLASS (assets/js/ae-glass.js)
+   Refraction ported from @zakisheriff/liquid-glass (MIT): a baked bevel map
+   bends the frosted backdrop through an SVG feDisplacementMap, after the
+   existing frosting, so the bend and the white rim stay crisp. Desktop Chromium with a fine pointer only (html.ae-glass-on);
+   everywhere else these rules never apply and the frosted glass is unchanged.
+   White rim only, no colour. Glass far off screen skips the refraction.
+   ══════════════════════════════════════════════════════════════════════ */
+html.ae-glass-on [data-ae-glass]:not([data-ae-glass-off]) { --ae-refract: var(--ae-refract-src); }
+
+/* Cards: each card's own blur and saturation, then the refraction. */
+html.ae-glass-on [data-ae-glass="card"][data-ae-glass-key] {
+  -webkit-backdrop-filter: var(--ae-glass-base, blur(14px) saturate(130%)) var(--ae-refract, );
+  backdrop-filter: var(--ae-glass-base, blur(14px) saturate(130%)) var(--ae-refract, );
+}
+
+/* Header bar, once scrolled (it is clear at the top of the page). */
+@supports (backdrop-filter: blur(1px)) {
+  html.ae-glass-on header.site-header.aec--scrolled[data-ae-glass] {
+    -webkit-backdrop-filter: brightness(.42) saturate(160%) blur(28px) var(--ae-refract, );
+    backdrop-filter: brightness(.42) saturate(160%) blur(28px) var(--ae-refract, );
+  }
+}
+
+/* Services panel: glass while the header is clear. Once the header is frosted
+   it becomes the panel's backdrop root (the panel would see only the header),
+   so the panel stays opaque there, as before. */
+html.ae-glass-on header.site-header:not(.aec--scrolled) .site-header__panel[data-ae-glass][data-ae-glass-key] {
+  background: rgba(10, 10, 11, .78);
+  -webkit-backdrop-filter: blur(28px) saturate(140%) var(--ae-refract, );
+  backdrop-filter: blur(28px) saturate(140%) var(--ae-refract, );
+}
