@@ -1,206 +1,254 @@
 <?php
 /**
- * Template Name: Online Presence
+ * Template Name: Online Presence Management
  *
- * Online presence management: Google Business Profile, reviews, listings,
- * social profiles and website care. Includes the interactive "presence check"
- * (assets/js/ae-presence.js) and Service + FAQ structured data.
+ * Product page: Online Presence Management.
+ * Copy comes from the Stage 1 product page brief (product-pages-hydrogen-20261122.md),
+ * reviewed in Stage 2. Layout reuses existing theme classes only (page-hero, v5-services,
+ * op-related, op-steps, ae-pricing, ae-offer, ae-terms, ae-faq), styled by
+ * assets/refresh/ae-v5.css. No new classes, no gold, no page specific scripts.
+ *
+ * Hero image slot: assets/img/services/online-presence-management.jpg. It renders only once that file exists,
+ * so the page never shows a broken image while the photo is being produced.
+ *
+ * Self contained: every string and price on this page lives in this file.
  *
  * @package AE_Softwares
  */
 
 get_header();
 
-$ae_presence_faq = [
+$ae_book_url    = 'https://calendar.app.google/oWNCzxkmP43DBkhbA';
+$ae_pricing_url = home_url( '/pricing/' );
+$ae_slug        = 'online-presence-management';
+$ae_img_rel     = 'assets/img/services/' . $ae_slug . '.jpg';
+$ae_has_img     = file_exists( get_theme_file_path( $ae_img_rel ) );
+
+$ae_page = [
+	'name'        => 'Online Presence Management',
+	'headline'    => 'Keep your business accurate, active, and easy to find everywhere customers search.',
+	'description' => 'Ongoing management of your Google Business Profile, reviews, and local listings across key platforms.',
+	'price'       => '$199 per month · First month free · $50 setup, waived for Chambersburg, PA businesses',
+	'fits'        => 'Local and regional businesses with 5 to 50 employees that rely on search and map visibility to win new customers. It is built for owners and office managers who know an outdated listing or unanswered review costs business, but do not have time to log into multiple platforms every week.',
+	'terms'       => 'Online Presence Management is $199 per month and runs month to month. Your first month is free. The one time $50 setup fee is automatically waived for businesses located in Chambersburg, PA.',
+	'cta_title'   => 'Ready to clean up your local listings and keep your profile active?',
+	'cta_text'    => 'Book a discovery call with our team, or view our full pricing page to compare all services.',
+];
+
+// Hero buttons. The first is the solid button, the rest are text links.
+$ae_hero_actions = [
+	[ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+	[ 'label' => 'See full pricing', 'url' => home_url( '/pricing/' ) ],
+];
+
+$ae_includes = [
 	[
-		'q' => 'What is online presence management?',
-		'a' => 'It is the ongoing work of keeping your business easy to find and trustworthy online: your Google Business Profile, your reviews, your listings on maps and directories, your social profiles, and your website. We set each one up properly, keep the details matching everywhere, and look after them every month.',
+		'title' => 'Google Business Profile',
+		'text' => 'Full optimization and ongoing upkeep of your Google Business Profile.',
 	],
 	[
-		'q' => 'Is a new website needed to start?',
-		'a' => 'No. We can manage your presence around the site you already have. If the site is holding you back, we will tell you during the free presence check and quote a rebuild separately.',
+		'title' => 'Reviews',
+		'text' => 'Monitoring and timely responses for customer reviews.',
 	],
 	[
-		'q' => 'How long until results show on Google?',
-		'a' => 'It depends on your market and on how much is already in place. Ranking higher in local results builds over time as reviews, posts and consistent listings add up. We will not promise a ranking, but we will show you what changed in the monthly report.',
+		'title' => 'Listings',
+		'text' => 'Directory and local listing updates for consistent business hours, phone numbers, and addresses across platforms.',
 	],
 	[
-		'q' => 'Will you reply to reviews for the business?',
-		'a' => 'Yes. We draft replies to every new review in your voice. You can approve them first or let us post them directly.',
-	],
-	[
-		'q' => 'Which areas do you work with?',
-		'a' => 'We work with businesses across the US, remotely and in person where it makes sense.',
+		'title' => 'Profile activity',
+		'text' => 'Regular profile posts and photo updates so your listing stays active.',
 	],
 ];
+
+$ae_steps = [
+	[
+		'title' => 'Audit and claim',
+		'text' => 'We verify ownership of your Google Business Profile and check your existing listings for conflicting hours, addresses, or phone numbers.',
+	],
+	[
+		'title' => 'Clean up and align',
+		'text' => 'We update your profile details, categories, service descriptions, and platform listings so every source matches.',
+	],
+	[
+		'title' => 'Ongoing upkeep',
+		'text' => 'Each month we manage incoming reviews, publish profile updates, and keep your local presence current while you run your business.',
+	],
+];
+
+$ae_cards = [
+	[
+		'name'     => 'Online Presence Management',
+		'price'    => '$199',
+		'cadence'  => 'per month · month to month',
+		'pitch'    => 'Your Google Business Profile, reviews, and local listings kept accurate and active.',
+		'points'   => [ 'First month free', '$50 one time setup', 'Setup fee waived for businesses located in Chambersburg, PA' ],
+		'featured' => true,
+		'flag'     => 'First month free',
+		'cta'      => [ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+	],
+];
+
+$ae_faq = [
+	[
+		'q' => 'What happens during the free first month?',
+		'a' => 'We complete your initial profile review, clean up inaccurate business details, and begin active management of your Google Business Profile and reviews so you can see the work in place before your first monthly invoice.',
+	],
+	[
+		'q' => 'Why is the setup fee waived for Chambersburg, PA businesses?',
+		'a' => 'AE Software Solutions is based in Chambersburg, PA. Waiving the $50 setup fee is our direct commitment to supporting neighboring businesses in our home community.',
+	],
+	[
+		'q' => 'Do we still keep ownership of our Google Business Profile?',
+		'a' => 'Yes. You remain the primary owner of your Google Business Profile and all directory accounts at all times. We operate as an authorized manager.',
+	],
+];
+
+// One or two cards sit best in the two column grid, and four cards read as two rows of two.
+$ae_offer_grid = ( 3 === count( $ae_cards ) || count( $ae_cards ) > 4 ) ? 'ae-offers' : 'ae-offers ae-offers--two';
 ?>
 
-<section class="page-hero op-hero">
-	<p class="page-hero__eyebrow">Online presence management</p>
-	<h1 class="page-hero__headline">Be the business they find first.</h1>
-	<p class="page-hero__subtitle">We set up and look after everything people see before they call you: your Google Business Profile, reviews, listings and website, for small businesses everywhere.</p>
+<section class="page-hero op-hero" aria-labelledby="pp-hero-title">
+	<p class="page-hero__eyebrow"><?php echo esc_html( $ae_page['name'] ); ?></p>
+	<h1 class="page-hero__headline" id="pp-hero-title"><?php echo esc_html( $ae_page['headline'] ); ?></h1>
+	<p class="page-hero__subtitle"><?php echo esc_html( $ae_page['description'] ); ?></p>
+	<p class="v5-lead" data-reveal><strong><?php echo esc_html( $ae_page['price'] ); ?></strong></p>
 	<div class="op-hero__actions" data-reveal>
-		<a class="v5-button" href="#presence-check">Run the free presence check</a>
-		<a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Talk to us &rarr;</a>
-	</div>
-</section>
-
-<!-- Interactive presence check -->
-<section class="op-check ae-rule" id="presence-check" aria-labelledby="op-check-title">
-	<header class="v5-section-head">
-		<h2 class="v5-section-title" id="op-check-title" data-split>Quick presence check</h2>
-		<span class="v5-label" data-reveal>Two minutes, nothing to sign up for</span>
-	</header>
-
-	<div class="op-check__grid">
-		<form class="op-check__list" id="ae-presence" data-reveal aria-describedby="op-check-hint">
-			<p class="op-check__hint" id="op-check-hint">Tick everything that is true for your business today.</p>
-			<?php
-			$ae_checks = [
-				[ 'gbp',      'You have claimed your Google Business Profile',             'Google Business Profile', 3 ],
-				[ 'hours',    'Your hours, phone and address are correct on Google',       'Accurate details',        2 ],
-				[ 'photos',   'You have posted photos in the last three months',           'Fresh photos',            1 ],
-				[ 'reviews',  'You have 20 or more Google reviews',                        'Review volume',           2 ],
-				[ 'replies',  'You reply to every review, good or bad',                    'Review replies',          2 ],
-				[ 'listings', 'Your name, address and phone match on Bing, Apple Maps, Yelp and Facebook', 'Consistent listings', 2 ],
-				[ 'mobile',   'Your website loads fast and works well on a phone',         'Mobile website',          2 ],
-				[ 'contact',  'Visitors can call, book or request a quote in one tap',     'One tap contact',         2 ],
-			];
-			foreach ( $ae_checks as $c ) :
-				?>
-				<label class="op-item">
-					<input type="checkbox" name="<?php echo esc_attr( $c[0] ); ?>" data-weight="<?php echo esc_attr( $c[3] ); ?>" data-label="<?php echo esc_attr( $c[2] ); ?>">
-					<span class="op-item__box" aria-hidden="true"></span>
-					<span class="op-item__text"><?php echo esc_html( $c[1] ); ?></span>
-				</label>
-			<?php endforeach; ?>
-		</form>
-
-		<aside class="op-score" data-reveal aria-live="polite">
-			<div class="op-score__dial" aria-hidden="true">
-				<svg viewBox="0 0 120 120">
-					<circle class="op-score__track" cx="60" cy="60" r="52"></circle>
-					<circle class="op-score__bar" cx="60" cy="60" r="52" pathLength="100"></circle>
-				</svg>
-				<span class="op-score__num" id="op-score-num">0</span>
-			</div>
-			<p class="v5-label">Your presence score</p>
-			<p class="op-score__verdict" id="op-score-verdict">Start ticking and your score updates as you go.</p>
-			<div class="op-score__gaps" id="op-score-gaps" hidden>
-				<p class="v5-label">Biggest gaps</p>
-				<ul id="op-score-gap-list"></ul>
-			</div>
-			<a class="v5-button op-score__cta" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-ae-popup data-ae-service="online-presence" data-ae-plan="Online presence fixes">Get these fixed</a>
-		</aside>
-	</div>
-</section>
-
-<!-- What's included -->
-<section class="v5-services" aria-labelledby="op-included-title">
-	<header class="v5-section-head ae-rule">
-		<h2 class="v5-section-title" id="op-included-title" data-split>What we look after</h2>
-		<span class="v5-label" data-reveal>Every month</span>
-	</header>
-	<ol class="v5-services__list">
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">01</span>
-			<h3 class="v5-service__title">Google Business Profile</h3>
-			<p class="v5-service__text">Claimed, verified and filled in completely: categories, services, hours, photos and weekly posts, so you show up in the map results for the searches that matter.</p>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">02</span>
-			<h3 class="v5-service__title">Reviews</h3>
-			<p class="v5-service__text">Automatic review requests after every job, plus a drafted reply to every review in your voice, so your rating grows and nothing sits unanswered.</p>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">03</span>
-			<h3 class="v5-service__title">Listings everywhere</h3>
-			<p class="v5-service__text">Your name, address and phone made identical on Google, Bing, Apple Maps, Yelp, Facebook and the directories that feed them. Matching details are a local ranking signal.</p>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">04</span>
-			<h3 class="v5-service__title">Website care</h3>
-			<p class="v5-service__text">Updates, backups, uptime checks and small edits handled for you, with page titles and descriptions kept current for search.</p>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">05</span>
-			<h3 class="v5-service__title">A plain monthly report</h3>
-			<p class="v5-service__text">How many people found you, called, asked for directions or visited the site, and what we changed. One page, no jargon.</p>
-		</li>
-	</ol>
-</section>
-
-<!-- How it works -->
-<section class="op-related ae-rule" aria-labelledby="op-price-title">
-	<p class="v5-label" data-reveal>Presence Care</p>
-	<h2 class="op-related__title" id="op-price-title" data-split>$199 a month. Cancel anytime.</h2>
-	<p class="op-related__text" data-reveal>Everything above, every month, plus website hosting, updates and small edits. Starting fresh? The Launch Package bundles a new site, Google profile setup and three months of Presence Care for $595.</p>
-	<a class="v5-link op-related__link" href="<?php echo esc_url( home_url( '/pricing/#monthly' ) ); ?>" data-reveal>See all pricing &rarr;</a>
-</section>
-
-<section class="op-steps ae-rule" aria-labelledby="op-steps-title">
-	<h2 class="v5-section-title" id="op-steps-title" data-split>How it works</h2>
-	<ol class="op-steps__list">
-		<li data-reveal><span class="v5-label">01</span><h3>Presence check</h3><p>A free 15 minute call. We look at what a customer sees when they search for you and list what to fix first.</p></li>
-		<li data-reveal><span class="v5-label">02</span><h3>Cleanup</h3><p>We fix the profile, listings and website basics first, so the foundation is right.</p></li>
-		<li data-reveal><span class="v5-label">03</span><h3>Ongoing care</h3><p>Posts, review replies and listing upkeep every month, with a report so you can see what changed.</p></li>
-	</ol>
-</section>
-
-<!-- Related: website creation -->
-<section class="op-related ae-rule" aria-labelledby="op-related-title">
-	<p class="v5-label" data-reveal>Need a new site too?</p>
-	<h2 class="op-related__title" id="op-related-title" data-split>Your website is the centre of your presence.</h2>
-	<p class="op-related__text" data-reveal>We design and build fast, mobile first websites for small businesses, from a simple five page site to a lead funnel with booking and follow up built in.</p>
-	<a class="v5-link op-related__link" href="<?php echo esc_url( home_url( '/websites/' ) ); ?>" data-reveal>See website design &amp; pricing &rarr;</a>
-</section>
-
-<!-- FAQ -->
-<section class="op-faq ae-rule" aria-labelledby="op-faq-title">
-	<h2 class="v5-section-title" id="op-faq-title" data-split>Questions</h2>
-	<div class="op-faq__list">
-		<?php foreach ( $ae_presence_faq as $i => $f ) : ?>
-			<div class="op-faq__item" data-reveal>
-				<button type="button" class="op-faq__question" data-ae-detail data-ae-detail-target="presence-faq-<?php echo esc_attr( $i ); ?>" data-ae-detail-title="<?php echo esc_attr( $f['q'] ); ?>" aria-expanded="false"><?php echo esc_html( $f['q'] ); ?></button>
-				<div class="ae-detail__source" id="ae-detail-presence-faq-<?php echo esc_attr( $i ); ?>" hidden>
-					<p><?php echo esc_html( $f['a'] ); ?></p>
-				</div>
-			</div>
+		<?php foreach ( $ae_hero_actions as $i => $a ) : ?>
+			<a class="<?php echo 0 === $i ? 'v5-button' : 'v5-link'; ?>" href="<?php echo esc_url( $a['url'] ); ?>"><?php echo esc_html( $a['label'] ); ?><?php echo 0 === $i ? '' : ' &rarr;'; ?></a>
 		<?php endforeach; ?>
 	</div>
 </section>
 
-<ae-cta></ae-cta>
+<?php if ( $ae_has_img ) : ?>
+<div class="ae-wrap">
+	<div class="ae-media v5-card__media">
+		<img src="<?php echo esc_url( get_theme_file_uri( $ae_img_rel ) ); ?>" alt="" width="1600" height="1000" fetchpriority="high" decoding="async">
+	</div>
+</div>
+<?php endif; ?>
+
+<!-- What it includes -->
+<section class="v5-services" aria-labelledby="pp-includes-title">
+	<header class="v5-section-head ae-rule">
+		<h2 class="v5-section-title" id="pp-includes-title" data-split>What it includes</h2>
+		<span class="v5-label" data-reveal>Every month</span>
+	</header>
+	<ol class="v5-services__list">
+		<?php foreach ( $ae_includes as $i => $item ) : ?>
+		<li class="v5-service ae-rule" data-reveal>
+			<span class="v5-service__num"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
+			<h3 class="v5-service__title"><?php echo esc_html( $item['title'] ); ?></h3>
+			<p class="v5-service__text"><?php echo esc_html( $item['text'] ); ?></p>
+		</li>
+		<?php endforeach; ?>
+	</ol>
+</section>
+
+<!-- Who it fits -->
+<section class="op-related ae-rule" aria-labelledby="pp-fits-title">
+	<p class="v5-label" data-reveal>Who it fits</p>
+	<h2 class="op-related__title" id="pp-fits-title" data-split>Built for teams like yours.</h2>
+	<p class="op-related__text" data-reveal><?php echo esc_html( $ae_page['fits'] ); ?></p>
+</section>
+
+<!-- How it works -->
+<section class="op-steps ae-rule" aria-labelledby="pp-steps-title">
+	<h2 class="v5-section-title" id="pp-steps-title" data-split>How it works</h2>
+	<ol class="op-steps__list">
+		<?php foreach ( $ae_steps as $i => $step ) : ?>
+		<li data-reveal><span class="v5-label"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><h3><?php echo esc_html( $step['title'] ); ?></h3><p><?php echo esc_html( $step['text'] ); ?></p></li>
+		<?php endforeach; ?>
+	</ol>
+</section>
+
+<!-- Pricing -->
+<section class="ae-pricing" id="pricing" aria-labelledby="pp-pricing-title">
+	<header class="v5-section-head">
+		<p class="v5-label" data-reveal>Month to month</p>
+		<h2 class="v5-section-title" id="pp-pricing-title" data-reveal>Pricing</h2>
+	</header>
+	<div class="<?php echo esc_attr( $ae_offer_grid ); ?>">
+		<?php foreach ( $ae_cards as $card ) : ?>
+		<article class="ae-offer<?php echo $card['featured'] ? ' ae-offer--featured' : ''; ?>" data-reveal>
+			<?php if ( $card['featured'] && '' !== $card['flag'] ) : ?><span class="ae-offer__flag"><?php echo esc_html( $card['flag'] ); ?></span><?php endif; ?>
+			<h3 class="ae-offer__name"><?php echo esc_html( $card['name'] ); ?></h3>
+			<p class="ae-offer__price"><?php echo esc_html( $card['price'] ); ?></p>
+			<p class="ae-offer__cadence"><?php echo esc_html( $card['cadence'] ); ?></p>
+			<p class="ae-offer__pitch"><?php echo esc_html( $card['pitch'] ); ?></p>
+			<?php if ( ! empty( $card['points'] ) ) : ?>
+			<ul class="ae-offer__points">
+				<?php foreach ( $card['points'] as $pt ) : ?><li><?php echo esc_html( $pt ); ?></li><?php endforeach; ?>
+			</ul>
+			<?php endif; ?>
+			<a class="<?php echo $card['featured'] ? 'v5-button' : 'ae-offer__cta'; ?>" href="<?php echo esc_url( $card['cta']['url'] ); ?>"><?php echo esc_html( $card['cta']['label'] ); ?></a>
+		</article>
+		<?php endforeach; ?>
+	</div>
+</section>
+
+<section class="ae-pricing ae-terms ae-alt" aria-label="Terms">
+	<div class="ae-terms__inner">
+		<p class="v5-label" data-reveal>The terms, in plain English</p>
+		<p class="ae-terms__text" data-reveal><?php echo esc_html( $ae_page['terms'] ); ?></p>
+	</div>
+</section>
+
+<!-- FAQ: native details and summary, so it works without page specific scripts -->
+<section class="op-faq ae-rule" aria-labelledby="pp-faq-title">
+	<h2 class="v5-section-title" id="pp-faq-title" data-split>Questions</h2>
+	<div class="ae-faq">
+		<?php foreach ( $ae_faq as $f ) : ?>
+		<details class="ae-faq__item" data-reveal>
+			<summary><?php echo esc_html( $f['q'] ); ?></summary>
+			<p><?php echo esc_html( $f['a'] ); ?></p>
+		</details>
+		<?php endforeach; ?>
+	</div>
+</section>
+
+<!-- Call to action -->
+<section class="op-related ae-rule" aria-labelledby="pp-cta-title">
+	<p class="v5-label" data-reveal>Next step</p>
+	<h2 class="op-related__title" id="pp-cta-title" data-split><?php echo esc_html( $ae_page['cta_title'] ); ?></h2>
+	<p class="op-related__text" data-reveal><?php echo esc_html( $ae_page['cta_text'] ); ?></p>
+	<div class="op-hero__actions" data-reveal>
+		<a class="v5-button" href="<?php echo esc_url( $ae_book_url ); ?>">Book a discovery call</a>
+		<a class="v5-link" href="<?php echo esc_url( $ae_pricing_url ); ?>">View full pricing &rarr;</a>
+	</div>
+</section>
 
 <script type="application/ld+json">
 <?php
+$ae_graph = [];
+$ae_service = [
+	'@type'       => 'Service',
+	'name'        => $ae_page['name'],
+	'serviceType' => $ae_page['name'],
+	'description' => $ae_page['description'],
+	'url'         => get_permalink(),
+	'provider'    => [ '@id' => home_url( '/#localbusiness' ) ],
+];
+if ( function_exists( 'aesoftwares_service_area' ) ) {
+	$ae_service['areaServed'] = aesoftwares_service_area();
+}
+$ae_graph[] = $ae_service;
+$ae_graph[] = [
+	'@type'      => 'FAQPage',
+	'mainEntity' => array_map(
+		function ( $f ) {
+			return [
+				'@type'          => 'Question',
+				'name'           => $f['q'],
+				'acceptedAnswer' => [ '@type' => 'Answer', 'text' => $f['a'] ],
+			];
+		},
+		$ae_faq
+	),
+];
 echo wp_json_encode(
 	[
 		'@context' => 'https://schema.org',
-		'@graph'   => [
-			[
-				'@type'       => 'Service',
-				'name'        => 'Online presence management',
-				'serviceType' => 'Online presence management',
-				'description' => 'Google Business Profile management, review management, local listings consistency, website care and monthly reporting for small businesses.',
-				'url'         => home_url( '/online-presence/' ),
-				'provider'    => [ '@id' => home_url( '/#localbusiness' ) ],
-				'areaServed'  => aesoftwares_service_area(),
-			],
-			[
-				'@type'      => 'FAQPage',
-				'mainEntity' => array_map(
-					function ( $f ) {
-						return [
-							'@type'          => 'Question',
-							'name'           => $f['q'],
-							'acceptedAnswer' => [ '@type' => 'Answer', 'text' => $f['a'] ],
-						];
-					},
-					$ae_presence_faq
-				),
-			],
-		],
+		'@graph'   => $ae_graph,
 	],
 	JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
 );

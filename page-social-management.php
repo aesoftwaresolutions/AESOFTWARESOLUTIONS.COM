@@ -1,267 +1,274 @@
 <?php
 /**
- * Template Name: Social Media Management
+ * Template Name: Social Management
  *
- * Social media management for businesses and creators: strategy, content,
- * short form video, posting, replies and a monthly report. Plans and add ons
- * are listed on the page, with Service + FAQ structured data.
+ * Product page: Social Management.
+ * Copy comes from the Stage 1 product page brief (product-pages-hydrogen-20261122.md),
+ * reviewed in Stage 2. Layout reuses existing theme classes only (page-hero, v5-services,
+ * op-related, op-steps, ae-pricing, ae-offer, ae-terms, ae-faq), styled by
+ * assets/refresh/ae-v5.css. No new classes, no gold, no page specific scripts.
+ *
+ * Hero image slot: assets/img/services/social-management.jpg. It renders only once that file exists,
+ * so the page never shows a broken image while the photo is being produced.
+ *
+ * Self contained: every string and price on this page lives in this file.
  *
  * @package AE_Softwares
  */
 
 get_header();
 
-$ae_social_faq = [
+$ae_book_url    = 'https://calendar.app.google/oWNCzxkmP43DBkhbA';
+$ae_pricing_url = home_url( '/pricing/' );
+$ae_slug        = 'social-management';
+$ae_img_rel     = 'assets/img/services/' . $ae_slug . '.jpg';
+$ae_has_img     = file_exists( get_theme_file_path( $ae_img_rel ) );
+
+$ae_page = [
+	'name'        => 'Social Management',
+	'headline'    => 'Consistent, credible social media content and engagement handled for your business every week.',
+	'description' => 'Full social media management covering content creation, scheduling, engagement, and plain spoken monthly reporting.',
+	'price'       => 'From $799 per month plus $300 setup · Growth $1,299 per month · Scale $1,999 per month',
+	'fits'        => 'Established small businesses with 5 to 50 employees that want a steady, trustworthy presence on social media without pulling owners or staff away from client work. It fits service companies, professional practices, and local brands that prefer substance over gimmicks.',
+	'terms'       => 'Optional add ons: extra platform $99 per month, extra email campaign $150, short video pack of 4 $199, long form YouTube edit $150, content day $250, and profile setup $150 per platform. Setup fees are one time charges.',
+	'cta_title'   => 'Hand off your weekly social media workload to a studio that keeps things plain, consistent, and on brand.',
+	'cta_text'    => 'Book a discovery call with our team, or view our full pricing page.',
+];
+
+// Hero buttons. The first is the solid button, the rest are text links.
+$ae_hero_actions = [
+	[ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+	[ 'label' => 'See full pricing', 'url' => home_url( '/pricing/' ) ],
+];
+
+$ae_includes = [
 	[
-		'q' => 'Who keeps ownership of the accounts?',
-		'a' => 'Yes. Your accounts, followers, content and lists are yours. We work through access you grant, and we remove that access if you leave.',
+		'title' => 'Content planning',
+		'text' => 'Custom content planning and post creation tailored to your business and industry.',
 	],
 	[
-		'q' => 'Which platforms should be run?',
-		'a' => 'The ones your customers or audience actually use. Most clients run three to five. We recommend a set on the discovery call, and we drop anything that does not work.',
+		'title' => 'Publishing',
+		'text' => 'Consistent publishing and scheduling across your active social channels.',
 	],
 	[
-		'q' => 'Who makes the videos?',
-		'a' => 'We write the scripts. You can film on your phone and we edit, or we render branded videos with captions and a voice you approve. One video is reshaped for every platform in your plan.',
+		'title' => 'Engagement',
+		'text' => 'Ongoing comment and inbox engagement so your pages stay active and responsive.',
 	],
 	[
-		'q' => 'How much of your time does this take?',
-		'a' => 'About 30 minutes a month to approve the calendar and answer a few questions, plus the discovery call and the voice interview at the start.',
-	],
-	[
-		'q' => 'Do you run paid ads?',
-		'a' => 'No. Paid advertising is out of scope. Everything here is organic content, posting and engagement.',
-	],
-	[
-		'q' => 'What happens on cancellation?',
-		'a' => 'After the minimum term, 30 days notice ends the plan. We hand over your files, calendars and templates, and we remove our access.',
+		'title' => 'Monthly reporting',
+		'text' => 'Clear monthly reporting focused on real inquiries, reach, and audience engagement.',
 	],
 ];
+
+$ae_steps = [
+	[
+		'title' => 'Strategy and profile setup',
+		'text' => 'We review your services, audience, and compliance guidelines, then establish your content plan and profile structure.',
+	],
+	[
+		'title' => 'Create and approve',
+		'text' => 'We produce your posts, graphics, and captions in batches for straightforward review before publishing.',
+	],
+	[
+		'title' => 'Publish, engage, and report',
+		'text' => 'We post on schedule, respond to engagement, and deliver a clear monthly summary of results.',
+	],
+];
+
+$ae_cards = [
+	[
+		'name'     => 'Social Management (base tier)',
+		'price'    => '$799',
+		'cadence'  => 'per month · plus $300 one time setup',
+		'pitch'    => 'Content, publishing, engagement, and monthly reporting handled for you.',
+		'points'   => [  ],
+		'featured' => false,
+		'flag'     => '',
+		'cta'      => [ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+	],
+	[
+		'name'     => 'Growth',
+		'price'    => '$1,299',
+		'cadence'  => 'per month · plus $495 one time setup',
+		'pitch'    => 'The full Social Management cycle for businesses ready to grow their reach.',
+		'points'   => [  ],
+		'featured' => false,
+		'flag'     => '',
+		'cta'      => [ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+	],
+	[
+		'name'     => 'Scale',
+		'price'    => '$1,999',
+		'cadence'  => 'per month · plus $750 one time setup',
+		'pitch'    => 'The full Social Management cycle at our highest tier.',
+		'points'   => [  ],
+		'featured' => false,
+		'flag'     => '',
+		'cta'      => [ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+	],
+];
+
+$ae_faq = [
+	[
+		'q' => 'Do we get to review posts before they go live?',
+		'a' => 'Yes. We share scheduled content batches ahead of publication so you can confirm accuracy, especially in regulated industries where wording matters.',
+	],
+	[
+		'q' => 'Can we add video production or extra platforms later?',
+		'a' => 'Yes. You can add extra platforms ($99 per month), short video packs of 4 ($199), long form YouTube edits ($150), or an on site content day ($250) whenever your schedule calls for it.',
+	],
+	[
+		'q' => 'What happens during the initial setup phase?',
+		'a' => 'We audit your existing accounts, align your visual formatting and profile details, build your initial content calendar, and configure your publishing workflow.',
+	],
+];
+
+// One or two cards sit best in the two column grid, and four cards read as two rows of two.
+$ae_offer_grid = ( 3 === count( $ae_cards ) || count( $ae_cards ) > 4 ) ? 'ae-offers' : 'ae-offers ae-offers--two';
 ?>
 
-<section class="page-hero op-hero">
-	<p class="page-hero__eyebrow">Social media management</p>
-	<h1 class="page-hero__headline">Your social media, handled properly.</h1>
-	<p class="page-hero__subtitle">We plan, write, design, post and reply for businesses that want leads and creators who want to grow, with a monthly report that shows what it brought in.</p>
+<section class="page-hero op-hero" aria-labelledby="pp-hero-title">
+	<p class="page-hero__eyebrow"><?php echo esc_html( $ae_page['name'] ); ?></p>
+	<h1 class="page-hero__headline" id="pp-hero-title"><?php echo esc_html( $ae_page['headline'] ); ?></h1>
+	<p class="page-hero__subtitle"><?php echo esc_html( $ae_page['description'] ); ?></p>
+	<p class="v5-lead" data-reveal><strong><?php echo esc_html( $ae_page['price'] ); ?></strong></p>
 	<div class="op-hero__actions" data-reveal>
-		<a class="v5-button" href="#plans">See the plans</a>
-		<a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-ae-popup>Book a free discovery call</a>
-	</div>
-</section>
-
-<!-- Who it is for -->
-<section class="op-steps ae-rule" aria-labelledby="sm-who-title">
-	<h2 class="v5-section-title" id="sm-who-title" data-split>Who it is for</h2>
-	<ol class="op-steps__list">
-		<li data-reveal><span class="v5-label">For businesses</span><h3>Owners who want leads, not likes</h3><p>You run a service business or a firm and you do not have time to post, reply and keep up. We run it for you and trace what comes in. You give about 30 minutes a month to approvals.</p></li>
-		<li data-reveal><span class="v5-label">For influencers and creators</span><h3>Creators who want consistency</h3><p>We keep you posting on a steady schedule, turn one video into posts for every platform where it fits, and build a profile that sponsors can take seriously.</p></li>
-	</ol>
-</section>
-
-<!-- What we do every month -->
-<section class="v5-services" aria-labelledby="sm-included-title">
-	<header class="v5-section-head ae-rule">
-		<h2 class="v5-section-title" id="sm-included-title" data-split>What we do every month</h2>
-		<span class="v5-label" data-reveal>Included in management plans</span>
-	</header>
-	<ol class="v5-services__list">
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">01</span>
-			<h3 class="v5-service__title">Monthly strategy and calendar</h3>
-			<p class="v5-service__text">A plan for the month and a full content calendar, sent to you for approval by about the 22nd.</p>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">02</span>
-			<h3 class="v5-service__title">Content written and designed</h3>
-			<p class="v5-service__text">Posts, graphics and carousels, made in your brand and your voice.</p>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">03</span>
-			<h3 class="v5-service__title">Short form video</h3>
-			<p class="v5-service__text">We write the scripts. You film and we edit, or we render branded video with captions. One video is reshaped for TikTok, Reels, Shorts and Threads.</p>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">04</span>
-			<h3 class="v5-service__title">Posting and cross posting</h3>
-			<p class="v5-service__text">Scheduled and posted for you, and adapted to each platform. Never copy and paste.</p>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">05</span>
-			<h3 class="v5-service__title">Replies and community</h3>
-			<p class="v5-service__text">Comments and messages handled from a reply guide you approve. Leads and anything sensitive are flagged to you the same business day.</p>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">06</span>
-			<h3 class="v5-service__title">Email campaign</h3>
-			<p class="v5-service__text">One campaign a month to your list, sent from your own email platform and approved by you before it goes out. Plans that list 2 campaigns include them, and extra campaigns are an add on.</p>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">07</span>
-			<h3 class="v5-service__title">Monthly report and call</h3>
-			<p class="v5-service__text">Results first: leads and bookings traced to the work, then reach. Plus what changes next month.</p>
-		</li>
-	</ol>
-</section>
-
-<!-- Platforms -->
-<section class="op-related ae-rule" aria-labelledby="sm-platforms-title">
-	<p class="v5-label" data-reveal>Platforms we run</p>
-	<h2 class="op-related__title" id="sm-platforms-title" data-split>Facebook, Instagram, TikTok, YouTube and more.</h2>
-	<p class="op-related__text" data-reveal>Facebook &middot; Instagram &middot; TikTok &middot; YouTube &middot; LinkedIn &middot; X &middot; Threads &middot; Bluesky &middot; Nextdoor &middot; Google Business Profile</p>
-	<p class="op-related__text" data-reveal>Facebook, Instagram, LinkedIn, Threads and Bluesky post automatically on a schedule. TikTok, X and YouTube are posted by hand for now. We will always tell you which is which.</p>
-	<p class="op-related__text" data-reveal>You own every account. We work through access you grant, and we remove our access if you leave.</p>
-</section>
-
-<!-- Plans for businesses -->
-<section class="v5-services" id="plans" aria-labelledby="sm-business-title">
-	<header class="v5-section-head ae-rule">
-		<h2 class="v5-section-title" id="sm-business-title" data-split>Plans for businesses</h2>
-		<span class="v5-label" data-reveal>Monthly</span>
-	</header>
-	<ol class="v5-services__list">
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">01</span>
-			<h3 class="v5-service__title">Social Front Desk</h3>
-			<div class="v5-service__text">
-				<p><strong>$199 a month plus a one time $75 setup.</strong> Posting handled for you with light planning. A good start if you only need to show up consistently.</p>
-				<p>First 3 clients: $149 a month for 3 months, then $199 a month. Use code FOUNDING149 at checkout.</p>
-				<p>Want Google Business Profile management too? Total Presence is $229 a month and covers both. <a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Ask us about it</a>.</p>
-			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/social-front-desk">Start now</a>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">02</span>
-			<h3 class="v5-service__title">Social Management</h3>
-			<div class="v5-service__text">
-				<p><strong>$799 a month plus a one time $300 setup.</strong> Up to 4 platforms, 12 to 16 posts a month, strategy and calendar, outreach, replies handled, 1 email campaign, monthly report and review call.</p>
-			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/social-management">Start now</a>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">03</span>
-			<h3 class="v5-service__title">Social Management Growth</h3>
-			<div class="v5-service__text">
-				<p><strong>$1,299 a month plus a one time $495 setup.</strong> Up to 6 platforms, 20 to 24 posts, 8 short form videos, 2 email campaigns, priority turnaround, monthly report and call.</p>
-			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/social-management-growth">Start now</a>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">04</span>
-			<h3 class="v5-service__title">Social Management Scale</h3>
-			<div class="v5-service__text">
-				<p><strong>$1,999 a month plus a one time $750 setup.</strong> Up to 8 platforms including TikTok and YouTube, 28 to 32 posts, 12 short form videos, daily engagement checks, 2 email campaigns, monthly report and call.</p>
-			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/social-management-scale">Start now</a>
-		</li>
-	</ol>
-</section>
-
-<!-- Plans for creators -->
-<section class="v5-services" aria-labelledby="sm-creator-title">
-	<header class="v5-section-head ae-rule">
-		<h2 class="v5-section-title" id="sm-creator-title" data-split>Plans for creators</h2>
-		<span class="v5-label" data-reveal>Influencers and creators</span>
-	</header>
-	<ol class="v5-services__list">
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">01</span>
-			<h3 class="v5-service__title">Creator Launch</h3>
-			<div class="v5-service__text">
-				<p><strong>$499 a month plus a one time $195 setup.</strong> 3 platforms, 12 short form videos a month cross posted, captions and hashtags written for each platform, posting handled, monthly growth report.</p>
-			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/creator-launch">Start now</a>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">02</span>
-			<h3 class="v5-service__title">Creator Growth</h3>
-			<div class="v5-service__text">
-				<p><strong>$899 a month plus a one time $345 setup.</strong> Up to 5 platforms, 20 short form videos, comment handling on business days, profile and link page polish, monthly report and call.</p>
-			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/creator-growth">Start now</a>
-		</li>
-		<li class="v5-service ae-rule" data-reveal>
-			<span class="v5-service__num">03</span>
-			<h3 class="v5-service__title">Creator Authority</h3>
-			<div class="v5-service__text">
-				<p><strong>$1,999 a month plus a one time $750 setup.</strong> Up to 6 platforms, 30 short form videos, daily engagement checks, sponsor inquiries flagged with drafted replies you approve, 1 email or newsletter a month, monthly report and call.</p>
-			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/creator-authority">Start now</a>
-		</li>
-	</ol>
-</section>
-
-<!-- Add ons -->
-<section class="op-related ae-rule" aria-labelledby="sm-addons-title">
-	<p class="v5-label" data-reveal>Add ons</p>
-	<h2 class="op-related__title" id="sm-addons-title" data-split>Add what you need, when you need it.</h2>
-	<p class="op-related__text" data-reveal>Extra platform $99 a month each &middot; Extra email campaign $150 each &middot; Pack of 4 short videos $199 &middot; Long form YouTube video edit $150 each &middot; Content day planning session $250 &middot; Profile setup or cleanup $150 per platform.</p>
-	<p class="op-related__text" data-reveal>We do not manage paid advertising.</p>
-</section>
-
-<!-- How it works -->
-<section class="op-steps ae-rule" aria-labelledby="sm-steps-title">
-	<h2 class="v5-section-title" id="sm-steps-title" data-split>How it works</h2>
-	<ol class="op-steps__list">
-		<li data-reveal><span class="v5-label">01</span><h3>Discovery call</h3><p>A free 30 minute call about your goals, offers and platforms.</p></li>
-		<li data-reveal><span class="v5-label">02</span><h3>Setup</h3><p>Access granted by you, brand assets gathered, and a short voice interview so the content sounds like you. We create your Meta, Claude and Canva accounts in your business name and connect your socials.</p></li>
-		<li data-reveal><span class="v5-label">03</span><h3>Calendar approval</h3><p>You approve the next month&rsquo;s calendar within 3 business days. Nothing unapproved goes out.</p></li>
-		<li data-reveal><span class="v5-label">04</span><h3>Run and report</h3><p>We post, reply and handle the community, then report results every month.</p></li>
-	</ol>
-</section>
-
-<!-- Terms -->
-<section class="op-related ae-rule" aria-labelledby="sm-terms-title">
-	<p class="v5-label" data-reveal>Terms</p>
-	<h2 class="op-related__title" id="sm-terms-title" data-split>Terms in plain English</h2>
-	<p class="op-related__text" data-reveal>Management plans run a 3 month minimum, then month to month with 30 days notice to cancel. You own your accounts, content and lists. We never buy followers or engagement, and we never promise follower counts or sales. Paid ad spend and email platform fees are yours.</p>
-</section>
-
-<!-- FAQ -->
-<section class="op-faq ae-rule" aria-labelledby="sm-faq-title">
-	<h2 class="v5-section-title" id="sm-faq-title" data-split>Questions</h2>
-	<div class="op-faq__list">
-		<?php foreach ( $ae_social_faq as $i => $f ) : ?>
-			<div class="op-faq__item" data-reveal>
-				<button type="button" class="op-faq__question" data-ae-detail data-ae-detail-target="social-faq-<?php echo esc_attr( $i ); ?>" data-ae-detail-title="<?php echo esc_attr( $f['q'] ); ?>" aria-expanded="false"><?php echo esc_html( $f['q'] ); ?></button>
-				<div class="ae-detail__source" id="ae-detail-social-faq-<?php echo esc_attr( $i ); ?>" hidden>
-					<p><?php echo esc_html( $f['a'] ); ?></p>
-				</div>
-			</div>
+		<?php foreach ( $ae_hero_actions as $i => $a ) : ?>
+			<a class="<?php echo 0 === $i ? 'v5-button' : 'v5-link'; ?>" href="<?php echo esc_url( $a['url'] ); ?>"><?php echo esc_html( $a['label'] ); ?><?php echo 0 === $i ? '' : ' &rarr;'; ?></a>
 		<?php endforeach; ?>
 	</div>
 </section>
 
-<ae-cta></ae-cta>
+<?php if ( $ae_has_img ) : ?>
+<div class="ae-wrap">
+	<div class="ae-media v5-card__media">
+		<img src="<?php echo esc_url( get_theme_file_uri( $ae_img_rel ) ); ?>" alt="" width="1600" height="1000" fetchpriority="high" decoding="async">
+	</div>
+</div>
+<?php endif; ?>
+
+<!-- What it includes -->
+<section class="v5-services" aria-labelledby="pp-includes-title">
+	<header class="v5-section-head ae-rule">
+		<h2 class="v5-section-title" id="pp-includes-title" data-split>What it includes</h2>
+		<span class="v5-label" data-reveal>Full cycle</span>
+	</header>
+	<ol class="v5-services__list">
+		<?php foreach ( $ae_includes as $i => $item ) : ?>
+		<li class="v5-service ae-rule" data-reveal>
+			<span class="v5-service__num"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
+			<h3 class="v5-service__title"><?php echo esc_html( $item['title'] ); ?></h3>
+			<p class="v5-service__text"><?php echo esc_html( $item['text'] ); ?></p>
+		</li>
+		<?php endforeach; ?>
+	</ol>
+</section>
+
+<!-- Who it fits -->
+<section class="op-related ae-rule" aria-labelledby="pp-fits-title">
+	<p class="v5-label" data-reveal>Who it fits</p>
+	<h2 class="op-related__title" id="pp-fits-title" data-split>Built for teams like yours.</h2>
+	<p class="op-related__text" data-reveal><?php echo esc_html( $ae_page['fits'] ); ?></p>
+</section>
+
+<!-- How it works -->
+<section class="op-steps ae-rule" aria-labelledby="pp-steps-title">
+	<h2 class="v5-section-title" id="pp-steps-title" data-split>How it works</h2>
+	<ol class="op-steps__list">
+		<?php foreach ( $ae_steps as $i => $step ) : ?>
+		<li data-reveal><span class="v5-label"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span><h3><?php echo esc_html( $step['title'] ); ?></h3><p><?php echo esc_html( $step['text'] ); ?></p></li>
+		<?php endforeach; ?>
+	</ol>
+</section>
+
+<!-- Pricing -->
+<section class="ae-pricing" id="pricing" aria-labelledby="pp-pricing-title">
+	<header class="v5-section-head">
+		<p class="v5-label" data-reveal>Three tiers</p>
+		<h2 class="v5-section-title" id="pp-pricing-title" data-reveal>Pricing</h2>
+	</header>
+	<div class="<?php echo esc_attr( $ae_offer_grid ); ?>">
+		<?php foreach ( $ae_cards as $card ) : ?>
+		<article class="ae-offer<?php echo $card['featured'] ? ' ae-offer--featured' : ''; ?>" data-reveal>
+			<?php if ( $card['featured'] && '' !== $card['flag'] ) : ?><span class="ae-offer__flag"><?php echo esc_html( $card['flag'] ); ?></span><?php endif; ?>
+			<h3 class="ae-offer__name"><?php echo esc_html( $card['name'] ); ?></h3>
+			<p class="ae-offer__price"><?php echo esc_html( $card['price'] ); ?></p>
+			<p class="ae-offer__cadence"><?php echo esc_html( $card['cadence'] ); ?></p>
+			<p class="ae-offer__pitch"><?php echo esc_html( $card['pitch'] ); ?></p>
+			<?php if ( ! empty( $card['points'] ) ) : ?>
+			<ul class="ae-offer__points">
+				<?php foreach ( $card['points'] as $pt ) : ?><li><?php echo esc_html( $pt ); ?></li><?php endforeach; ?>
+			</ul>
+			<?php endif; ?>
+			<a class="<?php echo $card['featured'] ? 'v5-button' : 'ae-offer__cta'; ?>" href="<?php echo esc_url( $card['cta']['url'] ); ?>"><?php echo esc_html( $card['cta']['label'] ); ?></a>
+		</article>
+		<?php endforeach; ?>
+	</div>
+</section>
+
+<section class="ae-pricing ae-terms ae-alt" aria-label="Terms">
+	<div class="ae-terms__inner">
+		<p class="v5-label" data-reveal>The terms, in plain English</p>
+		<p class="ae-terms__text" data-reveal><?php echo esc_html( $ae_page['terms'] ); ?></p>
+	</div>
+</section>
+
+<!-- FAQ: native details and summary, so it works without page specific scripts -->
+<section class="op-faq ae-rule" aria-labelledby="pp-faq-title">
+	<h2 class="v5-section-title" id="pp-faq-title" data-split>Questions</h2>
+	<div class="ae-faq">
+		<?php foreach ( $ae_faq as $f ) : ?>
+		<details class="ae-faq__item" data-reveal>
+			<summary><?php echo esc_html( $f['q'] ); ?></summary>
+			<p><?php echo esc_html( $f['a'] ); ?></p>
+		</details>
+		<?php endforeach; ?>
+	</div>
+</section>
+
+<!-- Call to action -->
+<section class="op-related ae-rule" aria-labelledby="pp-cta-title">
+	<p class="v5-label" data-reveal>Next step</p>
+	<h2 class="op-related__title" id="pp-cta-title" data-split><?php echo esc_html( $ae_page['cta_title'] ); ?></h2>
+	<p class="op-related__text" data-reveal><?php echo esc_html( $ae_page['cta_text'] ); ?></p>
+	<div class="op-hero__actions" data-reveal>
+		<a class="v5-button" href="<?php echo esc_url( $ae_book_url ); ?>">Book a discovery call</a>
+		<a class="v5-link" href="<?php echo esc_url( $ae_pricing_url ); ?>">View full pricing &rarr;</a>
+	</div>
+</section>
 
 <script type="application/ld+json">
 <?php
+$ae_graph = [];
+$ae_service = [
+	'@type'       => 'Service',
+	'name'        => $ae_page['name'],
+	'serviceType' => $ae_page['name'],
+	'description' => $ae_page['description'],
+	'url'         => get_permalink(),
+	'provider'    => [ '@id' => home_url( '/#localbusiness' ) ],
+];
+if ( function_exists( 'aesoftwares_service_area' ) ) {
+	$ae_service['areaServed'] = aesoftwares_service_area();
+}
+$ae_graph[] = $ae_service;
+$ae_graph[] = [
+	'@type'      => 'FAQPage',
+	'mainEntity' => array_map(
+		function ( $f ) {
+			return [
+				'@type'          => 'Question',
+				'name'           => $f['q'],
+				'acceptedAnswer' => [ '@type' => 'Answer', 'text' => $f['a'] ],
+			];
+		},
+		$ae_faq
+	),
+];
 echo wp_json_encode(
 	[
 		'@context' => 'https://schema.org',
-		'@graph'   => [
-			[
-				'@type'       => 'Service',
-				'name'        => 'Social media management',
-				'serviceType' => 'Social media management',
-				'description' => 'Social media management for businesses and creators: monthly strategy and calendar, written and designed content, short form video, posting, replies and a monthly report.',
-				'url'         => home_url( '/social-management/' ),
-				'provider'    => [ '@id' => home_url( '/#localbusiness' ) ],
-				'areaServed'  => aesoftwares_service_area(),
-			],
-			[
-				'@type'      => 'FAQPage',
-				'mainEntity' => array_map(
-					function ( $f ) {
-						return [
-							'@type'          => 'Question',
-							'name'           => $f['q'],
-							'acceptedAnswer' => [ '@type' => 'Answer', 'text' => $f['a'] ],
-						];
-					},
-					$ae_social_faq
-				),
-			],
-		],
+		'@graph'   => $ae_graph,
 	],
 	JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
 );
