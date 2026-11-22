@@ -7,12 +7,74 @@
  * HTML, so search engines still read all of it. Motion is one fade up per
  * block (assets/js/ae-motion.js) and never gates the headline.
  *
+ * The hero carries the product carousel (assets/js/ae-hero-carousel.js and the
+ * HERO CAROUSEL block at the end of ae-v5.css). It glides on its own, has no
+ * visible controls, and pauses while a pointer or keyboard focus is on it.
+ * Without JavaScript the first slide shows on its own.
+ *
  * @package AE_Softwares
  */
+
+// Hero carousel script. Enqueued here, before get_header(), so it prints in the
+// footer on the front page only. Kept out of LiteSpeed "delay JS" so the glide
+// starts without waiting for the first touch or key press.
+$ae_hc_js = get_template_directory() . '/assets/js/ae-hero-carousel.js';
+wp_enqueue_script(
+	'ae-hero-carousel',
+	get_template_directory_uri() . '/assets/js/ae-hero-carousel.js',
+	[],
+	file_exists( $ae_hc_js ) ? filemtime( $ae_hc_js ) : '1.0.0',
+	[ 'in_footer' => true, 'strategy' => 'defer' ]
+);
+add_filter( 'script_loader_tag', function ( $tag, $handle ) {
+	if ( 'ae-hero-carousel' === $handle && false === strpos( $tag, 'data-no-optimize' ) ) {
+		$tag = str_replace( '<script ', '<script data-no-optimize="1" data-no-defer="1" data-cfasync="false" ', $tag );
+	}
+	return $tag;
+}, 10, 2 );
 
 get_header();
 
 $ae_img = get_template_directory_uri() . '/assets/img/';
+
+// Hero carousel slides, in order. Copy stays minimal: name, one line, price,
+// booking link. Full detail lives on each product page. The node labels drawn on
+// each graphic are repeated in its alt text.
+$ae_book_url = 'https://calendar.app.google/oWNCzxkmP43DBkhbA';
+$ae_slides   = [
+	[
+		'slug'  => 'front-desk',
+		'name'  => 'Front Desk',
+		'line'  => 'AI phone answering that captures every caller’s details.',
+		'price' => 'from $99/mo',
+		'url'   => home_url( '/front-desk/' ),
+		'alt'   => 'Front Desk: Call in, Details captured, Summary sent.',
+	],
+	[
+		'slug'  => 'online-presence-management',
+		'name'  => 'Online Presence Management',
+		'line'  => 'Ongoing management of your Google Business Profile, reviews, and listings.',
+		'price' => '$199/mo',
+		'url'   => home_url( '/online-presence-management/' ),
+		'alt'   => 'Online Presence Management: Audit and claim, Clean up and align, Ongoing upkeep.',
+	],
+	[
+		'slug'  => 'always-on-front-desk',
+		'name'  => 'Always-On Front Desk',
+		'line'  => '24/7 AI phone answering so nights and weekends never go to voicemail.',
+		'price' => '$250/mo',
+		'url'   => home_url( '/always-on-front-desk/' ),
+		'alt'   => 'Always-On Front Desk: Set schedule and rules, Connect your line, Wake up to organized leads.',
+	],
+	[
+		'slug'  => 'websites',
+		'name'  => 'Websites',
+		'line'  => 'Websites built to bring in calls and book jobs.',
+		'price' => 'from $495',
+		'url'   => home_url( '/websites/' ),
+		'alt'   => 'Websites: Scope and structure, Design and build, Review and launch.',
+	],
+];
 
 // Selected work: recent websites. (The industry templates stay on /websites/
 // as labeled examples, not here.)
@@ -89,16 +151,45 @@ $ae_topic_close = function () {
 
 ?>
 
-<!-- 1. HERO: renders at once, nothing waits on JavaScript -->
-<section class="v5-hero" aria-labelledby="v5-hero-title">
-  <p class="v5-label">Website design, online presence &amp; automation</p>
-  <h1 class="v5-hero__title" id="v5-hero-title">Websites, Google presence, and follow up that wins back missed calls.</h1>
-  <p class="v5-hero__lead">
-    We work with small businesses to untangle daily workflows, build clear customer facing websites, and put practical systems in place that free up your time.
-  </p>
-  <div class="v5-hero__actions">
-    <a class="v5-button" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-ae-popup>Book a discovery call</a>
-    <a class="v5-textlink" href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>">See pricing &rarr;</a>
+<!-- 1. HERO: renders at once, nothing waits on JavaScript. The product carousel
+     is the hero's backdrop: it glides on its own (assets/js/ae-hero-carousel.js). -->
+<section class="v5-hero v5-hero--carousel" aria-labelledby="v5-hero-title">
+  <div class="v5-hero__copy">
+    <p class="v5-label">Website design, online presence &amp; automation</p>
+    <h1 class="v5-hero__title" id="v5-hero-title">Websites, Google presence, and follow up that wins back missed calls.</h1>
+    <p class="v5-hero__lead">
+      We work with small businesses to untangle daily workflows, build clear customer facing websites, and put practical systems in place that free up your time.
+    </p>
+    <div class="v5-hero__actions">
+      <a class="v5-button" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-ae-popup>Book a discovery call</a>
+      <a class="v5-textlink" href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>">See pricing &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Product carousel: no visible controls. Slides after the first stay inert
+       until the script shows them, so keyboard focus never lands off screen. -->
+  <div class="ae-hc" data-ae-hc role="region" aria-roledescription="carousel" aria-label="Our products">
+    <div class="ae-hc__track" data-ae-hc-track>
+      <?php foreach ( $ae_slides as $i => $slide ) : ?>
+        <article class="ae-hc__slide" data-ae-hc-slide aria-roledescription="slide" aria-label="<?php echo esc_attr( ( $i + 1 ) . ' of ' . count( $ae_slides ) . ': ' . $slide['name'] ); ?>"<?php echo $i > 0 ? ' inert aria-hidden="true"' : ''; ?>>
+          <img class="ae-hc__img"
+            src="<?php echo esc_url( $ae_img . 'carousel/' . $slide['slug'] . '.jpg' ); ?>"
+            srcset="<?php echo esc_url( $ae_img . 'carousel/' . $slide['slug'] . '-960.jpg' ); ?> 960w, <?php echo esc_url( $ae_img . 'carousel/' . $slide['slug'] . '.jpg' ); ?> 1920w"
+            sizes="(min-width: 1024px) 58vw, 100vw"
+            alt="<?php echo esc_attr( $slide['alt'] ); ?>"
+            width="1920" height="1200" decoding="async"
+            <?php echo 0 === $i ? 'fetchpriority="high"' : 'loading="lazy"'; ?>>
+          <div class="ae-hc__cap">
+            <h2 class="ae-hc__name"><a href="<?php echo esc_url( $slide['url'] ); ?>"><?php echo esc_html( $slide['name'] ); ?></a></h2>
+            <p class="ae-hc__line"><?php echo esc_html( $slide['line'] ); ?></p>
+            <div class="ae-hc__foot">
+              <p class="ae-hc__price"><?php echo esc_html( $slide['price'] ); ?></p>
+              <a class="v5-button ae-hc__cta" href="<?php echo esc_url( $ae_book_url ); ?>">Book a discovery call</a>
+            </div>
+          </div>
+        </article>
+      <?php endforeach; ?>
+    </div>
   </div>
 
   <!-- Proof strip: the two approved stats only, each with its source named -->
@@ -119,27 +210,6 @@ $ae_topic_close = function () {
       <span class="v5-proof__src">BrightLocal, 2026</span>
     </li>
   </ul>
-</section>
-
-<!-- 1b. SHOWCASE: a recent site inside a dark glass Safari window -->
-<?php $ae_show = $ae_work[0]; ?>
-<section class="v5-showcase" aria-labelledby="v5-showcase-title">
-  <p class="v5-label">A recent build</p>
-  <h2 class="v5-showcase__title" id="v5-showcase-title">Here is how our work looks in a browser.</h2>
-  <figure class="ae-safari">
-    <div class="ae-safari__bar" aria-hidden="true">
-      <span class="ae-safari__dots"><i></i><i></i><i></i></span>
-      <span class="ae-safari__url">
-        <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2.4" y="5.4" width="7.2" height="5" rx="1.3"/><path d="M4 5.4V3.9a2 2 0 0 1 4 0v1.5"/></svg>
-        aesoftwaresolutions.com/work
-      </span>
-      <span class="ae-safari__spacer"></span>
-    </div>
-    <a class="ae-safari__view" href="<?php echo esc_url( $ae_show['url'] ); ?>">
-      <img src="<?php echo esc_url( $ae_show['img'] ); ?>" alt="<?php echo esc_attr( $ae_show['alt'] ); ?>" width="1440" height="900" loading="lazy" decoding="async">
-    </a>
-    <figcaption class="ae-safari__cap"><?php echo esc_html( $ae_show['title'] ); ?>: <?php echo esc_html( $ae_show['desc'] ); ?></figcaption>
-  </figure>
 </section>
 
 <!-- 2. TOPICS: pick one to open it -->
