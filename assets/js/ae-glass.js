@@ -60,9 +60,9 @@
   // Modest optics: the brief is subtle glass, not a magnifier.
   var STRENGTH = 0.6;
   var IOR = 1.5;
-  // White rim strength. The header bar sits on near black, so its edge needs a
-  // little more light to read as glass at all.
-  var RIM_OPACITY = { card: 0.55, panel: 0.55, bar: 0.9 };
+  // White rim strength. The header bar and the Services panel carry a dark fill
+  // over the refraction, so their edges need more light to read as glass at all.
+  var RIM_OPACITY = { card: 0.55, panel: 0.9, bar: 0.9 };
 
   var SVG_NS = 'http://www.w3.org/2000/svg';
   var defs = null;
