@@ -27,8 +27,8 @@ define('AE_OWNER_EMAIL', 'anthony@aesoftwaresolutions.com');
 define('AE_OWNER_SMS_EMAIL', '7179771021@tmomail.net'); // T-Mobile email-to-SMS
 define('AE_WEBHOOK_KEY', '3c1623b813e4fe6c5ca4bbc2b176e37fa6c52fb9974529f1'); // secret token; must match ?key= in status_callback
 define('AE_DASHBOARD_URL', 'https://dashboard.aesoftwaresolutions.com/api/v1/webhooks/telnyx/call-summary');
-define('AE_DASHBOARD_KEY', 'REPLACE_ME'); // per-client Bearer key for AE, from the dashboard
-define('AE_DASHBOARD_CLIENT_ID', 'REPLACE_ME'); // AE's own client id in the dashboard
+define('AE_DASHBOARD_KEY', 'aek_y0AUEC2K-q8Oinx9tunL80oxxTenSQVcgmfgsWWQI84'); // per-client Bearer key for AE, from the dashboard
+define('AE_DASHBOARD_CLIENT_ID', 'cl_7c6471482e77ce6e'); // AE's own client id in the dashboard
 define('AE_STORE_DIR', __DIR__ . '/telnyx-call-store');
 define('AE_LOG_FILE', __DIR__ . '/telnyx-call-summary.log');
 define('AE_SINGLE_EVENT_WAIT_SEC', 300); // send with one event if the other is 5+ min late
