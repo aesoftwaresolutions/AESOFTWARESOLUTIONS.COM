@@ -1245,7 +1245,7 @@ add_action( 'wpseo_add_opengraph_images', function ( $image_container ) {
     if ( method_exists( $image_container, 'has_images' ) && $image_container->has_images() ) {
         return;
     }
-    $image_container->add_image_by_url( 'https://aesoftwaresolutions.com/wp-content/uploads/2025/11/cropped-Let-us-do-the-work-for-you.jpeg' );
+    $image_container->add_image_by_url( get_template_directory_uri() . '/assets/img/brand/ae-social-share.png' );
 } );
 
 // ══════════════════════════════════════════════════════════════════════════════
