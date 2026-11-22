@@ -23,7 +23,11 @@ $ae_req_seg = '' === $ae_req_path ? '' : explode( '/', $ae_req_path )[0];
 
 // Five links. [ label, path, extra sections that count as "inside" this link ].
 $ae_nav = [
-	[ 'Services', 'services', [ 'work', 'online-presence', 'social-management', 'software', 'industries', 'process' ] ],
+	[ 'Services', 'services', [ 'work', 'online-presence', 'social-management', 'software', 'industries', 'process',
+		// Product pages (inc/products.php) also count as inside Services.
+		'front-desk', 'always-on-front-desk', 'social-front-desk', 'order-desk', 'total-presence', 'creator-packages',
+		'launch-package', 'business-starter-package', 'branded-templates', 'missed-lead-audit', 'free-assessment',
+		'ai-tools-assessment', 'ai-setup-guides', 'contractor-guides' ] ],
 	[ 'Websites', 'websites', [] ],
 	[ 'Pricing',  'pricing',  [] ],
 	[ 'Guides',   'guides',   [] ],
@@ -102,7 +106,36 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
 
     <nav class="site-header__nav" aria-label="Main">
       <?php foreach ( $ae_nav as $item ) : ?>
-        <a href="<?php echo esc_url( home_url( '/' . $item[1] . '/' ) ); ?>" class="site-header__nav-link"<?php echo $ae_current( $item[1], $item[2] ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $item[0] ); ?></a>
+        <?php if ( 'services' === $item[1] ) : ?>
+          <?php
+          // Services opens a panel of every product page on hover or keyboard
+          // focus (desktop only; the nav is hidden under 960px, where the mobile
+          // sheet links to /services/). The wrapper is not positioned, so the
+          // nav pill still measures the Services link against the nav. Panel
+          // links use their own class, so the pill never glides onto them.
+          require_once get_template_directory() . '/inc/products.php';
+          ?>
+          <div class="site-header__menu" data-ae-menu>
+            <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="site-header__nav-link"<?php echo $ae_current( $item[1], $item[2] ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $item[0] ); ?></a>
+            <div class="site-header__panel" role="group" aria-label="All services">
+              <div class="site-header__panel-grid">
+                <?php foreach ( aesoftwares_products() as $group ) : ?>
+                  <div class="site-header__panel-group">
+                    <p class="site-header__panel-title"><?php echo esc_html( $group['title'] ); ?></p>
+                    <ul class="site-header__panel-list">
+                      <?php foreach ( $group['items'] as $p ) : ?>
+                        <li><a class="site-header__panel-link" href="<?php echo esc_url( home_url( '/' . $p['slug'] . '/' ) ); ?>"><span class="site-header__panel-name"><?php echo esc_html( $p['name'] ); ?></span> <span class="site-header__panel-price"><?php echo esc_html( $p['price'] ); ?></span></a></li>
+                      <?php endforeach; ?>
+                    </ul>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+              <a class="site-header__panel-all v5-link" href="<?php echo esc_url( home_url( '/services/#all-services' ) ); ?>">Compare every service &rarr;</a>
+            </div>
+          </div>
+        <?php else : ?>
+          <a href="<?php echo esc_url( home_url( '/' . $item[1] . '/' ) ); ?>" class="site-header__nav-link"<?php echo $ae_current( $item[1], $item[2] ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $item[0] ); ?></a>
+        <?php endif; ?>
       <?php endforeach; ?>
     </nav>
 
@@ -118,6 +151,25 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
     </button>
   </div>
 </header>
+<script data-no-optimize="1" data-no-defer="1" data-cfasync="false">
+/* Services panel: Escape closes it (hover and focus open it in CSS). */
+(function () {
+  var m = document.querySelector('[data-ae-menu]');
+  if (!m) return;
+  var link = m.querySelector('.site-header__nav-link');
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape' || m.classList.contains('is-dismissed')) return;
+    var inside = m.contains(document.activeElement);
+    if (!inside && !m.matches(':hover')) return;
+    m.classList.add('is-dismissed');
+    if (inside && link) link.focus();
+  });
+  m.addEventListener('pointerleave', function () { m.classList.remove('is-dismissed'); });
+  m.addEventListener('focusout', function (e) {
+    if (!m.contains(e.relatedTarget)) m.classList.remove('is-dismissed');
+  });
+})();
+</script>
 
 <!-- Mobile menu: an iOS style bottom sheet (grabber, rounded top corners, slides up). -->
 <div class="mobile-nav-overlay" id="mobile-nav">

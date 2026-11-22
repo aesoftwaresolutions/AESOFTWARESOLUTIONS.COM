@@ -2412,3 +2412,93 @@ html.ae-calm .ae-pop__close:hover { transform: none; }
   .v5-hero--carousel .v5-hero__title { font-size: clamp(2.5rem, 4.2vw, 4rem); }
   .v5-hero--carousel .v5-proof { grid-column: 1 / -1; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   SERVICES DROPDOWN (header, desktop only) and SERVICES CATALOG
+   The product list lives in inc/products.php. The dropdown opens on hover
+   or keyboard focus (CSS); Escape closes it (inline script in header.php).
+   The nav is hidden under 960px, so the mobile sheet is unchanged.
+   Black and white only, no glow, no gold.
+   ══════════════════════════════════════════════════════════════════════ */
+.site-header__menu { display: flex; align-items: center; } /* not positioned: the nav pill measures against the nav */
+.site-header__panel {
+  position: fixed;
+  top: var(--header-h);
+  left: 50%;
+  z-index: 2;
+  width: min(960px, calc(100vw - 2 * var(--gutter)));
+  max-height: calc(100vh - var(--header-h) - 24px);
+  overflow-y: auto;
+  padding: 28px 32px 24px;
+  background: var(--paper); /* opaque, so page text never shows through */
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, .5);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -6px);
+  transition: opacity .18s var(--ease), transform .18s var(--ease), visibility 0s linear .18s;
+}
+/* Invisible bridge over the gap between the Services link and the panel. */
+.site-header__panel::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -24px;
+  height: 24px;
+}
+.site-header__menu:hover .site-header__panel,
+.site-header__menu:focus-within .site-header__panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition-delay: 0s;
+}
+.site-header__menu.is-dismissed .site-header__panel {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -6px);
+}
+.site-header__panel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 24px 28px;
+}
+.site-header__panel-title {
+  margin: 0 0 10px;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.site-header__panel-list { list-style: none; margin: 0; padding: 0; }
+.site-header__panel-link {
+  display: block;
+  padding: 6px 0;
+  color: var(--text-secondary);
+  font-size: .9375rem;
+  line-height: 1.3;
+  overflow-wrap: break-word;
+  transition: color .2s var(--ease);
+}
+.site-header__panel-name { display: block; }
+.site-header__panel-price { display: block; margin-top: 2px; font-size: .8125rem; color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+.site-header__panel-link:hover, .site-header__panel-link:focus-visible { color: var(--text); }
+.site-header__panel-link:hover .site-header__panel-name,
+.site-header__panel-link:focus-visible .site-header__panel-name { text-decoration: underline; text-underline-offset: 4px; }
+.site-header__panel-all { display: inline-block; margin-top: 20px; font-size: .9375rem; }
+@media (max-width: 960px) { .site-header__panel { display: none; } }
+html.ae-calm .site-header__panel { transition: none; }
+@media (prefers-reduced-motion: reduce) { .site-header__panel { transition: none; } }
+
+/* Services page: every product, grouped (reuses the .v5-prices rows). */
+.svc-catalog { padding-top: 0; }
+.svc-catalog__group + .svc-catalog__group { margin-top: 40px; }
+.svc-catalog__title { margin: 0 0 12px; }
+.svc-catalog .v5-prices__row a { grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(150px, auto); }
+.svc-catalog .v5-prices__price { font-size: 1.125rem; }
+@media (max-width: 640px) {
+  .svc-catalog .v5-prices__row a { grid-template-columns: minmax(0, 1fr) auto; }
+}
