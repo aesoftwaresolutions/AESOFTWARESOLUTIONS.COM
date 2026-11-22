@@ -89,9 +89,9 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
 <div class="ae-wipe" id="ae-wipe" aria-hidden="true"></div>
 
 <!-- Dynamic Island style status pill (assets/js/ae-apple.js cycles the line). Quiet, not a banner. -->
-<div class="ae-island" id="ae-island" role="status" aria-live="polite" data-lines="Open Monday to Friday, 9am to 5pm ET">
+<div class="ae-island" id="ae-island" role="status" aria-live="polite" data-lines="Open Monday to Friday, 9am to 10pm ET">
   <span class="ae-island__dot" aria-hidden="true"></span>
-  <span class="ae-island__text">Open Monday to Friday, 9am to 5pm ET</span>
+  <span class="ae-island__text">Open Monday to Friday, 9am to 10pm ET</span>
 </div>
 
 <header class="site-header">

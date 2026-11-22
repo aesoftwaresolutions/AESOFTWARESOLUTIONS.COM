@@ -1271,7 +1271,7 @@ add_action( 'wp_head', function () {
         'image'       => get_template_directory_uri() . '/assets/img/work/monarch-mvc.jpg',
         'description' => 'Website design, online presence management and follow up automation for small businesses across the United States.',
         'areaServed'   => aesoftwares_service_area(),
-        'openingHours' => 'Mo-Fr 09:00-17:00',
+        'openingHours' => 'Mo-Fr 09:00-22:00',
         'priceRange'   => '$$',
         'hasOfferCatalog' => [
             '@type'           => 'OfferCatalog',
@@ -1347,7 +1347,7 @@ add_action( 'wp_head', function () {
             'telephone'       => '+1-240-317-7677',
             'areaServed'      => 'US',
             'availableLanguage' => 'en',
-            'hoursAvailable'  => 'Mo-Fr 09:00-17:00',
+            'hoursAvailable'  => 'Mo-Fr 09:00-22:00',
         ],
     ];
     echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
