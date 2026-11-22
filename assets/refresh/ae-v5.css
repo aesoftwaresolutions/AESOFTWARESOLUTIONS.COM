@@ -2386,21 +2386,13 @@ html.ae-calm .ae-pop__close:hover { transform: none; }
   color: var(--text-secondary);
   overflow-wrap: break-word;
 }
-.ae-hc__foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 24px;
-  margin-top: 8px;
-}
 .ae-hc__price {
-  margin: 0;
+  margin: 8px 0 0;
   font-size: 1.125rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--text);
 }
-.ae-hc__cta { max-width: 100%; }
 
 /* Phone: the graphic runs edge to edge; the caption keeps the gutter. */
 @media (max-width: 640px) {
