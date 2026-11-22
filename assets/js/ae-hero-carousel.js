@@ -27,10 +27,21 @@
   var DWELL = calm ? 8000 : 5500;   // time each slide stays in view, in ms
   var GLIDE = 900;                  // must match the CSS transition on .ae-hc__track
 
-  // Load every slide image up front so a slide never glides in blank.
+  // Load every slide image up front so a slide never glides in blank. If a
+  // lazy loader (LiteSpeed) still swapped the real image for a placeholder
+  // (data-src / data-srcset), put the real one back first. This runs before
+  // slide 1 is cloned, so the clone gets the real image too.
   slides.forEach(function (s) {
     var img = s.querySelector('img');
-    if (img) img.loading = 'eager';
+    if (!img) return;
+    var ds = img.getAttribute('data-src');
+    var dss = img.getAttribute('data-srcset');
+    var dsz = img.getAttribute('data-sizes');
+    if (dsz) img.setAttribute('sizes', dsz);
+    if (dss) img.setAttribute('srcset', dss);
+    if (ds) img.setAttribute('src', ds);
+    ['data-src', 'data-srcset', 'data-sizes', 'data-lazyloaded'].forEach(function (a) { img.removeAttribute(a); });
+    img.loading = 'eager';
   });
 
   // Clone of slide 1 at the end, for a seamless wrap. Never focusable or read.

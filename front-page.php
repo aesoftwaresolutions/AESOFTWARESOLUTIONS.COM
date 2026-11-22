@@ -172,7 +172,9 @@ $ae_topic_close = function () {
     <div class="ae-hc__track" data-ae-hc-track>
       <?php foreach ( $ae_slides as $i => $slide ) : ?>
         <article class="ae-hc__slide" data-ae-hc-slide aria-roledescription="slide" aria-label="<?php echo esc_attr( ( $i + 1 ) . ' of ' . count( $ae_slides ) . ': ' . $slide['name'] ); ?>"<?php echo $i > 0 ? ' inert aria-hidden="true"' : ''; ?>>
-          <img class="ae-hc__img"
+          <?php /* data-no-lazy and skip-lazy keep LiteSpeed lazy load off these images: its placeholder only
+                   swaps once a slide is in view, after window load, so slides glided in black. */ ?>
+          <img class="ae-hc__img skip-lazy" data-no-lazy="1" data-skip-lazy="1"
             src="<?php echo esc_url( $ae_img . 'carousel/' . $slide['slug'] . '.jpg' ); ?>"
             srcset="<?php echo esc_url( $ae_img . 'carousel/' . $slide['slug'] . '-960.jpg' ); ?> 960w, <?php echo esc_url( $ae_img . 'carousel/' . $slide['slug'] . '.jpg' ); ?> 1920w"
             sizes="(min-width: 1024px) 58vw, 100vw"

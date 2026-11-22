@@ -666,6 +666,8 @@ html.ae-calm .mobile-nav-overlay__link { transition: none; }
   .site-header__nav { display: none !important; }
   .nav-toggle { display: flex; margin-left: auto; }
   header.site-header .site-header__cta.btn { margin-left: 0; }
+  /* Sign in is in the menu sheet here. In the header it sat under the hours pill. */
+  .site-header__signin { display: none; }
 }
 @media (min-width: 961px) {
   .mobile-nav-overlay, .mobile-nav-overlay.is-open { display: none; }
