@@ -37,8 +37,8 @@ get_header();
 
 $ae_img = get_template_directory_uri() . '/assets/img/';
 
-// Hero carousel slides, in order. Copy stays minimal: name, one line, price.
-// The hero's single booking button sits in the hero copy, not on the slides.
+// Hero carousel slides, in order. The two AI call handling plans lead.
+// Copy stays minimal: name, one line, price. The hero buttons sit in the hero copy, not on the slides.
 // Full detail lives on each product page. The node labels drawn on each graphic
 // are repeated in its alt text.
 $ae_slides = [
@@ -51,20 +51,20 @@ $ae_slides = [
 		'alt'   => 'Front Desk: Call in, Details captured, Summary sent.',
 	],
 	[
-		'slug'  => 'online-presence-management',
-		'name'  => 'Online Presence Management',
-		'line'  => 'Ongoing management of your Google Business Profile, reviews, and listings.',
-		'price' => '$199/mo',
-		'url'   => home_url( '/online-presence/' ),
-		'alt'   => 'Online Presence Management: Audit and claim, Clean up and align, Ongoing upkeep.',
-	],
-	[
 		'slug'  => 'always-on-front-desk',
 		'name'  => 'Always-On Front Desk',
 		'line'  => '24/7 AI phone answering so nights and weekends never go to voicemail.',
 		'price' => '$250/mo',
 		'url'   => home_url( '/always-on-front-desk/' ),
 		'alt'   => 'Always-On Front Desk: Set schedule and rules, Connect your line, Wake up to organized leads.',
+	],
+	[
+		'slug'  => 'online-presence-management',
+		'name'  => 'Online Presence Management',
+		'line'  => 'Ongoing management of your Google Business Profile, reviews, and listings.',
+		'price' => '$199/mo',
+		'url'   => home_url( '/online-presence/' ),
+		'alt'   => 'Online Presence Management: Audit and claim, Clean up and align, Ongoing upkeep.',
 	],
 	[
 		'slug'  => 'websites',
@@ -126,6 +126,13 @@ $ae_desk     = $ae_offer( 'front-desk' );
 $ae_launch   = $ae_offer( 'launch' );
 $ae_audit    = $ae_offer( 'audit' );
 
+// AI call handling: the two plans sold in the shop, the demo line, and the busier tiers.
+$ae_calls     = aesoftwares_calls();
+$ae_fd        = $ae_offer( 'front-desk' );
+$ae_always_on = $ae_offer( 'front-desk-always-on' );
+$ae_fd_150    = $ae_offer( 'front-desk-150' );
+$ae_fd_300    = $ae_offer( 'front-desk-300' );
+
 /**
  * Opens one topic row: a button that opens the glass detail popup with the
  * topic content. The content lives in a hidden div right after the button;
@@ -155,14 +162,15 @@ $ae_topic_close = function () {
      is the hero's backdrop: it glides on its own (assets/js/ae-hero-carousel.js). -->
 <section class="v5-hero v5-hero--carousel" aria-labelledby="v5-hero-title">
   <div class="v5-hero__copy">
-    <p class="v5-label">Website design, online presence &amp; automation</p>
-    <h1 class="v5-hero__title" id="v5-hero-title">Websites, Google presence, and follow up that wins back missed calls.</h1>
+    <p class="v5-label">AI call handling for small businesses</p>
+    <h1 class="v5-hero__title" id="v5-hero-title">Every call answered, even when you can&rsquo;t pick up.</h1>
     <p class="v5-hero__lead">
-      We work with small businesses to untangle daily workflows, build clear customer facing websites, and put practical systems in place that free up your time.
+      Front Desk answers your business line in your business name, texts back missed calls, and sends you a summary of every call. You keep your number. Plans from $99 a month.
     </p>
     <div class="v5-hero__actions">
-      <a class="v5-button" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-ae-popup>Book a discovery call</a>
-      <a class="v5-textlink" href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>">See pricing &rarr;</a>
+      <a class="v5-button" href="<?php echo esc_url( $ae_calls['front_desk'] ); ?>">Start Front Desk</a>
+      <a class="v5-textlink" href="<?php echo esc_url( $ae_calls['demo_tel'] ); ?>">Hear it answer: call <?php echo esc_html( $ae_calls['demo_label'] ); ?></a>
+      <a class="v5-textlink" href="#plans">Compare plans &rarr;</a>
     </div>
   </div>
 
@@ -211,7 +219,49 @@ $ae_topic_close = function () {
   </ul>
 </section>
 
-<!-- 2. TOPICS: pick one to open it -->
+<!-- 2. PLANS: AI call handling, bought online. Prices and points come from inc/offers.php;
+     the buttons go to the subscription shop (aesoftwares_calls()). -->
+<section class="ae-pricing ae-home-plans" id="plans" aria-labelledby="v5-plans-title">
+  <header class="v5-section-head" data-reveal>
+    <p class="v5-label">AI call handling</p>
+    <h2 class="v5-section-title" id="v5-plans-title">Pick your plan. Start today.</h2>
+  </header>
+  <div class="ae-offers ae-offers--two">
+    <?php foreach ( [ [ $ae_fd, $ae_calls['front_desk'], 'Business hours' ], [ $ae_always_on, $ae_calls['always_on'], 'Nights and weekends too' ] ] as $ae_plan ) :
+      list( $item, $buy, $when ) = $ae_plan;
+      if ( ! $item ) { continue; }
+      $featured = ! empty( $item['featured'] ); ?>
+    <article class="ae-offer<?php echo $featured ? ' ae-offer--featured' : ''; ?>" data-reveal>
+      <?php if ( $featured ) : ?><span class="ae-offer__flag">Recommended</span><?php endif; ?>
+      <h3 class="ae-offer__name"><?php echo esc_html( $item['name'] ); ?></h3>
+      <p class="ae-offer__price"><?php echo esc_html( $item['price'] ); ?></p>
+      <p class="ae-offer__cadence"><?php echo esc_html( $when . ' · ' . $item['cadence'] ); ?></p>
+      <p class="ae-offer__pitch"><?php echo esc_html( $item['pitch'] ); ?></p>
+      <ul class="ae-offer__points">
+        <?php foreach ( $item['points'] as $pt ) : ?><li><?php echo esc_html( $pt ); ?></li><?php endforeach; ?>
+      </ul>
+      <?php if ( ! empty( $item['guarantee'] ) ) : ?><p class="ae-offer__guarantee">60 day guarantee</p><?php endif; ?>
+      <a class="<?php echo $featured ? 'v5-button' : 'ae-offer__cta'; ?>" href="<?php echo esc_url( $buy ); ?>">Start <?php echo esc_html( $item['name'] ); ?></a>
+    </article>
+    <?php endforeach; ?>
+  </div>
+  <?php if ( $ae_fd_150 && $ae_fd_300 ) : ?>
+  <p class="ae-cta-row" data-reveal>
+    <span>Busier phones? Front Desk also comes with room for 150 calls (<?php echo esc_html( $ae_fd_150['price'] ); ?>/mo) or 300 calls (<?php echo esc_html( $ae_fd_300['price'] ); ?>/mo).</span>
+    <a class="v5-textlink" href="<?php echo esc_url( home_url( '/front-desk/#pricing' ) ); ?>">See every tier &rarr;</a>
+  </p>
+  <?php endif; ?>
+  <p class="ae-cta-row" data-reveal>
+    <span>Hear it before you buy. Call our AI front desk now.</span>
+    <a class="v5-textlink" href="<?php echo esc_url( $ae_calls['demo_tel'] ); ?>">Call <?php echo esc_html( $ae_calls['demo_label'] ); ?> &rarr;</a>
+  </p>
+  <p class="ae-cta-row" data-reveal>
+    <span>Rather talk it through first?</span>
+    <a class="v5-textlink" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-ae-popup>Book a discovery call &rarr;</a>
+  </p>
+</section>
+
+<!-- 3. TOPICS: pick one to open it -->
 <section class="v5-topics" id="topics" aria-labelledby="v5-topics-title">
   <header class="v5-section-head" data-reveal>
     <p class="v5-label">Open a topic to read more</p>
@@ -358,8 +408,8 @@ $ae_topic_close = function () {
 
 <!-- 6. CLOSING CTA: white, one button, email below -->
 <section class="v5-closing" aria-labelledby="v5-closing-title">
-  <h2 class="v5-closing__title" id="v5-closing-title">Have a process that eats your week? Let&rsquo;s take it apart.</h2>
-  <a class="v5-button" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" data-ae-popup>Book a discovery call</a>
+  <h2 class="v5-closing__title" id="v5-closing-title">Stop sending callers to voicemail. Start Front Desk today.</h2>
+  <a class="v5-button" href="<?php echo esc_url( $ae_calls['front_desk'] ); ?>">Start Front Desk</a>
   <p class="v5-closing__email">Or write to <a class="v5-link" href="mailto:anthony@aesoftwaresolutions.com">anthony@aesoftwaresolutions.com</a></p>
 </section>
 

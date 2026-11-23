@@ -19,6 +19,8 @@
 get_header();
 
 $ae_book_url    = 'https://calendar.app.google/oWNCzxkmP43DBkhbA';
+$ae_calls       = aesoftwares_calls(); // shop link and the live demo line (inc/offers.php)
+$ae_buy_url     = $ae_calls['always_on'];
 $ae_pricing_url = home_url( '/pricing/' );
 $ae_slug        = 'always-on-front-desk';
 $ae_img_rel     = 'assets/img/services/' . $ae_slug . '.jpg';
@@ -32,12 +34,13 @@ $ae_page = [
 	'fits'        => 'Businesses where high value calls arrive outside standard nine to five hours, including home services, veterinary clinics, legal practices, property managers, and medical offices. It fits teams that cannot afford to lose urgent evening or weekend inquiries to voicemail.',
 	'terms'       => 'Always-On Front Desk is a flat $250 per month with 24/7 coverage, including all evenings, weekends, and holidays. No call cap is stated on the plan. A one time setup fee is quoted after the audit.',
 	'cta_title'   => 'Never lose another evening or weekend inquiry to voicemail.',
-	'cta_text'    => 'Book a discovery call with our team, or view our full pricing page to compare all coverage options.',
+	'cta_text'    => 'Start online in a few minutes, or call our AI front desk to hear how it answers. Want to talk it through first? Book a discovery call.',
 ];
 
 // Hero buttons. The first is the solid button, the rest are text links.
 $ae_hero_actions = [
-	[ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+	[ 'label' => 'Start now', 'url' => $ae_buy_url ],
+	[ 'label' => 'Hear it answer: call ' . $ae_calls['demo_label'], 'url' => $ae_calls['demo_tel'] ],
 	[ 'label' => 'See full pricing', 'url' => home_url( '/pricing/' ) ],
 ];
 
@@ -82,9 +85,9 @@ $ae_cards = [
 		'cadence'  => 'per month · flat rate',
 		'pitch'    => 'Every evening, overnight, weekend, and holiday call answered.',
 		'points'   => [ '24/7 coverage, including evenings, weekends, and holidays', 'No call cap stated on the plan', 'One time setup, quoted after the audit' ],
-		'featured' => false,
-		'flag'     => '',
-		'cta'      => [ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+		'featured' => true,
+		'flag'     => 'Buy online',
+		'cta'      => [ 'label' => 'Start now', 'url' => $ae_buy_url ],
 	],
 ];
 
@@ -212,8 +215,9 @@ $ae_offer_grid = ( 3 === count( $ae_cards ) || count( $ae_cards ) > 4 ) ? 'ae-of
 	<h2 class="op-related__title" id="pp-cta-title" data-split><?php echo esc_html( $ae_page['cta_title'] ); ?></h2>
 	<p class="op-related__text" data-reveal><?php echo esc_html( $ae_page['cta_text'] ); ?></p>
 	<div class="op-hero__actions" data-reveal>
-		<a class="v5-button" href="<?php echo esc_url( $ae_book_url ); ?>">Book a discovery call</a>
-		<a class="v5-link" href="<?php echo esc_url( $ae_pricing_url ); ?>">View full pricing &rarr;</a>
+		<a class="v5-button" href="<?php echo esc_url( $ae_buy_url ); ?>">Start now</a>
+		<a class="v5-link" href="<?php echo esc_url( $ae_calls['demo_tel'] ); ?>">Call <?php echo esc_html( $ae_calls['demo_label'] ); ?> &rarr;</a>
+		<a class="v5-link" href="<?php echo esc_url( $ae_book_url ); ?>">Book a discovery call &rarr;</a>
 	</div>
 </section>
 

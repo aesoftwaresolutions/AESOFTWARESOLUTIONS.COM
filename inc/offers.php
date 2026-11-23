@@ -288,3 +288,17 @@ function aesoftwares_offers() {
 	];
 }
 
+
+/**
+ * AI call handling, the product the site leads with: where each plan is bought
+ * (the subscription shop) and the live demo line visitors can call to hear the
+ * AI answer. Used by the homepage, header, pricing and both Front Desk pages.
+ */
+function aesoftwares_calls() {
+	return [
+		'front_desk' => 'https://shop.aesoftwaresolutions.com/plans/front-desk',
+		'always_on'  => 'https://shop.aesoftwaresolutions.com/plans/always-on-front-desk',
+		'demo_tel'   => 'tel:+12403177677',
+		'demo_label' => '(240) 317-7677',
+	];
+}

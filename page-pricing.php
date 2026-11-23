@@ -11,6 +11,22 @@
 get_header();
 $o = aesoftwares_offers();
 
+// AI call handling leads the page: the Front Desk tiers and Always-On get their
+// own section first, and are left out of "Keep it working" below.
+$ae_calls     = aesoftwares_calls();
+$ae_call_ids  = [ 'front-desk', 'front-desk-150', 'front-desk-300', 'front-desk-always-on' ];
+$ae_call_plans = [];
+foreach ( $ae_call_ids as $ae_id ) {
+	foreach ( $o['monthly'] as $item ) {
+		if ( $item['id'] === $ae_id ) {
+			$ae_call_plans[] = $item;
+		}
+	}
+}
+$ae_monthly_rest = array_values( array_filter( $o['monthly'], function ( $item ) use ( $ae_call_ids ) {
+	return ! in_array( $item['id'], $ae_call_ids, true );
+} ) );
+
 /**
  * Popup attributes for a card button. Cards whose button goes to the contact page open
  * the glass card popup instead (assets/js/ae-popup.js), with the matching service ticked.
@@ -86,12 +102,13 @@ function aesoftwares_pricing_cta_row() {
 <section class="page-hero pricing-hero">
 	<p class="page-hero__eyebrow">Pricing</p>
 	<h1 class="page-hero__headline">Clear prices. No surprises.</h1>
-	<p class="page-hero__subtitle">Websites, Google presence and follow up automation for small businesses everywhere. Start free, build once, and add monthly care when you want it.</p>
+	<p class="page-hero__subtitle">AI call handling from $99 a month, bought online in a few minutes. Below that: websites, Google presence and follow up automation for small businesses.</p>
 </section>
 
 <!-- The four steps of the ladder: a sticky jump bar (the active step is marked while you scroll) -->
 <nav class="ae-jump" aria-label="Pricing sections">
 	<div class="ae-jump__inner">
+		<a class="ae-jump__step" href="#calls">AI call handling</a>
 		<a class="ae-jump__step" href="#start">Start</a>
 		<a class="ae-jump__step" href="#websites">Build</a>
 		<a class="ae-jump__step" href="#monthly">Keep it working</a>
@@ -99,6 +116,21 @@ function aesoftwares_pricing_cta_row() {
 		<a class="ae-jump__step" href="#launch">Launch Package</a>
 	</div>
 </nav>
+
+<section class="ae-pricing" id="calls" aria-labelledby="pr-calls">
+	<header class="v5-section-head">
+		<p class="v5-label" data-reveal>Monthly &middot; keep your number</p>
+		<h2 class="v5-section-title" id="pr-calls" data-reveal>AI call handling</h2>
+	</header>
+	<div class="ae-offers ae-offers--two">
+		<?php foreach ( $ae_call_plans as $item ) { aesoftwares_offer_card( $item ); } ?>
+	</div>
+	<p class="ae-guarantee" data-reveal><strong>Our guarantee.</strong> <?php echo esc_html( $o['guarantee'] ); ?></p>
+	<p class="ae-cta-row" data-reveal>
+		<span>Hear it before you buy.</span>
+		<a class="v5-textlink" href="<?php echo esc_url( $ae_calls['demo_tel'] ); ?>">Call our AI front desk: <?php echo esc_html( $ae_calls['demo_label'] ); ?> &rarr;</a>
+	</p>
+</section>
 
 <section class="ae-pricing" id="start" aria-labelledby="pr-start">
 	<header class="v5-section-head">
@@ -128,9 +160,8 @@ function aesoftwares_pricing_cta_row() {
 		<h2 class="v5-section-title" id="pr-monthly" data-reveal>Keep it working</h2>
 	</header>
 	<div class="ae-offers ae-offers--two">
-		<?php foreach ( $o['monthly'] as $item ) { aesoftwares_offer_card( $item ); } ?>
+		<?php foreach ( $ae_monthly_rest as $item ) { aesoftwares_offer_card( $item ); } ?>
 	</div>
-	<p class="ae-guarantee" data-reveal><strong>Our guarantee.</strong> <?php echo esc_html( $o['guarantee'] ); ?></p>
 	<?php aesoftwares_pricing_cta_row(); ?>
 </section>
 
