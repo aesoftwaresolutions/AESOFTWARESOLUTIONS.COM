@@ -33,10 +33,13 @@ if ( '' !== $ae_home_path && 0 === strpos( $ae_req_path, $ae_home_path ) ) {
 $ae_req_seg = '' === $ae_req_path ? '' : explode( '/', $ae_req_path )[0];
 
 // Five links. [ label, path, extra sections that count as "inside" this link ].
+$ae_calls = aesoftwares_calls(); // AI call handling: shop links and the demo line (inc/offers.php)
 $ae_nav = [
+	// AI call handling leads the site: its own nav item, before Services.
+	[ 'AI Front Desk', 'front-desk', [ 'always-on-front-desk' ] ],
 	[ 'Services', 'services', [ 'work', 'online-presence', 'social-management', 'software', 'industries', 'process',
 		// Product pages (inc/products.php) also count as inside Services.
-		'front-desk', 'always-on-front-desk', 'social-front-desk', 'order-desk', 'total-presence', 'creator-packages',
+		'social-front-desk', 'order-desk', 'total-presence', 'creator-packages',
 		'launch-package', 'business-starter-package', 'branded-templates', 'missed-lead-audit', 'free-assessment',
 		'ai-tools-assessment', 'ai-setup-guides', 'contractor-guides' ] ],
 	[ 'Websites', 'websites', [] ],
@@ -149,7 +152,7 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
 
     <a href="https://dashboard.aesoftwaresolutions.com/login" class="site-header__signin">Sign in</a>
 
-    <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="site-header__cta btn btn--primary">Get in touch</a>
+    <a href="<?php echo esc_url( $ae_calls['front_desk'] ); ?>" class="site-header__cta btn btn--primary">Start Front Desk</a>
 
     <!-- Hamburger: shown below 960px, wired up in ae-motion.js -->
     <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
@@ -207,7 +210,8 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
         <?php endforeach; ?>
         <li><a href="https://dashboard.aesoftwaresolutions.com/login" class="mobile-nav-overlay__link">Sign in</a></li>
       </ul>
-      <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="btn btn--primary mobile-nav-overlay__cta">Get in touch</a>
+      <a href="<?php echo esc_url( $ae_calls['front_desk'] ); ?>" class="btn btn--primary mobile-nav-overlay__cta">Start Front Desk</a>
+      <a href="<?php echo esc_url( $ae_calls['demo_tel'] ); ?>" class="v5-link mobile-nav-overlay__demo">Hear it answer: <?php echo esc_html( $ae_calls['demo_label'] ); ?></a>
     </nav>
     <p class="mobile-nav-overlay__footer"><a href="mailto:anthony@aesoftwaresolutions.com">anthony@aesoftwaresolutions.com</a></p>
   </div>

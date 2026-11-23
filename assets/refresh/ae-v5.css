@@ -2632,3 +2632,10 @@ html.ae-glass-rim header.site-header.aec--scrolled[data-ae-glass][data-ae-rim] {
   background-repeat: no-repeat !important;
   background-origin: border-box !important;
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   HOME PLANS (front page #plans): the two AI call handling plans, bought in
+   the shop. Cards reuse .ae-offer; this only tightens the rows under them.
+   ══════════════════════════════════════════════════════════════════════ */
+.ae-home-plans .ae-cta-row + .ae-cta-row { margin-top: 12px; }
+.mobile-nav-overlay__demo { display: block; margin-top: 16px; text-align: center; font-size: 1rem; }
