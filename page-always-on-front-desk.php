@@ -37,6 +37,7 @@ $ae_page = [
 
 // Hero buttons. The first is the solid button, the rest are text links.
 $ae_hero_actions = [
+	[ 'label' => 'Start now', 'url' => ae_checkout_url( 'always-on-front-desk' ) ],
 	[ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
 	[ 'label' => 'See full pricing', 'url' => home_url( '/pricing/' ) ],
 ];
@@ -84,7 +85,7 @@ $ae_cards = [
 		'points'   => [ '24/7 coverage, including evenings, weekends, and holidays', 'No call cap stated on the plan', 'One time setup, quoted after the audit' ],
 		'featured' => false,
 		'flag'     => '',
-		'cta'      => [ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+		'cta'      => [ 'label' => 'Start now', 'url' => ae_checkout_url( 'always-on-front-desk' ) ],
 	],
 ];
 

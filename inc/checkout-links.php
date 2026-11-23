@@ -66,3 +66,29 @@ function ae_checkout_url( $slug ) {
 	}
 	return '' !== $links[ $slug ]['stripe'] ? $links[ $slug ]['stripe'] : $links[ $slug ]['shop'];
 }
+
+/**
+ * Product page for a product slug, landing on its plans (#pricing).
+ * Listing pages (marketplace, pricing, social plans) send buyers here first,
+ * so every product is seen on its own page before checkout. Only the
+ * product pages themselves link to ae_checkout_url().
+ *
+ * @param string $slug Product slug from ae_checkout_links().
+ * @return string Unescaped URL. Escape with esc_url() when printing.
+ */
+function ae_product_url( $slug ) {
+	$pages = [
+		'front-desk'                   => '/front-desk/',
+		'always-on-front-desk'         => '/always-on-front-desk/',
+		'social-front-desk'            => '/social-front-desk/',
+		'social-management'            => '/social-management/',
+		'social-management-growth'     => '/social-management/',
+		'social-management-scale'      => '/social-management/',
+		'creator-launch'               => '/creator-packages/',
+		'creator-growth'               => '/creator-packages/',
+		'creator-authority'            => '/creator-packages/',
+		'missed-lead-audit'            => '/missed-lead-audit/',
+		'ai-setup-guides-subscription' => '/ai-setup-guides/',
+	];
+	return isset( $pages[ $slug ] ) ? home_url( $pages[ $slug ] . '#pricing' ) : home_url( '/pricing/' );
+}
