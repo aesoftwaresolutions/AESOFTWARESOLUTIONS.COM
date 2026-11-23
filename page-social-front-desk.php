@@ -37,6 +37,7 @@ $ae_page = [
 
 // Hero buttons. The first is the solid button, the rest are text links.
 $ae_hero_actions = [
+	[ 'label' => 'Start now', 'url' => ae_checkout_url( 'social-front-desk' ) ],
 	[ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
 	[ 'label' => 'See full pricing', 'url' => home_url( '/pricing/' ) ],
 ];
@@ -79,12 +80,12 @@ $ae_cards = [
 	[
 		'name'     => 'Social Front Desk',
 		'price'    => '$199',
-		'cadence'  => 'per month',
+		'cadence'  => 'per month · plus $75 one time setup',
 		'pitch'    => 'Incoming Facebook and Instagram messages and comments answered, and leads captured.',
 		'points'   => [ 'Facebook and Instagram', 'Direct messages and post comments' ],
 		'featured' => false,
 		'flag'     => '',
-		'cta'      => [ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+		'cta'      => [ 'label' => 'Start now', 'url' => ae_checkout_url( 'social-front-desk' ) ],
 	],
 ];
 

@@ -41,7 +41,7 @@ function aesoftwares_offers() {
 					'Full $250 credited if you go ahead',
 					'Add on: AI Tools Assessment, $999 one time, offered only with the Missed-Lead Audit',
 				],
-				'cta'     => [ 'Buy the audit', ae_checkout_url( 'missed-lead-audit' ) ],
+				'cta'     => [ 'See details', ae_product_url( 'missed-lead-audit' ) ],
 			],
 		],
 
@@ -113,7 +113,7 @@ function aesoftwares_offers() {
 					'Guides refreshed as the tools change',
 					'New guides included while you subscribe',
 				],
-				'cta'     => [ 'Subscribe', ae_checkout_url( 'ai-setup-guides-subscription' ) ],
+				'cta'     => [ 'See details', ae_product_url( 'ai-setup-guides-subscription' ) ],
 			],
 			[
 				'id'      => 'online-presence',
@@ -147,7 +147,7 @@ function aesoftwares_offers() {
 						'Booking link sent automatically',
 				],
 				'featured' => true,
-				'cta'      => [ 'Start now', ae_checkout_url( 'front-desk' ) ],
+				'cta'      => [ 'See details', ae_product_url( 'front-desk' ) ],
 			],
 			[
 				'id'       => 'front-desk-150',
@@ -200,7 +200,7 @@ function aesoftwares_offers() {
 						'Review requests after every job',
 				],
 				'guarantee' => true,
-				'cta'       => [ 'Start now', ae_checkout_url( 'always-on-front-desk' ) ],
+				'cta'       => [ 'See details', ae_product_url( 'always-on-front-desk' ) ],
 			],
 			[
 				'id'      => 'social-management',
@@ -216,7 +216,7 @@ function aesoftwares_offers() {
 					'One email campaign a month to your list',
 					'Monthly report and review call',
 				],
-				'cta'     => [ 'Start now', ae_checkout_url( 'social-management' ) ],
+				'cta'     => [ 'See details', ae_product_url( 'social-management' ) ],
 			],
 			[
 				'id'      => 'social-front-desk',
@@ -228,7 +228,7 @@ function aesoftwares_offers() {
 				'points'  => [
 					'Founding rate: $149 a month for the first 3 clients, for 3 months, then $199 a month',
 				],
-				'cta'     => [ 'Start now', ae_checkout_url( 'social-front-desk' ) ],
+				'cta'     => [ 'See details', ae_product_url( 'social-front-desk' ) ],
 			],
 			[
 				'id'      => 'total-presence',

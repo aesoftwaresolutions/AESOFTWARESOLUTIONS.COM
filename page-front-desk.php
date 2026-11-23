@@ -37,6 +37,7 @@ $ae_page = [
 
 // Hero buttons. The first is the solid button, the rest are text links.
 $ae_hero_actions = [
+	[ 'label' => 'See plans', 'url' => '#pricing' ],
 	[ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
 	[ 'label' => 'See full pricing', 'url' => home_url( '/pricing/' ) ],
 ];
@@ -84,7 +85,7 @@ $ae_cards = [
 		'points'   => [  ],
 		'featured' => false,
 		'flag'     => '',
-		'cta'      => [ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+		'cta'      => [ 'label' => 'Start now', 'url' => ae_checkout_url( 'front-desk' ) ],
 	],
 	[
 		'name'     => 'Up to 150 calls',

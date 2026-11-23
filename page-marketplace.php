@@ -34,7 +34,7 @@ get_header();
 				<p>AI answers your calls in your business name, captures the job details, and sends you a summary of every call.</p>
 				<p>Need more room? Front Desk is $179 a month for up to 150 calls, or $309 a month for up to 300 calls, each with the same one time $75 setup. Over 300 calls, we add $45 per extra block of 50 calls.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'front-desk' ) ); ?>">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_product_url( 'front-desk' ) ); ?>">See details</a>
 			<a class="v5-link v5-service__more" href="https://calendar.app.google/oWNCzxkmP43DBkhbA">Book a call for 150 or 300 calls</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
@@ -44,7 +44,7 @@ get_header();
 				<p><strong>$250 a month plus a one time setup, quoted after the audit.</strong> Missed calls answered in seconds, day or night.</p>
 				<p>AI answers your calls in your business name, day or night, and rings you for true emergencies.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'always-on-front-desk' ) ); ?>">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_product_url( 'always-on-front-desk' ) ); ?>">See details</a>
 		</li>
 	</ol>
 </section>
@@ -63,7 +63,7 @@ get_header();
 				<p><strong>$199 a month plus a one time $75 setup.</strong> Posting handled for you with light planning, so your business shows up consistently.</p>
 				<p>First 3 clients: $149 a month for 3 months, then $199 a month.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'social-front-desk' ) ); ?>">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_product_url( 'social-front-desk' ) ); ?>">See details</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">02</span>
@@ -71,7 +71,7 @@ get_header();
 			<div class="v5-service__text">
 				<p><strong>$799 a month plus a one time $300 setup.</strong> Up to 4 platforms, 12 to 16 posts a month, strategy and calendar, replies handled, 1 email campaign, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'social-management' ) ); ?>">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_product_url( 'social-management' ) ); ?>">See details</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">03</span>
@@ -79,7 +79,7 @@ get_header();
 			<div class="v5-service__text">
 				<p><strong>$1,299 a month plus a one time $495 setup.</strong> Up to 6 platforms, 20 to 24 posts, 8 short form videos, 2 email campaigns, priority turnaround.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'social-management-growth' ) ); ?>">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_product_url( 'social-management-growth' ) ); ?>">See details</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">04</span>
@@ -87,7 +87,7 @@ get_header();
 			<div class="v5-service__text">
 				<p><strong>$1,999 a month plus a one time $750 setup.</strong> Up to 8 platforms including TikTok and YouTube, 28 to 32 posts, 12 short form videos, daily engagement checks.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'social-management-scale' ) ); ?>">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_product_url( 'social-management-scale' ) ); ?>">See details</a>
 		</li>
 	</ol>
 </section>
@@ -105,7 +105,7 @@ get_header();
 			<div class="v5-service__text">
 				<p><strong>$499 a month plus a one time $195 setup.</strong> 3 platforms, 12 short form videos a month cross posted, captions and hashtags per platform.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'creator-launch' ) ); ?>">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_product_url( 'creator-launch' ) ); ?>">See details</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">02</span>
@@ -113,7 +113,7 @@ get_header();
 			<div class="v5-service__text">
 				<p><strong>$899 a month plus a one time $345 setup.</strong> Up to 5 platforms, 20 short form videos, comment handling on business days, profile polish.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'creator-growth' ) ); ?>">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_product_url( 'creator-growth' ) ); ?>">See details</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">03</span>
@@ -121,7 +121,7 @@ get_header();
 			<div class="v5-service__text">
 				<p><strong>$1,999 a month plus a one time $750 setup.</strong> Up to 6 platforms, 30 short form videos, daily engagement checks, sponsor inquiries flagged with drafted replies.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'creator-authority' ) ); ?>">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_product_url( 'creator-authority' ) ); ?>">See details</a>
 		</li>
 	</ol>
 </section>
@@ -140,7 +140,7 @@ get_header();
 				<p><strong>$250 one time.</strong> Find out exactly where inquiries leak before you spend money fixing anything.</p>
 				<p>We look at where your calls and web inquiries actually go, and we put it in writing and tell you what to fix first.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'missed-lead-audit' ) ); ?>">Buy the audit</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_product_url( 'missed-lead-audit' ) ); ?>">See details</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">02</span>
@@ -149,7 +149,7 @@ get_header();
 				<p><strong>$19 a month.</strong> Step by step guides that show you how to set up AI tools for your business, kept current as the tools change.</p>
 				<p>Every guide in the library, current edition.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'ai-setup-guides-subscription' ) ); ?>">Start the guides</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_product_url( 'ai-setup-guides-subscription' ) ); ?>">See details</a>
 		</li>
 	</ol>
 </section>
