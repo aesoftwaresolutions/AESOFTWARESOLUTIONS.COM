@@ -38,7 +38,7 @@ $ae_checkout_faq = [
 <section class="page-hero op-hero">
 	<p class="page-hero__eyebrow">Social media plans</p>
 	<h1 class="page-hero__headline">Choose your social media plan.</h1>
-	<p class="page-hero__subtitle">Every plan is billed monthly through our online store. You pay by card or PayPal on the secure checkout page. If you have a discount code, you will enter it on the secure payment page before you pay.</p>
+	<p class="page-hero__subtitle">Every plan is billed monthly. You pay by card on the secure checkout page. If you have a discount code, you will enter it on the secure payment page before you pay.</p>
 </section>
 
 <!-- Plans for businesses -->
@@ -55,7 +55,7 @@ $ae_checkout_faq = [
 				<p><strong>$199 a month plus a one time $75 setup.</strong> Posting handled for you with light planning, so your business shows up consistently.</p>
 				<p>First 3 clients: $149 a month for 3 months, then $199 a month.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/social-front-desk">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'social-front-desk' ) ); ?>">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">02</span>
@@ -63,7 +63,7 @@ $ae_checkout_faq = [
 			<div class="v5-service__text">
 				<p><strong>$799 a month plus a one time $300 setup.</strong> Up to 4 platforms, 12 to 16 posts a month, strategy and calendar, replies handled, 1 email campaign, monthly report and call.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/social-management">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'social-management' ) ); ?>">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">03</span>
@@ -71,7 +71,7 @@ $ae_checkout_faq = [
 			<div class="v5-service__text">
 				<p><strong>$1,299 a month plus a one time $495 setup.</strong> Up to 6 platforms, 20 to 24 posts, 8 short form videos, 2 email campaigns, priority turnaround.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/social-management-growth">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'social-management-growth' ) ); ?>">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">04</span>
@@ -79,7 +79,7 @@ $ae_checkout_faq = [
 			<div class="v5-service__text">
 				<p><strong>$1,999 a month plus a one time $750 setup.</strong> Up to 8 platforms including TikTok and YouTube, 28 to 32 posts, 12 short form videos, daily engagement checks.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/social-management-scale">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'social-management-scale' ) ); ?>">Start now</a>
 		</li>
 	</ol>
 </section>
@@ -97,7 +97,7 @@ $ae_checkout_faq = [
 			<div class="v5-service__text">
 				<p><strong>$499 a month plus a one time $195 setup.</strong> 3 platforms, 12 short form videos a month cross posted, captions and hashtags per platform.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/creator-launch">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'creator-launch' ) ); ?>">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">02</span>
@@ -105,7 +105,7 @@ $ae_checkout_faq = [
 			<div class="v5-service__text">
 				<p><strong>$899 a month plus a one time $345 setup.</strong> Up to 5 platforms, 20 short form videos, comment handling on business days, profile polish.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/creator-growth">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'creator-growth' ) ); ?>">Start now</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">03</span>
@@ -113,7 +113,7 @@ $ae_checkout_faq = [
 			<div class="v5-service__text">
 				<p><strong>$1,999 a month plus a one time $750 setup.</strong> Up to 6 platforms, 30 short form videos, daily engagement checks, sponsor inquiries flagged with drafted replies.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="https://shop.aesoftwaresolutions.com/plans/creator-authority">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'creator-authority' ) ); ?>">Start now</a>
 		</li>
 	</ol>
 </section>
@@ -140,11 +140,11 @@ $ae_checkout_faq = [
 <section class="op-related ae-rule" aria-labelledby="co-other-title">
 	<p class="v5-label" data-reveal>Other services</p>
 	<h2 class="op-related__title" id="co-other-title" data-split>Also from AE:</h2>
-	<p class="op-related__text" data-reveal><a class="v5-link" href="https://shop.aesoftwaresolutions.com/plans/front-desk">Front Desk</a> from $99 a month</p>
-	<p class="op-related__text" data-reveal><a class="v5-link" href="https://shop.aesoftwaresolutions.com/plans/always-on-front-desk">Always-On Front Desk</a> $250 a month</p>
+	<p class="op-related__text" data-reveal><a class="v5-link" href="<?php echo esc_url( ae_checkout_url( 'front-desk' ) ); ?>">Front Desk</a> from $99 a month</p>
+	<p class="op-related__text" data-reveal><a class="v5-link" href="<?php echo esc_url( ae_checkout_url( 'always-on-front-desk' ) ); ?>">Always-On Front Desk</a> $250 a month</p>
 	<p class="op-related__text" data-reveal><a class="v5-link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Online Presence Management</a> $199 a month</p>
-	<p class="op-related__text" data-reveal><a class="v5-link" href="https://shop.aesoftwaresolutions.com/product/missed-lead-audit">Missed-Lead Audit</a> $250 one time</p>
-	<p class="op-related__text" data-reveal><a class="v5-link" href="https://shop.aesoftwaresolutions.com/plans/ai-setup-guides-subscription">AI Setup Guides Subscription</a> $19 a month</p>
+	<p class="op-related__text" data-reveal><a class="v5-link" href="<?php echo esc_url( ae_checkout_url( 'missed-lead-audit' ) ); ?>">Missed-Lead Audit</a> $250 one time</p>
+	<p class="op-related__text" data-reveal><a class="v5-link" href="<?php echo esc_url( ae_checkout_url( 'ai-setup-guides-subscription' ) ); ?>">AI Setup Guides Subscription</a> $19 a month</p>
 	<a class="v5-link op-related__link" href="<?php echo esc_url( home_url( '/social-management/' ) ); ?>" data-reveal>Compare the social plans in detail &rarr;</a>
 </section>
 
