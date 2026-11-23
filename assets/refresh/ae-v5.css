@@ -2509,8 +2509,10 @@ html.ae-calm .site-header__panel { transition: none; }
    LIQUID GLASS (assets/js/ae-glass.js)
    Refraction ported from @zakisheriff/liquid-glass (MIT): a baked bevel map
    bends the frosted backdrop through an SVG feDisplacementMap, after the
-   existing frosting, so the bend and the white rim stay crisp. Desktop Chromium with a fine pointer only (html.ae-glass-on);
-   everywhere else these rules never apply and the frosted glass is unchanged.
+   existing frosting, so the bend and the white rim stay crisp. Chromium only
+   (html.ae-glass-on): desktop Chrome and Edge, and Android phones and tablets.
+   iOS and Firefox phones get the rim only (html.ae-glass-rim, below). Desktop
+   Safari and Firefox keep the frosted glass unchanged.
    White rim only, no colour. Glass far off screen skips the refraction.
    ══════════════════════════════════════════════════════════════════════ */
 html.ae-glass-on [data-ae-glass]:not([data-ae-glass-off]) { --ae-refract: var(--ae-refract-src); }
@@ -2540,4 +2542,17 @@ html.ae-glass-on header.site-header:not(.aec--scrolled) .site-header__panel[data
   background: rgba(10, 10, 11, .55);   /* light enough for the glass to show; text stays clear over 28px blur */
   -webkit-backdrop-filter: blur(28px) saturate(140%) var(--ae-refract, );
   backdrop-filter: blur(28px) saturate(140%) var(--ae-refract, );
+}
+
+/* Liquid glass, 'rim' mode (ae-glass.js): phones and tablets whose browser
+   cannot refract (iOS, Firefox) or that dropped frames with it. The same baked
+   white glass edge is drawn as a static background layer over the existing
+   frosting: no filter, no per-frame cost. The header gets it only once it is
+   frosted. White only. */
+html.ae-glass-rim [data-ae-glass="card"][data-ae-rim],
+html.ae-glass-rim header.site-header.aec--scrolled[data-ae-glass][data-ae-rim] {
+  background-image: var(--ae-rim-img) !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  background-origin: border-box !important;
 }

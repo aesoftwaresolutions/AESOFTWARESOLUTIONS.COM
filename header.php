@@ -12,8 +12,9 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
 	return file_exists( $file ) ? filemtime( $file ) : '6.0.0';
 };
 
-// Liquid glass refraction (assets/js/ae-glass.js). Desktop Chromium only; it
-// exits at once everywhere else. Kept out of LiteSpeed "delay JS".
+// Liquid glass (assets/js/ae-glass.js): refraction in Chromium (desktop and
+// Android), the glass rim only on iOS and Firefox phones. Kept out of LiteSpeed
+// "delay JS".
 wp_enqueue_script( 'ae-glass', $ae_theme_uri . '/assets/js/ae-glass.js', [], $ae_asset_ver( '/assets/js/ae-glass.js' ), [ 'in_footer' => true, 'strategy' => 'defer' ] );
 add_filter( 'script_loader_tag', function ( $tag, $handle ) {
 	if ( 'ae-glass' === $handle && false === strpos( $tag, 'data-no-optimize' ) ) {
