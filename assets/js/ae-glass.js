@@ -18,12 +18,18 @@
  * magnification, the Safari and Firefox "mirror copy" fallback, and the touch
  * wobble. See HANDOFF.md.
  *
- * Runs only where the effect is cheap and correct:
- *  - Chromium (the only engine that runs SVG filters inside backdrop-filter),
- *  - desktop width (961px and up) with a fine pointer (mouse or trackpad),
- *  - not on low memory or low core devices, and not where a frame probe finds
- *    the refraction drops frames (then plain frosted glass for the visit).
- * Everywhere else nothing happens and the existing frosted glass stays as is.
+ * Two modes:
+ *  - 'refract': the full effect (bend + rim, through backdrop-filter). Chromium
+ *    only, because it is the only engine that runs SVG filters inside
+ *    backdrop-filter: desktop Chrome and Edge, and Android Chrome, Samsung
+ *    Internet and Edge on phones and tablets.
+ *  - 'rim': phones and tablets whose browser cannot refract (every iOS browser
+ *    is WebKit underneath, and Firefox). The same baked white rim is drawn as a
+ *    static background layer on each surface: the glass edge, without the bend.
+ *    No filter, no per-frame cost.
+ * A frame probe watches each visit; a phone that drops frames with the
+ * refraction falls back to 'rim' (a desktop falls back to plain frosted glass).
+ * Desktop Safari and Firefox keep the existing frosted glass, untouched.
  * Static effect: no animation, so reduced motion needs nothing extra.
  */
 (function () {
@@ -36,18 +42,29 @@
   // ── Gate ────────────────────────────────────────────────────────────────
   var ua = nav.userAgent || '';
   var chromium = /Chrom(e|ium)\/|Edg\//.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
-  var desktop = window.matchMedia && window.matchMedia('(min-width: 961px) and (pointer: fine)').matches;
-  var weak = (typeof nav.deviceMemory === 'number' && nav.deviceMemory <= 4) ||
-    (typeof nav.hardwareConcurrency === 'number' && nav.hardwareConcurrency <= 4);
+  var mq = function (q) { return !!(window.matchMedia && window.matchMedia(q).matches); };
+  var desktop = mq('(min-width: 961px) and (pointer: fine)');
+  var touch = !desktop && (mq('(pointer: coarse)') || !mq('(min-width: 961px)'));   // phones and tablets
+  var mem = nav.deviceMemory, cores = nav.hardwareConcurrency;
+  // Phones report less memory than desktops (Chrome caps it), so they get their
+  // own floor; the frame probe does the real policing.
+  var weak = touch
+    ? ((typeof mem === 'number' && mem < 2) || (typeof cores === 'number' && cores < 4))
+    : ((typeof mem === 'number' && mem <= 4) || (typeof cores === 'number' && cores <= 4));
   // Quality pin, for the owner or a test: localStorage aeGlass = 'high' (always
-  // refract, skip the probe), 'off' (never), anything else = automatic.
+  // refract where the browser can, skip the probe), 'rim' (rim only), 'off'
+  // (never), anything else = automatic.
   var pin = '';
   try { pin = localStorage.getItem('aeGlass') || ''; } catch (e) {}
   var lowThisVisit = false;
   try { lowThisVisit = sessionStorage.getItem('aeGlassLow') === '1'; } catch (e) {}
-  if (pin === 'off') return;
-  if (pin !== 'high' && (weak || lowThisVisit)) return;
-  if (!chromium || !desktop || !window.CSS || !CSS.supports('backdrop-filter', 'blur(1px)')) return;
+  if (pin === 'off' || !window.CSS || !(desktop || touch)) return;
+  var canRefract = chromium && CSS.supports('backdrop-filter', 'blur(1px)');
+  var MODE;
+  if (pin === 'rim') MODE = 'rim';
+  else if (canRefract && (pin === 'high' || (!weak && !lowThisVisit))) MODE = 'refract';
+  else if (touch) MODE = 'rim';                     // iOS, Firefox, weak or slow phones
+  else return;                                      // desktop Safari/Firefox, weak or slow desktops
 
   // Which surfaces get glass. 'card' matches the shared frosted card rule in ae-v5.css.
   var TARGETS = [
@@ -63,6 +80,9 @@
   // White rim strength. The header bar and the Services panel carry a dark fill
   // over the refraction, so their edges need more light to read as glass at all.
   var RIM_OPACITY = { card: 0.55, panel: 0.9, bar: 0.9 };
+  // In 'rim' mode the rim is painted on top of the fill, not under it, so the
+  // dark-filled surfaces need less to match.
+  var RIM_ONLY_OPACITY = { card: 0.55, panel: 0.45, bar: 0.45 };
 
   var SVG_NS = 'http://www.w3.org/2000/svg';
   var defs = null;
@@ -121,8 +141,9 @@
   }
 
   // Bake the displacement field and rim for one size, build the SVG filter.
-  function bake(w, h, r, kind) {
-    var rimOpacity = RIM_OPACITY[kind] || 0.55;
+  function bake(w, h, r, kind, mode) {
+    var rimOnly = mode === 'rim';
+    var rimOpacity = (rimOnly ? RIM_ONLY_OPACITY : RIM_OPACITY)[kind] || 0.55;
     var short = Math.min(w, h);
     var bezel = clamp(short * 0.2, 5, 16);
     var thickness = clamp(short * 0.32, 8, 26);
@@ -160,7 +181,9 @@
         dx[i] = nx * s; dy[i] = ny * s;
         var m = Math.max(Math.abs(dx[i]), Math.abs(dy[i]));
         if (m > max) max = m;
-        if (d >= -1 && d < bezel) {
+        // A full width bar (the header) has one real glass edge, the bottom: no
+        // rim down the screen sides or along the top.
+        if (d >= -1 && d < bezel && !(kind === 'bar' && ny < 0.7)) {
           // Light from the upper left; both diagonal corners catch it.
           var facing = -(nx + ny) * Math.SQRT1_2;
           var light = 0.22 + 0.78 * Math.pow(Math.abs(facing), 2.2) * (facing > 0 ? 1 : 0.62);
@@ -172,10 +195,25 @@
       }
     }
 
+    var e, o, k;
+    if (rimOnly) {
+      // 'rim' mode: just the white edge, used as a CSS background image.
+      var rc = doc.createElement('canvas');
+      rc.width = w; rc.height = h;
+      var rctx = rc.getContext('2d'), rimg = rctx.createImageData(w, h), rd = rimg.data;
+      for (e = 0; e < edges; e++) {
+        k = outer[e]; o = k * 4;
+        rd[o] = rd[o + 1] = rd[o + 2] = 255;            // white only
+        rd[o + 3] = Math.round(rim[k] * 255 * rimOpacity);
+      }
+      rctx.putImageData(rimg, 0, 0);
+      return encode(rc).then(function (url) { return 'url("' + url + '")'; });
+    }
+
     var canvas = doc.createElement('canvas');
     canvas.width = w; canvas.height = h;
     var ctx = canvas.getContext('2d');
-    var img = ctx.createImageData(w, h), data = img.data, e, o, k;
+    var img = ctx.createImageData(w, h), data = img.data;
     new Uint32Array(data.buffer).fill(new Uint32Array(new Uint8ClampedArray([128, 128, 128, 255]).buffer)[0]);  // neutral: no shift
     for (e = 0; e < edges; e++) {
       k = outer[e]; o = k * 4;
@@ -221,9 +259,10 @@
 
   // Bake one element for its current size (cached by size), on idle time.
   function fit(node) {
+    if (MODE !== 'refract' && MODE !== 'rim') return;
     var w = Math.round(node.offsetWidth), h = Math.round(node.offsetHeight);
     if (!w || !h || w * h > 1600000) return;          // nothing to draw, or too big to bake cheaply
-    if (node.getAttribute('data-ae-glass') === 'card' && !node.hasAttribute('data-ae-glass-key')) {
+    if (MODE === 'refract' && node.getAttribute('data-ae-glass') === 'card' && !node.hasAttribute('data-ae-glass-key')) {
       // Keep the card's own frosting exactly; refraction is added in front of it.
       var base = getComputedStyle(node).backdropFilter;
       if (!base || base === 'none') return;            // not a glass card here: leave it alone
@@ -231,16 +270,19 @@
     }
     var r = radiusOf(node, w, h);
     var kind = node.getAttribute('data-ae-glass');
-    var key = kind + ':' + w + 'x' + h + 'r' + Math.round(r);
-    if (!cache[key]) cache[key] = bake(w, h, r, kind);
+    var mode = MODE;
+    var key = mode + ':' + kind + ':' + w + 'x' + h + 'r' + Math.round(r);
+    if (!cache[key]) cache[key] = bake(w, h, r, kind, mode);
     node.setAttribute('data-ae-glass-key', key);
     pending++;
     cache[key].then(function (url) {
       pending--;
-      // A newer size may have been baked meanwhile: only the current one applies.
-      if (node.getAttribute('data-ae-glass-key') === key) node.style.setProperty('--ae-refract-src', url);
+      // A newer size or mode may have been baked meanwhile: only the current one applies.
+      if (node.getAttribute('data-ae-glass-key') !== key) return;
+      if (mode === 'rim') { node.style.setProperty('--ae-rim-img', url); node.setAttribute('data-ae-rim', ''); }
+      else node.style.setProperty('--ae-refract-src', url);
       // Probe once everything near the viewport is baked and showing.
-      if (!pending && !queue.length) probe();
+      if (mode === 'refract' && !pending && !queue.length) probe();
     });
   }
 
@@ -262,24 +304,46 @@
   // frames (long enough to include a carousel glide). If 12 or more miss the
   // frame budget, this device can't carry it: drop back to the plain frosted
   // glass for the rest of the visit (later pages skip the work entirely).
-  var probed = false;
+  // On a phone the glass is redrawn mostly while scrolling, so a phone also
+  // gets a second 8 second window starting at its first scroll. A phone that
+  // fails falls back to 'rim' (the glass edge, no per-frame cost); a desktop
+  // falls back to plain frosted glass.
+  var probes = 0, probing = false;
   function probe() {
-    if (probed || pin === 'high') return;
-    probed = true;
+    if (probing || pin === 'high' || MODE !== 'refract' || probes >= (touch ? 2 : 1)) return;
+    probes++; probing = true;
     var slow = 0, last = 0, end = performance.now() + 8000;
     var step = function (t) {
+      if (MODE !== 'refract') { probing = false; return; }
       if (doc.hidden) { last = 0; requestAnimationFrame(step); return; }   // a hidden tab says nothing
       if (last && t - last > 26 && t - last < 1000) slow++;
       last = t;
-      if (slow >= 12) {
-        html.classList.remove('ae-glass-on');
-        html.classList.add('ae-glass-low');
-        try { sessionStorage.setItem('aeGlassLow', '1'); } catch (e) {}
-        return;
-      }
+      if (slow >= 12) { probing = false; fallBack(); return; }
       if (t < end) requestAnimationFrame(step);
+      else probing = false;
     };
     requestAnimationFrame(step);
+  }
+  if (touch) {
+    window.addEventListener('scroll', function first() {
+      window.removeEventListener('scroll', first);
+      if (probing) return;              // the load window is still running and covers it
+      probe();
+    }, { passive: true });
+  }
+  function fallBack() {
+    try { sessionStorage.setItem('aeGlassLow', '1'); } catch (e) {}
+    html.classList.remove('ae-glass-on');
+    html.classList.add('ae-glass-low');
+    if (!touch) { MODE = 'off'; return; }
+    // Phones keep the look: re-bake every surface as rim only.
+    MODE = 'rim';
+    html.classList.add('ae-glass-rim');
+    Array.prototype.forEach.call(doc.querySelectorAll('[data-ae-glass-key]'), function (n) {
+      n.style.removeProperty('--ae-refract-src');
+      n.removeAttribute('data-ae-glass-key');
+      enqueue(n, true);
+    });
   }
 
   function enqueue(node, urgent) {
@@ -293,12 +357,13 @@
     TARGETS.forEach(function (t) {
       Array.prototype.forEach.call(doc.querySelectorAll(t[0]), function (node) {
         if (node.hasAttribute('data-ae-glass')) return;
+        if (t[1] === 'panel' && touch) return;          // the dropdown is desktop only
         node.setAttribute('data-ae-glass', t[1]);
         nodes.push(node);
       });
     });
     if (!nodes.length) return;
-    html.classList.add('ae-glass-on');
+    html.classList.add(MODE === 'refract' ? 'ae-glass-on' : 'ae-glass-rim');
 
     // Glass well off screen skips refraction (and is baked when it nears view).
     var io = new IntersectionObserver(function (entries) {
