@@ -2505,15 +2505,27 @@ html.ae-calm .ae-pop__close:hover { transform: none; }
   transform: translate(-50%, -6px);
   transition: opacity .18s var(--ease), transform .18s var(--ease), visibility 0s linear .18s;
 }
-/* Invisible bridge over the gap between the Services link and the panel. */
-.site-header__panel::before {
+/* Invisible bridge over the gap between the Services link and the panel. It
+   hangs off the menu, not the panel: the panel scrolls (overflow auto), which
+   clipped a bridge drawn outside it, so the pointer fell through the gap and
+   the panel shut. It starts below the nav links, so it never covers them. */
+.site-header__menu::after {
   content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -24px;
-  height: 24px;
+  display: none;
+  position: fixed;
+  z-index: 2;
+  top: calc(var(--header-h) - 12px);
+  left: 50%;
+  width: min(960px, calc(100vw - 2 * var(--gutter)));
+  height: 18px;
+  transform: translateX(-50%);
 }
+.site-header__menu:hover::after,
+.site-header__menu.is-lingering::after { display: block; }
+.site-header__menu.is-dismissed::after { display: none; }
+/* is-lingering (inline script in header.php) keeps the panel open for a moment
+   after the pointer slips off, so a crooked path to a link does not close it. */
+.site-header__menu.is-lingering .site-header__panel,
 .site-header__menu:hover .site-header__panel,
 .site-header__menu:focus-within .site-header__panel {
   opacity: 1;

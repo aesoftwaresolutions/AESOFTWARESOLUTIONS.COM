@@ -160,19 +160,36 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
   </div>
 </header>
 <script data-no-optimize="1" data-no-defer="1" data-cfasync="false">
-/* Services panel: Escape closes it (hover and focus open it in CSS). */
+/* Services panel: hover and focus open it in CSS. When a mouse slips off, the
+   panel stays open for a short grace period (is-lingering) so it can be reached.
+   Escape closes it. */
 (function () {
   var m = document.querySelector('[data-ae-menu]');
   if (!m) return;
   var link = m.querySelector('.site-header__nav-link');
+  var GRACE = 350; // ms the panel stays open after the pointer leaves
+  var timer = null;
+  function stopLinger() {
+    if (timer) { clearTimeout(timer); timer = null; }
+    m.classList.remove('is-lingering');
+  }
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape' || m.classList.contains('is-dismissed')) return;
     var inside = m.contains(document.activeElement);
-    if (!inside && !m.matches(':hover')) return;
+    if (!inside && !m.matches(':hover') && !m.classList.contains('is-lingering')) return;
+    stopLinger();
     m.classList.add('is-dismissed');
     if (inside && link) link.focus();
   });
-  m.addEventListener('pointerleave', function () { m.classList.remove('is-dismissed'); });
+  m.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') stopLinger(); });
+  m.addEventListener('pointerleave', function (e) {
+    var dismissed = m.classList.contains('is-dismissed');
+    m.classList.remove('is-dismissed');
+    if (e.pointerType !== 'mouse' || dismissed) return;
+    stopLinger();
+    m.classList.add('is-lingering');
+    timer = setTimeout(stopLinger, GRACE);
+  });
   m.addEventListener('focusout', function (e) {
     if (!m.contains(e.relatedTarget)) m.classList.remove('is-dismissed');
   });
