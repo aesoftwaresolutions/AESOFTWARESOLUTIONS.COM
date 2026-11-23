@@ -273,17 +273,21 @@ function ae_relay_dashboard($s) {
 }
 
 // Send the one summary for a stored call. Returns true when the email went out.
-function ae_send_once($ccid, $entry) {
+// Each step runs at most once per call: the entry remembers what already
+// succeeded (emailed, texted, relayed), so a retry after a failed email never
+// relays the call to the dashboard again or sends the urgent text twice.
+// The caller saves $entry when this returns false.
+function ae_send_once($ccid, &$entry) {
     $s = ae_build_summary($entry);
-    $emailed = ae_send_email($s);
-    $texted = false;
-    if ($s['urgent']) { $texted = ae_send_text($s); }
-    ae_relay_dashboard($s); // best effort; never blocks the email
+    if (empty($entry['emailed'])) { $entry['emailed'] = ae_send_email($s); }
+    if ($s['urgent'] && empty($entry['texted'])) { $entry['texted'] = ae_send_text($s); }
+    if (empty($entry['relayed'])) { $entry['relayed'] = ae_relay_dashboard($s); } // best effort; never blocks the email
     ae_log('sent ccid=' . $ccid . ' conv=' . $s['conversation_id']
-        . ' email=' . ($emailed ? 'yes' : 'FAILED')
-        . ' text=' . ($s['urgent'] ? ($texted ? 'yes' : 'FAILED') : 'n/a')
+        . ' email=' . (!empty($entry['emailed']) ? 'yes' : 'FAILED')
+        . ' text=' . ($s['urgent'] ? (!empty($entry['texted']) ? 'yes' : 'FAILED') : 'n/a')
+        . ' relay=' . (!empty($entry['relayed']) ? 'yes' : 'FAILED')
         . ' outcome=' . $s['outcome']);
-    return $emailed;
+    return !empty($entry['emailed']);
 }
 
 // ---------- Telnyx signature (Ed25519) ----------
@@ -430,7 +434,7 @@ if (!$entry['sent'] && ($has_both || $single_stale)) {
     if (ae_send_once($ccid, $entry)) {
         ae_delete_entry($ccid);
     } else {
-        // Email failed; keep the entry so a later sweep can retry it.
+        // Email failed; keep the entry (with what already succeeded) so a later sweep retries only the email.
         $entry['sent'] = false;
         ae_save_entry($ccid, $entry);
     }
@@ -449,6 +453,7 @@ if (is_array($files)) {
         $both = isset($e['ended']) && isset($e['insights']);
         if ($both || $age >= AE_SINGLE_EVENT_WAIT_SEC) {
             if (ae_send_once($id, $e)) { ae_delete_entry($id); }
+            else { ae_save_entry($id, $e); } // keep what already succeeded
         }
     }
 }
