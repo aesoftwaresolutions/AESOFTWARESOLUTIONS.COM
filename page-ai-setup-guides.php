@@ -37,7 +37,7 @@ $ae_page = [
 
 // Hero buttons. The first is the solid button, the rest are text links.
 $ae_hero_actions = [
-	[ 'label' => 'Start the guides', 'url' => 'https://shop.aesoftwaresolutions.com/plans/ai-setup-guides-subscription' ],
+	[ 'label' => 'Start the guides', 'url' => ae_checkout_url( 'ai-setup-guides-subscription' ) ],
 	[ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
 	[ 'label' => 'See full pricing', 'url' => home_url( '/pricing/' ) ],
 ];
@@ -85,7 +85,7 @@ $ae_cards = [
 		'points'   => [  ],
 		'featured' => false,
 		'flag'     => '',
-		'cta'      => [ 'label' => 'Start the guides', 'url' => 'https://shop.aesoftwaresolutions.com/plans/ai-setup-guides-subscription' ],
+		'cta'      => [ 'label' => 'Start the guides', 'url' => ae_checkout_url( 'ai-setup-guides-subscription' ) ],
 	],
 ];
 
