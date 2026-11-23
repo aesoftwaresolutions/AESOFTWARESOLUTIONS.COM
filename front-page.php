@@ -177,7 +177,7 @@ $ae_topic_close = function () {
           <img class="ae-hc__img skip-lazy" data-no-lazy="1" data-skip-lazy="1"
             src="<?php echo esc_url( $ae_img . 'carousel/' . $slide['slug'] . '.jpg' ); ?>"
             srcset="<?php echo esc_url( $ae_img . 'carousel/' . $slide['slug'] . '-960.jpg' ); ?> 960w, <?php echo esc_url( $ae_img . 'carousel/' . $slide['slug'] . '.jpg' ); ?> 1920w"
-            sizes="(min-width: 1024px) 58vw, 100vw"
+            sizes="(max-width: 1023px) 160vw, 100vw"
             alt="<?php echo esc_attr( $slide['alt'] ); ?>"
             width="1920" height="1200" decoding="async"
             <?php echo 0 === $i ? 'fetchpriority="high"' : 'loading="lazy"'; ?>>

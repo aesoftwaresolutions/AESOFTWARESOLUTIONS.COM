@@ -2308,62 +2308,88 @@ html.ae-calm .ae-pop__close:hover { transform: none; }
 
 /* ══════════════════════════════════════════════════════════════════════
    HERO CAROUSEL (front page)
-   The product carousel is the backdrop of the home hero. The hero takes the
-   graphics' own ground (#111) edge to edge, so slide text sits on the same
-   dark as the line art. Black and white only: no glow, no gold.
-   Phone and tablet: headline, then the carousel, then the proof strip.
-   Desktop (1024px and up): headline left, carousel right.
+   The product carousel is the background of the home hero: the artwork fills
+   the hero edge to edge behind the headline, under a black scrim. The hero
+   takes the graphics' own ground (#111). Black and white only: no glow, no gold.
+   The slide caption sits under the proof strip.
    Behaviour lives in assets/js/ae-hero-carousel.js.
    ══════════════════════════════════════════════════════════════════════ */
 .v5-hero.v5-hero--carousel {
   --ae-hc-ground: #111111;
+  --ae-hc-cap-room: 176px;            /* space under the proof strip for the slide caption */
+  position: relative;
+  isolation: isolate;                 /* the backdrop (z-index -1) stays inside the hero */
   background: var(--ae-hc-ground);
   box-shadow: 0 0 0 100vmax var(--ae-hc-ground);
   clip-path: inset(0 -100vmax);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   row-gap: 48px;
+  padding-bottom: calc(80px + var(--ae-hc-cap-room));
 }
 .v5-hero--carousel > * { min-width: 0; }
 .v5-hero--carousel .v5-proof { margin-top: 0; }
 
+/* The carousel is the hero background: edge to edge, top to bottom, behind
+   the copy. Only the caption takes the pointer, so hovering the headline does
+   not pause it. html clips horizontal overflow, so 100vw never scrolls. */
 .ae-hc {
-  position: relative;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 50vw);
+  width: 100vw;
   overflow: hidden;
   overflow: clip;
   background: var(--ae-hc-ground, #111111);
+  pointer-events: none;
 }
 .ae-hc__track {
   display: flex;
   align-items: stretch;
+  height: 100%;
   transition: transform .9s var(--ease);
   will-change: transform;
 }
 .ae-hc__track.is-jump, .ae-hc.is-calm .ae-hc__track { transition: none; }
 .ae-hc__slide {
+  position: relative;
   flex: 0 0 100%;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
 }
+/* Full resolution artwork, never recompressed. */
 .ae-hc__img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 10;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
+  object-position: 0% 50%;
   background: var(--ae-hc-ground, #111111);
-  /* Feather the outer 5% so the JPG's own ground melts into the hero. The
-     line art and node labels all sit well inside this margin. */
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(to bottom, transparent, #000 5%, #000 95%, transparent);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(to bottom, transparent, #000 5%, #000 95%, transparent);
-  mask-composite: intersect;
 }
+/* Black scrim (no colour): dark behind the copy, the proof strip and the caption. */
+.ae-hc__slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(17, 17, 17, .45) 0, rgba(17, 17, 17, 0) 22%, rgba(17, 17, 17, 0) 50%, rgba(17, 17, 17, .88) 78%, #111111 100%),
+    linear-gradient(to right, rgba(17, 17, 17, .9) 0, rgba(17, 17, 17, .7) 34%, rgba(17, 17, 17, .15) 62%, rgba(17, 17, 17, 0) 100%);
+}
+/* Caption: lines up with the page column, under the proof strip. */
 .ae-hc__cap {
+  position: absolute;
+  z-index: 1;
+  left: max(var(--gutter), calc(50% - var(--wrap) / 2 + var(--gutter)));
+  right: max(var(--gutter), calc(50% - var(--wrap) / 2 + var(--gutter)));
+  bottom: 64px;
   display: grid;
   gap: 8px;
-  padding: 12px 0 4px;
+  pointer-events: auto;
 }
 .ae-hc__name {
   margin: 0;
@@ -2396,21 +2422,59 @@ html.ae-calm .ae-pop__close:hover { transform: none; }
   color: var(--text);
 }
 
-/* Phone: the graphic runs edge to edge; the caption keeps the gutter. */
+/* Phone and tablet: the hero is tall and narrow, so stretching the artwork over
+   all of it would blow the line art up past its 1920 x 1200 source. Instead it
+   fills a band behind the headline, capped so it is never enlarged much, and
+   fades into the hero ground. */
+@media (max-width: 1023px) {
+  .ae-hc__img {
+    bottom: auto;
+    height: min(100vw, 640px);
+    object-position: 50% 50%;
+    -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent);
+    mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  }
+  .ae-hc__slide::after {
+    background:
+      linear-gradient(to bottom, rgba(17, 17, 17, .45) 0, rgba(17, 17, 17, .55) min(100vw, 640px), rgba(17, 17, 17, 0) min(100vw, 640px)),
+      linear-gradient(to bottom, rgba(17, 17, 17, 0) 70%, #111111 100%);
+  }
+}
 @media (max-width: 640px) {
-  .v5-hero.v5-hero--carousel { row-gap: 36px; }
-  .ae-hc { margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); }
-  .ae-hc__cap { padding-left: var(--gutter); padding-right: var(--gutter); }
+  .v5-hero.v5-hero--carousel { row-gap: 36px; --ae-hc-cap-room: 200px; padding-bottom: calc(56px + var(--ae-hc-cap-room)); }
+  .ae-hc__cap { bottom: 48px; }
 }
 
-/* Desktop: headline left, carousel right, proof strip across the bottom. */
+/* Desktop: the artwork fills the right of the hero from under the header and
+   fades into the ground behind the headline. Sized so a 1920 x 1200 source is
+   barely enlarged even on a retina screen. */
+@media (min-width: 1024px) {
+  .ae-hc__img {
+    top: var(--header-h);
+    bottom: auto;
+    left: 36%;
+    width: 64%;
+    height: min(calc(100% - var(--header-h)), 48vw);
+    object-position: 50% 50%;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 22%), linear-gradient(to bottom, #000 70%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent, #000 22%), linear-gradient(to bottom, #000 70%, transparent);
+    mask-composite: intersect;
+  }
+  .ae-hc__slide::after {
+    background:
+      linear-gradient(to bottom, rgba(17, 17, 17, .35) 0, rgba(17, 17, 17, 0) 18%, rgba(17, 17, 17, 0) 55%, rgba(17, 17, 17, .85) 80%, #111111 100%),
+      linear-gradient(to right, rgba(17, 17, 17, .8) 0, rgba(17, 17, 17, .55) 38%, rgba(17, 17, 17, 0) 60%);
+  }
+}
+
+/* Desktop: headline over the artwork, proof strip and caption across the bottom. */
 @media (min-width: 1024px) {
   .v5-hero.v5-hero--carousel {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    column-gap: clamp(32px, 4vw, 64px);
-    row-gap: 56px;
-    align-items: center;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    row-gap: 72px;
   }
+  .v5-hero--carousel .v5-hero__copy { grid-column: 1; }
   .v5-hero--carousel .v5-hero__title { font-size: clamp(2.5rem, 4.2vw, 4rem); }
   .v5-hero--carousel .v5-proof { grid-column: 1 / -1; }
 }
