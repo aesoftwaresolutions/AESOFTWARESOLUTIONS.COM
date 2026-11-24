@@ -19,6 +19,7 @@
 get_header();
 
 $ae_book_url    = 'https://calendar.app.google/oWNCzxkmP43DBkhbA';
+$ae_buy_url    = ae_checkout_url( 'total-presence' );
 $ae_pricing_url = home_url( '/pricing/' );
 $ae_slug        = 'total-presence';
 $ae_img_rel     = 'assets/img/services/' . $ae_slug . '.jpg';
@@ -28,15 +29,16 @@ $ae_page = [
 	'name'        => 'Total Presence',
 	'headline'    => 'Combine AI social message handling and Google Business Profile management in one bundle.',
 	'description' => 'Social Front Desk plus ongoing Google Business Profile management together, so local searches and social inquiries are both covered.',
-	'price'       => '$229 per month · Founding rate $149 per month for the first 3 clients for 3 months, then $199 per month',
+	'price'       => '$199 per month · Founding rate $149 per month for the first 3 clients for 3 months, then $199 per month',
 	'fits'        => 'Local and regional businesses with 5 to 50 employees that generate inquiries from both Google Maps searches and social media channels, and want both front doors covered cleanly under one monthly plan.',
-	'terms'       => 'The standard Total Presence rate is $229 per month. The first 3 clients who enroll pay the founding rate of $149 per month for their first 3 months, then $199 per month from month 4 onward.',
+	'terms'       => 'The standard Total Presence rate is $199 per month. The first 3 clients who enroll pay the founding rate of $149 per month for their first 3 months, then $199 per month from month 4 onward.',
 	'cta_title'   => 'Cover both your Google Business Profile and your social inbox under one simple plan.',
-	'cta_text'    => 'Book a discovery call to claim a founding spot, or view our full pricing page.',
+	'cta_text'    => 'Start online now, or book a discovery call to claim a founding spot.',
 ];
 
 // Hero buttons. The first is the solid button, the rest are text links.
 $ae_hero_actions = [
+	[ 'label' => 'Get started', 'url' => $ae_buy_url ],
 	[ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
 	[ 'label' => 'See full pricing', 'url' => home_url( '/pricing/' ) ],
 ];
@@ -78,13 +80,13 @@ $ae_steps = [
 $ae_cards = [
 	[
 		'name'     => 'Total Presence',
-		'price'    => '$229',
+		'price'    => '$199',
 		'cadence'  => 'per month · standard rate',
 		'pitch'    => 'Social Front Desk and Google Business Profile management in one plan.',
 		'points'   => [  ],
 		'featured' => false,
 		'flag'     => '',
-		'cta'      => [ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+		'cta'      => [ 'label' => 'Get started', 'url' => $ae_buy_url ],
 	],
 	[
 		'name'     => 'Founding client rate',
@@ -94,7 +96,7 @@ $ae_cards = [
 		'points'   => [ '$149 per month for months 1 to 3', '$199 per month from month 4 onward', 'Limited to the first 3 clients' ],
 		'featured' => true,
 		'flag'     => 'Founding rate',
-		'cta'      => [ 'label' => 'Claim a founding spot', 'url' => $ae_book_url ],
+		'cta'      => [ 'label' => 'Claim a founding spot', 'url' => $ae_buy_url ],
 	],
 ];
 
@@ -222,7 +224,8 @@ $ae_offer_grid = ( 3 === count( $ae_cards ) || count( $ae_cards ) > 4 ) ? 'ae-of
 	<h2 class="op-related__title" id="pp-cta-title" data-split><?php echo esc_html( $ae_page['cta_title'] ); ?></h2>
 	<p class="op-related__text" data-reveal><?php echo esc_html( $ae_page['cta_text'] ); ?></p>
 	<div class="op-hero__actions" data-reveal>
-		<a class="v5-button" href="<?php echo esc_url( $ae_book_url ); ?>">Book a discovery call</a>
+		<a class="v5-button" href="<?php echo esc_url( $ae_buy_url ); ?>">Get started</a>
+		<a class="v5-link" href="<?php echo esc_url( $ae_book_url ) ; ?>">Book a discovery call</a>
 		<a class="v5-link" href="<?php echo esc_url( $ae_pricing_url ); ?>">View full pricing &rarr;</a>
 	</div>
 </section>
