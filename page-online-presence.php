@@ -19,6 +19,7 @@
 get_header();
 
 $ae_book_url    = 'https://calendar.app.google/oWNCzxkmP43DBkhbA';
+$ae_buy_url     = ae_checkout_url( 'online-presence-management' );
 $ae_pricing_url = home_url( '/pricing/' );
 $ae_slug        = 'online-presence-management';
 $ae_img_rel     = 'assets/img/services/' . $ae_slug . '.jpg';
@@ -28,15 +29,16 @@ $ae_page = [
 	'name'        => 'Online Presence Management',
 	'headline'    => 'Keep your business accurate, active, and easy to find everywhere customers search.',
 	'description' => 'Ongoing management of your Google Business Profile, reviews, and local listings across key platforms.',
-	'price'       => '$199 per month · First month free · $50 setup, waived for Chambersburg, PA businesses',
+	'price'       => '$199 per month · No setup fee',
 	'fits'        => 'Local and regional businesses with 5 to 50 employees that rely on search and map visibility to win new customers. It is built for owners and office managers who know an outdated listing or unanswered review costs business, but do not have time to log into multiple platforms every week.',
-	'terms'       => 'Online Presence Management is $199 per month and runs month to month. Your first month is free. The one time $50 setup fee is automatically waived for businesses located in Chambersburg, PA.',
+	'terms'       => 'Online Presence Management is $199 per month and runs month to month. There is no setup fee.',
 	'cta_title'   => 'Ready to clean up your local listings and keep your profile active?',
-	'cta_text'    => 'Book a discovery call with our team, or view our full pricing page to compare all services.',
+	'cta_text'    => 'Start online in a few minutes, or book a discovery call with our team.',
 ];
 
 // Hero buttons. The first is the solid button, the rest are text links.
 $ae_hero_actions = [
+	[ 'label' => 'Get started', 'url' => $ae_buy_url ],
 	[ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
 	[ 'label' => 'See full pricing', 'url' => home_url( '/pricing/' ) ],
 ];
@@ -81,21 +83,21 @@ $ae_cards = [
 		'price'    => '$199',
 		'cadence'  => 'per month · month to month',
 		'pitch'    => 'Your Google Business Profile, reviews, and local listings kept accurate and active.',
-		'points'   => [ 'First month free', '$50 one time setup', 'Setup fee waived for businesses located in Chambersburg, PA' ],
+		'points'   => [ 'Weekly Google Business Profile posts', 'A drafted reply to every new review', 'Listings kept matching on Google, Bing, Apple Maps, Yelp, Facebook', 'One page monthly report', 'No setup fee' ],
 		'featured' => true,
-		'flag'     => 'First month free',
-		'cta'      => [ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+		'flag'     => 'Buy online',
+		'cta'      => [ 'label' => 'Get started', 'url' => $ae_buy_url ],
 	],
 ];
 
 $ae_faq = [
 	[
-		'q' => 'What happens during the free first month?',
-		'a' => 'We complete your initial profile review, clean up inaccurate business details, and begin active management of your Google Business Profile and reviews so you can see the work in place before your first monthly invoice.',
+		'q' => 'Is there a setup fee?',
+		'a' => 'No. Online Presence Management is $199 per month with no setup fee.',
 	],
 	[
-		'q' => 'Why is the setup fee waived for Chambersburg, PA businesses?',
-		'a' => 'AE Software Solutions is based in Chambersburg, PA. Waiving the $50 setup fee is our direct commitment to supporting neighboring businesses in our home community.',
+		'q' => 'Can I cancel anytime?',
+		'a' => 'Yes. Online Presence Management runs month to month, so you can cancel anytime.',
 	],
 	[
 		'q' => 'Do we still keep ownership of our Google Business Profile?',
@@ -212,7 +214,8 @@ $ae_offer_grid = ( 3 === count( $ae_cards ) || count( $ae_cards ) > 4 ) ? 'ae-of
 	<h2 class="op-related__title" id="pp-cta-title" data-split><?php echo esc_html( $ae_page['cta_title'] ); ?></h2>
 	<p class="op-related__text" data-reveal><?php echo esc_html( $ae_page['cta_text'] ); ?></p>
 	<div class="op-hero__actions" data-reveal>
-		<a class="v5-button" href="<?php echo esc_url( $ae_book_url ); ?>">Book a discovery call</a>
+		<a class="v5-button" href="<?php echo esc_url( $ae_buy_url ); ?>">Get started</a>
+			<a class="v5-link" href="<?php echo esc_url( $ae_book_url ); ?>">Book a discovery call &rarr;</a>
 		<a class="v5-link" href="<?php echo esc_url( $ae_pricing_url ); ?>">View full pricing &rarr;</a>
 	</div>
 </section>
