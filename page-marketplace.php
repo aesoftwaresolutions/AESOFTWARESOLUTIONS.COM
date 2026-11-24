@@ -36,7 +36,7 @@ get_header();
 			</div>
 			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'front-desk' ) ); ?>">Start now</a>
 			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'front-desk-150' ) ); ?>">Start 150 calls — $179/mo</a>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'front-desk-300' ) ; ?>">Start 300 calls — $309/mo</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'front-desk-300' ) ); ?>">Start 300 calls — $309/mo</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">02</span>
@@ -178,7 +178,7 @@ get_header();
 				<p><strong>$199 a month.</strong> Online Presence Management and Social Front Desk in one plan.</p>
 			<p>Founding rate: $149 a month for the first 3 clients, for 3 months, then $199 a month.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'total-presence' ) ; ?>">Start now</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'total-presence' ) ); ?>">Start now</a>
 		</li>
 	</ol>
 </section>
