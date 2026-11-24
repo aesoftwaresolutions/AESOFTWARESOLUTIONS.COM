@@ -9,7 +9,8 @@
  * For each product:
  *   'stripe' => the Stripe Payment Link (buy.stripe.com/...). Used when set.
  *   'shop'   => the old Hostinger shop page. Used only while 'stripe' is empty,
- *               so no button breaks before its Stripe link exists.
+ *               so no button breaks before its Stripe link exists. Newer
+  *               products have no shop page and omit 'shop'.
  *
  * Every product now has a Stripe link (Stripe account acct_1TOO79Epan91NQaR,
  * checked Nov 23 2026: each link's recurring price and one time setup fee
@@ -29,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Product slug => checkout targets.
  *
- * @return array<string, array{stripe: string, shop: string}>
+ * @return array<string, array{stripe: string, shop?: string}>
  */
 function ae_checkout_links() {
 	$shop = 'https://shop.aesoftwaresolutions.com';
@@ -37,7 +38,12 @@ function ae_checkout_links() {
 		// Calls.
 		'front-desk'                   => [ 'stripe' => 'https://buy.stripe.com/fZu8wP8Mg0P4eBd8d3abK0q', 'shop' => $shop . '/plans/front-desk' ],
 		'always-on-front-desk'         => [ 'stripe' => 'https://buy.stripe.com/6oUeVd9QkapEct52SJabK01', 'shop' => $shop . '/plans/always-on-front-desk' ],
+		// Front Desk tiers: the $75 setup is in the Stripe link's first payment.
+		'front-desk-150'               => [ 'stripe' => 'https://buy.stripe.com/cNiaEX7IceFUct53WNabK0t' ],
+		'front-desk-300'               => [ 'stripe' => 'https://buy.stripe.com/aFa28r6E82Xc78LbpfabK0u' ],
 		// Social media for businesses.
+		'online-presence-management'   => [ 'stripe' => 'https://buy.stripe.com/5kQcN50fK55keBdgJzabK0r' ],
+		'total-presence'               => [ 'stripe' => 'https://buy.stripe.com/3cI5kD2nScxMakXfFvabK0s' ],
 		'social-front-desk'            => [ 'stripe' => 'https://buy.stripe.com/7sYbJ1d2w2XcakXfFvabK0h', 'shop' => $shop . '/plans/social-front-desk' ],
 		'social-management'            => [ 'stripe' => 'https://buy.stripe.com/7sY14n9QkapE2Sv2SJabK0b', 'shop' => $shop . '/plans/social-management' ],
 		'social-management-growth'     => [ 'stripe' => 'https://buy.stripe.com/3cIfZh3rWcxMakXalbabK0i', 'shop' => $shop . '/plans/social-management-growth' ],
@@ -47,6 +53,7 @@ function ae_checkout_links() {
 		'creator-growth'               => [ 'stripe' => 'https://buy.stripe.com/6oUaEX5A48hwct578ZabK0l', 'shop' => $shop . '/plans/creator-growth' ],
 		'creator-authority'            => [ 'stripe' => 'https://buy.stripe.com/7sY28r9QkdBQ2Sv2SJabK0m', 'shop' => $shop . '/plans/creator-authority' ],
 		// One time and small subscriptions.
+		'business-starter-package'     => [ 'stripe' => 'https://buy.stripe.com/dRm14n3rW7dseBd1OFabK0v' ],
 		'missed-lead-audit'            => [ 'stripe' => 'https://buy.stripe.com/00wbJ15A4dBQgJl8d3abK03', 'shop' => $shop . '/product/missed-lead-audit' ],
 		'ai-setup-guides-subscription' => [ 'stripe' => 'https://buy.stripe.com/5kQ5kDbYs7dsfFheBrabK0a', 'shop' => $shop . '/plans/ai-setup-guides-subscription' ],
 	];
@@ -64,5 +71,8 @@ function ae_checkout_url( $slug ) {
 	if ( ! isset( $links[ $slug ] ) ) {
 		return home_url( '/contact/' );
 	}
-	return '' !== $links[ $slug ]['stripe'] ? $links[ $slug ]['stripe'] : $links[ $slug ]['shop'];
+	if ( '' !== $links[ $slug ]['stripe'] ) {
+		return $links[ $slug ]['stripe'];
+}
+	return $links[ $slug ]['shop'] ?? '#';
 }
