@@ -19,6 +19,7 @@
 get_header();
 
 $ae_book_url    = 'https://calendar.app.google/oWNCzxkmP43DBkhbA';
+$ae_buy_url     = ae_checkout_url( 'business-starter-package' );
 $ae_pricing_url = home_url( '/pricing/' );
 $ae_slug        = 'business-starter-package';
 $ae_img_rel     = 'assets/img/services/' . $ae_slug . '.jpg';
@@ -32,11 +33,12 @@ $ae_page = [
 	'fits'        => 'Early stage and small regulated teams with 5 to 50 employees that are outgrowing spreadsheets, paper invoices, and scattered notes, and need a dependable operational baseline at a predictable monthly cost.',
 	'terms'       => 'The Business Starter Package is $50 per month and includes aeCRM, invoicing, and 50 state compliance guides. It connects naturally with our phone answering, web, and back office services as your team scales.',
 	'cta_title'   => 'Organize your contacts, billing, and compliance references for $50 a month.',
-	'cta_text'    => 'Book a discovery call with our team, or view our full pricing page.',
+	'cta_text'    => 'Start online in a few minutes, or book a discovery call with our team.',
 ];
 
 // Hero buttons. The first is the solid button, the rest are text links.
 $ae_hero_actions = [
+	[ 'label' => 'Start now', 'url' => $ae_buy_url ],
 	[ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
 	[ 'label' => 'See full pricing', 'url' => home_url( '/pricing/' ) ],
 ];
@@ -82,9 +84,9 @@ $ae_cards = [
 		'cadence'  => 'per month',
 		'pitch'    => 'Contacts, invoicing, and compliance references in one simple system.',
 		'points'   => [ 'aeCRM', 'Invoicing', '50 state compliance guides' ],
-		'featured' => false,
-		'flag'     => '',
-		'cta'      => [ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+		'featured' => true,
+		'flag'     => 'Buy online',
+		'cta'      => [ 'label' => 'Start now', 'url' => $ae_buy_url ],
 	],
 ];
 
@@ -212,7 +214,8 @@ $ae_offer_grid = ( 3 === count( $ae_cards ) || count( $ae_cards ) > 4 ) ? 'ae-of
 	<h2 class="op-related__title" id="pp-cta-title" data-split><?php echo esc_html( $ae_page['cta_title'] ); ?></h2>
 	<p class="op-related__text" data-reveal><?php echo esc_html( $ae_page['cta_text'] ); ?></p>
 	<div class="op-hero__actions" data-reveal>
-		<a class="v5-button" href="<?php echo esc_url( $ae_book_url ); ?>">Book a discovery call</a>
+		<a class="v5-button" href="<?php echo esc_url( $ae_buy_url ); ?>">Start now</a>
+		<a class="v5-link" href="<?php echo esc_url( $ae_book_url ); ?>">Book a discovery call &rarr;</a>
 		<a class="v5-link" href="<?php echo esc_url( $ae_pricing_url ); ?>">View full pricing &rarr;</a>
 	</div>
 </section>
