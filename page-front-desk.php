@@ -21,6 +21,8 @@ get_header();
 $ae_book_url    = 'https://calendar.app.google/oWNCzxkmP43DBkhbA';
 $ae_calls       = aesoftwares_calls(); // shop link and the live demo line (inc/offers.php)
 $ae_buy_url     = $ae_calls['front_desk'];
+$ae_buy_150    = ae_checkout_url( 'front-desk-150' );
+$ae_buy_300    = ae_checkout_url( 'front-desk-300' );
 $ae_pricing_url = home_url( '/pricing/' );
 $ae_slug        = 'front-desk';
 $ae_img_rel     = 'assets/img/services/' . $ae_slug . '.jpg';
@@ -97,7 +99,7 @@ $ae_cards = [
 		'points'   => [  ],
 		'featured' => false,
 		'flag'     => '',
-		'cta'      => [ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+		'cta'      => [ 'label' => 'Start now', 'url' => $ae_buy_150 ],
 	],
 	[
 		'name'     => 'Up to 300 calls',
@@ -107,7 +109,7 @@ $ae_cards = [
 		'points'   => [ '$45 per extra block of 50 calls over 300' ],
 		'featured' => false,
 		'flag'     => '',
-		'cta'      => [ 'label' => 'Book a discovery call', 'url' => $ae_book_url ],
+		'cta'      => [ 'label' => 'Start now', 'url' => $ae_buy_300 ],
 	],
 ];
 
