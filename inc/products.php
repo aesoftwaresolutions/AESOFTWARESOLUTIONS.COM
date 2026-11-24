@@ -27,7 +27,7 @@ if ( ! function_exists( 'aesoftwares_products' ) ) {
 				'title' => 'Presence and social',
 				'items' => [
 					[ 'slug' => 'online-presence',   'name' => 'Online Presence Management', 'price' => '$199/mo',      'line' => 'Ongoing management of your Google Business Profile, reviews, and local listings across key platforms.' ],
-					[ 'slug' => 'total-presence',    'name' => 'Total Presence',             'price' => '$229/mo',      'line' => 'Social Front Desk plus ongoing Google Business Profile management together, so local searches and social inquiries are both covered.' ],
+					[ 'slug' => 'total-presence',    'name' => 'Total Presence',             'price' => '$199/mo',      'line' => 'Social Front Desk plus ongoing Google Business Profile management together, so local searches and social inquiries are both covered.' ],
 					[ 'slug' => 'social-management', 'name' => 'Social Management',          'price' => 'from $799/mo', 'line' => 'Full social media management covering content creation, scheduling, engagement, and plain spoken monthly reporting.' ],
 					[ 'slug' => 'creator-packages',  'name' => 'Creator Packages',           'price' => 'from $499/mo', 'line' => 'Dedicated content production, channel growth, and authority building packages for founders, advisors, and independent creators.' ],
 				],
