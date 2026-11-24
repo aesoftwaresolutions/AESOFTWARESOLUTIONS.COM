@@ -38,7 +38,7 @@ get_header();
 			<tr><td>Missed-Lead Audit</td><td>$250 one time, credited in full toward a first retainer month</td><td><a href="/pricing/#audit">/pricing/#audit</a></td></tr>
 			<tr><td>Launch Package</td><td>$595 one time</td><td><a href="/pricing/#launch">/pricing/#launch</a></td></tr>
 			<tr><td>Social Front Desk</td><td>$199 per month</td><td><a href="/pricing/#social-front-desk">/pricing/#social-front-desk</a></td></tr>
-			<tr><td>Total Presence</td><td>$229 per month</td><td><a href="/pricing/#total-presence">/pricing/#total-presence</a></td></tr>
+			<tr><td>Total Presence</td><td>$199 per month</td><td><a href="/pricing/#total-presence">/pricing/#total-presence</a></td></tr>
 			<tr><td>Social Management</td><td>$799, $1,299, or $1,999 per month</td><td><a href="/social-management/">/social-management/</a></td></tr>
 			<tr><td>Creator Packages</td><td>$499, $899, or $1,999 per month</td><td><a href="/social-management/">/social-management/</a></td></tr>
 			<tr><td>Order Desk</td><td>$149, $299, or $549 per month</td><td><a href="/services/">/services/</a></td></tr>
