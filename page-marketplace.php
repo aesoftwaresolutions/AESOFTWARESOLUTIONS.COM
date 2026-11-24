@@ -35,7 +35,8 @@ get_header();
 				<p>Need more room? Front Desk is $179 a month for up to 150 calls, or $309 a month for up to 300 calls, each with the same one time $75 setup. Over 300 calls, we add $45 per extra block of 50 calls.</p>
 			</div>
 			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'front-desk' ) ); ?>">Start now</a>
-			<a class="v5-link v5-service__more" href="https://calendar.app.google/oWNCzxkmP43DBkhbA">Book a call for 150 or 300 calls</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'front-desk-150' ) ); ?>">Start 150 calls — $179/mo</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'front-desk-300' ) ); ?>">Start 300 calls — $309/mo</a>
 		</li>
 		<li class="v5-service ae-rule" data-reveal>
 			<span class="v5-service__num">02</span>
@@ -168,7 +169,16 @@ get_header();
 				<p><strong>$199 a month.</strong> We keep your Google Business Profile active and accurate, every month.</p>
 				<p>Weekly Google Business Profile posts, review requests, and profile upkeep.</p>
 			</div>
-			<a class="v5-link v5-service__more" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Talk to us</a>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'online-presence-management' ) ); ?>">Start now</a>
+		</li>
+		<li class="v5-service ae-rule" data-reveal>
+			<span class="v5-service__num">02</span>
+			<h3 class="v5-service__title">Total Presence</h3>
+			<div class="v5-service__text">
+				<p><strong>$199 a month.</strong> Online Presence Management and Social Front Desk in one plan.</p>
+				<p>Founding rate: $149 a month for the first 3 clients, for 3 months, then $199 a month.</p>
+			</div>
+			<a class="v5-link v5-service__more" href="<?php echo esc_url( ae_checkout_url( 'total-presence' ) ); ?>">Start now</a>
 		</li>
 	</ol>
 </section>
