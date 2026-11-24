@@ -225,7 +225,7 @@ $ae_offer_grid = ( 3 === count( $ae_cards ) || count( $ae_cards ) > 4 ) ? 'ae-of
 	<p class="op-related__text" data-reveal><?php echo esc_html( $ae_page['cta_text'] ); ?></p>
 	<div class="op-hero__actions" data-reveal>
 		<a class="v5-button" href="<?php echo esc_url( $ae_buy_url ); ?>">Get started</a>
-		<a class="v5-link" href="<?php echo esc_url( $ae_book_url ); ?>">Book a discovery call</a>
+		<a class="v5-link" href="<?php echo esc_url( $ae_book_url ); ?>">Book a discovery call &rarr;</a>
 		<a class="v5-link" href="<?php echo esc_url( $ae_pricing_url ); ?>">View full pricing &rarr;</a>
 	</div>
 </section>
