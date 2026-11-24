@@ -129,7 +129,7 @@ function aesoftwares_offers() {
 					'Listings kept matching on Google, Bing, Apple Maps, Yelp, Facebook',
 					'One page monthly report',
 				],
-				'cta'     => [ 'Get started', $contact ], // The old Stripe link charges $49. Swap in a $199 link when one exists.
+				'cta'     => [ 'Get started', ae_checkout_url( 'online-presence-management' ) ],
 			],
 			[
 				'id'       => 'front-desk',
@@ -164,7 +164,7 @@ function aesoftwares_offers() {
 						'Call summary and recording for every call',
 						'Booking link sent automatically',
 				],
-				'cta'      => [ 'Book a call', 'https://calendar.app.google/oWNCzxkmP43DBkhbA' ],
+				'cta'      => [ 'Start now', ae_checkout_url( 'front-desk-150' ) ],
 			],
 			[
 				'id'       => 'front-desk-300',
@@ -182,7 +182,7 @@ function aesoftwares_offers() {
 						'Booking link sent automatically',
 						'Over 300 calls: $45 per extra block of 50 calls',
 				],
-				'cta'      => [ 'Book a call', 'https://calendar.app.google/oWNCzxkmP43DBkhbA' ],
+				'cta'      => [ 'Start now', ae_checkout_url( 'front-desk-300' ) ],
 			],
 			[
 				'id'        => 'front-desk-always-on',
@@ -234,15 +234,16 @@ function aesoftwares_offers() {
 				'id'      => 'total-presence',
 				'icon'    => 'presence',
 				'name'    => 'Total Presence',
-				'price'   => '$229',
-				'amount'  => 229,
+				'price'   => '$199',
+				'amount'  => 199,
 				'cadence' => 'per month · social plus Google Business Profile management',
 				'pitch'   => 'Social Front Desk and Google Business Profile management in one plan.',
 				'points'  => [
+		'Founding rate: $149 a month for the first 3 clients, for 3 months, then $199 a month',
 					'Social Front Desk posting',
 					'Google Business Profile management',
 				],
-				'cta'     => [ 'Get started', $contact ],
+				'cta'     => [ 'Get started', ae_checkout_url( 'total-presence' ) ],
 			],
 		],
 
