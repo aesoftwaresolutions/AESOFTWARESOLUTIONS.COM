@@ -201,6 +201,9 @@ add_action( 'template_redirect', function () {
 // replacement, whether or not the old WordPress page still exists.
 add_action( 'template_redirect', function () {
     $moved = [
+		'shop' => '/marketplace/',
+		'checkout' => '/get-started/',
+		'cart' => '/get-started/',
         'business-starter' => '/business-starter-package/',
     ];
     $path = trim( (string) wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '', PHP_URL_PATH ), '/' );
@@ -1299,7 +1302,7 @@ add_action( 'wp_head', function () {
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Missed-Lead Audit', 'url' => home_url( '/pricing/#audit' ) ], 'price' => 250, 'priceCurrency' => 'USD' ],
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Launch Package', 'url' => home_url( '/pricing/#launch' ) ], 'price' => 595, 'priceCurrency' => 'USD' ],
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Social Front Desk', 'url' => home_url( '/pricing/#social-front-desk' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 199, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
-                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Total Presence', 'url' => home_url( '/pricing/#total-presence' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 229, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
+                [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Total Presence', 'url' => home_url( '/pricing/#total-presence' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 199, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Social Management', 'url' => home_url( '/social-management/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 799, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'Order Desk', 'url' => home_url( '/services/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 149, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
                 [ '@type' => 'Offer', 'itemOffered' => [ '@type' => 'Service', 'name' => 'AI Setup Guides Subscription', 'url' => home_url( '/get-started/' ) ], 'priceSpecification' => [ '@type' => 'UnitPriceSpecification', 'price' => 19, 'priceCurrency' => 'USD', 'unitText' => 'MONTH' ] ],
