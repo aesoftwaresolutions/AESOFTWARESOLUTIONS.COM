@@ -19,7 +19,6 @@
  * No WebGL: the section gets .is-flat and the steps read as a plain list.
  */
 import * as THREE from 'three';
-import { RoomEnvironment } from './vendor/RoomEnvironment.js';
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Arial, sans-serif";
 const BUSINESS = 'Reyes Plumbing';
@@ -47,16 +46,19 @@ function init(root) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 1.0;
 
   const scene = new THREE.Scene();
   const pmrem = new THREE.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.03).texture;
-  const key = new THREE.DirectionalLight(0xffffff, 1.6);
+  // A dark photo studio with softboxes: crisp, controlled highlights on the
+  // metal and glass, the way product shots are lit.
+  scene.environment = pmrem.fromScene(studio(), 0.012).texture;
+  scene.environmentIntensity = 1;
+  const key = new THREE.DirectionalLight(0xffffff, 1.1);
   key.position.set(5, 7, 9);
-  const rim = new THREE.DirectionalLight(0xffffff, 1.2);
-  rim.position.set(-6, 2, -6);
-  scene.add(key, rim, new THREE.AmbientLight(0xffffff, 0.15));
+  const rim = new THREE.DirectionalLight(0xffffff, 1.6);
+  rim.position.set(-7, 3, -5);
+  scene.add(key, rim, new THREE.AmbientLight(0xffffff, 0.08));
 
   const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 100);
 
@@ -99,6 +101,7 @@ function init(root) {
   }
 
   // ── Layout ────────────────────────────────────────────────────────────
+  let baseZ = 20;
   function resize() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
@@ -107,7 +110,8 @@ function init(root) {
     const tan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     const byH = (H * 1.14) / (2 * tan);
     const byW = (W * 1.5) / (2 * tan * camera.aspect);
-    camera.position.set(0, 0, Math.max(byH, byW));
+    baseZ = Math.max(byH, byW);
+    camera.position.set(0, 0, baseZ);
     camera.updateProjectionMatrix();
     dirty = true;
   }
@@ -146,6 +150,17 @@ function init(root) {
     phone.rotation.x = idle * (Math.sin(time * 0.4) * 0.035 + 0.06);
     phone.rotation.z = idle * -0.035;
     phone.position.y = idle * Math.sin(time * 0.7) * 0.05;
+
+    // Camera: eases back a touch while the phone turns, then leans in to
+    // read the screen once it settles.
+    if (!calm) {
+      const turning = i > 0 && f < SPIN ? Math.sin((f / SPIN) * Math.PI) : 0;
+      const settle = i > 0 ? THREE.MathUtils.clamp((f - SPIN) / 0.4, 0, 1) : THREE.MathUtils.clamp(f / 0.5, 0, 1);
+      const z = baseZ * (1 + turning * 0.06 - ease(settle) * 0.07);
+      camera.position.z += (z - camera.position.z) * 0.12;
+      camera.position.y += ((ease(settle) * 0.25) - camera.position.y) * 0.12;
+      camera.lookAt(0, camera.position.y * 0.6, 0);
+    }
 
     // Swap the screen while the back faces the viewer.
     const idx = i > 0 && f < SPIN / 2 && !calm ? i - 1 : i;
@@ -188,7 +203,12 @@ function buildPhone(screenTex, SW, SH, SR) {
   const g = new THREE.Group();
   const zFront = D / 2 + B, zBack = -(D / 2 + B);
 
-  const frameMat = new THREE.MeshPhysicalMaterial({ color: 0x55565b, metalness: 1, roughness: 0.34, clearcoat: 0.3, clearcoatRoughness: 0.25 });
+  // Brushed titanium: anisotropic highlights that streak along the frame.
+  const frameMat = new THREE.MeshPhysicalMaterial({
+    color: 0x9a9a9f, metalness: 1, roughness: 0.27,
+    anisotropy: 0.65, anisotropyRotation: Math.PI / 2,
+    clearcoat: 0.25, clearcoatRoughness: 0.2,
+  });
   const darkMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0b, metalness: 0.2, roughness: 0.6 });
 
   // Flat sided frame with softly rounded edges.
@@ -199,34 +219,43 @@ function buildPhone(screenTex, SW, SH, SR) {
   g.add(new THREE.Mesh(frame, frameMat));
 
   // Front: black glass, then the screen, then a clear reflective layer.
-  const glass = new THREE.Mesh(new THREE.ShapeGeometry(roundRect(W + 0.03, H + 0.03, R + 0.015), 64),
-    new THREE.MeshPhysicalMaterial({ color: 0x030303, metalness: 0, roughness: 0.04, clearcoat: 1 }));
-  glass.position.z = zFront + 0.002;
+  // Front glass: a thin slab whose rounded edge catches a line of light.
+  const glassGeo = new THREE.ExtrudeGeometry(roundRect(W - 0.02, H - 0.02, R - 0.01), {
+    depth: 0.004, bevelEnabled: true, bevelThickness: 0.014, bevelSize: 0.022, bevelSegments: 8, curveSegments: 64,
+  });
+  const glass = new THREE.Mesh(glassGeo, new THREE.MeshPhysicalMaterial({ color: 0x020202, metalness: 0, roughness: 0.02, clearcoat: 1, clearcoatRoughness: 0, ior: 1.52, specularIntensity: 1 }));
+  glass.position.z = zFront - 0.012;
   g.add(glass);
 
   const screenGeo = new THREE.ShapeGeometry(roundRect(SW, SH, SR), 64);
   fitUV(screenGeo, SW, SH);
   const screen = new THREE.Mesh(screenGeo, new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false }));
-  screen.position.z = zFront + 0.004;
+  screen.position.z = zFront + 0.009;
   g.add(screen);
 
   const sheen = new THREE.Mesh(screenGeo, new THREE.MeshStandardMaterial({
-    color: 0x000000, metalness: 0, roughness: 0.05, envMapIntensity: 0.55,
+    color: 0x000000, metalness: 0, roughness: 0.03, envMapIntensity: 0.4,
     transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
   }));
-  sheen.position.z = zFront + 0.006;
+  sheen.position.z = zFront + 0.011;
   g.add(sheen);
 
   // Earpiece slit at the very top of the glass.
   const ear = new THREE.Mesh(new THREE.CapsuleGeometry(0.012, 0.5, 4, 12), darkMat);
   ear.rotation.z = Math.PI / 2;
-  ear.position.set(0, H / 2 + 0.002, zFront + 0.003);
+  ear.position.set(0, H / 2 + 0.002, zFront + 0.008);
   g.add(ear);
 
   // Back: frosted glass.
-  const back = new THREE.Mesh(new THREE.ShapeGeometry(roundRect(W + 0.03, H + 0.03, R + 0.015), 64),
-    new THREE.MeshPhysicalMaterial({ color: 0x2b2c30, metalness: 0.1, roughness: 0.55, clearcoat: 0.5, clearcoatRoughness: 0.45 }));
-  back.position.z = zBack - 0.002;
+  // Back: frosted glass with a fine grain, polished at the edge.
+  const backGeo = new THREE.ExtrudeGeometry(roundRect(W - 0.02, H - 0.02, R - 0.01), {
+    depth: 0.004, bevelEnabled: true, bevelThickness: 0.012, bevelSize: 0.02, bevelSegments: 6, curveSegments: 64,
+  });
+  const back = new THREE.Mesh(backGeo, new THREE.MeshPhysicalMaterial({
+    color: 0x34353a, metalness: 0.05, roughness: 0.6, roughnessMap: grain(),
+    clearcoat: 0.35, clearcoatRoughness: 0.55, sheen: 0.3, sheenRoughness: 0.6, sheenColor: 0x9a9aa0,
+  }));
+  back.position.z = zBack + 0.012;
   back.rotation.y = Math.PI;
   g.add(back);
 
@@ -238,7 +267,11 @@ function buildPhone(screenTex, SW, SH, SR) {
   cam.add(new THREE.Mesh(plateau, new THREE.MeshPhysicalMaterial({ color: 0x3a3b40, metalness: 0.2, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.05 })));
   const ringMat = new THREE.MeshStandardMaterial({ color: 0x6a6b70, metalness: 1, roughness: 0.22 });
   const barrelMat = new THREE.MeshStandardMaterial({ color: 0x050506, metalness: 0.5, roughness: 0.3 });
-  const lensMat = new THREE.MeshPhysicalMaterial({ color: 0x07080c, metalness: 0, roughness: 0.02, clearcoat: 1, clearcoatRoughness: 0 });
+  // Anti-reflective coating: a faint violet-green shift as the lens turns.
+  const lensMat = new THREE.MeshPhysicalMaterial({
+    color: 0x05060a, metalness: 0, roughness: 0.02, clearcoat: 1, clearcoatRoughness: 0,
+    iridescence: 1, iridescenceIOR: 1.6, iridescenceThicknessRange: [180, 420],
+  });
   const irisMat = new THREE.MeshStandardMaterial({ color: 0x141826, metalness: 0.8, roughness: 0.15 });
   for (const y of [0.27, -0.27]) {
     const lens = new THREE.Group();
@@ -569,6 +602,43 @@ function roundRect(w, h, r) {
   s.lineTo(x, y + r);
   s.bezierCurveTo(x, y + k, x + k, y, x + r, y);
   return s;
+}
+// Dark studio for reflections: softbox above, strip lights at the sides,
+// a rim light behind. Values above 1 make them bright in the reflections.
+function studio() {
+  const room = new THREE.Scene();
+  room.add(new THREE.Mesh(new THREE.BoxGeometry(40, 40, 40), new THREE.MeshBasicMaterial({ color: 0x161618, side: THREE.BackSide })));
+  const box = (w, h, x, y, z, ry, rx, power) => {
+    const m = new THREE.MeshBasicMaterial({ color: new THREE.Color(1, 1, 1).multiplyScalar(power), side: THREE.DoubleSide });
+    const p = new THREE.Mesh(new THREE.PlaneGeometry(w, h), m);
+    p.position.set(x, y, z);
+    p.rotation.set(rx, ry, 0);
+    room.add(p);
+  };
+  box(18, 10, 0, 14, 4, 0, Math.PI / 2, 7);         // overhead softbox
+  box(4, 22, -14, 2, 4, Math.PI / 2, 0, 9);         // left strip
+  box(4, 22, 14, 2, 2, -Math.PI / 2, 0, 6);         // right strip
+  box(16, 8, 4, 6, 14, Math.PI, 0, 3);              // front fill, high
+  box(20, 3, 0, 3, -14, 0, 0, 7);                   // rim, behind
+  box(30, 6, 0, -14, 0, 0, -Math.PI / 2, 1.2);     // floor bounce
+  return room;
+}
+// Fine noise for the frosted back's roughness.
+function grain() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 256;
+  const g = c.getContext('2d');
+  const img = g.createImageData(256, 256);
+  for (let i = 0; i < img.data.length; i += 4) {
+    const v = 150 + Math.random() * 60;
+    img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
+    img.data[i + 3] = 255;
+  }
+  g.putImageData(img, 0, 0);
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(6, 12);
+  return t;
 }
 function fitUV(geo, w, h) {
   const pos = geo.attributes.position, uv = geo.attributes.uv;
