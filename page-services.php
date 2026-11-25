@@ -9,6 +9,9 @@
  * @package AE_Softwares
  */
 
+// Product carousel: the four product graphics, behind the hero (moved here from the home page).
+ae_hero_carousel_enqueue();
+
 get_header();
 $o = aesoftwares_offers();
 $price = function ( $group, $id ) use ( $o ) {
@@ -21,10 +24,13 @@ $price = function ( $group, $id ) use ( $o ) {
 };
 ?>
 
-<section class="page-hero services-page-hero">
-	<p class="page-hero__eyebrow">Services</p>
-	<h1 class="page-hero__headline">Get found, look trustworthy, never miss a lead.</h1>
-	<p class="page-hero__subtitle">We help local service businesses with three things: a website that brings in calls, a Google presence people trust, and follow up that happens even when you&rsquo;re on a job.</p>
+<section class="v5-hero v5-hero--carousel services-page-hero" aria-labelledby="svc-hero-title">
+	<div class="v5-hero__copy">
+		<p class="v5-label">Services</p>
+		<h1 class="page-hero__headline" id="svc-hero-title">Get found, look trustworthy, never miss a lead.</h1>
+		<p class="v5-hero__lead">We help local service businesses with three things: a website that brings in calls, a Google presence people trust, and follow up that happens even when you&rsquo;re on a job.</p>
+	</div>
+	<?php ae_hero_carousel(); ?>
 </section>
 
 <section class="v5-services" aria-labelledby="svc-what">
