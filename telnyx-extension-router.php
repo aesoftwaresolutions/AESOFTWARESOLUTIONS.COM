@@ -29,11 +29,12 @@ $EXTENSIONS = [
     '3' => 'assistant-c91b05a9-3366-449a-b2dd-6a8ad12093af', // Scheduling demo
     '4' => 'assistant-47d71699-4f05-4632-aa82-7d08a16d8571', // Order Desk demo
     '5' => 'assistant-4ae3abe5-9104-442f-a4fe-ec9473c3654a', // Legal intake demo
+    '6' => 'assistant-d6c51622-06f8-4cb5-a4c4-3e908bc69bb3', // Falafel Shack order demo
 ];
 $DEFAULT_ID = $ARIA_ID; // no digit, timeout, or unknown digit
 
 // ---------- Menu (one sentence, plain spoken, no dashes) ----------
-$MENU = 'Thanks for calling AE Software Solutions. Press 1 for the front desk, 2 for billing and payments, 3 to book a call, 4 to place an order, or 5 for legal intake.';
+$MENU = 'Thanks for calling AE Software Solutions. Press 1 for the front desk, 2 for billing and payments, 3 to book a call, 4 to place an order, 5 for legal intake, or 6 for the Falafel Shack order demo.';
 
 // ---------- Router ----------
 function ae_assistant_texml_url($assistant_id) {
