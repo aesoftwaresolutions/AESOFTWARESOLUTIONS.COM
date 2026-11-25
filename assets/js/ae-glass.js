@@ -59,6 +59,10 @@
   var lowThisVisit = false;
   try { lowThisVisit = sessionStorage.getItem('aeGlassLow') === '1'; } catch (e) {}
   if (pin === 'off' || !window.CSS || !(desktop || touch)) return;
+  // A visitor who asked the system for less transparency gets the plain glass
+  // (made near-solid in ae-v5.css), never the bend or the rim. Added Nov 25;
+  // every gate above and below is unchanged.
+  if (mq('(prefers-reduced-transparency: reduce)')) return;
   var canRefract = chromium && CSS.supports('backdrop-filter', 'blur(1px)');
   var MODE;
   if (pin === 'rim') MODE = 'rim';

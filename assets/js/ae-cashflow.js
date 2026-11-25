@@ -44,34 +44,34 @@
     .balance-bar {
       display: flex; align-items: center; justify-content: space-between;
       gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.25rem;
-      background: var(--surface, #FFFFFF); border: 1px solid rgb(var(--gold-rgb, 201 169 110) / .4);
+      background: var(--surface, #FFFFFF); border: 1px solid rgb(var(--ink-rgb, 255 255 255) / .4);
       border-radius: 8px; padding: 1.25rem 1.5rem;
     }
     .balance-bar h2 { font-size: 1.1rem; font-weight: 500; margin: 0; color: var(--text, #121212); }
     .balance-bar p  { font-size: 0.78rem; color: var(--text-secondary, #5E5E5A); margin: 0.2rem 0 0; }
     .balance-input-wrap {
       display: flex; align-items: center; gap: 0.5rem;
-      background: var(--warning-tint, rgba(201, 169, 110, 0.15)); border: 1px solid rgb(var(--gold-rgb, 201 169 110) / .4);
+      background: var(--warning-tint, rgba(255, 255, 255, 0.06)); border: 1px solid rgb(var(--ink-rgb, 255 255 255) / .4);
       border-radius: 6px; padding: 0.55rem 0.9rem;
     }
-    .balance-input-wrap span { color: var(--gold-ink, #7A5F20); font-weight: 600; }
+    .balance-input-wrap span { color: var(--ink, #FFFFFF); font-weight: 600; }
     .balance-input-wrap input {
       background: transparent; border: 0; outline: 0;
-      color: var(--gold-ink, #7A5F20); font-size: 1.5rem; font-weight: 300;
+      color: var(--ink, #FFFFFF); font-size: 1.5rem; font-weight: 300;
       width: 120px; font-family: inherit;
       letter-spacing: -0.02em;
     }
 
     /* ── Upload zone ──────────────────────────────────────────────────────── */
     .upload-zone {
-      border: 1.5px dashed rgb(var(--gold-rgb, 201 169 110) / .5);
+      border: 1.5px dashed rgb(var(--ink-rgb, 255 255 255) / .5);
       border-radius: 6px; padding: 1.25rem 1rem;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; transition: background 0.2s, border-color 0.2s;
       text-align: center;
     }
-    .upload-zone:hover { background: var(--warning-tint, rgba(201, 169, 110, 0.15)); border-color: rgb(var(--gold-rgb, 201 169 110) / .8); }
-    .upload-zone span { font-size: 0.85rem; color: var(--gold-ink, #7A5F20); font-weight: 500; letter-spacing: 0.04em; }
+    .upload-zone:hover { background: var(--warning-tint, rgba(255, 255, 255, 0.06)); border-color: rgb(var(--ink-rgb, 255 255 255) / .8); }
+    .upload-zone span { font-size: 0.85rem; color: var(--ink, #FFFFFF); font-weight: 500; letter-spacing: 0.04em; }
     .upload-desc { font-size: 0.78rem; color: var(--text-secondary, #5E5E5A); margin: 0 0 0.85rem; line-height: 1.55; }
     input[type=file] { display: none; }
 
@@ -106,15 +106,15 @@
       border-radius: 5px; font-family: inherit; outline: none;
       width: 100%;
     }
-    .add-form input:focus, .add-form select:focus { border-color: var(--gold, #C9A96E); }
+    .add-form input:focus, .add-form select:focus { border-color: var(--hairline, #FFFFFF); }
     .date-row { display: flex; gap: 0.5rem; align-items: center; }
     .date-row label { font-size: 0.7rem; color: var(--text-secondary, #5E5E5A); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
     .add-btn {
-      background: var(--gold, #C9A96E); color: var(--ink, #121212); border: 0; padding: 0.7rem;
+      background: var(--hairline, #FFFFFF); color: var(--paper, #0A0A0B); border: 0; padding: 0.7rem;
       border-radius: 5px; font-weight: 600; font-size: 0.85rem; cursor: pointer;
       letter-spacing: 0.04em; transition: background 0.2s; font-family: inherit;
     }
-    .add-btn:hover { background: var(--gold-ink, #7A5F20); color: var(--paper, #F7F7F5); }
+    .add-btn:hover { background: var(--ink, #FFFFFF); color: var(--paper, #F7F7F5); }
     .add-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     /* ── Forecast horizon ────────────────────────────────────────────────── */
@@ -127,7 +127,7 @@
       color: var(--text, #121212); padding: 0.5rem 0.75rem; border-radius: 5px;
       font-size: 0.85rem; font-family: inherit; outline: none;
     }
-    .horizon-row input[type=date]:focus { border-color: var(--gold, #C9A96E); }
+    .horizon-row input[type=date]:focus { border-color: var(--hairline, #FFFFFF); }
 
     /* ── Insight cards ───────────────────────────────────────────────────── */
     .insights { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
@@ -171,7 +171,7 @@
       transition: background 0.15s;
     }
     .event:hover { background: var(--surface-subtle, #EFEFEC); }
-    .event--lowest { background: var(--warning-tint, rgba(201, 169, 110, 0.15)); border-color: rgb(var(--gold-rgb, 201 169 110) / .4); }
+    .event--lowest { background: var(--warning-tint, rgba(255, 255, 255, 0.06)); border-color: rgb(var(--ink-rgb, 255 255 255) / .4); }
 
     .event__left { display: flex; align-items: center; gap: 1rem; }
     .event__date {
@@ -188,7 +188,7 @@
     .event__name { font-size: 0.85rem; font-weight: 500; color: var(--text, #121212); }
     .lowest-tag {
       display: inline-block; margin-left: 0.5rem; font-size: 0.6rem;
-      background: var(--warning-tint, rgba(201, 169, 110, 0.15)); color: var(--gold-ink, #7A5F20);
+      background: var(--warning-tint, rgba(255, 255, 255, 0.06)); color: var(--ink, #FFFFFF);
       padding: 0.12rem 0.45rem; border-radius: 30px;
       letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
       vertical-align: middle;
