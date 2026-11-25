@@ -7,74 +7,29 @@
  * HTML, so search engines still read all of it. Motion is one fade up per
  * block (assets/js/ae-motion.js) and never gates the headline.
  *
- * The hero carries the product carousel (assets/js/ae-hero-carousel.js and the
- * HERO CAROUSEL block at the end of ae-v5.css). It glides on its own, has no
- * visible controls, and pauses while a pointer or keyboard focus is on it.
- * Without JavaScript the first slide shows on its own.
+ * The hero is the phone story: the headline and buttons sit on the first
+ * screen beside a 3D phone; scrolling turns the phone through one call, step
+ * by step (assets/js/ae-phone-3d.js, PHONE HERO block in ae-v5.css). The step
+ * text is plain HTML, so it reads without JavaScript or WebGL. The product
+ * carousel that used to sit here is now the Services hero (inc/hero-carousel.php).
  *
  * @package AE_Softwares
  */
 
-// Hero carousel script. Enqueued here, before get_header(), so it prints in the
-// footer on the front page only. Kept out of LiteSpeed "delay JS" so the glide
-// starts without waiting for the first touch or key press.
-$ae_hc_js = get_template_directory() . '/assets/js/ae-hero-carousel.js';
-wp_enqueue_script(
-	'ae-hero-carousel',
-	get_template_directory_uri() . '/assets/js/ae-hero-carousel.js',
-	[],
-	file_exists( $ae_hc_js ) ? filemtime( $ae_hc_js ) : '1.0.0',
-	[ 'in_footer' => true, 'strategy' => 'defer' ]
-);
-add_filter( 'script_loader_tag', function ( $tag, $handle ) {
-	if ( 'ae-hero-carousel' === $handle && false === strpos( $tag, 'data-no-optimize' ) ) {
-		$tag = str_replace( '<script ', '<script data-no-optimize="1" data-no-defer="1" data-cfasync="false" ', $tag );
-	}
-	return $tag;
-}, 10, 2 );
+// Phone hero: three.js and the phone script load as script modules, front page only.
+$ae_ph_dir = get_template_directory() . '/assets/js/';
+$ae_ph_uri = get_template_directory_uri() . '/assets/js/';
+$ae_ph_ver = function ( $f ) use ( $ae_ph_dir ) {
+	return file_exists( $ae_ph_dir . $f ) ? (string) filemtime( $ae_ph_dir . $f ) : '1.0.0';
+};
+if ( function_exists( 'wp_enqueue_script_module' ) ) {
+	wp_register_script_module( 'three', $ae_ph_uri . 'vendor/three.module.min.js', [], '0.170.0' );
+	wp_enqueue_script_module( 'ae-phone-3d', $ae_ph_uri . 'ae-phone-3d.js', [ 'three' ], $ae_ph_ver( 'ae-phone-3d.js' ) );
+}
 
 get_header();
 
 $ae_img = get_template_directory_uri() . '/assets/img/';
-
-// Hero carousel slides, in order. The two AI call handling plans lead.
-// Copy stays minimal: name, one line, price. The hero buttons sit in the hero copy, not on the slides.
-// Full detail lives on each product page. The node labels drawn on each graphic
-// are repeated in its alt text.
-$ae_slides = [
-	[
-		'slug'  => 'front-desk',
-		'name'  => 'Front Desk',
-		'line'  => 'AI phone answering that captures every caller’s details.',
-		'price' => 'from $99/mo',
-		'url'   => home_url( '/front-desk/' ),
-		'alt'   => 'Front Desk: Call in, Details captured, Summary sent.',
-	],
-	[
-		'slug'  => 'always-on-front-desk',
-		'name'  => 'Always-On Front Desk',
-		'line'  => '24/7 AI phone answering so nights and weekends never go to voicemail.',
-		'price' => '$250/mo',
-		'url'   => home_url( '/always-on-front-desk/' ),
-		'alt'   => 'Always-On Front Desk: Set schedule and rules, Connect your line, Wake up to organized leads.',
-	],
-	[
-		'slug'  => 'online-presence-management',
-		'name'  => 'Online Presence Management',
-		'line'  => 'Ongoing management of your Google Business Profile, reviews, and listings.',
-		'price' => '$199/mo',
-		'url'   => home_url( '/online-presence/' ),
-		'alt'   => 'Online Presence Management: Audit and claim, Clean up and align, Ongoing upkeep.',
-	],
-	[
-		'slug'  => 'websites',
-		'name'  => 'Websites',
-		'line'  => 'Websites built to bring in calls and book jobs.',
-		'price' => 'from $495',
-		'url'   => home_url( '/websites/' ),
-		'alt'   => 'Websites: Scope and structure, Design and build, Review and launch.',
-	],
-];
 
 // Selected work: recent websites. (The industry templates stay on /websites/
 // as labeled examples, not here.)
@@ -158,10 +113,11 @@ $ae_topic_close = function () {
 
 ?>
 
-<!-- 1. HERO: renders at once, nothing waits on JavaScript. The product carousel
-     is the hero's backdrop: it glides on its own (assets/js/ae-hero-carousel.js). -->
-<section class="v5-hero v5-hero--carousel" aria-labelledby="v5-hero-title">
-  <div class="v5-hero__copy">
+<!-- 1. HERO: the phone story. The headline renders at once and never waits on
+     a script. The section is tall; its stage sticks while you scroll, and the
+     3D phone walks through one call. Without WebGL the steps read as a list. -->
+<section class="v5-hero ae-ph" data-ae-phone aria-labelledby="v5-hero-title">
+  <div class="ae-ph__intro" data-ae-phone-intro>
     <p class="v5-label">AI call handling for small businesses</p>
     <h1 class="v5-hero__title" id="v5-hero-title">Every call answered, even when you can&rsquo;t pick up.</h1>
     <p class="v5-hero__lead">
@@ -172,35 +128,31 @@ $ae_topic_close = function () {
       <a class="v5-textlink" href="<?php echo esc_url( $ae_calls['demo_tel'] ); ?>">Hear it answer: call <?php echo esc_html( $ae_calls['demo_label'] ); ?></a>
       <a class="v5-textlink" href="#plans">Compare plans &rarr;</a>
     </div>
+    <p class="ae-ph__hint" aria-hidden="true">Scroll to see a call handled</p>
   </div>
 
-  <!-- Product carousel: no visible controls. Slides after the first stay inert
-       until the script shows them, so keyboard focus never lands off screen. -->
-  <div class="ae-hc" data-ae-hc role="region" aria-roledescription="carousel" aria-label="Our products">
-    <div class="ae-hc__track" data-ae-hc-track>
-      <?php foreach ( $ae_slides as $i => $slide ) : ?>
-        <article class="ae-hc__slide" data-ae-hc-slide aria-roledescription="slide" aria-label="<?php echo esc_attr( ( $i + 1 ) . ' of ' . count( $ae_slides ) . ': ' . $slide['name'] ); ?>"<?php echo $i > 0 ? ' inert aria-hidden="true"' : ''; ?>>
-          <?php /* data-no-lazy and skip-lazy keep LiteSpeed lazy load off these images: its placeholder only
-                   swaps once a slide is in view, after window load, so slides glided in black. */ ?>
-          <img class="ae-hc__img skip-lazy" data-no-lazy="1" data-skip-lazy="1"
-            src="<?php echo esc_url( $ae_img . 'carousel/' . $slide['slug'] . '.jpg' ); ?>"
-            srcset="<?php echo esc_url( $ae_img . 'carousel/' . $slide['slug'] . '-960.jpg' ); ?> 960w, <?php echo esc_url( $ae_img . 'carousel/' . $slide['slug'] . '.jpg' ); ?> 1920w"
-            sizes="(max-width: 1023px) 160vw, 100vw"
-            alt="<?php echo esc_attr( $slide['alt'] ); ?>"
-            width="1920" height="1200" decoding="async"
-            <?php echo 0 === $i ? 'fetchpriority="high"' : 'loading="lazy"'; ?>>
-          <div class="ae-hc__cap">
-            <h2 class="ae-hc__name"><a href="<?php echo esc_url( $slide['url'] ); ?>"><?php echo esc_html( $slide['name'] ); ?></a></h2>
-            <p class="ae-hc__line"><?php echo esc_html( $slide['line'] ); ?></p>
-            <p class="ae-hc__price"><?php echo esc_html( $slide['price'] ); ?></p>
-          </div>
-        </article>
-      <?php endforeach; ?>
+  <div class="ae-ph__stage">
+    <div class="ae-ph__story">
+      <p class="v5-label">How Front Desk handles a call</p>
+      <ol class="ae-ph__steps">
+        <li class="ae-ph__step is-active" data-ae-step><span class="ae-ph__when">6:42 pm</span><strong>Your phone rings on a job</strong><span>A new customer calls your business line. You can&rsquo;t pick up, so Front Desk does, by the second ring.</span></li>
+        <li class="ae-ph__step" data-ae-step><span class="ae-ph__when">6:42 pm</span><strong>Answered in your business name</strong><span>It greets callers as your business, asks what they need, and handles the back and forth like a trained receptionist.</span></li>
+        <li class="ae-ph__step" data-ae-step><span class="ae-ph__when">6:44 pm</span><strong>Every detail captured</strong><span>Name, number, address, the job and how urgent it is, saved as a new lead without you typing a thing.</span></li>
+        <li class="ae-ph__step" data-ae-step><span class="ae-ph__when">6:46 pm</span><strong>Missed calls get a text back</strong><span>If someone hangs up early, they get a text within a minute, so the lead doesn&rsquo;t go to the next company on Google.</span></li>
+        <li class="ae-ph__step" data-ae-step><span class="ae-ph__when">7:00 am</span><strong>You wake up to a summary</strong><span>Every call, what they wanted and what got booked, waiting on your phone.</span></li>
+      </ol>
+      <p class="ae-ph__note">Example scenario &middot; not a real customer</p>
+    </div>
+    <div class="ae-ph__fig">
+      <canvas data-ae-phone-canvas role="img" aria-label="A phone showing each step of a call handled by Front Desk"></canvas>
+      <div class="ae-ph__dots" aria-hidden="true"><i data-ae-dot class="is-active"></i><i data-ae-dot></i><i data-ae-dot></i><i data-ae-dot></i><i data-ae-dot></i></div>
     </div>
   </div>
+</section>
 
-  <!-- Proof strip: the two approved stats only, each with its source named -->
-  <ul class="v5-proof" aria-label="What the research says">
+<!-- Proof strip: under the hero now that the hero is the phone story. -->
+<section class="ae-section ae-ph-proof" aria-label="What the research says">
+    <ul class="v5-proof">
     <li>
       <strong class="v5-proof__fig">44%</strong>
       <span class="v5-proof__text">of business calls go unanswered</span>
