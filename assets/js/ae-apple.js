@@ -72,26 +72,48 @@
     var sheet = overlay.querySelector('[data-sheet]');
     function close() { if (overlay.classList.contains('is-open')) toggle.click(); }
     overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
-    if (!sheet || !window.PointerEvent) return;
-    var startY = null, dy = 0;
+    if (!sheet) return;
+
+    // GlassSheet (Nov 25): keep Tab inside the open sheet. The hamburger (which
+    // closes it) sits above the sheet in the header, so it is part of the loop.
+    doc.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab' || !overlay.classList.contains('is-open')) return;
+      var list = Array.prototype.filter.call(
+        overlay.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+        function (n) { return n.offsetWidth || n.offsetHeight; });
+      list.unshift(toggle);
+      var i = list.indexOf(doc.activeElement);
+      if (i === -1) { e.preventDefault(); list[e.shiftKey ? list.length - 1 : 0].focus(); return; }
+      if (!e.shiftKey && i === list.length - 1) { e.preventDefault(); list[0].focus(); }
+      else if (e.shiftKey && i === 0) { e.preventDefault(); list[list.length - 1].focus(); }
+    });
+
+    if (!window.PointerEvent) return;
+    var startY = null, dy = 0, lastY = 0, lastT = 0, vel = 0;
     sheet.addEventListener('pointerdown', function (e) {
       // Only drag from the top strip of the sheet (grabber area), never from links.
       var r = sheet.getBoundingClientRect();
       if (e.clientY - r.top > 44) return;
-      startY = e.clientY; dy = 0;
+      startY = lastY = e.clientY; dy = 0; vel = 0; lastT = e.timeStamp;
       try { sheet.setPointerCapture(e.pointerId); } catch (x) {}
-      sheet.style.transition = 'none';
+      sheet.classList.add('is-dragging');
     });
     sheet.addEventListener('pointermove', function (e) {
       if (startY === null) return;
-      dy = Math.max(0, e.clientY - startY);
+      var raw = e.clientY - startY;
+      // Down follows the finger; up gives a little, then resists (rubber band).
+      dy = raw >= 0 ? raw : -Math.min(24, Math.sqrt(-raw) * 2.5);
+      var dt = e.timeStamp - lastT;
+      if (dt > 0) vel = (e.clientY - lastY) / dt;          // px per ms, positive = down
+      lastY = e.clientY; lastT = e.timeStamp;
       sheet.style.transform = 'translateY(' + dy + 'px)';
     });
     function end() {
       if (startY === null) return;
-      var shouldClose = dy > 80;
+      // A long drag, or a quick flick down, dismisses.
+      var shouldClose = dy > 80 || (dy > 16 && vel > 0.5);
       startY = null;
-      sheet.style.transition = '';
+      sheet.classList.remove('is-dragging');
       sheet.style.transform = '';
       if (shouldClose) close();
     }

@@ -14,7 +14,11 @@
 
 :root {
   /* ── Colour tokens ───────────────────────────────────────────────────── */
-  --gold: #FFFFFF;
+  /* White hairline accent: the focus halo, the button underline, the footer rule
+     and the "Recommended" flag. Renamed from --gold (Nov 25): the old name read as
+     a colour. --gold stays only as an alias so any stray reference still renders white. */
+  --hairline: #FFFFFF;
+  --gold: var(--hairline);
   /* Dark: --paper is the page colour and the text colour ON a white button.
      --ink is the text colour (white). --surface and --paper-2 are glass. */
   --paper: #0A0A0B;
@@ -283,7 +287,7 @@ a.v5-label {
 /* Primary: ink fill. On hover a white underline slides in under the label. */
 .v5-button, .btn--primary, body .report-request-btn {
   background-color: var(--ink);
-  background-image: linear-gradient(var(--gold), var(--gold));
+  background-image: linear-gradient(var(--hairline), var(--hairline));
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 0% 2px;
@@ -299,7 +303,7 @@ a.v5-label {
   transform: translateY(-1px);
 }
 .v5-button:active, .btn--primary:active, .btn--outline:active, .ae-offer__cta:active { transform: translateY(1px); }
-/* Secondary: white fill, 1px ink border. */
+/* Secondary: dark glass (tokens are flipped: --paper is the page black). Final look is set in the LIQUID GLASS KIT at the end of this file. */
 .btn--outline, .btn--ghost, .ae-offer__cta {
   background: var(--paper);
   color: var(--ink);
@@ -331,20 +335,25 @@ a.v5-label {
   width: 100%;
   min-height: 48px;
   padding: 12px 14px;
-  background: var(--paper) !important;
+  /* GlassInput (Nov 25): dark glass field, a faint white wash with a top rim, not a
+     flat black box. The .34 white border keeps the field edge at 3:1 or better. */
+  background: var(--lg-field-fill, rgba(255, 255, 255, .05)) !important;
   color: var(--text) !important;
   border: 1px solid var(--rule-strong) !important;
   border-radius: var(--radius);
+  box-shadow: var(--lg-rim, inset 0 1px 0 rgba(255, 255, 255, .08));
+  caret-color: var(--ink);
   font-size: 16px;
   line-height: 1.4;
-  transition: border-color .15s var(--ease), box-shadow .15s var(--ease);
+  transition: border-color .15s var(--ease), box-shadow .15s var(--ease), background-color .15s var(--ease);
 }
 .contact-form textarea { min-height: 140px; resize: vertical; }
 .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--text-tertiary); }
 .contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus {
   outline: none;
   border-color: var(--ink) !important;
-  box-shadow: 0 0 0 3px var(--gold);
+  background: var(--lg-field-fill-focus, rgba(255, 255, 255, .08)) !important;
+  box-shadow: var(--lg-rim, inset 0 1px 0 rgba(255, 255, 255, .08)), var(--lg-focus, 0 0 0 3px rgba(255, 255, 255, .32));
 }
 .form-field[data-invalid] input, .form-field[data-invalid] textarea, .form-field[data-invalid] select {
   border-color: var(--error) !important;
@@ -376,7 +385,7 @@ a.v5-label {
 }
 .web-tier.web-tier--featured { border: 2px solid var(--ink) !important; }
 .web-tier__badge {
-  background: var(--gold) !important;
+  background: var(--hairline) !important;
   color: var(--ink) !important;
   border-radius: 999px;
 }
@@ -558,7 +567,7 @@ header.site-header .site-header__cta.btn {
   border-radius: var(--radius-btn);
   /* Glass, the same recipe as the nav pill: translucent white, blur, hairline, soft top highlight. */
   background-color: rgba(255, 255, 255, .09);
-  background-image: linear-gradient(var(--gold), var(--gold));
+  background-image: linear-gradient(var(--hairline), var(--hairline));
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 0% 2px;
@@ -689,7 +698,7 @@ footer.site-footer.v5-footer {
   background: var(--paper);
   color: var(--text);
   border: 0;
-  border-top: 1px solid var(--gold);
+  border-top: 1px solid var(--hairline);
 }
 .v5-footer__inner {
   max-width: var(--wrap);
@@ -1107,7 +1116,7 @@ footer.site-footer.v5-footer {
   top: -13px;
   left: 28px;
   padding: 4px 12px;
-  background: var(--gold);
+  background: var(--hairline);
   color: var(--ink);
   font-size: .875rem;
   font-weight: 700;
@@ -1255,7 +1264,7 @@ html.ae-gate-lock { overflow: hidden; }
   background: var(--paper);
   color: var(--ink);
   border: 1px solid var(--rule-strong);
-  border-top: 2px solid var(--gold);
+  border-top: 2px solid var(--hairline);
   border-radius: var(--radius);
   box-shadow: 0 1px 2px rgba(18, 18, 18, .06);
 }
@@ -1276,7 +1285,7 @@ html.ae-gate-lock { overflow: hidden; }
   border: 1px solid var(--rule-strong);
   border-radius: var(--radius);
 }
-.ae-gate__input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px var(--gold); }
+.ae-gate__input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px var(--hairline); }
 .ae-gate__trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .ae-gate__error { min-height: 1.4em; margin: 0 0 12px; font-size: .9375rem; line-height: 1.4; color: var(--error); }
 .ae-gate__submit { width: 100%; }
@@ -1380,7 +1389,7 @@ html.ae-gate-lock { overflow: hidden; }
 .ae-check input:checked + .ae-check__box { background: var(--ink); border-color: var(--ink); }
 .ae-check input:checked + .ae-check__box::after { transform: rotate(-45deg) scale(1); }
 .ae-check:has(input:checked) { border-color: var(--ink); background: var(--paper-2); }
-.ae-check input:focus-visible + .ae-check__box { outline: 2px solid var(--ink); outline-offset: 3px; box-shadow: 0 0 0 2px var(--gold); }
+.ae-check input:focus-visible + .ae-check__box { outline: 2px solid var(--ink); outline-offset: 3px; box-shadow: 0 0 0 2px var(--hairline); }
 .ae-checks[data-invalid] .ae-check { border-color: var(--error); }
 .contact-form__note { margin: 0; font-size: .875rem; color: var(--text-secondary); }
 .contact-form__status { margin: 0; font-size: .9375rem; line-height: 1.5; color: var(--text); }
@@ -1472,7 +1481,7 @@ html.ae-gate-lock { overflow: hidden; }
 }
 .op-item input:checked + .op-item__box { background: var(--ink); border-color: var(--ink); }
 .op-item input:checked + .op-item__box::after { transform: translateY(-1px) rotate(-45deg) scale(1); }
-.op-item input:focus-visible + .op-item__box { outline: 2px solid var(--ink); outline-offset: 3px; box-shadow: 0 0 0 2px var(--gold); }
+.op-item input:focus-visible + .op-item__box { outline: 2px solid var(--ink); outline-offset: 3px; box-shadow: 0 0 0 2px var(--hairline); }
 .op-item:hover .op-item__box { border-color: var(--ink); }
 
 .op-score { position: sticky; top: calc(var(--header-h) + 32px); padding: 32px; background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); }
@@ -1722,7 +1731,7 @@ footer.site-footer.v5-footer { background: rgba(10, 10, 11, .5); -webkit-backdro
 }
 /* The "Recommended" flag is the one existing white pill: ink text on it. */
 .ae-offer__flag, .web-tier__badge { color: #121212 !important; }
-.web-tier__badge { background: var(--gold) !important; }
+.web-tier__badge { background: var(--hairline) !important; }
 
 /* Buttons: white button, near black text (tokens flipped). Ghost buttons are glass with white text. */
 .btn--ghost, .rewriter-btn--ghost { background: rgba(255, 255, 255, .06); color: var(--text); border-color: var(--rule-strong); }
@@ -1843,8 +1852,7 @@ html.ae-calm .ae-glass-cursor { display: none !important; }
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #30D158;
-  box-shadow: 0 0 8px rgba(48, 209, 88, .55);
+  background: var(--ink);   /* white status dot: no green, no glow (black and white only) */
 }
 .ae-island__text {
   display: block;
@@ -2639,3 +2647,280 @@ html.ae-glass-rim header.site-header.aec--scrolled[data-ae-glass][data-ae-rim] {
    ══════════════════════════════════════════════════════════════════════ */
 .ae-home-plans .ae-cta-row + .ae-cta-row { margin-top: 12px; }
 .mobile-nav-overlay__demo { display: block; margin-top: 16px; text-align: center; font-size: 1rem; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   LIQUID GLASS KIT (Nov 25): the nine library components, ported as plain
+   CSS (and assets/js/ae-glass-ui.js), black and white only, no glow.
+   These controls are NOT gated like the refraction in ae-glass.js: they are
+   cheap (fill, hairline, rim, at most one small blur) and run everywhere,
+   phones and non-Chromium browsers included. The live refraction stays
+   behind its own gates (Chromium, desktop or capable phone, frame probe).
+   The same --lg-* token names are used by the client dashboard stylesheet.
+   ══════════════════════════════════════════════════════════════════════ */
+:root {
+  --lg-fill: var(--glass);                         /* card and glass button fill */
+  --lg-fill-hover: var(--glass-strong);
+  --lg-fill-btn: rgba(255, 255, 255, .06);
+  --lg-fill-btn-hover: rgba(255, 255, 255, .12);
+  --lg-line: var(--glass-line);                    /* .15 hairline */
+  --lg-line-strong: var(--rule-strong);            /* .34, control edges */
+  --lg-rim: inset 0 1px 0 rgba(255, 255, 255, .08);
+  --lg-rim-strong: inset 0 1px 0 rgba(255, 255, 255, .12);
+  --lg-blur: blur(14px) saturate(130%);
+  --lg-blur-heavy: blur(28px) saturate(160%);
+  --lg-field-fill: rgba(255, 255, 255, .05);
+  --lg-field-fill-focus: rgba(255, 255, 255, .08);
+  --lg-focus: 0 0 0 3px rgba(255, 255, 255, .32);
+  --lg-sheet-fill: rgba(22, 22, 26, .74);
+  --lg-sheet-line: rgba(255, 255, 255, .16);
+  --lg-scrim: rgba(0, 0, 0, .55);
+  --lg-h-sm: 36px;
+  --lg-h-md: 44px;
+  --lg-h-lg: 52px;
+  --lg-press: .97;
+  --lg-spring: cubic-bezier(.2, .9, .25, 1);
+}
+
+/* ── GlassButton ─────────────────────────────────────────────────────────
+   filled  = .v5-button / .btn--primary: solid white, near-black label (unchanged,
+             it is the conversion button and stays the highest-contrast thing on the page)
+   glass   = .btn--ghost / .btn--outline / .ae-offer__cta: white wash, hairline, top rim
+   Sizes: default 48px (touch-safe, unchanged); .btn--sm 36px, .btn--lg 52px.
+   No backdrop blur on these: most sit inside a glass card that already blurs,
+   and a filter per button would add a compositing layer each for no visible gain. */
+.btn--ghost, .btn--outline, .ae-offer__cta {
+  background-color: var(--lg-fill-btn);
+  color: var(--text);
+  border-color: var(--lg-line-strong);
+  box-shadow: var(--lg-rim-strong);
+}
+.btn--ghost:hover, .btn--outline:hover, .btn--ghost:focus-visible, .btn--outline:focus-visible {
+  background-color: var(--lg-fill-btn-hover);
+  color: var(--text);
+  border-color: rgba(255, 255, 255, .5);
+}
+/* The offer CTA keeps its existing white-on-hover: it leads to checkout. */
+.ae-offer__cta:hover, .ae-offer__cta:focus-visible { background-color: #FFFFFF; color: #0A0A0B; border-color: #FFFFFF; box-shadow: none; }
+.btn--sm { min-height: var(--lg-h-sm); padding: 0 14px; font-size: .875rem; }
+.btn--lg { min-height: var(--lg-h-lg); padding: 0 24px; font-size: 1rem; }
+/* Press: the button gives a little under the finger. `scale` composes with the
+   magnetic `translate` (ae-motion.js) and the hover lift instead of replacing them. */
+.v5-button, .btn, .ae-offer__cta, .rewriter-mode-btn { transition-property: translate, scale, background-color, color, border-color, box-shadow, background-size, transform, opacity; }
+.v5-button:active, .btn:active, .ae-offer__cta:active { scale: var(--lg-press); }
+.v5-button[disabled]:active, .btn[disabled]:active { scale: none; }
+
+/* ── GlassCard ───────────────────────────────────────────────────────────
+   The frosted card rule above (section 3 of the dark layer) is the "regular"
+   variant. These align the rim and add the "clear" variant for static grounds. */
+.ae-card--clear {
+  background: rgba(255, 255, 255, .02) !important;
+  border-color: rgba(255, 255, 255, .22) !important;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+/* Pricing cards are untouched here on purpose (conversion): prices and copy keep
+   their current white-on-dark contrast. */
+
+/* ── GlassInput: clear button (ae-glass-ui.js adds it to single-line fields) ── */
+.ae-clearable { position: relative; }
+.ae-clear {
+  position: absolute;
+  right: 8px;
+  top: var(--ae-clear-top, 50%);
+  z-index: 1;
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .16);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .15s var(--ease);
+}
+.ae-clear:hover { background: rgba(255, 255, 255, .28); }
+.ae-clear[hidden] { display: none; }
+.ae-clear svg { width: 12px; height: 12px; display: block; }
+.ae-has-clear { padding-right: 44px !important; }
+
+/* ── GlassSegmented (the Rewriter, Summarizer and Email Drafter mode buttons) ──
+   Without JS the old buttons show. With ae-glass-ui.js the row becomes one glass
+   track and a white selection pill glides to the chosen mode. */
+.ae-seg {
+  position: relative;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 3px;
+  background: var(--lg-fill-btn);
+  border: 1px solid var(--lg-line);
+  border-radius: 12px;
+  box-shadow: var(--lg-rim);
+}
+.ae-seg__pill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--sw, 0);
+  height: var(--sh, 0);
+  transform: translate3d(var(--sx, 0), var(--sy, 0), 0);
+  background: #FFFFFF;
+  border-radius: 9px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .35);
+  pointer-events: none;
+  opacity: 0;
+  transition: transform .32s var(--lg-spring), width .32s var(--lg-spring), height .32s var(--lg-spring), opacity .15s var(--ease);
+}
+.ae-seg__pill.is-on { opacity: 1; }
+.ae-seg__pill.is-still { transition: none; }
+.ae-seg .rewriter-mode-btn {
+  position: relative;
+  z-index: 1;
+  min-height: var(--lg-h-sm);
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 9px;
+  color: var(--text-secondary) !important;
+}
+.ae-seg .rewriter-mode-btn:hover { color: var(--text) !important; }
+.ae-seg .rewriter-mode-btn.active,
+.ae-seg .rewriter-mode-btn[aria-pressed="true"] { color: #0A0A0B !important; }
+.ae-seg .rewriter-mode-btn:active { scale: var(--lg-press); }
+.ae-seg .rewriter-mode-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* ── GlassSwitch: <input type="checkbox" role="switch"> (dashboard settings;
+   the kit is here too so any site setting can opt in). Native checkbox under
+   the hood: Space toggles, forms submit, labels work. ── */
+input[type="checkbox"][role="switch"] {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  flex: none;
+  width: 51px;
+  height: 31px;
+  margin: 0;
+  vertical-align: middle;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .14);
+  border: 1px solid rgba(255, 255, 255, .24);
+  box-shadow: var(--lg-rim);
+  cursor: pointer;
+  transition: background-color .2s var(--ease), border-color .2s var(--ease);
+}
+input[type="checkbox"][role="switch"]::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 25px;
+  height: 25px;
+  border-radius: 999px;
+  background: #FFFFFF;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .4);
+  transition: transform .28s var(--lg-spring), width .2s var(--ease), background-color .2s var(--ease);
+}
+input[type="checkbox"][role="switch"]:checked { background: rgba(255, 255, 255, .9); border-color: #FFFFFF; }
+input[type="checkbox"][role="switch"]:checked::before { transform: translateX(20px); background: #0A0A0B; }
+/* While pressed the knob stretches, as the library's lens does. */
+input[type="checkbox"][role="switch"]:active::before { width: 31px; }
+input[type="checkbox"][role="switch"]:checked:active::before { transform: translateX(14px); }
+input[type="checkbox"][role="switch"]:disabled { opacity: .5; cursor: default; }
+
+/* ── GlassSlider: any native range input. ae-glass-ui.js feeds --ae-fill so the
+   filled part of the rail shows in WebKit too. Keyboard stays native. ── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(#FFFFFF, #FFFFFF) 0 / var(--ae-fill, 0%) 100% no-repeat, rgba(255, 255, 255, .18);
+}
+input[type="range"]::-moz-range-track { height: 6px; border-radius: 999px; background: rgba(255, 255, 255, .18); }
+input[type="range"]::-moz-range-progress { height: 6px; border-radius: 999px; background: #FFFFFF; }
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  margin-top: -11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .92);
+  border: 1px solid #FFFFFF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .45), inset 0 1px 0 #FFFFFF;
+  transition: transform .2s var(--lg-spring);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .92);
+  border: 1px solid #FFFFFF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .45);
+}
+input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.12); }
+input[type="range"]:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 6px; }
+input[type="range"]:disabled { opacity: .5; cursor: default; }
+
+/* ── GlassMenu: the Services panel grows out of its link and folds back. ── */
+.site-header__panel {
+  border-color: var(--lg-sheet-line);
+  box-shadow: var(--lg-rim-strong), 0 24px 48px rgba(0, 0, 0, .5);
+  transform-origin: 50% 0;
+  transform: translate(-50%, -6px) scale(.985);
+}
+.site-header__menu.is-lingering .site-header__panel,
+.site-header__menu:hover .site-header__panel,
+.site-header__menu:focus-within .site-header__panel { opacity: 1; visibility: visible; transform: translate(-50%, 0) scale(1); transition-delay: 0s; }
+.site-header__menu.is-dismissed .site-header__panel { opacity: 0; visibility: hidden; transform: translate(-50%, -6px) scale(.985); }
+.site-header__panel-link { border-radius: 8px; }
+.site-header__panel-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* ── GlassSheet: one recipe for every sheet (mobile menu, guides gate, and the
+   dashboard call modal uses the same values). ── */
+.ae-sheet, .ae-gate__card.ae-sheet {
+  background: var(--lg-sheet-fill) !important;
+  border-color: var(--lg-sheet-line);
+  -webkit-backdrop-filter: var(--lg-blur-heavy);
+  backdrop-filter: var(--lg-blur-heavy);
+}
+.ae-sheet.is-dragging { transition: none !important; animation: none !important; }
+.ae-sheet__grabber { cursor: grab; }
+.ae-sheet.is-dragging .ae-sheet__grabber { cursor: grabbing; }
+
+/* ── GlassNav: the gliding pill (ae-motion.js) uses the shared rim. ── */
+.ae-navpill { box-shadow: 0 1px 2px rgba(0, 0, 0, .4), var(--lg-rim-strong); border-color: var(--lg-sheet-line); }
+
+/* ── Motion, transparency and contrast preferences ─────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .ae-seg__pill, input[type="checkbox"][role="switch"], input[type="checkbox"][role="switch"]::before,
+  input[type="range"]::-webkit-slider-thumb, .site-header__panel { transition: none !important; }
+  .v5-button:active, .btn:active, .ae-offer__cta:active, .ae-seg .rewriter-mode-btn:active { scale: none; }
+  input[type="checkbox"][role="switch"]:active::before { width: 25px; }
+  input[type="checkbox"][role="switch"]:checked:active::before { transform: translateX(20px); }
+}
+html.ae-calm .ae-seg__pill, html.ae-calm input[type="checkbox"][role="switch"]::before { transition: none !important; }
+html.ae-calm .v5-button:active, html.ae-calm .btn:active, html.ae-calm .ae-offer__cta:active { scale: none; }
+/* Reduced transparency: glass becomes near-solid dark, text contrast at its highest. */
+@media (prefers-reduced-transparency: reduce) {
+  :root { --glass: rgba(24, 24, 27, .96); --glass-strong: rgba(34, 34, 38, .98); --lg-sheet-fill: rgba(22, 22, 26, .98); --lg-field-fill: rgba(30, 30, 34, 1); }
+  header.site-header.aec--scrolled { background: rgba(10, 10, 11, .98) !important; }
+}
+/* Windows high contrast: glass and custom controls hand back to system colours. */
+@media (forced-colors: active) {
+  input[type="checkbox"][role="switch"], input[type="range"] { -webkit-appearance: auto; appearance: auto; }
+  input[type="checkbox"][role="switch"]::before { display: none; }
+  .ae-seg__pill, .ae-navpill { display: none; }
+  .ae-seg .rewriter-mode-btn[aria-pressed="true"] { outline: 2px solid CanvasText; color: CanvasText !important; }
+}

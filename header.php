@@ -16,6 +16,10 @@ $ae_asset_ver  = function ( $rel ) use ( $ae_theme_path ) {
 // Android), the glass rim only on iOS and Firefox phones. Kept out of LiteSpeed
 // "delay JS".
 wp_enqueue_script( 'ae-glass', $ae_theme_uri . '/assets/js/ae-glass.js', [], $ae_asset_ver( '/assets/js/ae-glass.js' ), [ 'in_footer' => true, 'strategy' => 'defer' ] );
+// Liquid glass controls (assets/js/ae-glass-ui.js): input clear buttons, the
+// segmented mode switcher on the free tools, range sliders. Progressive and
+// cheap, so it is not gated like the refraction above.
+wp_enqueue_script( 'ae-glass-ui', $ae_theme_uri . '/assets/js/ae-glass-ui.js', [], $ae_asset_ver( '/assets/js/ae-glass-ui.js' ), [ 'in_footer' => true, 'strategy' => 'defer' ] );
 add_filter( 'script_loader_tag', function ( $tag, $handle ) {
 	if ( 'ae-glass' === $handle && false === strpos( $tag, 'data-no-optimize' ) ) {
 		$tag = str_replace( '<script ', '<script data-no-optimize="1" data-no-defer="1" data-cfasync="false" ', $tag );
@@ -127,8 +131,8 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
           require_once get_template_directory() . '/inc/products.php';
           ?>
           <div class="site-header__menu" data-ae-menu>
-            <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="site-header__nav-link"<?php echo $ae_current( $item[1], $item[2] ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $item[0] ); ?></a>
-            <div class="site-header__panel" role="group" aria-label="All services">
+            <a href="<?php echo esc_url( home_url( '/services/' ) ); ?>" class="site-header__nav-link" aria-controls="site-services-panel" aria-expanded="false"<?php echo $ae_current( $item[1], $item[2] ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $item[0] ); ?></a>
+            <div class="site-header__panel" id="site-services-panel" role="group" aria-label="All services">
               <div class="site-header__panel-grid">
                 <?php foreach ( aesoftwares_products() as $group ) : ?>
                   <div class="site-header__panel-group">
@@ -196,6 +200,45 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
   m.addEventListener('focusout', function (e) {
     if (!m.contains(e.relatedTarget)) m.classList.remove('is-dismissed');
   });
+
+  /* GlassMenu keyboard (Nov 25). This is site navigation, so it stays a
+     disclosure of links (WAI-ARIA disclosure nav), not role="menu", which would
+     change how screen readers read and drive it. Down arrow on Services opens
+     the panel and moves into it; arrows, Home and End move between its links;
+     Up from the first link, or Escape, returns to Services. aria-expanded on
+     the Services link tracks whether the panel is showing. */
+  var panel = m.querySelector('.site-header__panel');
+  if (!link || !panel) return;
+  function items() { return Array.prototype.slice.call(panel.querySelectorAll('a[href]')); }
+  function expanded() {
+    var open = !m.classList.contains('is-dismissed') &&
+      (m.matches(':hover') || m.classList.contains('is-lingering') || m.contains(document.activeElement));
+    link.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  link.addEventListener('keydown', function (e) {
+    if (e.key !== 'ArrowDown') return;
+    var list = items();
+    if (!list.length) return;
+    e.preventDefault();
+    m.classList.remove('is-dismissed');
+    list[0].focus();
+  });
+  panel.addEventListener('keydown', function (e) {
+    var list = items(), i = list.indexOf(document.activeElement), n = null;
+    if (i === -1) return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') n = Math.min(i + 1, list.length - 1);
+    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') n = i - 1;
+    else if (e.key === 'Home') n = 0;
+    else if (e.key === 'End') n = list.length - 1;
+    if (n === null) return;
+    e.preventDefault();
+    if (n < 0) link.focus(); else list[n].focus();
+  });
+  ['pointerenter', 'pointerleave', 'focusin', 'focusout', 'keyup'].forEach(function (t) {
+    m.addEventListener(t, function () { setTimeout(expanded, 0); });
+  });
+  m.addEventListener('pointerleave', function () { setTimeout(expanded, GRACE + 20); });
+  expanded();
 })();
 </script>
 
