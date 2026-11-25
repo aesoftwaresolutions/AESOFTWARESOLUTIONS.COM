@@ -2939,7 +2939,7 @@ html.ae-calm .v5-button:active, html.ae-calm .btn:active, html.ae-calm .ae-offer
   position: relative;
   max-width: none;
   padding: 0;
-  height: 560vh;
+  height: 700vh;
   background: var(--paper);
 }
 .ae-ph__intro,
@@ -3015,9 +3015,6 @@ html.ae-calm .v5-button:active, html.ae-calm .btn:active, html.ae-calm .ae-offer
 .ae-ph__fig { grid-column: 2; position: relative; height: 100%; min-height: 0; }
 .ae-ph__story { grid-column: 1; grid-row: 1; }
 .ae-ph__fig canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
-.ae-ph__dots { position: absolute; right: 0; top: 50%; translate: 0 -50%; display: grid; gap: 10px; }
-.ae-ph__dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, .25); transition: background-color .3s, scale .3s; }
-.ae-ph__dots i.is-active { background: var(--ink); scale: 1.4; }
 
 .ae-ph-proof { padding-top: 24px; }
 
@@ -3025,7 +3022,7 @@ html.ae-calm .v5-button:active, html.ae-calm .btn:active, html.ae-calm .ae-offer
    of the stage. The intro sits in the band under it and hands over to the
    current step as you scroll, the same way as on desktop. */
 @media (max-width: 860px) {
-  .v5-hero.ae-ph { height: 520vh; }
+  .v5-hero.ae-ph { height: 650vh; }
   .ae-ph__intro,
   .ae-ph__stage {
     grid-template-columns: minmax(0, 1fr);
@@ -3049,8 +3046,7 @@ html.ae-calm .v5-button:active, html.ae-calm .btn:active, html.ae-calm .ae-offer
   .ae-ph__story .v5-label, .ae-ph__note { display: none; }
   .ae-ph__step { display: none; padding: 4px 0 0 16px; }
   .ae-ph__step.is-active { display: grid; }
-  .ae-ph__dots { right: 4px; }
-}
+  }
 
 /* No WebGL: a plain hero, then the steps as a list. */
 .v5-hero.ae-ph:not(.is-3d) { height: auto; padding-bottom: 0; }

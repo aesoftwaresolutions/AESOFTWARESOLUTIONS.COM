@@ -30,7 +30,6 @@ function init(root) {
   const canvas = root.querySelector('[data-ae-phone-canvas]');
   const intro = root.querySelector('[data-ae-phone-intro]');
   const steps = [...root.querySelectorAll('[data-ae-step]')];
-  const dots = [...root.querySelectorAll('[data-ae-dot]')];
   const STEPS = SCREENS.length;
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -143,7 +142,7 @@ function init(root) {
   let smooth = 0;
 
   function update(time) {
-    smooth += (progress - smooth) * (calm ? 1 : 0.1);
+    smooth += (progress - smooth) * (calm ? 1 : 0.045);
     const s = smooth * STEPS;
     const i = Math.min(STEPS - 1, Math.floor(s));
     const f = s - i;
@@ -153,18 +152,18 @@ function init(root) {
     const c = calm ? STILL : CHOREO[i](f, time);
     const sway = calm ? 0 : 1 - c.k * 0.6;
     phone.rotation.set(
-      c.rx + sway * (Math.sin(time * 0.4) * 0.035 + 0.06),
-      c.ry + sway * (Math.sin(time * 0.5) * 0.07 - 0.22),
+      c.rx + sway * (Math.sin(time * 0.25) * 0.03 + 0.06),
+      c.ry + sway * (Math.sin(time * 0.3) * 0.06 - 0.22),
       c.rz - sway * 0.035
     );
-    phone.position.set(c.px, c.py + sway * Math.sin(time * 0.7) * 0.05, 0);
+    phone.position.set(c.px, c.py + sway * Math.sin(time * 0.45) * 0.04, 0);
 
     // Camera: zoom and pan, eased so fast scrolling still glides.
     if (!calm) {
       const zoom = c.zoom ?? 1 + (c.focusZoom - 1) * c.k;
-      camZ += (baseZ * zoom - camZ) * 0.14;
-      camX += (c.fx * c.k - camX) * 0.14;
-      camY += (c.fy * c.k - camY) * 0.14;
+      camZ += (baseZ * zoom - camZ) * 0.06;
+      camX += (c.fx * c.k - camX) * 0.06;
+      camY += (c.fy * c.k - camY) * 0.06;
       camera.position.set(camX, camY, camZ);
       camera.lookAt(camX, camY, 0);
     }
@@ -193,7 +192,6 @@ function init(root) {
     if (i !== active) {
       active = i;
       steps.forEach((el, k) => el.classList.toggle('is-active', k === i));
-      dots.forEach((el, k) => el.classList.toggle('is-active', k === i));
     }
   }
 
@@ -364,14 +362,14 @@ function buildPhone(screenTex, SW, SH, SR) {
 // the step. The first MOVE of it is the move into the step (p), while the
 // screen crossfades (mix). The rest (u) eases in on the screen, drifts with
 // the content as it appears, and eases back out at the end.
-const MOVE = 0.3;
+const MOVE = 0.4;
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 const bump = (p) => Math.sin(p * Math.PI);           // 0 -> 1 -> 0
 const STILL = { rx: 0, ry: 0, rz: 0, px: 0, py: 0, k: 0, fx: 0, fy: 0, focusZoom: 1, u: 1, mix: 1 };
 
 function settle(u, outAt = 0.8) {
-  return easeInOut(clamp01(u / 0.3)) * (1 - easeInOut(clamp01((u - outAt) / 0.2)));
+  return easeInOut(clamp01(u / 0.4)) * (1 - easeInOut(clamp01((u - outAt) / 0.2)));
 }
 function phase(f) {
   const p = clamp01(f / MOVE);
@@ -383,8 +381,8 @@ const CHOREO = [
   // 1. Ring: a light buzz in short bursts while the camera eases in on the caller.
   (f, time) => {
     const u = clamp01(f / 0.9);
-    const burst = (time % 1.4) < 0.45 && u < 0.7 ? 1 : 0;
-    return { ...STILL, rz: Math.sin(time * 70) * 0.006 * burst, k: settle(u), fy: 0.45, focusZoom: 0.86, u };
+    const burst = (time % 2.2) < 0.5 && u < 0.7 ? 1 : 0;
+    return { ...STILL, rz: Math.sin(time * 55) * 0.005 * burst, k: settle(u), fy: 0.45, focusZoom: 0.86, u };
   },
   // 2. Answered: the phone tips gently toward you.
   (f) => {

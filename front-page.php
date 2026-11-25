@@ -145,7 +145,6 @@ $ae_topic_close = function () {
     </div>
     <div class="ae-ph__fig">
       <canvas data-ae-phone-canvas role="img" aria-label="A phone showing each step of a call handled by Front Desk"></canvas>
-      <div class="ae-ph__dots" aria-hidden="true"><i data-ae-dot class="is-active"></i><i data-ae-dot></i><i data-ae-dot></i><i data-ae-dot></i><i data-ae-dot></i></div>
     </div>
   </div>
 </section>
