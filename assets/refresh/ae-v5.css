@@ -3021,34 +3021,33 @@ html.ae-calm .v5-button:active, html.ae-calm .btn:active, html.ae-calm .ae-offer
 
 .ae-ph-proof { padding-top: 24px; }
 
+/* Phone and tablet: the phone is the first thing on screen, filling the top
+   of the stage. The intro sits in the band under it and hands over to the
+   current step as you scroll, the same way as on desktop. */
 @media (max-width: 860px) {
-  .v5-hero.ae-ph { height: auto; }
-  /* Scroll length for the sticky phone. A spacer, not padding: a sticky box
-     only sticks within its parent's content box. */
-  .v5-hero.ae-ph.is-3d::after { content: ''; display: block; height: 420vh; }
-  .ae-ph__intro {
-    position: relative;
-    height: auto;
-    margin-bottom: 0;
-    grid-template-columns: minmax(0, 1fr);
-    padding-top: calc(var(--header-h) + 32px);
-    padding-bottom: 24px;
-  }
-  .ae-ph.is-story .ae-ph__intro { opacity: 1; translate: none; visibility: visible; }
-  .ae-ph__hint { display: none; }
-  /* The stage gets its own scroll length on small screens. */
+  .v5-hero.ae-ph { height: 520vh; }
+  .ae-ph__intro,
   .ae-ph__stage {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(0, 1fr) auto;
-    row-gap: 8px;
-    align-items: stretch;
-    padding-top: calc(var(--header-h) + 8px);
+    grid-template-rows: minmax(0, 1fr) var(--ae-ph-band, 360px);
+    row-gap: 12px;
+    padding-top: calc(var(--header-h) + 4px);
     padding-bottom: 20px;
   }
+  /* Intro: an empty row over the phone, then the copy in the band. */
+  .ae-ph__intro { align-content: stretch; grid-template-rows: minmax(0, 1fr) auto auto auto auto; }
+  .ae-ph__intro > .v5-label { grid-row: 2; margin: 0 0 8px; }
+  .ae-ph__intro > .v5-hero__title { grid-row: 3; }
+  .ae-ph__intro > .v5-hero__lead { grid-row: 4; }
+  .ae-ph__intro > .v5-hero__actions { grid-row: 5; }
+  .ae-ph .v5-hero__title { font-size: clamp(1.875rem, 8.4vw, 2.5rem); margin: 0 0 10px; max-width: 16ch; }
+  .ae-ph .v5-hero__lead { font-size: 1rem; line-height: 1.45; }
+  .ae-ph .v5-hero__actions { margin-top: 14px; gap: 10px 20px; }
+  .ae-ph__hint { display: none; }
   .ae-ph__fig { grid-column: 1; grid-row: 1; }
-  .ae-ph__story { grid-row: 2; opacity: 1; translate: none; visibility: visible; transition: none; }
+  .ae-ph__story { grid-column: 1; grid-row: 2; }
   .ae-ph__story .v5-label, .ae-ph__note { display: none; }
-  .ae-ph__step { display: none; padding: 6px 0 0 16px; min-height: 9.5em; }
+  .ae-ph__step { display: none; padding: 4px 0 0 16px; }
   .ae-ph__step.is-active { display: grid; }
   .ae-ph__dots { right: 4px; }
 }
