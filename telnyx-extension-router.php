@@ -21,7 +21,8 @@
  *      assistant's TeXML URL.
  */
 
-// ---------- Extension map (digit => Telnyx assistant id) ----------
+// ---------- Aria's voice (the first voice the caller hears) ----------
+$ARIA_VOICE = 'Telnyx.Ultra.f786b574-daa5-4673-aa0c-cbe3e8534c02'; // same voice Aria uses, so the menu is Aria, not the default robotic voice
 $ARIA_ID = 'assistant-ef4f6079-9bd0-4279-8679-0b306fb7b22f'; // primary Front Desk agent
 $EXTENSIONS = [
     '1' => $ARIA_ID,                                        // Front Desk (Aria)
@@ -62,10 +63,11 @@ if ($digits === '') {
     // If the caller presses nothing within 5 seconds, fall through to Aria.
     $action = htmlspecialchars(ae_router_url(), ENT_QUOTES, 'UTF-8');
     $menu = htmlspecialchars($MENU, ENT_QUOTES, 'UTF-8');
+    $voice = htmlspecialchars($ARIA_VOICE, ENT_QUOTES, 'UTF-8');
     $aria = htmlspecialchars(ae_assistant_texml_url($DEFAULT_ID), ENT_QUOTES, 'UTF-8');
     ae_texml(
         '<Gather numDigits="1" action="' . $action . '" method="GET" timeout="5">'
-        . '<Say>' . $menu . '</Say>'
+        . '<Say voice="' . $voice . '">' . $menu . '</Say>'
         . '</Gather>'
         . '<Redirect>' . $aria . '</Redirect>'
     );
