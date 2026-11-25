@@ -99,6 +99,9 @@ $ae_current = function ( $slug, $inside ) use ( $ae_req_seg ) {
   [data-reveal],[data-reveal] *,.js-fade{opacity:1!important;transform:none!important}
 </style></noscript>
 <?php wp_head(); ?>
+<?php /* One set of icons, all the Æ mark. favicon.ico covers browsers and search engines that ask for it by default. */ ?>
+<link rel="icon" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/favicon.ico?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/favicon.ico' ) ); ?>" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-icon-192.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-icon-192.png' ) ); ?>">
 <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-favicon-32.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-favicon-32.png' ) ); ?>">
 <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-favicon-16.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-favicon-16.png' ) ); ?>">
 <link rel="apple-touch-icon" href="<?php echo esc_url( $ae_theme_uri ); ?>/assets/img/brand/ae-apple-touch-icon.png?v=<?php echo esc_attr( $ae_asset_ver( '/assets/img/brand/ae-apple-touch-icon.png' ) ); ?>">

@@ -11,6 +11,7 @@ require_once get_template_directory() . '/inc/aria-api.php';
 // ── Offer lineup (prices, plans, guarantee) — edit prices in inc/offers.php ──
 require_once get_template_directory() . '/inc/checkout-links.php'; // every checkout button URL (Stripe, shop fallback)
 require_once get_template_directory() . '/inc/offers.php';
+require_once get_template_directory() . '/inc/hero-carousel.php'; // product carousel (Services hero)
 
 // ── Guides page newsletter signup (admin-ajax: ae_guides_signup) ─────────────
 require_once get_template_directory() . '/inc/guides-newsletter.php';
@@ -223,6 +224,22 @@ function aesoftwares_clean_front_page() {
     wp_dequeue_style( 'classic-theme-styles' );
 }
 add_action( 'wp_enqueue_scripts', 'aesoftwares_clean_front_page', 100 );
+
+// ── Icons: the theme prints one set of Æ icons (header.php). WordPress's own
+// Site Icon tags printed a second, older set first, so they are turned off.
+// Requests for /favicon.ico that reach WordPress get the theme's Æ icon.
+add_action( 'init', function () {
+    remove_action( 'wp_head', 'wp_site_icon', 99 );
+} );
+add_action( 'do_faviconico', function () {
+    $ico = get_template_directory() . '/assets/img/brand/favicon.ico';
+    if ( file_exists( $ico ) ) {
+        header( 'Content-Type: image/x-icon' );
+        header( 'Cache-Control: public, max-age=604800' );
+        readfile( $ico );
+        exit;
+    }
+} );
 
 add_action( 'init', function () {
     remove_action( 'wp_head',         'print_emoji_detection_script', 7 );
