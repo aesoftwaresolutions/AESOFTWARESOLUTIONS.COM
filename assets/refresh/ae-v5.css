@@ -3046,10 +3046,11 @@ html.ae-calm .v5-button:active, html.ae-calm .btn:active, html.ae-calm .ae-offer
     grid-template-rows: minmax(0, 1fr) var(--ae-ph-band, 300px);
     row-gap: 8px;
     align-items: stretch;
-    transition: grid-template-rows .6s var(--ease);
   }
-  .ae-ph__fig { grid-column: 1; grid-row: 1; }
-  .ae-ph__story { grid-column: 1; grid-row: 2; overflow: hidden; }
+  /* The canvas spans the whole stage and never resizes on scroll; the
+     camera frames the phone above the text. */
+  .ae-ph__fig { grid-column: 1; grid-row: 1 / -1; }
+  .ae-ph__story { grid-column: 1; grid-row: 2; position: relative; z-index: 1; overflow: hidden; }
   .ae-ph__story .v5-label, .ae-ph__note { display: none; }
   .ae-ph__step { display: none; padding: 4px 0 0 16px; }
   .ae-ph__step.is-active { display: grid; }
