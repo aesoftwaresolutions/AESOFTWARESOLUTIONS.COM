@@ -21,7 +21,8 @@
  *      assistant's TeXML URL.
  */
 
-// ---------- Extension map (digit => Telnyx assistant id) ----------
+// ---------- Aria's voice (the first voice the caller hears) ----------
+$ARIA_VOICE = 'Telnyx.Ultra.f786b574-daa5-4673-aa0c-cbe3e8534c02'; // same voice Aria uses, so the menu is Aria, not the default robotic voice
 $ARIA_ID = 'assistant-ef4f6079-9bd0-4279-8679-0b306fb7b22f'; // primary Front Desk agent
 $EXTENSIONS = [
     '1' => $ARIA_ID,                                        // Front Desk (Aria)
@@ -29,11 +30,12 @@ $EXTENSIONS = [
     '3' => 'assistant-c91b05a9-3366-449a-b2dd-6a8ad12093af', // Scheduling demo
     '4' => 'assistant-47d71699-4f05-4632-aa82-7d08a16d8571', // Order Desk demo
     '5' => 'assistant-4ae3abe5-9104-442f-a4fe-ec9473c3654a', // Legal intake demo
+    '6' => 'assistant-d6c51622-06f8-4cb5-a4c4-3e908bc69bb3', // Falafel Shack order demo
 ];
 $DEFAULT_ID = $ARIA_ID; // no digit, timeout, or unknown digit
 
 // ---------- Menu (one sentence, plain spoken, no dashes) ----------
-$MENU = 'Thanks for calling AE Software Solutions. Press 1 for the front desk, 2 for billing and payments, 3 to book a call, 4 to place an order, or 5 for legal intake.';
+$MENU = 'Thanks for calling AE Software Solutions. Press 1 for the front desk, 2 for billing and payments, 3 to book a call, 4 to place an order, 5 for legal intake, or 6 for the Falafel Shack order demo.';
 
 // ---------- Router ----------
 function ae_assistant_texml_url($assistant_id) {
@@ -61,10 +63,11 @@ if ($digits === '') {
     // If the caller presses nothing within 5 seconds, fall through to Aria.
     $action = htmlspecialchars(ae_router_url(), ENT_QUOTES, 'UTF-8');
     $menu = htmlspecialchars($MENU, ENT_QUOTES, 'UTF-8');
+    $voice = htmlspecialchars($ARIA_VOICE, ENT_QUOTES, 'UTF-8');
     $aria = htmlspecialchars(ae_assistant_texml_url($DEFAULT_ID), ENT_QUOTES, 'UTF-8');
     ae_texml(
         '<Gather numDigits="1" action="' . $action . '" method="GET" timeout="5">'
-        . '<Say>' . $menu . '</Say>'
+        . '<Say voice="' . $voice . '">' . $menu . '</Say>'
         . '</Gather>'
         . '<Redirect>' . $aria . '</Redirect>'
     );
