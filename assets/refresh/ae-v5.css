@@ -467,9 +467,14 @@ header.site-header.aec--scrolled {
        brightness(.42) in the backdrop dims whatever scrolls underneath so a white button
        does not read as a button, and the 28px blur frosts it. Going lower brings the
        ghosted button back over the logo on phones. */
-    background: rgba(10, 10, 11, .86);
-    -webkit-backdrop-filter: brightness(.42) saturate(160%) blur(28px);
-    backdrop-filter: brightness(.42) saturate(160%) blur(28px);
+    /* Clear glass (Nov 25): a light tint over a strong blur, so what scrolls
+       underneath shows through, frosted. A bright hairline along the top and a
+       faint one at the bottom read as the edges of a glass pane. */
+    background: linear-gradient(to bottom, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02)), rgba(10, 10, 11, .34);
+    -webkit-backdrop-filter: brightness(.78) saturate(180%) blur(22px);
+    backdrop-filter: brightness(.78) saturate(180%) blur(22px);
+    border-bottom-color: rgba(255, 255, 255, .12);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 8px 24px rgba(0, 0, 0, .18);
   }
 }
 .site-header__inner {
@@ -2610,12 +2615,10 @@ html.ae-glass-on [data-ae-glass="card"][data-ae-glass-key] {
 /* Header bar, once scrolled (it is clear at the top of the page). */
 @supports (backdrop-filter: blur(1px)) {
   html.ae-glass-on header.site-header.aec--scrolled[data-ae-glass] {
-    -webkit-backdrop-filter: brightness(.42) saturate(160%) blur(28px) var(--ae-refract, );
-    backdrop-filter: brightness(.42) saturate(160%) blur(28px) var(--ae-refract, );
-    /* A backdrop filter paints under the element's own fill: at .86 the fill
-       hid the glass. The .42 dim and 28px blur still keep white buttons from
-       ghosting through (measured: a white button reads at most 50/255). */
-    background: rgba(10, 10, 11, .55);
+    -webkit-backdrop-filter: brightness(.78) saturate(180%) blur(22px) var(--ae-refract, );
+    backdrop-filter: brightness(.78) saturate(180%) blur(22px) var(--ae-refract, );
+    /* Same clear glass as above, with the refraction on top. */
+    background: linear-gradient(to bottom, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02)), rgba(10, 10, 11, .34);
   }
 }
 
@@ -3050,7 +3053,16 @@ html.ae-calm .v5-button:active, html.ae-calm .btn:active, html.ae-calm .ae-offer
   /* The canvas spans the whole stage and never resizes on scroll; the
      camera frames the phone above the text. */
   .ae-ph__fig { grid-column: 1; grid-row: 1 / -1; }
-  .ae-ph__story { grid-column: 1; grid-row: 2; position: relative; z-index: 1; overflow: hidden; }
+  .ae-ph__story { grid-column: 1; grid-row: 2; position: relative; z-index: 1; }
+  /* A soft fade behind the step text, so the phone can zoom in behind it. */
+  .ae-ph__story::before {
+    content: '';
+    position: absolute;
+    inset: -48px calc(-1 * var(--gutter)) -16px;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgba(10, 10, 11, 0), rgba(10, 10, 11, .92) 48px, #0A0A0B);
+    pointer-events: none;
+  }
   .ae-ph__story .v5-label, .ae-ph__note { display: none; }
   .ae-ph__step { display: none; padding: 4px 0 0 16px; }
   .ae-ph__step.is-active { display: grid; }
