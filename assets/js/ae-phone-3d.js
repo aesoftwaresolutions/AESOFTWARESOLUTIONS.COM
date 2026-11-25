@@ -106,13 +106,46 @@ function init(root) {
 
   // ── Layout ────────────────────────────────────────────────────────────
   let baseZ = 20, camX = 0, camY = 0, camZ = 20;
+  // Phones: measure the intro's text so the phone's area ends where it starts.
+  const narrow = window.matchMedia('(max-width: 860px)');
+  // Once the steps take over, the band shrinks to the tallest step, so the
+  // phone grows into the space the headline needed.
+  const story = root.querySelector('.ae-ph__story');
+  let stepBand = 0;
+  function measureSteps() {
+    let max = 0;
+    for (const el of steps) {
+      const was = el.classList.contains('is-active');
+      el.classList.add('is-active');
+      max = Math.max(max, el.getBoundingClientRect().height);
+      if (!was) el.classList.remove('is-active');
+    }
+    stepBand = Math.ceil(max) + 8;
+  }
+  function measureBand() {
+    if (!intro || !narrow.matches) { root.style.removeProperty('--ae-ph-band'); return; }
+    if (root.classList.contains('is-story') && stepBand) {
+      root.style.setProperty('--ae-ph-band', stepBand + 'px');
+      return;
+    }
+    const kids = [...intro.children].filter((el) => el.offsetParent !== null);
+    if (!kids.length) return;
+    const top = kids[0].getBoundingClientRect().top;
+    const bottom = kids[kids.length - 1].getBoundingClientRect().bottom;
+    root.style.setProperty('--ae-ph-band', Math.ceil(bottom - top) + 'px');
+  }
+  if (intro) new ResizeObserver(() => { measureSteps(); measureBand(); }).observe(intro);
+  measureSteps();
+  measureBand();
+
   function resize() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     const tan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
-    const byH = (H * 1.14) / (2 * tan);
+    // Frame tighter on phones, where every pixel of height counts.
+    const byH = (H * (narrow.matches ? 1.04 : 1.14)) / (2 * tan);
     const byW = (W * 1.5) / (2 * tan * camera.aspect);
     baseZ = Math.max(byH, byW);
     if (camZ === 20) camZ = baseZ;
@@ -132,7 +165,9 @@ function init(root) {
     const start = intro && getComputedStyle(intro).position !== 'sticky' ? intro.offsetHeight : 0;
     const total = root.offsetHeight - start - window.innerHeight;
     progress = THREE.MathUtils.clamp((-r.top - start) / Math.max(total, 1), 0, 0.9999);
+    const wasStory = root.classList.contains('is-story');
     root.classList.toggle('is-story', -r.top > window.innerHeight * 0.12);
+    if (wasStory !== root.classList.contains('is-story')) measureBand();
     dirty = true;
   }
   window.addEventListener('scroll', readScroll, { passive: true });

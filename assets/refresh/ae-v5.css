@@ -3018,35 +3018,42 @@ html.ae-calm .v5-button:active, html.ae-calm .btn:active, html.ae-calm .ae-offer
 
 .ae-ph-proof { padding-top: 24px; }
 
-/* Phone and tablet: the phone is the first thing on screen, filling the top
-   of the stage. The intro sits in the band under it and hands over to the
-   current step as you scroll, the same way as on desktop. */
+/* Phone and tablet: the phone is the first thing on screen and gets all the
+   height the text does not need. The intro sits at the bottom of the first
+   screen; ae-phone-3d.js measures it into --ae-ph-band so the phone's area
+   ends exactly where the text starts. On scroll the intro hands over to the
+   current step, in the same band. */
 @media (max-width: 860px) {
   .v5-hero.ae-ph { height: 650vh; }
   .ae-ph__intro,
   .ae-ph__stage {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(0, 1fr) var(--ae-ph-band, 360px);
-    row-gap: 12px;
     padding-top: calc(var(--header-h) + 4px);
-    padding-bottom: 20px;
+    padding-bottom: 16px;
   }
-  /* Intro: an empty row over the phone, then the copy in the band. */
-  .ae-ph__intro { align-content: stretch; grid-template-rows: minmax(0, 1fr) auto auto auto auto; }
-  .ae-ph__intro > .v5-label { grid-row: 2; margin: 0 0 8px; }
-  .ae-ph__intro > .v5-hero__title { grid-row: 3; }
-  .ae-ph__intro > .v5-hero__lead { grid-row: 4; }
-  .ae-ph__intro > .v5-hero__actions { grid-row: 5; }
-  .ae-ph .v5-hero__title { font-size: clamp(1.875rem, 8.4vw, 2.5rem); margin: 0 0 10px; max-width: 16ch; }
-  .ae-ph .v5-hero__lead { font-size: 1rem; line-height: 1.45; }
-  .ae-ph .v5-hero__actions { margin-top: 14px; gap: 10px 20px; }
+  .ae-ph__intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .ae-ph__intro > .v5-label { display: none; }
+  .ae-ph .v5-hero__title { font-size: clamp(1.625rem, 7.4vw, 2.25rem); line-height: 1.04; margin: 0 0 8px; max-width: 17ch; }
+  .ae-ph .v5-hero__lead { font-size: .9375rem; line-height: 1.42; }
+  .ae-ph .v5-hero__actions { margin-top: 12px; gap: 8px 18px; }
+  .ae-ph .v5-hero__actions .v5-button { padding-block: 12px; }
   .ae-ph__hint { display: none; }
+  .ae-ph__stage {
+    grid-template-rows: minmax(0, 1fr) var(--ae-ph-band, 300px);
+    row-gap: 8px;
+    align-items: stretch;
+    transition: grid-template-rows .6s var(--ease);
+  }
   .ae-ph__fig { grid-column: 1; grid-row: 1; }
-  .ae-ph__story { grid-column: 1; grid-row: 2; }
+  .ae-ph__story { grid-column: 1; grid-row: 2; overflow: hidden; }
   .ae-ph__story .v5-label, .ae-ph__note { display: none; }
   .ae-ph__step { display: none; padding: 4px 0 0 16px; }
   .ae-ph__step.is-active { display: grid; }
-  }
+}
 
 /* No WebGL: a plain hero, then the steps as a list. */
 .v5-hero.ae-ph:not(.is-3d) { height: auto; padding-bottom: 0; }
