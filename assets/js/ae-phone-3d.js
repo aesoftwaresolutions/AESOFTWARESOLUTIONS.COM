@@ -101,7 +101,7 @@ function init(root) {
   }
 
   // ── Layout ────────────────────────────────────────────────────────────
-  let baseZ = 20;
+  let baseZ = 20, camX = 0, camY = 0, camZ = 20;
   function resize() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
@@ -111,7 +111,8 @@ function init(root) {
     const byH = (H * 1.14) / (2 * tan);
     const byW = (W * 1.5) / (2 * tan * camera.aspect);
     baseZ = Math.max(byH, byW);
-    camera.position.set(0, 0, baseZ);
+    if (camZ === 20) camZ = baseZ;
+    camera.position.set(camX, camY, camZ);
     camera.updateProjectionMatrix();
     dirty = true;
   }
@@ -135,7 +136,6 @@ function init(root) {
 
   let shown = -1, shownT = -1, active = -1, dirty = true, running = false, raf = 0;
   let smooth = 0;
-  const SPIN = 0.34; // share of each step spent turning
 
   function update(time) {
     smooth += (progress - smooth) * (calm ? 1 : 0.1);
@@ -143,28 +143,30 @@ function init(root) {
     const i = Math.min(STEPS - 1, Math.floor(s));
     const f = s - i;
 
-    let angle = 0;
-    if (!calm && i > 0) angle = (i - 1 + (f < SPIN ? easeInOut(f / SPIN) : 1)) * Math.PI * 2;
-    const idle = calm ? 0 : 1;
-    phone.rotation.y = angle + idle * (Math.sin(time * 0.5) * 0.07 - 0.22);
-    phone.rotation.x = idle * (Math.sin(time * 0.4) * 0.035 + 0.06);
-    phone.rotation.z = idle * -0.035;
-    phone.position.y = idle * Math.sin(time * 0.7) * 0.05;
+    // Each step has its own move (see CHOREO below). Reduced motion: none,
+    // the screens just change with scroll.
+    const c = calm ? STILL : CHOREO[i](f, time);
+    const sway = calm ? 0 : 1 - c.k * 0.6;
+    phone.rotation.set(
+      c.rx + sway * (Math.sin(time * 0.4) * 0.035 + 0.06),
+      c.ry + sway * (Math.sin(time * 0.5) * 0.07 - 0.22),
+      c.rz - sway * 0.035
+    );
+    phone.position.set(c.px, c.py + sway * Math.sin(time * 0.7) * 0.05, 0);
 
-    // Camera: eases back a touch while the phone turns, then leans in to
-    // read the screen once it settles.
+    // Camera: zoom and pan, eased so fast scrolling still glides.
     if (!calm) {
-      const turning = i > 0 && f < SPIN ? Math.sin((f / SPIN) * Math.PI) : 0;
-      const settle = i > 0 ? THREE.MathUtils.clamp((f - SPIN) / 0.4, 0, 1) : THREE.MathUtils.clamp(f / 0.5, 0, 1);
-      const z = baseZ * (1 + turning * 0.06 - ease(settle) * 0.07);
-      camera.position.z += (z - camera.position.z) * 0.12;
-      camera.position.y += ((ease(settle) * 0.25) - camera.position.y) * 0.12;
-      camera.lookAt(0, camera.position.y * 0.6, 0);
+      const zoom = c.zoom ?? 1 + (c.focusZoom - 1) * c.k;
+      camZ += (baseZ * zoom - camZ) * 0.14;
+      camX += (c.fx * c.k - camX) * 0.14;
+      camY += (c.fy * c.k - camY) * 0.14;
+      camera.position.set(camX, camY, camZ);
+      camera.lookAt(camX, camY, 0);
     }
 
-    // Swap the screen while the back faces the viewer.
-    const idx = i > 0 && f < SPIN / 2 && !calm ? i - 1 : i;
-    const t = idx === i ? THREE.MathUtils.clamp((f - (calm || i === 0 ? 0 : SPIN)) / 0.45, 0, 1) : 1;
+    // The screen changes halfway through each step's move.
+    const idx = c.prev ? i - 1 : i;
+    const t = idx === i ? THREE.MathUtils.clamp(c.u / 0.6, 0, 1) : 1;
     const tq = Math.round(t * 90) / 90;
     if (idx !== shown || tq !== shownT || SCREENS[idx].live) {
       drawScreen(ctx, tex.width, tex.height, idx, tq, time);
@@ -234,7 +236,7 @@ function buildPhone(screenTex, SW, SH, SR) {
   g.add(screen);
 
   const sheen = new THREE.Mesh(screenGeo, new THREE.MeshStandardMaterial({
-    color: 0x000000, metalness: 0, roughness: 0.03, envMapIntensity: 0.4,
+    color: 0x000000, metalness: 0, roughness: 0.03, envMapIntensity: 0.18,
     transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
   }));
   sheen.position.z = zFront + 0.011;
@@ -342,6 +344,85 @@ function buildPhone(screenTex, SW, SH, SR) {
 }
 
 // ── Screens ───────────────────────────────────────────────────────────────
+// ── Choreography ──────────────────────────────────────────────────────────
+// One function per step. f runs 0 to 1 across the step. The first SPIN of
+// it is the move into the step (p); the rest (u) zooms in on the screen,
+// pans with the content as it appears, and eases back out at the end.
+// Returns rotations, position, the zoom or focus point, and whether the
+// screen still shows the previous step (prev).
+const SPIN = 0.34;
+const TAU = Math.PI * 2;
+const clamp01 = (v) => Math.min(1, Math.max(0, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const STILL = { rx: 0, ry: 0, rz: 0, px: 0, py: 0, k: 0, fx: 0, fy: 0, focusZoom: 1, u: 1, prev: false };
+
+// After the move: zoom in, hold, zoom out. k is how far in.
+function settle(u) {
+  return easeInOut(clamp01(u / 0.28)) * (1 - easeInOut(clamp01((u - 0.8) / 0.2)));
+}
+function phase(f) {
+  const p = clamp01(f / SPIN);
+  const u = clamp01((f - SPIN) / (1 - SPIN));
+  return { p, u, moving: f < SPIN };
+}
+
+const CHOREO = [
+  // 1. Ring: no entrance move. The phone buzzes in short bursts while the
+  //    camera closes in on the caller.
+  (f, time) => {
+    const u = clamp01(f / 0.9);
+    const k = settle(u);
+    const burst = (time % 1.3) < 0.55 && u < 0.75 ? 1 : 0;
+    return { ...STILL, rz: Math.sin(time * 75) * 0.014 * burst, px: Math.sin(time * 90) * 0.012 * burst,
+      k, fx: 0, fy: 0.6, focusZoom: 0.76, u };
+  },
+  // 2. Answered: a forward flip with a small hop, then the camera follows
+  //    the conversation down the screen.
+  (f) => {
+    const { p, u, moving } = phase(f);
+    if (moving) {
+      const e = easeInOut(p);
+      return { ...STILL, rx: e * TAU, py: Math.sin(p * Math.PI) * 0.5, zoom: 1 + Math.sin(p * Math.PI) * 0.28, u: 0, prev: p < 0.5 };
+    }
+    return { ...STILL, k: settle(u), fx: 0, fy: lerp(1.1, 0.3, ease(clamp01(u / 0.7))), focusZoom: 0.74, u };
+  },
+  // 3. Details: pulls well back for a full turn, then tracks down the list
+  //    as each item is ticked.
+  (f) => {
+    const { p, u, moving } = phase(f);
+    if (moving) {
+      const e = easeInOut(p);
+      return { ...STILL, ry: e * TAU, zoom: 1 + Math.sin(p * Math.PI) * 0.5, u: 0, prev: p < 0.5 };
+    }
+    return { ...STILL, k: settle(u), fx: 0, fy: lerp(1.0, -0.35, ease(clamp01(u / 0.75))), focusZoom: 0.76, u };
+  },
+  // 4. Text back: a barrel roll, then the phone settles at a three quarter
+  //    angle while the camera reads down the thread.
+  (f) => {
+    const { p, u, moving } = phase(f);
+    if (moving) {
+      const e = easeInOut(p);
+      return { ...STILL, rz: -e * TAU, zoom: 1 + Math.sin(p * Math.PI) * 0.32, u: 0, prev: p < 0.5 };
+    }
+    const k = settle(u);
+    return { ...STILL, ry: 0.5 * k, k, fx: 0.1, fy: lerp(0.95, -0.05, ease(clamp01(u / 0.75))), focusZoom: 0.75, u };
+  },
+  // 5. Summary: the phone tips forward to lie face down, like it is on a
+  //    nightstand overnight, then lifts toward you as if picked up in the
+  //    morning. Ends on the whole phone.
+  (f) => {
+    const { p, u, moving } = phase(f);
+    if (moving) {
+      const down = p < 0.5;
+      const q = down ? ease(p / 0.5) : 1 - easeInOut((p - 0.5) / 0.5);
+      return { ...STILL, rx: 1.4 * q, py: -0.9 * q, zoom: 1 + 0.3 * q, u: 0, prev: down };
+    }
+    // Last step: zoom in on the summary, then pull back to the whole phone.
+    const k = easeInOut(clamp01(u / 0.28)) * (1 - easeInOut(clamp01((u - 0.62) / 0.22)));
+    return { ...STILL, k, fx: 0, fy: 0.45, focusZoom: 0.78, u };
+  },
+];
+
 const SCREENS = [
   { draw: incoming, live: true, clock: '6:42' },
   { draw: answering, live: true, clock: '6:42' },
