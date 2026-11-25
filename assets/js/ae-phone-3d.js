@@ -29,6 +29,7 @@ const W = 3, H = 6.18, D = 0.3, B = 0.04, R = 0.5;
 function init(root) {
   const canvas = root.querySelector('[data-ae-phone-canvas]');
   const intro = root.querySelector('[data-ae-phone-intro]');
+  const stage = root.querySelector('.ae-ph__stage');
   const steps = [...root.querySelectorAll('[data-ae-step]')];
   const STEPS = SCREENS.length;
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -63,11 +64,13 @@ function init(root) {
 
   // ── Live screen texture (full phone resolution) ───────────────────────
   const SW = W - 0.15, SH = H - 0.15, SR = R - 0.07;
+  // Full phone resolution on desktop; lighter on phones so redraws stay smooth.
+  const TW = window.matchMedia('(max-width: 860px)').matches ? 900 : 1290;
   const tex = document.createElement('canvas');
-  tex.width = 1290;
-  tex.height = Math.round(1290 * SH / SW);
+  tex.width = TW;
+  tex.height = Math.round(TW * SH / SW);
   const ctx = tex.getContext('2d');
-  // Second canvas for crossfading one screen into the next.
+  // Second canvas: the incoming screen, faded in over the first on the GPU.
   const tex2 = document.createElement('canvas');
   tex2.width = tex.width;
   tex2.height = tex.height;
@@ -75,10 +78,14 @@ function init(root) {
   const screenTex = new THREE.CanvasTexture(tex);
   screenTex.colorSpace = THREE.SRGBColorSpace;
   screenTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  const screenTex2 = new THREE.CanvasTexture(tex2);
+  screenTex2.colorSpace = THREE.SRGBColorSpace;
+  screenTex2.anisotropy = screenTex.anisotropy;
 
   const phone = new THREE.Group();
   scene.add(phone);
-  const built = buildPhone(screenTex, SW, SH, SR);
+  const built = buildPhone(screenTex, screenTex2, SW, SH, SR);
+  const screenTop = built.userData.top;
   phone.add(built);
 
   // Optional licensed model in place of the built phone.
@@ -112,6 +119,7 @@ function init(root) {
   // phone grows into the space the headline needed.
   const story = root.querySelector('.ae-ph__story');
   let stepBand = 0;
+  let bandTarget = 0, band = -1; // px of text under the phone (phones only)
   function measureSteps() {
     let max = 0;
     for (const el of steps) {
@@ -123,31 +131,43 @@ function init(root) {
     stepBand = Math.ceil(max) + 8;
   }
   function measureBand() {
-    if (!intro || !narrow.matches) { root.style.removeProperty('--ae-ph-band'); return; }
+    if (!intro || !narrow.matches) { root.style.removeProperty('--ae-ph-band'); bandTarget = 0; return; }
     if (root.classList.contains('is-story') && stepBand) {
       root.style.setProperty('--ae-ph-band', stepBand + 'px');
+      bandTarget = stepBand;
       return;
     }
     const kids = [...intro.children].filter((el) => el.offsetParent !== null);
     if (!kids.length) return;
     const top = kids[0].getBoundingClientRect().top;
     const bottom = kids[kids.length - 1].getBoundingClientRect().bottom;
-    root.style.setProperty('--ae-ph-band', Math.ceil(bottom - top) + 'px');
+    bandTarget = Math.ceil(bottom - top);
+    root.style.setProperty('--ae-ph-band', bandTarget + 'px');
   }
   if (intro) new ResizeObserver(() => { measureSteps(); measureBand(); }).observe(intro);
   measureSteps();
   measureBand();
 
+  // The canvas keeps one size (resized only when the screen itself changes).
+  // On phones it spans the whole stage and the camera frames the phone in
+  // the space above the text, so changing that space just glides the camera.
+  let canvasH = 1, tan = 0.25, byW = 0;
+  function frameFor(bandPx) {
+    if (!narrow.matches) return { z: Math.max((H * 1.14) / (2 * tan), byW), dy: 0 };
+    const avail = Math.max(canvasH * 0.3, canvasH - bandPx - 12);
+    const z = Math.max((H * 1.04 * canvasH) / (2 * tan * avail), byW);
+    const dy = ((canvasH - avail) / 2 / canvasH) * 2 * z * tan; // lift the phone above the text
+    return { z, dy };
+  }
   function resize() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    const tan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
-    // Frame tighter on phones, where every pixel of height counts.
-    const byH = (H * (narrow.matches ? 1.04 : 1.14)) / (2 * tan);
-    const byW = (W * 1.5) / (2 * tan * camera.aspect);
-    baseZ = Math.max(byH, byW);
+    canvasH = h;
+    tan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+    byW = (W * 1.5) / (2 * tan * camera.aspect);
+    baseZ = frameFor(band < 0 ? bandTarget : band).z;
     if (camZ === 20) camZ = baseZ;
     camera.position.set(camX, camY, camZ);
     camera.updateProjectionMatrix();
@@ -163,21 +183,30 @@ function init(root) {
     // Where the stage starts sticking. (A sticky element's offsetTop moves
     // while it sticks, so measure from the intro instead.)
     const start = intro && getComputedStyle(intro).position !== 'sticky' ? intro.offsetHeight : 0;
-    const total = root.offsetHeight - start - window.innerHeight;
+    // The stage's own height (100svh) stays put while Safari's bars slide in
+    // and out, unlike window.innerHeight, so progress never jumps.
+    const vh = stage ? stage.clientHeight : window.innerHeight;
+    const total = root.offsetHeight - start - vh;
     progress = THREE.MathUtils.clamp((-r.top - start) / Math.max(total, 1), 0, 0.9999);
     const wasStory = root.classList.contains('is-story');
-    root.classList.toggle('is-story', -r.top > window.innerHeight * 0.12);
+    root.classList.toggle('is-story', -r.top > vh * 0.12);
     if (wasStory !== root.classList.contains('is-story')) measureBand();
     dirty = true;
   }
   window.addEventListener('scroll', readScroll, { passive: true });
-  window.addEventListener('resize', readScroll);
+  window.addEventListener('resize', () => { if (Math.abs((stage ? stage.clientHeight : 0) - lastStageH) > 1) { lastStageH = stage ? stage.clientHeight : 0; readScroll(); } });
+  let lastStageH = stage ? stage.clientHeight : 0;
 
-  let shown = -1, shownT = -1, active = -1, dirty = true, running = false, raf = 0;
-  let smooth = 0;
+  let shownBase = -1, shownBaseT = -1, shownTop = -1, shownTopT = -1, liveBase = -1, liveTop = -1;
+  let active = -1, dirty = true, running = false, raf = 0;
+  let smooth = 0, lastTime = 0;
+  // Exponential easing per second, the same at 60 Hz and 120 Hz.
+  const ease_ = (rate, dt) => 1 - Math.exp(-rate * dt);
 
   function update(time) {
-    smooth += (progress - smooth) * (calm ? 1 : 0.045);
+    const dt = Math.min(0.1, Math.max(0, time - lastTime));
+    lastTime = time;
+    smooth += (progress - smooth) * (calm ? 1 : ease_(2.6, dt));
     const s = smooth * STEPS;
     const i = Math.min(STEPS - 1, Math.floor(s));
     const f = s - i;
@@ -187,41 +216,48 @@ function init(root) {
     const c = calm ? STILL : CHOREO[i](f, time);
     const sway = calm ? 0 : 1 - c.k * 0.6;
     phone.rotation.set(
-      c.rx + sway * (Math.sin(time * 0.25) * 0.03 + 0.06),
-      c.ry + sway * (Math.sin(time * 0.3) * 0.06 - 0.22),
-      c.rz - sway * 0.035
+      c.rx + 0.06 + sway * Math.sin(time * 0.22) * 0.02,
+      c.ry - 0.22 + sway * Math.sin(time * 0.26) * 0.04,
+      c.rz - 0.035
     );
-    phone.position.set(c.px, c.py + sway * Math.sin(time * 0.45) * 0.04, 0);
+    phone.position.set(c.px, c.py + sway * Math.sin(time * 0.35) * 0.025, 0);
 
     // Camera: zoom and pan, eased so fast scrolling still glides.
-    if (!calm) {
-      const zoom = c.zoom ?? 1 + (c.focusZoom - 1) * c.k;
-      camZ += (baseZ * zoom - camZ) * 0.06;
-      camX += (c.fx * c.k - camX) * 0.06;
-      camY += (c.fy * c.k - camY) * 0.06;
-      camera.position.set(camX, camY, camZ);
-      camera.lookAt(camX, camY, 0);
-    }
+    band = band < 0 ? bandTarget : band + (bandTarget - band) * ease_(3, dt);
+    const fit = frameFor(band);
+    baseZ = fit.z;
+    // Phones show the phone large already, and a zoom would push it over the
+    // text under it, so the camera holds still there; the phone's own moves stay.
+    const still = calm || narrow.matches;
+    const zoom = still ? 1 : c.zoom ?? 1 + (c.focusZoom - 1) * c.k;
+    const k = calm ? 1 : ease_(3.2, dt);
+    camZ += (baseZ * zoom - camZ) * k;
+    camX += ((still ? 0 : c.fx * c.k) - camX) * k;
+    camY += ((still ? 0 : c.fy * c.k) - camY) * k;
+    const lift = fit.dy * (camZ / baseZ);
+    camera.position.set(camX, camY - lift, camZ);
+    camera.lookAt(camX, camY - lift, 0);
 
-    // The screen crossfades from the last step to this one during the move.
+    // The screen crossfades from the last step to this one during the move:
+    // the old screen underneath, the new one fading in on top, blended on
+    // the GPU. Each is redrawn only when its content changes; animated
+    // screens (the ringing, the waveform) redraw at 24 fps.
     const mix = calm ? 1 : c.mix;
-    const t = THREE.MathUtils.clamp(c.u / 0.6, 0, 1);
-    const tq = Math.round(t * 90) / 90;
-    const mq = Math.round(mix * 40) / 40;
-    const key = i + mq;
-    if (key !== shown || tq !== shownT || SCREENS[i].live || (mq < 1 && SCREENS[i - 1]?.live)) {
-      if (mq < 1 && i > 0) {
-        drawScreen(ctx, tex.width, tex.height, i - 1, 1, time);
-        drawScreen(ctx2, tex.width, tex.height, i, tq, time);
-        ctx.globalAlpha = mq;
-        ctx.drawImage(tex2, 0, 0);
-        ctx.globalAlpha = 1;
-      } else {
-        drawScreen(ctx, tex.width, tex.height, i, tq, time);
-      }
+    const tq = Math.round(THREE.MathUtils.clamp(c.u / 0.6, 0, 1) * 120) / 120;
+    const fading = mix < 0.999 && i > 0;
+    const tick = Math.floor(time * 24);
+    const bIdx = fading ? i - 1 : i, bT = fading ? 1 : tq;
+    if (bIdx !== shownBase || bT !== shownBaseT || (SCREENS[bIdx].live && tick !== liveBase)) {
+      drawScreen(ctx, tex.width, tex.height, bIdx, bT, time);
       screenTex.needsUpdate = true;
-      shown = key;
-      shownT = tq;
+      shownBase = bIdx; shownBaseT = bT; liveBase = tick;
+    }
+    screenTop.visible = fading;
+    screenTop.material.opacity = mix;
+    if (fading && (i !== shownTop || tq !== shownTopT || (SCREENS[i].live && tick !== liveTop))) {
+      drawScreen(ctx2, tex2.width, tex2.height, i, tq, time);
+      screenTex2.needsUpdate = true;
+      shownTop = i; shownTopT = tq; liveTop = tick;
     }
 
     if (i !== active) {
@@ -233,7 +269,7 @@ function init(root) {
   const clock = new THREE.Clock();
   function frame() {
     raf = requestAnimationFrame(frame);
-    update(clock.elapsedTime);
+    update(clock.getElapsedTime());
     renderer.render(scene, camera);
   }
   new IntersectionObserver(([e]) => {
@@ -249,7 +285,7 @@ function init(root) {
 }
 
 // ── The phone model ───────────────────────────────────────────────────────
-function buildPhone(screenTex, SW, SH, SR) {
+function buildPhone(screenTex, screenTex2, SW, SH, SR) {
   const g = new THREE.Group();
   const zFront = D / 2 + B, zBack = -(D / 2 + B);
 
@@ -281,6 +317,12 @@ function buildPhone(screenTex, SW, SH, SR) {
   fitUV(screenGeo, SW, SH);
   const screen = new THREE.Mesh(screenGeo, new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false }));
   screen.position.z = zFront + 0.009;
+  // The incoming screen during a crossfade, drawn just above the first.
+  const top = new THREE.Mesh(screenGeo, new THREE.MeshBasicMaterial({ map: screenTex2, toneMapped: false, transparent: true, opacity: 0, depthWrite: false }));
+  top.position.z = zFront + 0.0095;
+  top.visible = false;
+  g.userData.top = top;
+  g.add(top);
   g.add(screen);
 
   const sheen = new THREE.Mesh(screenGeo, new THREE.MeshStandardMaterial({
@@ -413,11 +455,10 @@ function phase(f) {
 }
 
 const CHOREO = [
-  // 1. Ring: a light buzz in short bursts while the camera eases in on the caller.
-  (f, time) => {
+  // 1. Ring: the camera eases in on the caller while the rings pulse on screen.
+  (f) => {
     const u = clamp01(f / 0.9);
-    const burst = (time % 2.2) < 0.5 && u < 0.7 ? 1 : 0;
-    return { ...STILL, rz: Math.sin(time * 55) * 0.005 * burst, k: settle(u), fy: 0.45, focusZoom: 0.86, u };
+    return { ...STILL, k: settle(u), fy: 0.45, focusZoom: 0.86, u };
   },
   // 2. Answered: the phone tips gently toward you.
   (f) => {
