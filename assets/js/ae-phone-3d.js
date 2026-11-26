@@ -36,7 +36,12 @@ function init(root) {
 
   let renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    // Edge smoothing (MSAA) only below 2x pixel density: at 2x and above the
+    // pixels are fine enough without it, and skipping it saves GPU time per
+    // frame. 'high-performance' asks laptops for their faster GPU.
+    renderer = new THREE.WebGLRenderer({
+      canvas, alpha: true, antialias: (window.devicePixelRatio || 1) < 2, powerPreference: 'high-performance',
+    });
     if (!renderer.getContext()) throw new Error('no gl');
   } catch (e) {
     root.classList.add('is-flat');
@@ -80,10 +85,15 @@ function init(root) {
   const ctx2 = tex2.getContext('2d');
   const screenTex = new THREE.CanvasTexture(tex);
   screenTex.colorSpace = THREE.SRGBColorSpace;
-  screenTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  // No mipmaps: they were rebuilt on every screen redraw (the costliest part
+  // of an upload). The texture is sized close to the screen's largest size on
+  // the display, so plain linear filtering stays sharp.
+  screenTex.generateMipmaps = false;
+  screenTex.minFilter = THREE.LinearFilter;
   const screenTex2 = new THREE.CanvasTexture(tex2);
   screenTex2.colorSpace = THREE.SRGBColorSpace;
-  screenTex2.anisotropy = screenTex.anisotropy;
+  screenTex2.generateMipmaps = false;
+  screenTex2.minFilter = THREE.LinearFilter;
 
   const phone = new THREE.Group();
   scene.add(phone);
@@ -247,8 +257,8 @@ function init(root) {
     // next one slides up from below (shader above). Redraws are capped at 30
     // a second (a new screen draws at once) and animated screens (ringing,
     // waveform) tick at 24 fps, so the GPU stays free for 120 Hz and above.
-    const tq = Math.round(c.t * 60) / 60;
-    const tick = Math.floor(time * 24);
+    const tq = Math.round(c.t * 40) / 40;
+    const tick = Math.floor(time * 20);
     const due = time - lastDraw >= 1 / 30;
     if (i !== shownBase || (due && (tq !== shownBaseT || (SCREENS[i].live && tick !== liveBase)))) {
       lastDraw = time;
@@ -270,28 +280,40 @@ function init(root) {
     }
   }
 
-  // One frame per display refresh (60, 120, 144 Hz...). Adaptive resolution:
-  // the loop learns the display's frame interval, and if frames run long it
-  // lowers the render resolution a step (down to 1x); when there is headroom
-  // again for a few seconds it steps back up. Steps are rare, so no flicker.
+  // One frame per display refresh (60, 120, 144 Hz and up), with adaptive
+  // render resolution against the measured refresh rate.
   const clock = new THREE.Clock();
-  let last = 0, best = 1, acc = 0, n = 0, good = 0, hold = 0;
+  // The display's refresh interval, measured once with empty frames before
+  // the scene renders, so a heavy first second cannot hide it.
+  let refresh = 1 / 60;
+  (function measure() {
+    const ts = [];
+    const tickR = (t) => {
+      ts.push(t);
+      if (ts.length < 24) { requestAnimationFrame(tickR); return; }
+      const d = ts.slice(1).map((t2, k) => t2 - ts[k]).sort((x, y) => x - y);
+      const med = d[Math.floor(d.length / 2)] / 1000;
+      if (med > 1 / 400 && med < 1 / 20) refresh = med;
+    };
+    requestAnimationFrame(tickR);
+  })();
+  let last = 0, acc = 0, n = 0, good = 0, hold = 0;
   function frame(ts) {
     raf = requestAnimationFrame(frame);
     if (last) {
       const d = (ts - last) / 1000;
-      if (d > 0 && d < 0.25) {
-        best = Math.min(best, Math.max(d, 1 / 360));
-        acc += d; n++;
-      }
+      if (d > 0 && d < 0.25) { acc += d; n++; }
     }
     last = ts;
-    if (n >= 90) {
+    // Every second or so: frames running long (missing refreshes) step the
+    // render resolution down a quarter; a few seconds at full rate step it
+    // back up. Steps are rare, so there is no flicker.
+    if (n >= Math.round(1 / refresh)) {
       const avg = acc / n;
       acc = 0; n = 0;
       if (hold > 0) hold--;
-      else if (avg > best * 1.3 && dpr > 1) { dpr = Math.max(1, dpr - 0.25); renderer.setPixelRatio(dpr); resize(); good = 0; hold = 2; }
-      else if (avg < best * 1.08 && dpr < maxDpr && ++good >= 3) { dpr = Math.min(maxDpr, dpr + 0.25); renderer.setPixelRatio(dpr); resize(); good = 0; hold = 2; }
+      else if (avg > refresh * 1.2 && dpr > 1) { dpr = Math.max(1, dpr - 0.25); renderer.setPixelRatio(dpr); resize(); good = 0; hold = 1; }
+      else if (avg < refresh * 1.05 && dpr < maxDpr && ++good >= 4) { dpr = Math.min(maxDpr, dpr + 0.25); renderer.setPixelRatio(dpr); resize(); good = 0; hold = 2; }
     }
     update(clock.getElapsedTime());
     renderer.render(scene, camera);
