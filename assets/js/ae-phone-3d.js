@@ -73,7 +73,7 @@ function init(root) {
   tex.width = TW;
   tex.height = Math.round(TW * SH / SW);
   const ctx = tex.getContext('2d');
-  // Second canvas: the incoming screen, faded in over the first on the GPU.
+  // Second canvas: the next screen, which slides in from below.
   const tex2 = document.createElement('canvas');
   tex2.width = tex.width;
   tex2.height = tex.height;
@@ -88,7 +88,7 @@ function init(root) {
   const phone = new THREE.Group();
   scene.add(phone);
   const built = buildPhone(screenTex, screenTex2, SW, SH, SR);
-  const screenTop = built.userData.top;
+  const screenMat = built.userData.screenMat;
   phone.add(built);
 
   // Optional licensed model in place of the built phone.
@@ -218,53 +218,51 @@ function init(root) {
     const dt = Math.min(0.1, Math.max(0, time - lastTime));
     lastTime = time;
     smooth += (progress - smooth) * (calm ? 1 : ease_(2.6, dt));
-    const s = smooth * STEPS;
-    const i = Math.min(STEPS - 1, Math.floor(s));
-    const f = s - i;
-
-    // Each step runs the spin, pan, counterspin sequence (see sequence() below).
-    // Reduced motion: none of it,
-    // the screens just change with scroll.
-    const c = calm ? { ...STILL, t: clamp01(f / 0.6) } : sequence(i, f, i === STEPS - 1);
+    // One sequence across the whole hero (see storyPose() below): a spin in at
+    // the start, one slow sweep while the steps play out, a spin out at the end.
+    const c = storyPose(smooth, STEPS, calm);
+    const { i, f } = c;
     const sway = calm ? 0 : 1 - c.k * 0.6;
     phone.rotation.set(
       c.rx + 0.06 + sway * Math.sin(time * 0.22) * 0.02,
       c.ry - 0.22 + sway * Math.sin(time * 0.26) * 0.04,
-      c.rz - 0.035
+      -0.035
     );
-    phone.position.set(c.px, c.py + sway * Math.sin(time * 0.35) * 0.025, 0);
+    phone.position.set(0, sway * Math.sin(time * 0.35) * 0.025, 0);
 
     // Camera: zoom and pan, eased so fast scrolling still glides.
     band = band < 0 ? bandTarget : band + (bandTarget - band) * ease_(3, dt);
     const fit = frameFor(band);
     baseZ = fit.z;
-    const still = calm;
-    const zoom = still ? 1 : c.zoom ?? 1 + (c.focusZoom - 1) * c.k;
+    const zoom = calm ? 1 : 1 + (c.focusZoom - 1) * c.k;
     const k = calm ? 1 : ease_(3.2, dt);
     camZ += (baseZ * zoom - camZ) * k;
-    camX += ((still ? 0 : c.fx * c.k) - camX) * k;
-    camY += ((still ? 0 : c.fy * c.k) - camY) * k;
+    camX += ((calm ? 0 : c.fx * c.k) - camX) * k;
+    camY += ((calm ? 0 : c.fy * c.k) - camY) * k;
     const lift = fit.dy * (camZ / baseZ);
     camera.position.set(camX, camY - lift, camZ);
     camera.lookAt(camX, camY - lift, 0);
 
-    // The screen: this step's, filling in as it goes; the next step's once
-    // the counterspin passes halfway. Redrawn only when its content changes;
-    // animated screens (the ringing, the waveform) redraw at 24 fps.
-    const idx = c.next ? i + 1 : i;
-    // Content changes redraw at most 30 times a second (a new screen draws at
-    // once); each redraw re-uploads the screen image, so this keeps the GPU
-    // free for the 3D at 120 Hz and above.
+    // Screens: this step's fills in as it goes; near the end of the step the
+    // next one slides up from below (shader above). Redraws are capped at 30
+    // a second (a new screen draws at once) and animated screens (ringing,
+    // waveform) tick at 24 fps, so the GPU stays free for 120 Hz and above.
     const tq = Math.round(c.t * 60) / 60;
     const tick = Math.floor(time * 24);
     const due = time - lastDraw >= 1 / 30;
-    if (idx !== shownBase || (due && (tq !== shownBaseT || (SCREENS[idx].live && tick !== liveBase)))) {
+    if (i !== shownBase || (due && (tq !== shownBaseT || (SCREENS[i].live && tick !== liveBase)))) {
       lastDraw = time;
-      drawScreen(ctx, tex.width, tex.height, idx, tq, time);
+      drawScreen(ctx, tex.width, tex.height, i, tq, time);
       screenTex.needsUpdate = true;
-      shownBase = idx; shownBaseT = tq; liveBase = tick;
+      shownBase = i; shownBaseT = tq; liveBase = tick;
     }
-    screenTop.visible = false;
+    const nextI = Math.min(STEPS - 1, i + 1);
+    if (c.slide > 0 && (nextI !== shownTop || (SCREENS[nextI].live && due && tick !== liveTop))) {
+      drawScreen(ctx2, tex2.width, tex2.height, nextI, 0, time);
+      screenTex2.needsUpdate = true;
+      shownTop = nextI; liveTop = tick;
+    }
+    screenMat.uniforms.slide.value = c.slide;
 
     if (i !== active) {
       active = i;
@@ -342,21 +340,34 @@ function buildPhone(screenTex, screenTex2, SW, SH, SR) {
 
   const screenGeo = new THREE.ShapeGeometry(roundRect(SW, SH, SR), 64);
   fitUV(screenGeo, SW, SH);
-  const screen = new THREE.Mesh(screenGeo, new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false }));
+  // The screen slides from one step to the next like scrolling in an app:
+  // the current screen (mapA) moves up and the next (mapB) comes in from
+  // below. Done in the shader, so the slide is as smooth as the display.
+  const screenMat = new THREE.ShaderMaterial({
+    uniforms: { mapA: { value: screenTex }, mapB: { value: screenTex2 }, slide: { value: 0 } },
+    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: [
+      'uniform sampler2D mapA; uniform sampler2D mapB; uniform float slide; varying vec2 vUv;',
+      'void main(){',
+      '  float y = vUv.y - slide;',
+      '  gl_FragColor = y >= 0.0 ? texture2D(mapA, vec2(vUv.x, y)) : texture2D(mapB, vec2(vUv.x, y + 1.0));',
+      '  #include <colorspace_fragment>',
+      '}',
+    ].join('\n'),
+  });
+  const screen = new THREE.Mesh(screenGeo, screenMat);
+  g.userData.screenMat = screenMat;
   screen.position.z = zFront + 0.009;
-  // The incoming screen during a crossfade, drawn just above the first.
-  const top = new THREE.Mesh(screenGeo, new THREE.MeshBasicMaterial({ map: screenTex2, toneMapped: false, transparent: true, opacity: 0, depthWrite: false }));
-  top.position.z = zFront + 0.0095;
-  top.visible = false;
-  g.userData.top = top;
-  g.add(top);
   g.add(screen);
 
   const sheen = new THREE.Mesh(screenGeo, new THREE.MeshStandardMaterial({
-    color: 0x000000, metalness: 0, roughness: 0.03, envMapIntensity: 0.18,
+    color: 0x000000, metalness: 0, roughness: 0.03, envMapIntensity: 0.025,
     transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
   }));
   sheen.position.z = zFront + 0.011;
+  // Off: while zoomed in on the screen, the studio's overhead light showed in
+  // it as a grey band across the top. Kept for reference.
+  sheen.visible = false;
   g.add(sheen);
 
   // Earpiece slit at the very top of the glass.
@@ -462,35 +473,45 @@ function buildPhone(screenTex, screenTex2, SW, SH, SR) {
 
 // ── Screens ───────────────────────────────────────────────────────────────
 // ── Choreography ──────────────────────────────────────────────────────────
-// Every step runs the same sequence, driven by scroll (f runs 0 to 1):
-//   1. Spin in: one full turn while the camera zooms in on the top half of
-//      the screen.
-//   2. Pan down to the bottom half as the content fills in.
-//   3. Counterspin: one full turn back while the camera zooms out. The
-//      screen changes to the next step at the halfway point, while the back
-//      of the phone faces you. The last step ends on the whole phone.
+// One animation across the whole hero, driven by scroll (p runs 0 to 1):
+//   Spin in: one full turn while the camera zooms in on the screen.
+//   The call: one slow sweep of the phone while the five steps play out.
+//     Each screen fills in, then the next slides up from below, like
+//     scrolling in an app. No turns between steps.
+//   Spin out: one full turn back while the camera zooms out to the whole
+//     phone, on the morning summary.
+// Reduced motion: no turns, zoom or sweep; the screens still fill in and slide.
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 const TAU = Math.PI * 2;
-const STILL = { rx: 0, ry: 0, rz: 0, px: 0, py: 0, k: 0, fx: 0, fy: 0, focusZoom: 1, t: 1, next: false };
 
-const SPIN_IN = [0, 0.28];     // spin and zoom in on the top half
-const PAN = [0.4, 0.62];       // pan from the top half to the bottom half
-const SPIN_OUT = [0.72, 1];    // counterspin and zoom out
-const TOP = 1.45, BOTTOM = -1.35, CLOSE = 0.6; // focus points (phone units) and zoom
+const INTRO = [0, 0.1];        // spin in, zoom in
+const OUTRO = [0.9, 1];        // spin out, zoom out
+const SLIDE_AT = 0.84;         // share of a step after which the next slides in
+const CLOSE = 0.74;            // zoom while reading (1 = whole phone)
 
-function span(f, [a, b]) { return easeInOut(clamp01((f - a) / (b - a))); }
+function span(p, [a, b]) { return easeInOut(clamp01((p - a) / (b - a))); }
 
-function sequence(i, f, last) {
-  const inE = span(f, SPIN_IN);
-  const panE = span(f, PAN);
-  const outE = span(f, SPIN_OUT);
-  const ry = -TAU * (1 - inE) - TAU * outE;   // turn in one way, back the other
-  const k = inE * (1 - outE);                 // how far the camera is in
-  const fy = lerp(TOP, BOTTOM, panE);
-  const next = !last && outE >= 0.5;          // back faces the viewer here
-  const t = clamp01((f - 0.12) / 0.5);        // content fills in over the spin and pan
-  return { ...STILL, ry, k, fy, focusZoom: CLOSE, t: next ? 0 : t, next };
+function storyPose(p, steps, calm) {
+  // Steps share the middle of the scroll evenly.
+  const mid = clamp01((p - INTRO[1]) / (OUTRO[0] - INTRO[1]));
+  const s = mid * steps;
+  const i = Math.min(steps - 1, Math.floor(s));
+  const f = i === steps - 1 && mid >= 1 ? 1 : s - i;
+  const t = clamp01(f / 0.7);
+  const slide = i < steps - 1 ? easeInOut(clamp01((f - SLIDE_AT) / (1 - SLIDE_AT))) : 0;
+  if (calm) return { i, f, t, slide, rx: 0, ry: 0, k: 0, fx: 0, fy: 0, focusZoom: 1 };
+
+  const inE = span(p, INTRO);
+  const outE = span(p, OUTRO);
+  const k = inE * (1 - outE);
+  // One slow sweep from one side to the other across all five steps.
+  const sweep = easeInOut(mid);
+  const ry = -TAU * (1 - inE) - TAU * outE + lerp(-0.32, 0.32, sweep) * k;
+  const rx = lerp(0.05, -0.05, sweep) * k;
+  // The camera drifts gently down the screen over the whole call.
+  const fy = lerp(0.7, 0.1, sweep);
+  return { i, f, t, slide, rx, ry, k, fx: 0, fy, focusZoom: CLOSE };
 }
 
 const SCREENS = [
