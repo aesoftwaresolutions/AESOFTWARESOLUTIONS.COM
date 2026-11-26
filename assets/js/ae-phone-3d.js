@@ -43,7 +43,10 @@ function init(root) {
     return;
   }
   root.classList.add('is-3d');
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  // Render resolution starts at the screen's (up to 2x) and adapts: see frame().
+  const maxDpr = Math.min(window.devicePixelRatio || 1, 2);
+  let dpr = maxDpr;
+  renderer.setPixelRatio(dpr);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
@@ -178,27 +181,35 @@ function init(root) {
   // ── Scroll ────────────────────────────────────────────────────────────
   // Progress runs over the part of the section where the stage is stuck.
   let progress = 0;
-  function readScroll() {
-    const r = root.getBoundingClientRect();
+  // Page geometry is measured once (and again on resize); a scroll then only
+  // reads window.scrollY, so scrolling never forces a layout pass.
+  let rootTop = 0, start = 0, vh = 1, total = 1;
+  function measureScroll() {
+    rootTop = root.getBoundingClientRect().top + window.scrollY;
     // Where the stage starts sticking. (A sticky element's offsetTop moves
     // while it sticks, so measure from the intro instead.)
-    const start = intro && getComputedStyle(intro).position !== 'sticky' ? intro.offsetHeight : 0;
+    start = intro && getComputedStyle(intro).position !== 'sticky' ? intro.offsetHeight : 0;
     // The stage's own height (100svh) stays put while Safari's bars slide in
     // and out, unlike window.innerHeight, so progress never jumps.
-    const vh = stage ? stage.clientHeight : window.innerHeight;
-    const total = root.offsetHeight - start - vh;
-    progress = THREE.MathUtils.clamp((-r.top - start) / Math.max(total, 1), 0, 0.9999);
-    const wasStory = root.classList.contains('is-story');
-    root.classList.toggle('is-story', -r.top > vh * 0.12);
-    if (wasStory !== root.classList.contains('is-story')) measureBand();
-    dirty = true;
+    vh = stage ? stage.clientHeight : window.innerHeight;
+    total = Math.max(1, root.offsetHeight - start - vh);
+  }
+  function readScroll() {
+    const y = window.scrollY - rootTop;
+    progress = THREE.MathUtils.clamp((y - start) / total, 0, 0.9999);
+    const story = y > vh * 0.12;
+    if (story !== root.classList.contains('is-story')) {
+      root.classList.toggle('is-story', story);
+      measureBand();
+    }
   }
   window.addEventListener('scroll', readScroll, { passive: true });
-  window.addEventListener('resize', () => { if (Math.abs((stage ? stage.clientHeight : 0) - lastStageH) > 1) { lastStageH = stage ? stage.clientHeight : 0; readScroll(); } });
+  window.addEventListener('resize', () => { if (Math.abs((stage ? stage.clientHeight : 0) - lastStageH) > 1) { lastStageH = stage ? stage.clientHeight : 0; measureScroll(); readScroll(); } });
+  new ResizeObserver(() => { measureScroll(); readScroll(); }).observe(root);
   let lastStageH = stage ? stage.clientHeight : 0;
 
   let shownBase = -1, shownBaseT = -1, shownTop = -1, shownTopT = -1, liveBase = -1, liveTop = -1;
-  let active = -1, dirty = true, running = false, raf = 0;
+  let active = -1, dirty = true, running = false, raf = 0, lastDraw = -1;
   let smooth = 0, lastTime = 0;
   // Exponential easing per second, the same at 60 Hz and 120 Hz.
   const ease_ = (rate, dt) => 1 - Math.exp(-rate * dt);
@@ -241,9 +252,14 @@ function init(root) {
     // the counterspin passes halfway. Redrawn only when its content changes;
     // animated screens (the ringing, the waveform) redraw at 24 fps.
     const idx = c.next ? i + 1 : i;
-    const tq = Math.round(c.t * 120) / 120;
+    // Content changes redraw at most 30 times a second (a new screen draws at
+    // once); each redraw re-uploads the screen image, so this keeps the GPU
+    // free for the 3D at 120 Hz and above.
+    const tq = Math.round(c.t * 60) / 60;
     const tick = Math.floor(time * 24);
-    if (idx !== shownBase || tq !== shownBaseT || (SCREENS[idx].live && tick !== liveBase)) {
+    const due = time - lastDraw >= 1 / 30;
+    if (idx !== shownBase || (due && (tq !== shownBaseT || (SCREENS[idx].live && tick !== liveBase)))) {
+      lastDraw = time;
       drawScreen(ctx, tex.width, tex.height, idx, tq, time);
       screenTex.needsUpdate = true;
       shownBase = idx; shownBaseT = tq; liveBase = tick;
@@ -256,17 +272,38 @@ function init(root) {
     }
   }
 
+  // One frame per display refresh (60, 120, 144 Hz...). Adaptive resolution:
+  // the loop learns the display's frame interval, and if frames run long it
+  // lowers the render resolution a step (down to 1x); when there is headroom
+  // again for a few seconds it steps back up. Steps are rare, so no flicker.
   const clock = new THREE.Clock();
-  function frame() {
+  let last = 0, best = 1, acc = 0, n = 0, good = 0, hold = 0;
+  function frame(ts) {
     raf = requestAnimationFrame(frame);
+    if (last) {
+      const d = (ts - last) / 1000;
+      if (d > 0 && d < 0.25) {
+        best = Math.min(best, Math.max(d, 1 / 360));
+        acc += d; n++;
+      }
+    }
+    last = ts;
+    if (n >= 90) {
+      const avg = acc / n;
+      acc = 0; n = 0;
+      if (hold > 0) hold--;
+      else if (avg > best * 1.3 && dpr > 1) { dpr = Math.max(1, dpr - 0.25); renderer.setPixelRatio(dpr); resize(); good = 0; hold = 2; }
+      else if (avg < best * 1.08 && dpr < maxDpr && ++good >= 3) { dpr = Math.min(maxDpr, dpr + 0.25); renderer.setPixelRatio(dpr); resize(); good = 0; hold = 2; }
+    }
     update(clock.getElapsedTime());
     renderer.render(scene, camera);
   }
   new IntersectionObserver(([e]) => {
-    if (e.isIntersecting && !running) { running = true; frame(); }
+    if (e.isIntersecting && !running) { running = true; last = 0; acc = 0; n = 0; raf = requestAnimationFrame(frame); }
     else if (!e.isIntersecting && running) { running = false; cancelAnimationFrame(raf); }
   }, { rootMargin: '120px' }).observe(canvas);
 
+  measureScroll();
   readScroll();
   smooth = progress;
   resize();
