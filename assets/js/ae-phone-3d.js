@@ -22,6 +22,8 @@ import * as THREE from 'three';
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI', Roboto, Arial, sans-serif";
 const BUSINESS = 'Reyes Plumbing';
+// Phone UI colours (generic dark-mode system colours), only on the screen.
+const RED = '#FF453A', GREEN = '#30D158', BLUE = '#0A84FF', ORANGE = '#FF9F0A';
 
 // Phone size in scene units (proportions of a current 6.1 inch phone).
 const W = 3, H = 6.18, D = 0.3, B = 0.04, R = 0.5;
@@ -36,7 +38,12 @@ function init(root) {
 
   let renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    // Edge smoothing (MSAA) only below 2x pixel density: at 2x and above the
+    // pixels are fine enough without it, and skipping it saves GPU time per
+    // frame. 'high-performance' asks laptops for their faster GPU.
+    renderer = new THREE.WebGLRenderer({
+      canvas, alpha: true, antialias: (window.devicePixelRatio || 1) < 2, powerPreference: 'high-performance',
+    });
     if (!renderer.getContext()) throw new Error('no gl');
   } catch (e) {
     root.classList.add('is-flat');
@@ -80,10 +87,15 @@ function init(root) {
   const ctx2 = tex2.getContext('2d');
   const screenTex = new THREE.CanvasTexture(tex);
   screenTex.colorSpace = THREE.SRGBColorSpace;
-  screenTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  // No mipmaps: they were rebuilt on every screen redraw (the costliest part
+  // of an upload). The texture is sized close to the screen's largest size on
+  // the display, so plain linear filtering stays sharp.
+  screenTex.generateMipmaps = false;
+  screenTex.minFilter = THREE.LinearFilter;
   const screenTex2 = new THREE.CanvasTexture(tex2);
   screenTex2.colorSpace = THREE.SRGBColorSpace;
-  screenTex2.anisotropy = screenTex.anisotropy;
+  screenTex2.generateMipmaps = false;
+  screenTex2.minFilter = THREE.LinearFilter;
 
   const phone = new THREE.Group();
   scene.add(phone);
@@ -247,8 +259,8 @@ function init(root) {
     // next one slides up from below (shader above). Redraws are capped at 30
     // a second (a new screen draws at once) and animated screens (ringing,
     // waveform) tick at 24 fps, so the GPU stays free for 120 Hz and above.
-    const tq = Math.round(c.t * 60) / 60;
-    const tick = Math.floor(time * 24);
+    const tq = Math.round(c.t * 40) / 40;
+    const tick = Math.floor(time * 20);
     const due = time - lastDraw >= 1 / 30;
     if (i !== shownBase || (due && (tq !== shownBaseT || (SCREENS[i].live && tick !== liveBase)))) {
       lastDraw = time;
@@ -270,28 +282,40 @@ function init(root) {
     }
   }
 
-  // One frame per display refresh (60, 120, 144 Hz...). Adaptive resolution:
-  // the loop learns the display's frame interval, and if frames run long it
-  // lowers the render resolution a step (down to 1x); when there is headroom
-  // again for a few seconds it steps back up. Steps are rare, so no flicker.
+  // One frame per display refresh (60, 120, 144 Hz and up), with adaptive
+  // render resolution against the measured refresh rate.
   const clock = new THREE.Clock();
-  let last = 0, best = 1, acc = 0, n = 0, good = 0, hold = 0;
+  // The display's refresh interval, measured once with empty frames before
+  // the scene renders, so a heavy first second cannot hide it.
+  let refresh = 1 / 60;
+  (function measure() {
+    const ts = [];
+    const tickR = (t) => {
+      ts.push(t);
+      if (ts.length < 24) { requestAnimationFrame(tickR); return; }
+      const d = ts.slice(1).map((t2, k) => t2 - ts[k]).sort((x, y) => x - y);
+      const med = d[Math.floor(d.length / 2)] / 1000;
+      if (med > 1 / 400 && med < 1 / 20) refresh = med;
+    };
+    requestAnimationFrame(tickR);
+  })();
+  let last = 0, acc = 0, n = 0, good = 0, hold = 0;
   function frame(ts) {
     raf = requestAnimationFrame(frame);
     if (last) {
       const d = (ts - last) / 1000;
-      if (d > 0 && d < 0.25) {
-        best = Math.min(best, Math.max(d, 1 / 360));
-        acc += d; n++;
-      }
+      if (d > 0 && d < 0.25) { acc += d; n++; }
     }
     last = ts;
-    if (n >= 90) {
+    // Every second or so: frames running long (missing refreshes) step the
+    // render resolution down a quarter; a few seconds at full rate step it
+    // back up. Steps are rare, so there is no flicker.
+    if (n >= Math.round(1 / refresh)) {
       const avg = acc / n;
       acc = 0; n = 0;
       if (hold > 0) hold--;
-      else if (avg > best * 1.3 && dpr > 1) { dpr = Math.max(1, dpr - 0.25); renderer.setPixelRatio(dpr); resize(); good = 0; hold = 2; }
-      else if (avg < best * 1.08 && dpr < maxDpr && ++good >= 3) { dpr = Math.min(maxDpr, dpr + 0.25); renderer.setPixelRatio(dpr); resize(); good = 0; hold = 2; }
+      else if (avg > refresh * 1.2 && dpr > 1) { dpr = Math.max(1, dpr - 0.25); renderer.setPixelRatio(dpr); resize(); good = 0; hold = 1; }
+      else if (avg < refresh * 1.05 && dpr < maxDpr && ++good >= 4) { dpr = Math.min(maxDpr, dpr + 0.25); renderer.setPixelRatio(dpr); resize(); good = 0; hold = 2; }
     }
     update(clock.getElapsedTime());
     renderer.render(scene, camera);
@@ -564,7 +588,7 @@ function incoming(ctx, w, h, t, time) {
   const cy = 260;
   for (let k = 0; k < 3; k++) {
     const p = (time * 0.7 + k / 3) % 1;
-    ctx.strokeStyle = `rgba(255,255,255,${0.35 * (1 - p)})`;
+    ctx.strokeStyle = `rgba(48,209,88,${0.45 * (1 - p)})`;
     ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.arc(w / 2, cy, 52 + p * 64, 0, Math.PI * 2); ctx.stroke();
   }
@@ -591,7 +615,9 @@ function incoming(ctx, w, h, t, time) {
 }
 
 function answering(ctx, w, h, t, time) {
-  text(ctx, 'Front Desk · live call', 24, 96, 14, 600, 'rgba(255,255,255,.6)');
+  ctx.fillStyle = GREEN;
+  ctx.beginPath(); ctx.arc(29, 91, 4.5, 0, Math.PI * 2); ctx.fill();
+  text(ctx, 'Front Desk · live call', 40, 96, 14, 600, GREEN);
   text(ctx, BUSINESS, 24, 124, 24, 700, '#fff');
   const secs = 3 + Math.floor(t * 41);
   text(ctx, `0:${String(secs).padStart(2, '0')}`, w - 24, 124, 16, 500, 'rgba(255,255,255,.6)', 'right');
@@ -610,7 +636,7 @@ function answering(ctx, w, h, t, time) {
     ctx.globalAlpha = 1;
   });
   const wy = h - 120;
-  ctx.fillStyle = '#fff';
+  ctx.fillStyle = GREEN;
   for (let k = 0; k < 36; k++) {
     const amp = 5 + Math.abs(Math.sin(time * 6 + k * 0.7) * Math.cos(time * 2.3 + k * 0.3)) * 28;
     rr(ctx, 33 + k * 8.2, wy - amp / 2, 4, amp, 2); ctx.fill();
@@ -631,13 +657,13 @@ function details(ctx, w, h, t) {
     const a = THREE.MathUtils.clamp(t * 7 - n, 0, 1);
     text(ctx, k, 40, y, 13, 500, 'rgba(255,255,255,.55)');
     ctx.globalAlpha = a;
-    text(ctx, v, 40, y + 22, 17, 600, '#fff');
+    text(ctx, v, 40, y + 22, 17, 600, k === 'Urgency' ? ORANGE : '#fff');
     check(ctx, w - 52, y + 6);
     ctx.globalAlpha = 1;
     if (n < rows.length - 1) { ctx.fillStyle = 'rgba(255,255,255,.08)'; ctx.fillRect(40, y + 36, w - 80, 1); }
   });
   ctx.globalAlpha = ease(THREE.MathUtils.clamp(t * 2 - 1, 0, 1));
-  pill(ctx, 20, 582, w - 40, 'Saved to your CRM · tagged “new”', false);
+  pill(ctx, 20, 582, w - 40, 'Saved to your CRM · tagged “new”', true, GREEN);
   ctx.globalAlpha = 1;
 }
 
@@ -658,7 +684,7 @@ function textBack(ctx, w, h, t) {
     ctx.globalAlpha = 1;
   });
   ctx.globalAlpha = ease(THREE.MathUtils.clamp(t * 3 - 2.2, 0, 1));
-  pill(ctx, 24, y + 6, 150, 'Thu 2:00 pm', true);
+  pill(ctx, 24, y + 6, 150, 'Thu 2:00 pm', true, BLUE);
   pill(ctx, 186, y + 6, 150, 'Fri 10:00 am', false);
   ctx.globalAlpha = 1;
 }
@@ -671,9 +697,9 @@ function summary(ctx, w, h, t) {
   ctx.globalAlpha = a;
   glassCard(ctx, 14, y0, w - 28, 334, 24);
   // Generic app icon: a white tile with a phone glyph.
-  ctx.fillStyle = '#fff';
+  ctx.fillStyle = GREEN;
   rr(ctx, 32, y0 + 18, 32, 32, 8); ctx.fill();
-  ctx.strokeStyle = '#0b0b0c'; ctx.lineWidth = 2.6; ctx.lineCap = 'round';
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.6; ctx.lineCap = 'round';
   ctx.beginPath(); ctx.arc(48, y0 + 38, 8, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
   text(ctx, 'FRONT DESK', 76, y0 + 40, 12, 600, 'rgba(255,255,255,.7)');
   text(ctx, 'now', w - 32, y0 + 40, 12, 500, 'rgba(255,255,255,.55)', 'right');
@@ -685,10 +711,10 @@ function summary(ctx, w, h, t) {
   ];
   items.forEach(([it, sub], k) => {
     ctx.globalAlpha = a * THREE.MathUtils.clamp(t * 6 - 1 - k * 0.6, 0, 1);
-    text(ctx, it, sub ? 48 : 32, y0 + 120 + k * 30, sub ? 14 : 15, sub ? 400 : 600, sub ? 'rgba(255,255,255,.65)' : '#fff');
+    text(ctx, it, sub ? 48 : 32, y0 + 120 + k * 30, sub ? 14 : 15, sub ? 500 : 600, sub ? GREEN : '#fff');
   });
   ctx.globalAlpha = a * THREE.MathUtils.clamp(t * 3 - 2, 0, 1);
-  pill(ctx, 32, y0 + 272, 138, 'Open summary', true);
+  pill(ctx, 32, y0 + 272, 138, 'Open summary', true, BLUE);
   pill(ctx, 182, y0 + 272, 128, 'Call back', false);
   ctx.globalAlpha = 1;
 }
@@ -720,9 +746,9 @@ function bubble(ctx, side, msg, y, label) {
   text(ctx, label, side === 'left' ? x + 4 : x + bw - 4, y, 11, 500, 'rgba(255,255,255,.5)', side);
   const by = y + 8;
   const mine = side === 'right';
-  ctx.fillStyle = mine ? '#ffffff' : 'rgba(255,255,255,.13)';
+  ctx.fillStyle = mine ? BLUE : 'rgba(255,255,255,.13)';
   rr(ctx, x, by, bw, bh, 18); ctx.fill();
-  lines.forEach((l, k) => text(ctx, l, x + 14, by + 25 + k * 21, 15, 400, mine ? '#0b0b0c' : '#fff'));
+  lines.forEach((l, k) => text(ctx, l, x + 14, by + 25 + k * 21, 15, 400, '#fff'));
   return by + bh;
 }
 function glassCard(ctx, x, y, w, h, r = 20) {
@@ -731,27 +757,27 @@ function glassCard(ctx, x, y, w, h, r = 20) {
   ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.lineWidth = 1;
   rr(ctx, x + 0.5, y + 0.5, w - 1, h - 1, r); ctx.stroke();
 }
-function pill(ctx, x, y, w, label, solid) {
-  ctx.fillStyle = solid ? '#fff' : 'rgba(255,255,255,.13)';
+function pill(ctx, x, y, w, label, solid, color) {
+  ctx.fillStyle = solid ? (color || '#fff') : 'rgba(255,255,255,.13)';
   rr(ctx, x, y, w, 40, 20); ctx.fill();
-  text(ctx, label, x + w / 2, y + 26, 14, 600, solid ? '#0b0b0c' : '#fff', 'center');
+  text(ctx, label, x + w / 2, y + 26, 14, 600, solid && !color ? '#0b0b0c' : '#fff', 'center');
 }
 function callBtn(ctx, x, y, accept, label) {
-  ctx.fillStyle = accept ? '#ffffff' : 'rgba(255,255,255,.18)';
+  ctx.fillStyle = accept ? GREEN : RED;
   ctx.beginPath(); ctx.arc(x, y, 36, 0, Math.PI * 2); ctx.fill();
   ctx.save();
   ctx.translate(x, y);
   if (!accept) ctx.rotate(Math.PI * 0.75);
-  ctx.strokeStyle = accept ? '#0b0b0c' : '#fff';
+  ctx.strokeStyle = '#fff';
   ctx.lineWidth = 7; ctx.lineCap = 'round';
   ctx.beginPath(); ctx.arc(0, 8, 14, Math.PI * 1.12, Math.PI * 1.88); ctx.stroke();
   ctx.restore();
   text(ctx, label, x, y + 60, 13, 500, 'rgba(255,255,255,.78)', 'center');
 }
 function check(ctx, x, y) {
-  ctx.fillStyle = '#fff';
+  ctx.fillStyle = GREEN;
   ctx.beginPath(); ctx.arc(x, y, 11, 0, Math.PI * 2); ctx.fill();
-  ctx.strokeStyle = '#0b0b0c'; ctx.lineWidth = 2.4; ctx.lineCap = 'round';
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.4; ctx.lineCap = 'round';
   ctx.beginPath(); ctx.moveTo(x - 5, y); ctx.lineTo(x - 1, y + 4); ctx.lineTo(x + 5, y - 4); ctx.stroke();
 }
 function rr(ctx, x, y, w, h, r) {

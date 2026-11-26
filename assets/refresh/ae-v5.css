@@ -471,8 +471,10 @@ header.site-header.aec--scrolled {
        underneath shows through, frosted. A bright hairline along the top and a
        faint one at the bottom read as the edges of a glass pane. */
     background: linear-gradient(to bottom, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02)), rgba(10, 10, 11, .34);
-    -webkit-backdrop-filter: brightness(.78) saturate(180%) blur(22px);
-    backdrop-filter: brightness(.78) saturate(180%) blur(22px);
+    /* Nov 25: clearer glass, a light blur only (was 22px). Browsers that can
+       bend the backdrop get refraction instead (LIQUID GLASS below). */
+    -webkit-backdrop-filter: brightness(.74) saturate(180%) blur(8px);
+    backdrop-filter: brightness(.74) saturate(180%) blur(8px);
     border-bottom-color: rgba(255, 255, 255, .12);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 8px 24px rgba(0, 0, 0, .18);
   }
@@ -2608,15 +2610,18 @@ html.ae-glass-on [data-ae-glass]:not([data-ae-glass-off]) { --ae-refract: var(--
 
 /* Cards: each card's own blur and saturation, then the refraction. */
 html.ae-glass-on [data-ae-glass="card"][data-ae-glass-key] {
-  -webkit-backdrop-filter: var(--ae-glass-base, blur(14px) saturate(130%)) var(--ae-refract, );
-  backdrop-filter: var(--ae-glass-base, blur(14px) saturate(130%)) var(--ae-refract, );
+  /* Refraction instead of frosting (Nov 25): a 2px softening, then the bend. */
+  -webkit-backdrop-filter: blur(2px) saturate(140%) var(--ae-refract, );
+  backdrop-filter: blur(2px) saturate(140%) var(--ae-refract, );
 }
 
 /* Header bar, once scrolled (it is clear at the top of the page). */
 @supports (backdrop-filter: blur(1px)) {
   html.ae-glass-on header.site-header.aec--scrolled[data-ae-glass] {
-    -webkit-backdrop-filter: brightness(.78) saturate(180%) blur(22px) var(--ae-refract, );
-    backdrop-filter: brightness(.78) saturate(180%) blur(22px) var(--ae-refract, );
+    /* Clear glass that bends what passes under it: a 2px softening, then the
+       refraction (Nov 25, was a 22px blur that hid the bend). */
+    -webkit-backdrop-filter: brightness(.7) saturate(180%) blur(2px) var(--ae-refract, );
+    backdrop-filter: brightness(.7) saturate(180%) blur(2px) var(--ae-refract, );
     /* Same clear glass as above, with the refraction on top. */
     background: linear-gradient(to bottom, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02)), rgba(10, 10, 11, .34);
   }
@@ -2627,8 +2632,9 @@ html.ae-glass-on [data-ae-glass="card"][data-ae-glass-key] {
    so the panel stays opaque there, as before. */
 html.ae-glass-on header.site-header:not(.aec--scrolled) .site-header__panel[data-ae-glass][data-ae-glass-key] {
   background: rgba(10, 10, 11, .55);   /* light enough for the glass to show; text stays clear over 28px blur */
-  -webkit-backdrop-filter: blur(28px) saturate(140%) var(--ae-refract, );
-  backdrop-filter: blur(28px) saturate(140%) var(--ae-refract, );
+  /* A menu over page content keeps some frosting so its links stay legible. */
+  -webkit-backdrop-filter: blur(10px) saturate(140%) var(--ae-refract, );
+  backdrop-filter: blur(10px) saturate(140%) var(--ae-refract, );
 }
 
 /* Liquid glass, 'rim' mode (ae-glass.js): phones and tablets whose browser
