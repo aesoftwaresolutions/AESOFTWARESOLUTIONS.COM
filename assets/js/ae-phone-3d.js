@@ -38,11 +38,12 @@ function init(root) {
 
   let renderer;
   try {
-    // Edge smoothing (MSAA) only below 2x pixel density: at 2x and above the
-    // pixels are fine enough without it, and skipping it saves GPU time per
-    // frame. 'high-performance' asks laptops for their faster GPU.
+    // Edge smoothing (MSAA) always on: the phone's thin bright edges (frame,
+    // glass bevels, buttons) stair-step without it, even at 2x, and more so
+    // when adaptive resolution steps down. 'high-performance' asks laptops
+    // for their faster GPU.
     renderer = new THREE.WebGLRenderer({
-      canvas, alpha: true, antialias: (window.devicePixelRatio || 1) < 2, powerPreference: 'high-performance',
+      canvas, alpha: true, antialias: true, powerPreference: 'high-performance',
     });
     if (!renderer.getContext()) throw new Error('no gl');
   } catch (e) {
@@ -52,6 +53,8 @@ function init(root) {
   root.classList.add('is-3d');
   // Render resolution starts at the screen's (up to 2x) and adapts: see frame().
   const maxDpr = Math.min(window.devicePixelRatio || 1, 2);
+  // Never below 1.5x on high density screens, where 1x looks soft and jagged.
+  const minDpr = Math.min(maxDpr, (window.devicePixelRatio || 1) >= 2 ? 1.5 : 1);
   let dpr = maxDpr;
   renderer.setPixelRatio(dpr);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -314,7 +317,7 @@ function init(root) {
       const avg = acc / n;
       acc = 0; n = 0;
       if (hold > 0) hold--;
-      else if (avg > refresh * 1.2 && dpr > 1) { dpr = Math.max(1, dpr - 0.25); renderer.setPixelRatio(dpr); resize(); good = 0; hold = 1; }
+      else if (avg > refresh * 1.2 && dpr > minDpr) { dpr = Math.max(minDpr, dpr - 0.25); renderer.setPixelRatio(dpr); resize(); good = 0; hold = 1; }
       else if (avg < refresh * 1.05 && dpr < maxDpr && ++good >= 4) { dpr = Math.min(maxDpr, dpr + 0.25); renderer.setPixelRatio(dpr); resize(); good = 0; hold = 2; }
     }
     update(clock.getElapsedTime());
