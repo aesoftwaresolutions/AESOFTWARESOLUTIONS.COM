@@ -125,6 +125,12 @@ function aesoftwares_pricing_cta_row() {
 	<div class="ae-offers ae-offers--two">
 		<?php foreach ( $ae_call_plans as $item ) { aesoftwares_offer_card( $item ); } ?>
 	</div>
+	<?php if ( ! empty( $o['addons'] ) ) : ?>
+		<p class="v5-label" data-reveal>Optional add-on</p>
+		<div class="ae-offers ae-offers--two">
+			<?php foreach ( $o['addons'] as $item ) { aesoftwares_offer_card( $item ); } ?>
+		</div>
+	<?php endif; ?>
 	<p class="ae-guarantee" data-reveal><strong>Our guarantee.</strong> <?php echo esc_html( $o['guarantee'] ); ?></p>
 	<p class="ae-cta-row" data-reveal>
 		<span>Hear it before you buy.</span>

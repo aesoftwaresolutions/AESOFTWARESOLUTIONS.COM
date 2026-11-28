@@ -31,6 +31,9 @@ function ae_checkout_links() {
 		// Front Desk tiers: the $75 setup is in the Stripe link's first payment.
 		'front-desk-150'               => [ 'stripe' => 'https://buy.stripe.com/cNiaEX7IceFUct53WNabK0t' ],
 		'front-desk-300'               => [ 'stripe' => 'https://buy.stripe.com/aFa28r6E82Xc78LbpfabK0u' ],
+		// 10DLC SMS Registration (optional add-on for Front Desk / Always-On /
+		// Social Front Desk). $50 setup + $15/mo; first payment $65, then $15/mo.
+		'10dlc-sms-registration'       => [ 'stripe' => 'https://buy.stripe.com/bJedR99QkdBQ8cPfFvabK0w' ],
 		// Social media for businesses.
 		'online-presence-management'   => [ 'stripe' => 'https://buy.stripe.com/5kQcN50fK55keBdgJzabK0r' ],
 		'total-presence'               => [ 'stripe' => 'https://buy.stripe.com/3cI5kD2nScxMakXfFvabK0s' ],
