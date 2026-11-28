@@ -247,10 +247,12 @@ function aesoftwares_offers() {
 			],
 		],
 
-		// Optional add-ons for the call plans. Not standalone products; only
-		// sold with a Front Desk, Always-On Front Desk or Social Front Desk
-		// plan. The Stripe Payment Link lives in inc/checkout-links.php under
-		// the key '10dlc-sms-registration' (first payment $65, then $15/mo).
+		// Optional add-ons for the call plans. $15/mo when added to a Front
+		// Desk, Always-On Front Desk or Social Front Desk plan; $25/mo on its
+		// own for texting only (no Front Desk plan). The $15/mo Stripe Payment
+		// Link lives in inc/checkout-links.php under the key
+		// '10dlc-sms-registration' (first payment $65, then $15/mo). A
+		// separate Stripe link is still needed for the $25/mo standalone.
 		'addons' => [
 			[
 				'id'       => '10dlc-sms-registration',
@@ -258,12 +260,13 @@ function aesoftwares_offers() {
 				'name'     => '10DLC SMS Registration',
 				'price'    => '$15',
 				'amount'   => 15,
-				'cadence'  => 'per month · plus one time $50 setup',
+				'cadence'  => 'per month with a Front Desk plan · plus one time $50 setup',
 				'pitch'    => 'Lets your Front Desk number text you a summary after every call. Carriers require your business to be registered before any number can send texts, so we handle the registration for you.',
 				'points'   => [
 					'We register your business brand and messaging campaign with the carriers',
 					'Your Front Desk number can then text call summaries',
 					'One registration per business, tied to your own number',
+					'Texting on its own, without a Front Desk plan: $25 a month',
 				],
 				'cta'      => [ 'Add it on', ae_checkout_url( '10dlc-sms-registration' ) ],
 			],
